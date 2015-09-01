@@ -1,0 +1,36 @@
+<!-- /**************************************************************************************************
+ * Project Name................: Display Partner id on Partner Portal                            *
+ * Class Name .................: MailExtension                                                   *
+ * Created by..................: Simplion Technologies                                           *
+ * Last Modified by............: Simplion Technologies                                           *
+ * Last Modified Date..........: 4-3-2015                                                        *
+ * Description.................: This is VF page for the Partner Portal Home Component           *
+ **************************************************************************************************/-->
+<!--<apex:page standardController="Opportunity" extensions="DisplayPartnerId"  showHeader="false" sidebar="false">-->
+<!--<apex:page standardController="User" showHeader="false" sidebar="false">-->
+   <apex:page controller="DisplayPartnerId" showHeader="false" sidebar="false">
+
+ <style> 
+     .bPageBlock {
+      border:none;
+     }
+     .brandSecondaryBrd {
+      border:none;
+     }
+     .apexDefaultPageBlock {
+      border:none;
+     }
+     .secondaryPalette{
+      border:none;
+     }
+ </style>
+ 
+<div class="bPageBlock brandSecondaryBrd apexDefaultPageBlock secondaryPalette">
+    <div>           
+            <!--{!$User.RCPartner_ID__c} -->
+            <apex:outputField value="{!currentUser.RCPartner_ID__c}" />            
+    </div>                       
+</div>
+
+ 
+</apex:page>

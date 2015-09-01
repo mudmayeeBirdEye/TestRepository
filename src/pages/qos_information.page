@@ -1,0 +1,242 @@
+<apex:page showHeader="false" sidebar="false">
+ <apex:stylesheet value="{!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTCSS/css/support/qos.css')}" />
+<script type="text/javascript">
+function more(i)
+{
+for(x=1;x<=4;x++)
+{
+  if(document.getElementById("div"+x) && document.getElementById("more"+x) && document.getElementById("less"+x)) {
+    document.getElementById("div"+x).style.display="none";
+    document.getElementById("more"+x).style.display="inline";
+    document.getElementById("less"+x).style.display="none";
+  }
+}
+document.getElementById("div"+i).style.display="block";
+document.getElementById("more"+i).style.display="none";
+document.getElementById("less"+i).style.display="inline";
+}
+
+function less(i)
+{
+document.getElementById("div"+i).style.display="none";
+document.getElementById("more"+i).style.display="inline";
+document.getElementById("less"+i).style.display="none";
+}
+</script>
+<style>
+  .right a {
+     color:#015BA7;
+}
+.right a:hover {
+    text-decoration: underline;
+    color:#015BA7;
+}
+</style>
+<apex:composition template="{!$Site.Template}">
+    <apex:define name="search">  
+
+<div class="right">
+    <div class="supportContent" style="font-family:Arial;color:#636e80;font-size:12px;">
+        <div class="centerCenter">
+            <p style="color:#0F517F;font-size:30px;font-weight:normal;padding-bottom:15px;padding-top:20px;" class="atap">
+                Assuring High-Quality Voice Calls
+            </p>
+            <p style="padding-left:0px;margin:0;text-align:left;padding-bottom:20px;padding-right:30px;font-weight:bold;" class="ie8text">
+                Get reliable, high-quality voice service. Read about best practices and tools that will help you get the most from your service. And learn how your local network, Internet connection, and routers contribute to overall call quality.
+            </p>
+            <div class="blockContentTop">
+            </div>
+            <div class="blockContentCenter">
+                <p class="tit" style="color:#01669c;padding-top:0;">
+                    Learn about quality of service and key terminology
+                </p>
+                <p>
+                    When making a Voice over IP (VoIP) phone call, the sound of your voice is broken into thousands of packets. 
+                    These packets travel through the Internet to RingCentral Office@Hand from AT&amp;T, and on to their final destination. 
+                    Many factors can affect packets and call quality. The three most common issues that affect VoIP Quality of 
+                    Service (QOS) are latency, jitter, and packet loss.
+                </p>
+                <div id="div1" style="display: none; ">
+                    <p class="tit">
+                        What is latency?
+                    </p>
+                    <p>
+                        Latency refers to the time it takes a voice packet to reach its destination. Latency is measured in milliseconds (ms)—thousandths of a second. Latency of 150ms is barely noticeable and generally acceptable. Latency higher than 150ms adversely affects VoIP QoS, while latency higher than 300ms is generally unacceptable.
+                    </p>
+                    <p class="tit">
+                        What is jitter?
+                    </p>
+                    <p>
+                        Jitter measures the variation of packet arrival times—or simply put, how much latency varies within the network. Jitter is often caused by network congestion, timing drift, or route changes. Jitter is measured in milliseconds (ms)—thousandths of a second. Jitter greater than 50ms can increase latency and result in packet loss.
+                    </p>
+                    <p class="tit">
+                        What is Packet Loss (also known as data loss)?
+                    </p>
+                    <p>
+                        Packets are sent over the Internet and reassembled at their destination. Packet loss occurs when some packets are dropped by congested network routers or switches, or discarded by the jitter buffer. If you miss one out of every 10 words, or 10 words all at once, chances are you won’t understand the conversation.
+                    </p>
+                </div>
+                <p class="more">
+                    <span id="more1" onclick="more(1)" style="display: inline; ">MORE &gt;&gt;</span>
+                    <span id="less1" onclick="less(1)" style="display: none; ">&lt;&lt; LESS</span>
+                </p>
+            </div>
+            <div class="blockContentbottom">
+            </div>
+            
+
+            <div class="blockContentTop">
+            </div>
+            <div class="blockContentCenter">
+                <p class="tit" style="color:#01669c;padding-top:0;">
+                    Improving your QoS
+                </p>
+                <p>
+                    Your Internet connection and devices you use to connect to the Internet can affect your QoS.
+                    Here are a few ways you can improve your VoIP QoS:
+                </p>
+                <div >
+                   <p class="tit">
+                    1. Upgrade your internet connection.
+                   </p>
+                   <p>
+                    VoIP is highly dependent on Internet upload and download speeds. If you have experienced any call
+                    quality issues during a VoIP call, your first stop should be with your current Internet Service
+                    Provider (ISP). Many ISPs will upgrade your connection speeds for free simply to keep you as a customer. 
+                    If not, you should either consider paying for a 
+                    faster Internet connection or moving to another ISP that offers greater connection speeds for the same price.
+                   </p>
+                 <!--<p class="tit">
+                    2. Get a new headset.
+                   </p>
+                   <p>
+                    Consider upgrading to a higher quality headset if you use the RingCentral Call Controller with 
+                    SoftPhone to make calls. Aside from sound quality, be sure to consider ergonomics and comfort if 
+                    you will be using the headset for extended periods.
+                   </p>
+                 <p class="tit">
+                    3. Improve your WiFiSignal.
+                   </p>
+                   <p>
+                    You can improve your VoIP QoS-If you're on a WiFi connection-by boosting your WiFi signal.
+                    There are several antennas on the market designed specifically to extend range and improve signal.
+                    Alternately,Consider upgrading your router and access card to the latest WiFi standard,802.11n. It's 
+                    faster and prone to less interference.
+                   </p>-->
+                <p class="tit">
+                    2. Drop Wifi,use Ethernet.
+                   </p>
+                   <p>
+                     WiFi networks can be softy,especially in environments surrounded by concrete walls or floors.
+                     Electrical devices and also add interference. Try a wired Ethernet connection if you haven't been able 
+                     to improve your WiFi singnal.A wired connection greatly reduces interference, and handles data intensive
+                     calls better.
+                   </p>   
+                 <p class="tit">
+                    3. Pause any large downloads while on call.
+                   </p>
+                   <p>
+                      You may experience delays or dropped calls If you're downloading large files over the same network
+                      you use to make calls. Your internet connection may not have enough bandwidth to handle the increase 
+                      load. Pause any non-essential downloads before making a call.
+                   </p>    
+                   
+                <p class="tit">
+                    4. Use QoS-enabled network equipment.
+                </p>
+                <p>
+                    There are special considerations when designing your network to support voice traffic.
+                    QoS-enabled routers prioritize voice traffic over lower priority network traffic, 
+                    such as large downloads.
+                    Reference the following document for information on recommended routers:
+                </p>
+                <ul style="margin:15px 0 0 35px;list-style:disc;">
+                   <li><a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/Router-Configuration-Guide?retURL=/ATT2/apex/ATTSupportSearch?c=&k=3079&action=SearchAnswer&sortBy=&popup=false&Title=Router+Configuration+Guide" title="Router Configuration Guide" target="_blank">Recommended routers</a></li> 
+                    <!--<li><a href="/support/images/GW-2507_network_topology_V7.pdf" title="Network design" target="_blank">Network design</a></li>
+                   <!-- <li><a href="/support/images/switch-recommendation_v04.pdf" title="Recommend switches" target="_blank">Recommended switches</a></li> -->
+                </ul>
+                </div>
+                <!--<p class="more">
+                    <span id="more2" onclick="more(2)" style="display: inline; ">MORE &gt;&gt;</span>
+                    <span id="less2" onclick="less(2)" style="display: none; ">&lt;&lt; LESS</span>
+                </p>-->
+            </div>
+            <div class="blockContentbottom">
+            </div>
+            
+
+            <div class="blockContentTop">
+            </div>
+            <div class="blockContentCenter">
+                <p class="tit" style="color:#01669c;padding-top:0;">
+                    Test your bandwidth
+                </p>
+                <!--<p>A solid Internet connection means solid voice quality. We recommend using a high-speed DSL, cable, or fiber optic connection with an upload speed of 90kbps or higher for each line you plan to run. </p>-->
+                <p>
+                    A solid Internet connection means solid voice quality. We recommend using a high-speed DSL, cable, or fiber optic connection with dedicated upload and download bandwidth (speed only for voice, not sharing with data) of 90Kbps or higher for each line you plan to run. Please use our Internet connection tests to verify your connection.
+                </p>
+                <ul style="margin:15px 0 0 35px;list-style:disc;">
+                    <li><a href="http://officeathand.att.com/capacity.html" target='_blank'>Office@Hand Bandwidth Capacity Test – Measure how many
+                                                         simultaneous calls the connection can support.</a></li>
+                    <li><a href="http://officeathand.att.com/qos.html" target='_blank'>Office@Hand Bandwidth Quality Test – Measure the voice quality 
+                                                    you can expect on your bandwidth connection</a></li>
+                    <!--<li><a href="{!$Site.CurrentSiteUrl}BandwidthCalculator?pageid=home" target='_self'>BandWidth Calculator</a></li>-->                                
+                </ul>
+                <div id="div3" style='display:none'>
+                    <p>
+                         Verify your speed at <a href="http://www.voipreview.org/voipspeedtester.aspx" target="_blank">www.voipreview.org/voipspeedtester.aspx</a>. Once you’re there, click Start Test:
+                    </p>
+                    <img src="{!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTCSS/css/support/imagea.gif')}" />
+                    <p>
+                        This site tests your broadband connection and displays the results. In the summary tab, if all the lights display green, your broadband connection is adequate for RingCentral DigitalLine usage. If any of the lights display red, your broadband may not be sufficient to maintain quality Internet calls. If that’s the case, contact your ISP to see if they can improve your connection.
+                    </p>
+                    <img src="{!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTCSS/css/support/imageb.gif')}" />
+                    <p>
+                        The "MOS" score posted at the bottom provides an overall quality index: 
+                        5=Excellent, 4=Good, 3=Fair, 2=Poor, 1=Bad
+                    </p>
+                </div>
+              <!-- <p class="more">
+                    <span id="more3" onclick="more(3)" style="display: none; ">MORE &gt;&gt;</span>
+                     <span id="less3" onclick="less(3)" style="display: inline; ">&lt;&lt; LESS</span>
+                </p> -->
+            </div>
+            <div class="blockContentbottom">
+            </div>
+            
+
+            <!--<div class="blockContentTop">
+            </div>
+            <div class="blockContentCenter">
+                <p class="tit" style="color:#01669c;padding-top:0;">
+                    Connecting your softphone
+                </p>
+                <p>
+                    If you're having any trouble connecting your softphone or Call Controller™, try <a href="http://ringcentral.force.com/rcsupport/articles/RC_Knowledge_Article/Troubleshooting-the-Call-Controller-Software?retURL=%2Fapex%2FRCSupportSearch%3Fc%3D%26k%3Dtroubleshooting%2Bthe%2Bcall%2Bcontr%26action%3DSearchAnswer%26sortBy%3D&amp;popup=false&amp;Title=Troubleshooting%20the%20Call%20Controller%20Software">these steps.</a>
+                </p>
+                <div id="div4" style="display: none; ">
+                    <p>
+                         Most routers work with IP phones and devices automatically. If you’re using a Linksys WRT-series router, you may need to enable port triggering: 
+                         Use these settings to enable port triggering for IP Phones or ATAs: 5060-5090, type: UDP 16384-16482, type: UDP Use these settings to enable port triggering for the Call Controller with SoftPhone:
+                         5060-5090, type: UDP
+                         8000-8200, type: UDP
+                         When using multiple Call Controllers on a single network, we also recommend changing the local port number from within each Call Controller. 
+                         On your Call Controller: 
+                         • Go to <strong>Menu</strong> &gt; <strong>Options</strong>. Expand the <strong>Account Information</strong> tab on the left, then click <strong>Connection</strong>. • Change the Local Port value from 5060 to another available port between 5060-5090. The port number you select should not be used by any other Call Controller.
+                    </p>
+                </div>
+                <p class="more">
+                    <span id="more4" onclick="more(4)" style="display: inline; ">MORE &gt;&gt;</span>
+                    <span id="less4" onclick="less(4)" style="display: none; ">&lt;&lt; LESS</span>
+                </p>
+            </div> -->
+            <!--<div class="blockContentbottom">
+            </div> -->
+        </div>
+    </div>
+    <div class="bottomBg">
+    </div>
+</div>
+  </apex:define>
+   </apex:composition>  
+</apex:page>

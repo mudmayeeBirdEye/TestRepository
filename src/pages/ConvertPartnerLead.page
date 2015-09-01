@@ -1,0 +1,83 @@
+<apex:page id="page" standardController="Lead" extensions="ConvertPartnerLead" title="Convert Lead" tabStyle="Partner_Leads__tab" cache="false" 
+    action="{!convert}">
+<!-- <apex:page id="page" controller="ConvertLeadOptimize" tabStyle="Lead" title="Convert Lead"> -->
+    <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" /> 
+    <script>
+    function doSearchonChk(btnId)
+    {
+        var getFrmBtn = document.getElementById('page:j_id17:j_id18:j_id36:btnSearch');
+        getFrmBtn.click();
+    }
+    </script>
+    <style>
+        #body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th {
+            text-align: center !important;
+        }
+        .header {
+            background: #E3F3FF !important;
+            height:25px;
+            text-align:center;
+            border: none !important;
+            border-bottom:1px solid #DBDBDB !important;
+            /*border-bottom:1px solid #DBDBDB !important;
+            border-right:1px solid #DBDBDB !important;*/
+        }
+        .rowData {
+            height:25px;
+            text-align:center;
+            border: none !important;
+            /*border-bottom:1px solid #DBDBDB !important;
+            border-right:1px solid #DBDBDB !important;*/
+        }
+        .selectedRow {
+            background:#F0F0F0;
+        }
+    </style>
+    <!-- <apex:sectionHeader title="Convert Lead"/>         
+    <apex:pageMessage severity="error" strength="3" title="Error" rendered="{!multipleSelected}">
+    You can only select ONE account to merge into. 
+    </apex:pageMessage> -->
+    
+    <apex:pageMessages escape="false"/>
+    
+    <apex:form >
+     <!-- code by India Team 02Sep  -->        
+       
+        <!-- <apex:pageBlock title="Initial Category is Blank" rendered="{!Initial_CategoryFlag}">               
+            <apex:pageMessage severity="info" strength="1">
+                You are not allowed to convert this Lead because Initial Category is blank. Please select a Initial Category
+            </apex:pageMessage> 
+             <apex:selectRadio value="{!initialCategory}" layout="pagedirection" 
+             onclick="doSearchonChk('{!$Component.btnSearch}')">
+                            <apex:selectOptions value="{!listInitialCategoryItems}" />
+             </apex:selectRadio>
+            <apex:pageblockButtons >
+            <apex:commandButton id="btnSearch" value="Search" action="{!updateLeadCategory}" style="display:none;"/>              
+            </apex:pageblockButtons> 
+                    
+        </apex:pageBlock> -->
+       
+        <!-- End -->
+       <!--  <apex:pageBlock title="Matching Accounts" >
+            <apex:pageblockButtons >
+                <apex:commandButton action="{!convertAndMerge}" value="Convert" onclick="showOverLay();"/>  
+                 <apex:commandButton action="{!URLFOR($Action.Lead.view, leadObj.id)}" value="Cancel" immediate="true"/>   
+            </apex:pageblockButtons>        
+            <apex:pageMessage severity="error" strength="1" rendered="{!notAnswered}">
+                You must select an Account.            
+            </apex:pageMessage>
+             <BR/>
+            <apex:outputLabel value="Select a known Account: " for="accountSelector"/>
+            <apex:inputField id="accountSelector" value="{!leadObj.Account__c}" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<apex:outputLabel value="Create a new Account: " for="createNew"/>
+            <apex:inputCheckbox id="createNew" value="{!createNew}"/>
+             <br/><br/> 
+        </apex:pageBlock> -->
+        <apex:actionSupport action="{!convert}"/>  
+        <BR/>
+         <!--<c:OverLay description="We are converting your Lead. One moment please."/>
+         <script>
+            showOverLay();
+         </script>-->                 
+     </apex:form>
+</apex:page>

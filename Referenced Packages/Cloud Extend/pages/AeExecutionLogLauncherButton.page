@@ -1,0 +1,2 @@
+<apex:page standardController="ce4sf20_001__Guide_Execution__c" extensions="ce4sf20_001.AeGuideExecutionControllerExt" action="{!redirectToExecutionLog}">
+</apex:page>

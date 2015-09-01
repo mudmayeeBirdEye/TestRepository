@@ -1,0 +1,28 @@
+<apex:page standardController="GETSAT_TOPIC__Topic__c" extensions="GETSAT_TOPIC.TopicStatusController" >
+    <apex:form >
+    <apex:sectionHeader title="Topic" subtitle="{!topicObj.Name}"/>
+          <apex:pageBlock mode="edit">  
+	        <apex:pageMessage severity="error" strength="3" rendered="{!msgFlag}" escape="false">
+	            <apex:outputText value="{!$Label.getsat_topic__Error_Message_UpdateSatus}"></apex:outputText>&nbsp;
+	            <apex:outputLink rendered="{!link != null}" style="color:#015BA7;" title="" value="{!link}">{!$Label.getsat_topic__Enter_Credentials}</apex:outputLink>
+	            <apex:outputLink rendered="{!link == null}" style="color:#015BA7;" title="" value="{!URLFOR($Action.Get_Sat_Configuration__c.New)}">{!$Label.getsat_topic__Enter_Credentials}</apex:outputLink>
+	        </apex:pageMessage> 
+
+              <apex:pageBlockButtons >
+                  <apex:commandButton value="Ok"  action="{!authorize}" rendered="{!NOT(msgFlag)}"/>
+                  <apex:commandButton value="Cancel" action="{!doCancel}" rendered="{!NOT(flagBtn)}" />
+                  <apex:commandButton value="Ok" action="{!doCancel}" rendered="{!flagBtn}" />
+              </apex:pageBlockButtons>
+              <apex:PageBlockSection columns="1" rendered="{!NOT(msgFlag)}" title="Update Status"> 
+                  <apex:outputField value="{!GETSAT_TOPIC__Topic__c.GETSAT_TOPIC__Subject__c}"/> 
+                  <apex:outputField value="{!GETSAT_TOPIC__Topic__c.GETSAT_TOPIC__Style__c}"/> 
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.getsat_topic__Status}" for="s"/>
+                     <apex:selectList value="{!topicObj.GETSAT_TOPIC__Status__c}" size="1" id="s">
+                        <apex:selectOptions value="{!statusValues}"/>
+                     </apex:selectList>
+                 </apex:pageBlockSectionItem>
+              </apex:pageBlockSection>
+          </apex:pageBlock>
+    </apex:form>
+</apex:page>

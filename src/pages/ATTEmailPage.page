@@ -1,0 +1,2 @@
+<apex:page Controller="ATTController"  action="{!emailSend}" >  
+</apex:page>

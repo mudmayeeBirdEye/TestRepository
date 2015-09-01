@@ -1,0 +1,5 @@
+<apex:page StandardController="Lead" extensions="LeadCreationPartnerVAR" standardStylesheets="true" docType="html-5.0">
+    <!-- <apex:pageMessages escape="false"></apex:pageMessages> -->
+    <apex:pageMessage summary="This Lead is in conflict with RingCentral's existing Business. Lead is submitted for review." 
+        severity="Info" strength="3" />
+</apex:page>

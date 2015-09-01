@@ -1,0 +1,111 @@
+<apex:page controller="MarketoControllerNew" showHeader="false" sidebar="false" tabStyle="Lead" >
+  <style>
+      .even{
+              background-color:#ffffff;
+        }
+        .odd{
+         background-color:#e7e7e7;
+        } 
+        
+        
+</style>
+
+ <apex:form >
+  <apex:pageBlock >
+             <apex:pageBlockSection title="Lead Activity Filter" id="Lead_Activity_Filter">
+                 <apex:actionRegion >
+           
+                       <apex:pageBlockSectionItem > 
+                                <apex:dataTable value="{!objMultiRows}" var="a" id="MyPageBlockTable">
+                                            <apex:column id="MyLeftOption"  headerValue="Activity Filter Type">
+                                                  
+                                                    <apex:selectList value="{!a.SelectedOptionsLeft}"  multiselect="true" style="width:270px" size="5" >
+                                                            <apex:selectOptions value="{!a.listLeftFilter}"/>
+                                                    </apex:selectList>
+                                            </apex:column>
+                                    <apex:column id="MyColumn"  style="text-align:center;vertical-align:middle;">
+                                        <table>
+                                            <tr><td>
+                                                 <apex:commandLink action="{!MoveRight}" reRender="MyPageBlockTable" immediate="false"  >
+                                                                 <img title="Add" class="rightArrowIcon" alt="Add" src="/s.gif" />
+                                                          </apex:commandLink> 
+                                            </td></tr>
+                                            <tr><td>
+                                                 <apex:commandLink action="{!MoveLeft}" reRender="MyPageBlockTable" immediate="false"  >
+                                                               <img title="Remove" class="leftArrowIcon" alt="Add" src="/s.gif" />
+                                                       </apex:commandLink>
+                                            
+                                            </td></tr>
+                                        </table>
+                                                             
+                                                     
+                                                         
+                                                
+                                                
+                                    </apex:column>
+                                        <apex:column id="MyRightOption" headerValue="Selected">
+                                           
+                                            <apex:selectList value="{!a.SelectedOptionsRight}" multiselect="true" id="rightOption" style="width:270px" size="5" >
+                                                <apex:selectOptions value="{!a.listRightFilter}"/>
+                                            </apex:selectList>                
+                                    </apex:column>
+                          </apex:dataTable>
+                             
+                </apex:pageBlockSectionItem>  
+               
+           </apex:actionRegion>
+             
+                        
+                        
+                         
+                          
+    </apex:pageBlockSection>
+    
+    <table width='100%' ><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td>
+ <apex:panelGroup >
+             <apex:commandButton action="{!showLeadActivityWithFilter}" value="Search"  reRender="result" status="status2" immediate="false"  />
+                     <apex:actionStatus startText="Requesting..." id="status2">
+                             <apex:facet name="start">
+                                <apex:image url="{!URLFOR($Resource.Marketo,'/Marketo/loding.gif')}" />
+                              </apex:facet>
+                     </apex:actionStatus>
+      </apex:panelGroup>
+      </td><td></td></tr></table>
+</apex:pageBlock> 
+ 
+ 
+ 
+ <apex:outputPanel id="result">
+   <apex:pageBlock mode="edit" >
+ <apex:pageBlockSection columns="1">
+    <apex:pageMessages ></apex:pageMessages>
+       <apex:outputText rendered="{!IF(iActivityListSize!=0,true,false)}">
+      
+        <b> Total Lead <apex:outputText value="{!IF(iActivityListSize==1,' Activity ',' Activities ')}"> </apex:outputText>
+         Found : {!iActivityListSize} 
+              </b>
+    </apex:outputText>
+    <apex:pageBlockTable value="{!searchResults}" var="c"  id="resultsBlock" rendered="{!IF(iActivityListSize!=0,true,false)}" rowClasses="even,odd"  >
+
+<apex:column value="{!c.strEmailId}" headerValue="Email" />
+
+<apex:column value="{!c.ActivityID}" headerValue="Marketo Activity Id"  />
+<apex:column value="{!c.LeadID}" headerValue="Marketo Lead Id" />
+<apex:column value="{!c.activityDateTime}" headerValue="Date/Time" />
+<apex:column value="{!c.Activity}" headerValue="Activity Type" />
+<apex:column value="{!c.Reason}" headerValue="Detail" />
+<apex:column value="{!c.Source}" headerValue="Source" />
+<apex:column value="{!c.AttributeName}" headerValue="Attribute Name" />
+<apex:column value="{!c.NewValue}" headerValue="New Value" />
+<apex:column value="{!c.OldValue}" headerValue="Old Value" />
+
+
+</apex:pageBlockTable>
+
+
+</apex:pageBlockSection>
+ </apex:pageBlock>
+ </apex:outputPanel>
+ <input type='hidden' id='hiddenValue' value='' />
+ </apex:form>
+</apex:page>

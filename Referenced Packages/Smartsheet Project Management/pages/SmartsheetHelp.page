@@ -1,0 +1,10 @@
+<apex:page controller="com_smartsheet.SmartsheetHelpController" sidebar="false" showHeader="false"  >
+
+    <script language="JavaScript">   
+        window.onload = function() {
+            window.resizeTo({!HelpWindowWidth}, {!HelpWindowHeight});
+            location.replace('{!HelpUrl}');
+        }
+    </script>
+                    
+</apex:page>

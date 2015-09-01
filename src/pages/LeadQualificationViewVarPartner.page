@@ -1,0 +1,1788 @@
+<apex:page controller="LeadQualificationViewpartner" cache="false">
+    <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+   
+    <script>
+        function showOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'visible';
+        }
+        function hideOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'hidden'; 
+        }
+    </script>
+    <script type="text/javascript">
+        window.captureEvents(Event.KEYPRESS);
+        window.onkeypress = Ausgabe;
+
+        function Ausgabe(Ereignis) {
+            if (Ereignis.which == 13
+                    && document.activeElement.tagName != 'TEXTAREA') {
+                SonE();
+            }
+        }
+        function fnCheckLeadNeed() {
+            var value = $("[id$=leadsNeed1] option:selected").text();
+            if (value != null && value.indexOf("Other (Please Specify)") != -1) {
+                $("[id$=OtherOptionLabel1]").show();
+                $("[id$=leadsNeedOther1]").show();
+                $("[id$=leadsNeedOtherRequired]").show();
+            } else {
+                $("[id$=OtherOptionLabel1]").hide();
+                $("[id$=leadsNeedOther1]").hide();
+                $("[id$=leadsNeedOtherRequired]").hide();
+            }
+        }
+        
+            function fnCheckLeadNeed1() {
+            console.log("fnCheckLeadNeed1");
+            var value = $("[id$=leadsNeed]").val();
+            if (value != null && value.indexOf("Other (Please Specify)") != -1) {
+                $("[id$=OtherOptionLabel]").show();
+                $("[id$=leadsNeedOther]").show();
+                $("[id$=leadsNeedOtherRequired]").show();
+            } else {
+                $("[id$=OtherOptionLabel]").hide();
+                $("[id$=leadsNeedOther]").hide();
+                $("[id$=leadsNeedOtherRequired]").hide();
+            }
+        }
+        function fnCheckOtherService() {
+            var value = $("[id$=servicePurchased1] option:selected").text();
+            if (value != null && value.indexOf("Other (Please Specify)") != -1) {            
+                $("[id$=otherServiceLabel1]").show();
+                $("[id$=otherService1]").show();
+                $("[id$=otherServiceRequired]").show();
+            } else {
+                $("[id$=otherServiceLabel1]").hide();
+                $("[id$=otherService1]").hide();
+                $("[id$=otherServiceRequired]").hide();
+            }
+        }
+        
+         function fnCheckOtherService2() {
+              var value = $(".currentContractRadioBut input[type=radio]:checked").val();
+                if (value != 'Yes' && value != 'yes') {
+                if($("[id$=servicePurchased]").is("select")){
+                $("[id$=servicePurchased]").get(0).selectedIndex = 0;
+                }
+                $("[id$=servicePurchased]").attr("disabled", true);
+                $(".serviceRequired").hide();  
+                                         
+              } else {
+                $(".serviceRequired").show();
+                $("[id$=servicePurchased]").removeAttr("disabled");
+            }
+        }
+        
+        function fnCheckOtherService1() {
+            var value = $("[id$=servicePurchased]").val();
+            console.log("fnCheckOtherService1===="+value);
+            if (value != null && value.indexOf("Other (Please Specify)") != -1) {
+                $("[id$=otherServiceLabel]").show();
+                $("[id$=otherService]").show();
+                $("[id$=otherServiceRequired]").show();
+            } else {
+                $("[id$=otherServiceLabel]").hide();
+                $("[id$=otherService]").hide();
+                $("[id$=otherServiceRequired]").hide();
+            }
+        }
+        
+      
+        
+        function checkLength(control, maximum, e) {
+            var keycode;
+            if (window.event)
+                keycode = window.event.keyCode;
+            else if (e)
+                keycode = e.which;
+            if (keycode != 8) {
+                var length = control.value.length;
+                if (e.keyCode == 32 && (length >= maximum)) {
+                    e.preventDefault();
+                } else {
+                    if (length >= maximum) {
+                        alert('Please limit your value to ' + maximum
+                                + ' characters. There are currently ' + length
+                                + ' characters.');
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+
+        $(document).ready(function() {
+            if ($.browser.mozilla) {
+                $('textarea[rows]').each(function(i, el) {
+                    if (!$(el).data('ffRowsFixed')) {
+                        var rows = parseInt($(el).attr('rows'));
+                        if (rows > 1) {
+                            $(el).attr('rows', (rows - 1));
+                        }
+                        $(el).data('ffRowsFixed', true);
+                    }
+                });
+            }
+        });
+    </script>
+
+    <style>
+    input[type="text"]:disabled,select:disabled {
+        background: #dddddd;
+    }
+    
+    #overlay {
+        background: url("{!URLFOR($Resource.EmailValidation,'loading.gif')}")
+            no-repeat scroll center center gray;
+        border: 0px solid #000000;
+        bottom: 0;
+        left: 0;
+        opacity: 0.75;
+        position: absolute;
+        top: 0;
+        visibility: hidden;
+        width: 100%;
+        z-index: 1000;
+    }
+    
+    .panelgrid1 {
+        width: 45%; //
+        padding-left: 40px;
+    }
+    
+    .panelgrid2 {
+        width: 7%
+    }
+    
+    .innerpanelgrid1 {
+        width: 35%;
+    }
+    
+    .innerpanelgrid2 {
+        width: 65%
+    }
+    
+    .innerpanelgrid3 {
+        width: 50%;
+        text-align: right;
+    }
+    
+    .innerpanelgrid4 {
+        width: 50%;
+        text-align: left;
+        padding-left: 10px;
+    }
+    
+    li {
+        padding-bottom: 5px;
+    }
+    
+    .defaultText {
+        width: 80%;
+        border-radius: 10px;
+        padding-left: 7px;
+        height: 22px;
+        border: 1px solid #A5A6A5;
+        color: #474747;
+        font-weight: bolder;
+    }
+    
+    .defaultTextActive {
+        color: #9A9A9A;
+        font-style: italic;
+        width: 80%;
+        border-radius: 10px;
+        padding-left: 7px;
+        height: 22px;
+        border: 1px solid #A5A6A5;
+        font-weight: normal;
+    }
+    
+    .selectlist {
+        width: 275px;
+        border-radius: 10px;
+        padding-left: 7px;
+        height: 22px;
+        border: 1px solid #A5A6A5;
+    }
+    
+    .selectlist:focus {
+        outline: none;
+    }
+    
+    #innerheaderDiv {
+        padding: 10px !important;
+        width: 95%;
+        margin: 0px auto;
+    }
+    
+    .textlabel {
+        color: #084B8A;
+        font-size: 13px;
+    }
+    
+    .rowAdjust td { //
+        line-height: 14px;
+        !
+        important;
+    }
+    
+    .btn {
+        color: #084B8A !important;
+        border: 1px solid #A5A6A5 !important;
+        padding: 9px !important;
+    }
+    
+    body .pbBody table.list tr.dataRow.highlight td {
+        background-color: transparent !important;
+    }
+    
+    input[type="radio"] {
+        border: none !important;
+    }
+    
+    .requiredfield {
+        width: 3px;
+        Background :#F00;
+        padding-top: 5px;
+        padding-bottom: 3px;
+        float: left;
+        margin-top: 2px;
+    }
+    
+    .optionalfield {
+        width: 2px;
+        padding-top: 5px;
+        padding-bottom: 3px;
+        float: left;
+        /*margin-right: 2px;*/
+    }
+    
+    .customInfo {
+        background: none repeat scroll 0 0 #FFFFFF !important;
+        border: 1px solid #A5A6A5;
+        border-radius: 11px;
+        box-shadow: 0 -38px 157px 62px #C7D6E9 inset;
+        -webkit-box-shadow: 0px -71px 101px -19px #DEEBEF inset;
+        margin: auto auto 10px;
+        min-height: 100px;
+        width: 95%;
+        Background: #FFF !important;
+        margin-top: 2px;
+    }
+    
+    .panelgrid1 {
+        width: 50%;
+    }
+    
+    .disableCls {
+        background: #C0C0C0;
+    }
+    
+    .panelgrid3 {
+        width: 50%;
+    }
+    
+    .panelgrid2 {
+        width: 0%
+    }
+    
+    .innerpanelgrid1 {
+        width: 30%;
+        text-align: right;
+    }
+    
+    .innerpanelgrid2 {
+        width: 60%;
+        text-align: left;
+        padding-left: 10px;
+        white-space: nowrap;
+    }
+    
+    .innerpanelgrid3 {
+        width: 35%;
+        text-align: right;
+    }
+    
+    .innerpanelgrid4 {
+        width: 60%;
+        text-align: left;
+        padding-left: 10px;
+        white-space: nowrap;
+    }
+    
+    li {
+        padding-bottom: 5px;
+    }
+    
+    .defaultText {
+        width: 80%;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        padding-left: 7px;
+        height: 22px;
+        border: 1px solid #A5A6A5;
+        color: #474747;
+        font-weight: bolder;
+    }
+    
+    .required { /*border : 2px solid red;*/
+        
+    }
+    
+    .defaultTextActive {
+        color: #9A9A9A;
+        font-style: italic;
+        width: 80%;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        padding-left: 7px;
+        height: 22px;
+        border: 1px solid #A5A6A5;
+        font-weight: normal;
+    }
+    
+    .innerpanelgrid2 select {
+        width: 70%;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        padding-left: 7px;
+        height: 22px;
+        border: 1px solid #A5A6A5;
+        margin-left: 2px;
+    }
+    
+    .selectlist {
+        width: 70%;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        padding-left: 7px;
+        height: 22px;
+        border: 1px solid #A5A6A5;
+    }
+    
+    .radioButtonsCls label {
+        color: #084B8A;
+    }
+    
+    .selectlist:focus {
+        outline: none;
+    }
+    
+    #innerheaderDiv {
+        padding: 10px !important;
+        width: 95%;
+        margin: 0px auto;
+    }
+    
+    .textlabel {
+        color: #084B8A;
+        font-size: 13px;
+    }
+    
+    .rowAdjust td { //
+        line-height: 14px;
+        !
+        important;
+    }
+    
+    .btn {
+        color: #084B8A !important;
+        border: 1px solid #A5A6A5 !important;
+        padding: 9px !important;
+        background: #FFF;
+        box-shadow: -4px -23px 18px -19px #A5A6A5 inset;
+        -webkit-box-shadow: -4px -23px 18px -19px #A5A6A5 inset;
+        -moz-box-shadow: -4px -23px 18px -19px #A5A6A5 inset;
+    }
+    
+    .parallelspace {
+        margin-left: 2px;
+    }
+    
+    .multiSelectPicklistCell a img {
+     min-height:20px !important;
+     min-width:28px !important;
+     
+    }
+     .multiSelectPicklistRow a img {
+      min-height:20px !important;
+      min-width:28px !important;
+     
+     }
+    </style>
+        <style>
+    textarea {
+        overflow: auto;
+    }
+    
+    .pbBody {
+        background-color: inherit !important;
+    }
+    
+    .body .bPageBlock,body #bodyCell .bResource .secondaryPalette,body .secondaryPalette.bPageBlock,body .individualPalette .secondaryPalette.bPageBlock,body .bodyDiv .genericTable,body .genericPageBlockTable,body .bodyDiv .bSubBlock,body .bComponentBlock .bPageBlock,body .bMyDashboard .bPageBlock,body.rlHoverFrame .bPageBlock,body.subjectSelectionPopup div.choicesBox,body.lookupTab .secondaryPalette.bPageBlock,body.popupTab .secondaryPalette.bPageBlock,body.UserTagStatsPage .secondaryPalette.bPageBlock
+        {
+        background-color: inherit !important;
+        border-top: none !important;
+    }
+    
+    .LeadQual {
+        width: 95%;
+        margin: auto;
+        border: 1px solid #A5A6A5;
+        margin-top: 5px;
+        min-height: 100px;
+        -moz-border-radius: 11px;
+        -webkit-border-radius: 11px;
+        border-radius: 11px;
+        box-shadow: 0px 1px 69px 13px #DEEBEF inset;
+        -webkit-box-shadow: 0px 1px 69px 13px #DEEBEF inset;
+        -moz-box-shadow: 0px 1px 69px 13px #DEEBEF inset;
+        background: white !important;
+    }
+    
+    .LeadQualPanel {
+        width: 95%;
+        margin: auto;
+        border: 1px solid #A5A6A5;
+        margin-bottom: 10px;
+        min-height: 100px;
+        -moz-border-radius: 11px;
+        -webkit-border-radius: 11px;
+        border-radius: 11px;
+        box-shadow: 0px -944px 654px 149px #E1ECF2 inset;
+        -webkit-box-shadow: 0px -944px 654px 149px #E1ECF2 inset;
+        -moz-box-shadow: 0px -944px 654px 149px #E1ECF2 inset;
+        background: white !important;
+    }
+    
+    .btnDiv {
+        width: 95%;
+        margin: auto;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        border: 1px solid #A5A6A5;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        background: #FFF !important;
+        -moz-border-radius: 11px;
+        -webkit-border-radius: 11px;
+        border-radius: 11px;
+        box-shadow: 0px -71px 101px -19px #DEEBEF inset;
+        -webkit-box-shadow: 0px -71px 101px -19px #DEEBEF inset;
+        -moz-box-shadow: 0px -71px 101px -19px #DEEBEF inset;
+        text-align: center;
+    }
+    
+    #MainDiv {
+        width: 100%;
+        margin: auto;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+    
+    #ContactInfo {
+        width: 95%;
+        margin: auto;
+        border: 1px solid #A5A6A5;
+        margin-bottom: 10px;
+        min-height: 100px;
+        /*background-color: #CEE3F6;*/
+        -moz-border-radius: 11px;
+        -webkit-border-radius: 11px;
+        border-radius: 11px;
+        /*behavior: url({!$Resource.BorderRadiusHTC});*/
+        /*box-shadow: 2px -122px 45px -8px #C7D6E9 inset;
+                -webkit-box-shadow: 2px -122px 45px -8px #C7D6E9 inset;
+                -moz-box-shadow: 2px -122px 45px -8px #C7D6E9 inset;*/
+        box-shadow: 3px -8px 106px -6px #DEEBEF inset;
+        -webkit-box-shadow: 3px -8px 106px -6px #DEEBEF inset;
+        -moz-box-shadow: 3px -8px 106px -6px #DEEBEF inset;
+        background: white !important;
+    }
+    
+    .defaultText:focus {
+        outline: none;
+    }
+    
+    #searchListPanel {
+        width: 95%;
+        margin: auto;
+        border: 1px solid #A5A6A5;
+        /*min-height: 100px;*/
+        padding-top: 5px;
+        padding-bottom: 5px;
+        background: white !important;
+        /*background-color: #CEE3F6;*/
+        -moz-border-radius: 11px;
+        -webkit-border-radius: 11px;
+        border-radius: 11px;
+        /*behavior: url({!$Resource.BorderRadiusHTC});*/
+        box-shadow: 0px 1px 69px 13px #DEEBEF inset;
+        -webkit-box-shadow: 0px 1px 69px 13px #DEEBEF inset;
+        -moz-box-shadow: 0px 1px 69px 13px #DEEBEF inset;
+        text-align: center;
+    }
+    
+    #searchListPanel .leadTab .secondaryPalette,.individualPalette .leadBlock .secondaryPalette
+        {
+        border: none !important;
+    }
+    
+    #body .pbBody table.list tr.headerRow td,body .pbBody table.list tr.headerRow th
+        {
+        text-align: center !important;
+    }
+    
+    .searchResultCls { /*border-top: 4px solid lightgray !important;
+                border: 1px solid lightgray;
+                border-radius: 4px 4px 4px 4px;
+                background: white !important;*/
+        
+    }
+    
+    #searchListPanel .apexp .bPageBlock.apexDefaultPageBlock .pbBody {
+        margin: 0px !important;
+    }
+    
+    #topBtnLevel .messageCell {
+        text-align: left !important;
+    }
+    
+    .header {
+        background: #E3F3FF !important;
+        height: 25px;
+        text-align: center;
+        border: none !important;
+        border-bottom: 1px solid #DBDBDB !important;
+        /*border-bottom:1px solid #DBDBDB !important;
+                border-right:1px solid #DBDBDB !important;*/
+    }
+    
+    .rowData {
+        height: 25px;
+        text-align: center;
+        border: none !important;
+        /*border-bottom:1px solid #DBDBDB !important;
+                border-right:1px solid #DBDBDB !important;*/
+    }
+    
+    .selectedRow {
+        background: #F0F0F0;
+    }
+</style>
+
+    <apex:sectionHeader title="Home" subtitle="View Lead Qualification(s)" />
+    <apex:form id="form1">
+         <apex:actionFunction action="{!clearPickListValue}"
+            name="clearPickListValue" rerender="servicePurchasedPanel"
+            oncomplete="disableServicePurchased1();fnCheckOtherService();"></apex:actionFunction>
+        <div id="overlay">&nbsp;</div>
+        <div>
+            <div class="btnDiv" id="topBtnLevel">
+                <apex:commandButton action="{!backToDetail}" value="Back"
+                    status="ajaxStatus" />
+
+                <apex:outputPanel id="msgPanel">
+                    <apex:pageMessages ></apex:pageMessages>
+                </apex:outputPanel>
+            </div>
+            <div id="searchListPanel">
+                <apex:pageBlock >
+                    <!--  
+                <div class="btnDiv1" style="text-align:center">
+                    <apex:commandButton action="{!backToDetail}" style="margin-top: 5px;" value="Back" status="ajaxStatus" /> 
+                </div>
+            -->
+                    <apex:outputPanel id="resultPanel" layout="block">
+                        <div class="searchResultCls">
+                            <div class="pbHeader" id="innerheaderDiv"
+                                style="width: 98%; border: none !important; padding-top: 0px !important;">
+                                <table border="0" cellpadding="0" cellspacing="0"
+                                    style="text-align: left;">
+                                    <tbody>
+                                        <tr>
+                                            <td class="pbTitle" style="padding-left: 0px;">
+                                                <h2 class="mainTitle"
+                                                    style="color: #084B8A; font-size: 15px;">Lead
+                                                    Qualification(s):</h2></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div style="padding-left: 10px; width: 98%;" id="listDiv">
+                                <div>
+                                    <apex:outputPanel rendered="{!if(wrLeadQualList.size>0,true,false)}">
+                                        <table cellspacing="0" cellpadding="0"
+                                            style="width: 100%; border: 1px solid #DBDBDB !important;">
+                                            <thead>
+                                                <tr>
+                                                    <th class="header"
+                                                        style="border-right: 1px solid #DBDBDB !important;">Select</th>
+                                                    <th class="header"
+                                                        style="border-right: 1px solid #DBDBDB !important;">Lead
+                                                        Qualification</th>
+                                                    <th class="header"
+                                                        style="border-right: 1px solid #DBDBDB !important;">Lead</th>
+                                                    <th class="header"
+                                                        style="border-right: 1px solid #DBDBDB !important;">Account</th>                                                          
+                                                    <th class="header"
+                                                        style="border-right: 1px solid #DBDBDB !important;">Contact</th>
+                                                    <th class="header"
+                                                        style="border-right: 1px solid #DBDBDB !important;">Opportunity</th>
+                                                    <th class="header"
+                                                        style="border-right: 1px solid #DBDBDB !important;">Case</th>                                                     
+                                                    <th class="header" >Last Modified Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <apex:variable var="Index" value="1" />
+                                                <apex:variable var="bottomcss"
+                                                    value="border-bottom: 1px solid #DBDBDB !important;" />
+                                                <apex:variable var="lastRow"
+                                                    value="border:1px solid #DBDBDB" />
+                                                <apex:repeat var="o" value="{!wrLeadQualList}">
+                                                    <tr class="{!IF(VALUE(Index) == 1, 'selectedRow', '')}"
+                                                        id="tr{!o.leadQualObj.Id}">
+                                                        <td class="rowData"
+                                                            style="border-right: 1px solid #DBDBDB !important;">
+                                                            <input type="radio" Name="LQSelection"
+                                                            onchange="loadLeadQualDet('{!o.leadQualObj.Id}');"
+                                                            id="{!o.leadQualObj.Id}" class="inputselect"
+                                                            value="{!o.leadQualObj.Id}" checked="true" /></td>
+                                                        <td class="rowData"
+                                                            style="border-right: 1px solid #DBDBDB !important;">
+                                                            <apex:outputLink value="/{!o.leadQualObj.Id}"
+                                                                target="_blank">
+                                                                <apex:outputText value="{!o.leadQualObj.Name}" />
+                                                            </apex:outputLink>&nbsp;</td>
+                                                        <td class="rowData"
+                                                            style="border-right: 1px solid #DBDBDB !important;">
+                                                            <apex:outputLink value="{!if(Isblank(o.leadQualObj.Lead__c),o.leadQualObj.Lead__c,urlFor($Action.Lead.View, o.leadQualObj.Lead__c))}"
+                                                                style="{!if((BEGINS($CurrentPage.parameters.Id,'00Q')),'color: #015BA7','')}"
+                                                                target="_blank">
+                                                                <apex:outputText value="{!o.leadQualObj.Lead__r.Name}" />
+                                                            </apex:outputLink>&nbsp;</td>
+                                                        <td class="rowData"
+                                                            style="border-right: 1px solid #DBDBDB !important;">
+                                                            <apex:outputLink value="{!if(Isblank(o.leadQualObj.Account__c),o.leadQualObj.Account__c,urlFor($Action.Account.View, o.leadQualObj.Account__c))}"
+                                                                style="{!if((BEGINS($CurrentPage.parameters.Id,'001')),'color: #015BA7','')}"
+                                                                target="_blank">
+                                                                <apex:outputText value="{!o.leadQualObj.Account__r.Name}" />
+                                                            </apex:outputLink>&nbsp;</td>
+                                                            
+                                                             <td class="rowData" style="border-right:1px solid #DBDBDB !important;">
+                                                             <apex:outputLink value="{!if(Isblank(o.leadQualObj.Contact__c),o.leadQualObj.Contact__c,urlFor($Action.Contact.View, o.leadQualObj.Contact__c))}" 
+                                                             style="{!if((BEGINS($CurrentPage.parameters.Id,'003')),'color: #015BA7','')}"  target="_blank">
+                                                         <apex:outputText value="{!o.leadQualObj.contact__r.Name}"/>    
+                                                    </apex:outputLink>&nbsp;
+                                                      </td>
+                                                        <td class="rowData"
+                                                            style="border-right: 1px solid #DBDBDB !important;">
+                                                            <apex:outputLink value="{!if(Isblank(o.leadQualObj.Opportunity__c),o.leadQualObj.Opportunity__c,urlFor($Action.Opportunity.View, o.leadQualObj.Opportunity__c))}"
+                                                                style="{!if((BEGINS($CurrentPage.parameters.Id,'006')),'color: #015BA7','')}"
+                                                                target="_blank">
+                                                                <apex:outputText value="{!o.leadQualObj.Opportunity__r.Name}" />
+                                                            </apex:outputLink>&nbsp;</td>
+                                                                
+                                                                 <td class="rowData"
+                                                            style="border-right: 1px solid #DBDBDB !important;">
+                                                            <apex:outputLink value="{!if(Isblank(o.leadQualObj.Case__c),o.leadQualObj.Case__c,urlFor($Action.Case.View, o.leadQualObj.Case__c))}"
+                                                                style="{!if((BEGINS($CurrentPage.parameters.Id,'500')),'color: #015BA7','')}"
+                                                                target="_blank">
+                                                                <apex:outputText value="{!o.leadQualObj.Case__r.CaseNumber}" />
+                                                            </apex:outputLink>&nbsp;</td>
+                                                                                                                  
+                                                        <td class="rowData"
+                                                            style="border-right: 1px solid #DBDBDB !important;">
+                                                            <apex:outputText value="{!o.strformatDT}">
+                                                            </apex:outputText></td>
+                                                    </tr>
+                                                    <apex:variable var="Index" value="{!VALUE(Index)+1}" />
+                                                </apex:repeat>
+                                            </tbody>
+                                        </table>
+                                    </apex:outputPanel>
+                                    <apex:pageMessage summary="No Lead Qualifications."
+                                        severity="info" strength="1"
+                                        rendered="{!if(wrLeadQualList.size>0,false,true)}" />
+                                </div>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlock>
+            </div>
+        </div>
+        <apex:outputPanel id="LeadQualPanel">
+            <apex:outputPanel id="leadQualDet" rendered="{!toShowViewMode}">
+                <div class="btnDiv" id="topBtnLevel1">
+                    <apex:commandButton onclick="EditMode();return false;" value="Edit"
+                        status="ajaxStatus" />
+                </div>
+                <!-- ----{!leadQualificationObj.Decision_Maker_Email__c}---{!strEmail}---- -->
+
+                <apex:OutputPanel >
+                    <!--  rendered="{!toShowContactInfo}" -->
+                    <div id="ContactInfo">
+                        <div class="pbHeader" id="innerheaderDiv">
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td class="pbTitle" style="padding-left: 0px;">
+                                            <h2 class="mainTitle"
+                                                style="color: #084B8A; font-size: 15px;">Contact
+                                                Information</h2></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="padding-left: 40px;">
+                            <apex:panelGrid columns="3" border="0"
+                                columnClasses="panelgrid1,panelgrid2" style="width:98%">
+                                <apex:outputPanel >
+                                    <apex:panelGrid columns="2" border="0"
+                                        columnClasses="innerpanelgrid1,innnerpanelgrid2"
+                                        style="width:100%">
+                                        <apex:outputLabel styleclass="textlabel" value="First Name"
+                                            for="FirstName" />
+                                        <apex:inputText disabled="true" styleclass="defaultText" value="{!wrContactInfoObj.firstName}"
+                                            style="color:#084B8A;" />
+                                        <apex:outputLabel styleclass="textlabel" value="Email"
+                                            for="Email" />
+                                        <apex:inputText styleclass="defaultText" disabled="true"
+                                            id="Email" value="{!wrContactInfoObj.email}"
+                                            style="color:#084B8A;" />
+                                        <apex:outputLabel styleclass="textlabel"
+                                            value="Business Title" for="title" />
+                                        <apex:inputText styleclass="defaultText" disabled="true"
+                                            id="title" value="{!wrContactInfoObj.Title}"
+                                            style="color:#084B8A;" />
+                                    </apex:panelGrid>
+                                </apex:outputPanel>
+                                <apex:outputPanel >
+                                    <apex:panelGrid columns="4">
+                                        <apex:outputText value=" "></apex:outputText>
+                                        <apex:outputText value=" "></apex:outputText>
+                                        <apex:outputText value=" "></apex:outputText>
+                                        <apex:outputText value=" "></apex:outputText>
+                                        <apex:outputText value=" "></apex:outputText>
+                                        <apex:outputText value=" "></apex:outputText>
+                                    </apex:panelGrid>
+                                </apex:outputPanel>
+                                <apex:outputPanel >
+                                    <apex:panelGrid columns="2" border="0"
+                                        columnClasses="innerpanelgrid1,innnerpanelgrid2"
+                                        style="width:100%">
+                                        <apex:outputLabel styleclass="textlabel" value="Last Name"
+                                            for="LastName" />
+                                        <apex:inputText styleclass="defaultText" disabled="true"
+                                            id="LastName" value="{!wrContactInfoObj.lastName}"
+                                            style="color:#084B8A;" />
+                                        <apex:outputLabel styleclass="textlabel" value="Phone"
+                                            for="Phone" />
+                                        <apex:inputText styleclass="defaultText phonenumber" disabled="true"
+                                            id="Phone" value="{!wrContactInfoObj.phone}"
+                                            style="color:#084B8A;" />
+                                        <apex:outputLabel styleclass="textlabel"
+                                            value="Phone Alternate" for="phoneAlt" />
+                                        <apex:inputText styleclass="defaultText phonenumber" disabled="true"
+                                            id="phoneAlt" value="{!wrContactInfoObj.phonAlt}"
+                                            style="color:#084B8A;" />
+                                    </apex:panelGrid>
+                                </apex:outputPanel>
+                            </apex:panelGrid>
+                        </div>
+                    </div>
+                </apex:OutputPanel>
+
+                <div id="whoDecisionMaker" class="customInfo">
+                    <div style="">
+                        <div>
+                            <span style="float: left; margin-left: 5px; padding: 5px;"><apex:outputLabel styleclass="textlabel"
+                                    value="Who
+                            is the Decision Maker ?"
+                                    for="sourceSelector" /> </span> <span><span
+                                class="requiredfield" style="margin-left:3px;">&nbsp;</span> <apex:selectRadio styleclass="radioButtonsCls decisionMakerRadio"
+                                    onclick="javascript:copyContactDetail();"
+                                    value="{!leadQualificationObj.Decision_Maker_Partner__c}"
+                                    disabled="true">
+                                    <apex:selectOptions value="{!DecisionMaker}" />
+                                </apex:selectRadio> </span>
+                        </div>
+                        <div>
+                            <span id="errorMessage" style="color: red; display: none;">Please
+                                enter First Name, Last Name, Email and Phonenumber in above
+                                section.</span>
+                        </div>
+                        <apex:panelGrid columns="3"
+                            columnClasses="panelgrid1,panelgrid2,panelgrid3" border="0"
+                            style="width:100%">
+                            <apex:outputPanel >
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid1,innerpanelgrid2"
+                                    style="width:100%" border="0">
+                                    <apex:outputLabel styleclass="textlabel" value="First Name:"
+                                        for="sourceSelector" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            title="First Name" id="firstName2"
+                                            value="{!leadQualificationObj.Decision_Maker_First_Name__c}"
+                                            maxlength="40" disabled="true" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel" value="Last Name:"
+                                        for="sourceSelector" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            title="Last Name" id="lastName2"
+                                            value="{!leadQualificationObj.Decision_Maker_Last_Name__c}"
+                                            maxlength="80" disabled="true" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Business Title:" for="sourceSelector" />
+                                    <apex:outputpanel >
+                                        <div class="optionalfield">&nbsp;</div>
+                                        <apex:inputtext styleclass="selectlist parallelspace"
+                                            id="decisionMakerTitle" title="Business Title"
+                                            value="{!leadQualificationObj.Decision_Maker_Business_Title__c}"
+                                            maxlength="128" disabled="true" />
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                            <apex:outputPanel >
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid3,innerpanelgrid4"
+                                    style="width:100%" border="0">
+                                    <apex:outputLabel styleclass="textlabel" value="Email Address:"
+                                        for="emailAddress" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            id="Email12" title="Email Address"
+                                            value="{!leadQualificationObj.Decision_Maker_Email__c}"
+                                            style="color:#084B8A;" disabled="true" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel parallelspace"
+                                        value="Phone Number:" for="phoneNumber" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace phonenumber"
+                                            id="phone2"
+                                            value="{!leadQualificationObj.Decision_Maker_Phone__c}"
+                                            style="color:#084B8A;" onchange="" disabled="true" />
+                                        <br />&nbsp;<apex:outputText styleclass="textlabel"
+                                            value="(eg: 4082343254)" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel parallelspace"
+                                        value="Phone Number (Alternate):" for="phoneNumberAlternate" />
+                                    <apex:outputpanel >
+                                        <apex:inputText styleclass="selectlist parallelspace phonenumber"
+                                            id="phoneNumberAlternate" title="ALternate Phone"
+                                            value="{!leadQualificationObj.Decision_Maker_Alternate_Phone__c}"
+                                            style="color:#084B8A;" disabled="true" />
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                        </apex:panelGrid>
+                    </div>
+                </div>
+                <!--  {!strLeadQualificationExNeed}     -->
+                <div id="explainNeed" class="customInfo">
+                    <div style="margin-left: 60px; margin-top: 10px;">
+                        <apex:outputLabel styleclass="textlabel"
+                            value="Explain the Lead's Need:" for="leadsNeed"
+                            style="float:left;margin-left:-20px;" />
+                        <apex:outputpanel >
+                            <div class="requiredfield" style="height: 70px;">&nbsp;</div>
+                            <apex:inputTextarea id="leadsNeed"
+                                onchange="javascript:fnCheckLeadNeed();"
+                                style="color:#084B8A;margin-left:5px;width:220px;height:75px;"
+                                value="{!strLeadQualificationExNeed}" disabled="true" />
+                        </apex:outputpanel>
+                    </div>
+                    <div style="">
+                        <apex:panelGrid columns="3"
+                            columnClasses="panelgrid1,panelgrid2,panelgrid3" border="0"
+                            style="width:100%">
+                            <apex:outputPanel >
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid1,innerpanelgrid2"
+                                    style="width:100%" border="0">
+
+                                    <apex:outputLabel id="OtherOptionLabel" styleclass="textlabel"
+                                        value="Lead’s Other Need:" for="leadsNeedOther"
+                                        style="display:none;margin-left:12px;" />
+                                    <apex:outputpanel >
+                                          <div id="leadsNeedOtherRequired" class="requiredfield"
+                                        style="display: none;">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            title="Lead’s Other Need"
+                                            value="{!leadQualificationObj.Lead_s_Need_Other__c}"
+                                            id="leadsNeedOther"  style="display:none;"
+                                            disabled="true" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Have copy of current phone bill?:" for="phoneBillCopy" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:selectRadio styleclass="radioButtonsCls decisionMakerRadio"
+                                            value="{!leadQualificationObj.Have_copy_of_current_phone_bill__c}"
+                                            disabled="true">
+                                            <apex:selectOptions value="{!HavePhoneBill}" />
+                                        </apex:selectRadio>
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Currently under contract?:" for="underContract" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:selectRadio onChange="javascript:fnCurrentContract();"
+                                            styleclass="radioButtonsCls  decisionMakerRadio currentContractRadio"
+                                            value="{!leadQualificationObj.Currently_under_contract__c}"
+                                            disabled="true">
+                                            <apex:selectOptions value="{!IsUnderContract}" />
+                                        </apex:selectRadio>
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel parallelspace"
+                                        value="When will contract expire?:" for="whencontractexpire" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield contractRequired">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            style="color:#084B8A;" id="whencontractexpire"
+                                            value="{!leadQualificationObj.When_will_contract_expire__c}"
+                                            disabled="true" />
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                            <apex:outputPanel >
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid3,innerpanelgrid4"
+                                    style="width:100%" border="0">
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Expected Timeframe:" for="timeFrame" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            style="color:#084B8A;" id="timeFrame"
+                                            value="{!leadQualificationObj.Timeframe__c}" disabled="true" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel parallelspace"
+                                        value="Budget Per Month:" for="BudgetperMonth" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            id="BudgetperMonth"
+                                            value="{!leadQualificationObj.Budget_Per_Month__c}"
+                                            style="color:#084B8A;" disabled="true" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel parallelspace"
+                                        value="How many phones are needed?" for="phonesInterested" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            id="phonesInterested"
+                                            value="{!leadQualificationObj.How_many_phones_are_needed__c}"
+                                            style="color:#084B8A;" disabled="true" />
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                        </apex:panelGrid>
+                    </div>
+                </div>
+                <div id="internetDetail" class="customInfo">
+                    <div style="">
+                        <apex:panelGrid columns="3"
+                            columnClasses="panelgrid1,panelgrid2,panelgrid3" border="0"
+                            style="width:100%">
+                            <apex:outputPanel >
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid1,innerpanelgrid2"
+                                    style="width:100%" border="0">
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Current Internet Provider:" for="currentprovider" />
+                                    <apex:outputpanel >
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            id="currentprovider"
+                                            value="{!leadQualificationObj.Current_Internet_Provider__c}"
+                                           disabled="true" maxlength="255"/>
+                                    </apex:outputpanel>
+                                       <br/> 
+                                       <apex:outputpanel >
+                                    <a href="http://www.ringcentral.com/support/capacity.html"
+                                        target="_blank" class="bandwidthTest textlabel parallelspace"
+                                        style="margin-left: 10px;">
+                                        </a> <br/>
+                                </apex:outputpanel>
+                                   <apex:outputLabel styleclass="textlabel"
+                                        value="Has this Lead purchased services from you before?:"
+                                        for="serviceBefore" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield  ">&nbsp;</div>
+                                        <apex:selectRadio onchange="javascript:fnHavePurchase();"
+                                            styleclass="radioButtonsCls serviceRadio currentContractRadioBut "
+                                            value="{!leadQualificationObj.Has_this_Lead_purchased_services_before__c}"
+                                            disabled="true">
+                                            <apex:selectOptions value="{!HasPurchasedBefore}" />
+                                        </apex:selectRadio>
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                            <apex:outputPanel >
+                            <div style="height: 23px;">
+                                <a href="http://www.ringcentral.com/support/capacity.html"
+                                    target="_blank" class="textlabel" style="margin-left: 28px;"> Customer’s 
+                                    Network,  click here to test internet speed</a>
+                            </div>
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid3,innerpanelgrid4"
+                                    style="width:100%" border="0">
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Internet Download Speed (In Mbps):" for="downloadSpeed" />
+                                    <apex:outputpanel >
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            id="downloadSpeed"
+                                            value="{!leadQualificationObj.Internet_Download_Speed_in_kBps__c}"
+                                             maxlength="255" style="color:#084B8A;"  disabled="true" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Internet Upload Speed (In Mbps):" for="uploadSpeed" />
+                                    <apex:outputpanel >
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            title="Internet Upload Speed (In Mbps)" id="uploadSpeed1"
+                                            value="{!leadQualificationObj.Internet_Upload_Speed_In_Kbps__c}"
+                                            maxlength="255" disabled="true" />
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                        </apex:panelGrid>
+                        <div style="margin-bottom: 10px; margin-left: 35px;">
+                            <apex:outputLabel styleclass="textlabel parallelspace"
+                                value="What type of services has Lead purchased from you?"
+                                for="servicePurchased"
+                                style="float:left;margin-left: -8px;width: 174px;" />
+                            <apex:outputpanel >
+                                <div class="requiredfield serviceRequired" style="height: 50PX; margin-left:-15px;">&nbsp;</div>
+                                <apex:inputtextarea onChange="javascript:fnCheckOtherService();" 
+                                    style="color:#084B8A;margin-left:-6px;width:220px;height:60px;"
+                                    id="servicePurchased" value="{!strleadQualificationWhtTypOServLedPurcFrmu}" disabled="true" />
+                            </apex:outputpanel>
+                            <br/>
+                            <apex:outputLabel styleclass="textlabel"
+                                value="Other services Purchased:" for="otherService"
+                                id="otherServiceLabel"
+                                style=" display:none;float:left;margin-top:5px; margin-left:-2px;" />
+                            <apex:outputpanel >
+                                 <div class="requiredfield" id="otherServiceRequired"
+                                style=" margin-top: 5px;">&nbsp;</div>
+                                <apex:inputText styleclass="selectlist parallelspace"
+                                    title="Other services Purchased"
+                                    value="{!leadQualificationObj.Other_purchased_services__c}"
+                                    id="otherService" maxlength="40"
+                                    style="display:none;margin-top:5px;margin-left:5px; width:22%;" disabled="true" />
+                            </apex:outputpanel>
+                        </div>
+                    </div>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel id="leadQualDetEdit" rendered="{!!toShowViewMode}">
+                <div class="btnDiv" id="topBtnLevel2">
+                    <apex:commandButton onclick="SaveLeadQ();return false;"
+                        value="Save" status="ajaxStatus" />
+                    <apex:commandButton onclick="CancelLeadQual();return false;"
+                        value="Cancel" status="ajaxStatus" />
+                </div>
+                <apex:OutputPanel >
+
+                    <!-- rendered="{!toShowContactInfo}" -->
+                    <div id="ContactInfo">
+                        <div class="pbHeader" id="innerheaderDiv">
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td class="pbTitle" style="padding-left: 0px;">
+                                            <h2 class="mainTitle"
+                                                style="color: #084B8A; font-size: 15px;">Contact
+                                                Information</h2></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="padding-left: 40px;">
+                            <apex:panelGrid columns="3" border="0"
+                                columnClasses="panelgrid1,panelgrid2" style="width:98%">
+                                <apex:outputPanel >
+                                    <apex:panelGrid columns="2" border="0"
+                                        columnClasses="innerpanelgrid1,innnerpanelgrid2"
+                                        style="width:100%">
+                                        <apex:outputLabel styleclass="textlabel" value="First Name"
+                                            for="FirstName1" />
+                                        <apex:inputText disabled="true" styleclass="defaultText"
+                                            id="FirstName1" value="{!wrContactInfoObj.firstName}"
+                                            style="color:#084B8A;" />
+                                        <apex:outputLabel styleclass="textlabel" value="Email"
+                                            for="Email1" />
+                                        <apex:inputText styleclass="defaultText" disabled="true"
+                                            id="Email1" value="{!wrContactInfoObj.email}"
+                                            style="color:#084B8A;" />
+                                        <apex:outputLabel styleclass="textlabel"
+                                            value="Business Title" for="title1" />
+                                        <apex:inputText styleclass="defaultText" disabled="true"
+                                            id="title1" value="{!wrContactInfoObj.Title}"
+                                            style="color:#084B8A;" />
+                                    </apex:panelGrid>
+                                </apex:outputPanel>
+                                <apex:outputPanel >
+                                    <apex:panelGrid columns="4">
+                                        <apex:outputText value=" "></apex:outputText>
+                                        <apex:outputText value=" "></apex:outputText>
+                                        <apex:outputText value=" "></apex:outputText>
+                                        <apex:outputText value=" "></apex:outputText>
+                                    </apex:panelGrid>
+                                </apex:outputPanel>
+                                <apex:outputPanel >
+                                    <apex:panelGrid columns="2" border="0"
+                                        columnClasses="innerpanelgrid1,innnerpanelgrid2"
+                                        style="width:100%">
+                                        <apex:outputLabel styleclass="textlabel" value="Last Name"
+                                            for="LastName1" />
+                                        <apex:inputText styleclass="defaultText" disabled="true"
+                                            id="LastName1" value="{!wrContactInfoObj.lastName}"
+                                            style="color:#084B8A;" />
+                                        <apex:outputLabel styleclass="textlabel" value="Phone"
+                                            for="Phone1" />
+                                        <apex:inputText styleclass="defaultText" disabled="true"
+                                            id="Phone1" value="{!wrContactInfoObj.phone}"
+                                            style="color:#084B8A;" />
+                                        <apex:outputLabel styleclass="textlabel"
+                                            value="Phone Alternate" for="phoneAlt1" />
+                                        <apex:inputText styleclass="defaultText" disabled="true"
+                                            id="phoneAlt1" value="{!wrContactInfoObj.phonAlt}"
+                                            style="color:#084B8A;" />
+                                    </apex:panelGrid>
+                                </apex:outputPanel>
+                            </apex:panelGrid>
+                        </div>
+                        <br />
+                    </div>
+                </apex:OutputPanel>
+                <div id="whoDecisionMaker" class="customInfo">
+                    <div style="">
+                        <div>
+                            <span style="float: left; margin-left: 5px; padding: 5px;"><apex:outputLabel styleclass="textlabel"
+                                    value="Who
+                            is the Decision Maker ?"
+                                    for="sourceSelector" /> </span> <span><span
+                                class="requiredfield"  style="margin-left:3px;">&nbsp;</span> <apex:selectRadio styleclass="radioButtonsCls decisionMakerRadio"
+                                    onclick="javascript:copyContactDetail();"
+                                    value="{!leadQualificationObj.Decision_Maker_Partner__c}">
+                                    <apex:selectOptions value="{!DecisionMaker}" />
+                                </apex:selectRadio> </span>
+                        </div>
+                        <apex:panelGrid columns="3"
+                            columnClasses="panelgrid1,panelgrid2,panelgrid3" border="0"
+                            style="width:100%">
+                            <apex:outputPanel >
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid1,innerpanelgrid2"
+                                    style="width:100%" border="0">
+                                    <apex:outputLabel styleclass="textlabel" value="First Name:"
+                                        for="sourceSelector" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            title="First Name" id="decisonMakerFirstName1"
+                                            value="{!leadQualificationObj.Decision_Maker_First_Name__c}"
+                                            maxlength="40" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel" value="Last Name:"
+                                        for="sourceSelector" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            title="Last Name" id="decisionMakerlastName1"
+                                            value="{!leadQualificationObj.Decision_Maker_Last_Name__c}"
+                                            maxlength="80" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Business Title:" for="sourceSelector" />
+                                    <apex:outputpanel >
+                                        <div class="optionalfield">&nbsp;</div>
+                                        <apex:inputtext styleclass="selectlist parallelspace"
+                                            id="decisionMakerTitle1" title="Business Title"
+                                            value="{!leadQualificationObj.Decision_Maker_Business_Title__c}"
+                                            maxlength="128" />
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                            <apex:outputPanel >
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid3,innerpanelgrid4"
+                                    style="width:100%" border="0">
+                                    <apex:outputLabel styleclass="textlabel" value="Email Address:"
+                                        for="emailAddress" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            id="emailAddress1" title="Email Address"
+                                            value="{!leadQualificationObj.Decision_Maker_Email__c}"
+                                            style="color:#084B8A;" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel parallelspace"
+                                        value="Phone Number:" for="phoneNumber" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            id="phoneNumber1"
+                                            value="{!leadQualificationObj.Decision_Maker_Phone__c}"
+                                            style="color:#084B8A;" onchange="" />
+                                        <br />&nbsp;<apex:outputText styleclass="textlabel"
+                                            value="(eg: 4082343254)" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel parallelspace"
+                                        value="Phone Number (Alternate):" for="phoneNumberAlternate" />
+                                    <apex:outputpanel >
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            id="phoneNumberAlternate1" title="ALternate Phone"
+                                            value="{!leadQualificationObj.Decision_Maker_Alternate_Phone__c}"
+                                            style="color:#084B8A;" />
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                        </apex:panelGrid>
+                    </div>
+                </div>
+                <div id="explainNeed" class="customInfo">
+                    <div style="margin-left: 60px; margin-top: 10px;">
+                        <apex:outputLabel styleclass="textlabel"
+                            value="Explain the Lead's Need:" for="leadsNeed"
+                            style="float:left;margin-left:-20px;" />
+                        <apex:outputpanel >
+                            <div class="requiredfield" style="height:110px;">&nbsp;</div>
+                            <apex:inputField id="leadsNeed1"
+                                onchange="javascript:fnCheckLeadNeed();"
+                                style="color:#084B8A;margin-left:5px; min-height:122px;min-width: 255px;"
+                                value="{!leadQualificationObj.Explain_the_Lead_s_Need__c}" />
+                        </apex:outputpanel>
+                    </div>
+                    <div style="">
+                        <apex:panelGrid columns="3"
+                            columnClasses="panelgrid1,panelgrid2,panelgrid3" border="0"
+                            style="width:100%">
+                            <apex:outputPanel >
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid1,innerpanelgrid2"
+                                    style="width:100%" border="0">
+                                    <apex:outputLabel id="OtherOptionLabel1" styleclass="textlabel"
+                                        value="Lead’s Other Need:" for="leadsNeedOther"
+                                        style="display:none;margin-left:12px;" />
+                                    <apex:outputpanel >
+                                           <div id="leadsNeedOtherRequired" class="requiredfield"
+                                        style=" dispaly:none; ">&nbsp;</div>
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            title="Lead’s Other Need"
+                                            value="{!leadQualificationObj.Lead_s_Need_Other__c}"
+                                            id="leadsNeedOther1" style="display:none;" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Have copy of current phone bill?:" for="phoneBillCopy" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:selectRadio styleclass="radioButtonsCls decisionMakerRadio"
+                                            value="{!leadQualificationObj.Have_copy_of_current_phone_bill__c}">
+                                            <apex:selectOptions value="{!HavePhoneBill}" />
+                                        </apex:selectRadio>
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Currently under contract?:" for="underContract" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:selectRadio onChange="javascript:fnCurrentContract();"
+                                            styleclass="radioButtonsCls decisionMakerRadio currentContractRadio"
+                                            value="{!leadQualificationObj.Currently_under_contract__c}">
+                                            <apex:selectOptions value="{!IsUnderContract}" />
+                                        </apex:selectRadio>
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel parallelspace"
+                                        value="When will contract expire?:" for="whencontractexpire" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield contractRequired">&nbsp;</div>
+                                        <apex:inputField styleclass="selectlist parallelspace"
+                                            style="color:#084B8A;" id="whencontractexpire1"
+                                            value="{!leadQualificationObj.When_will_contract_expire__c}" />
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                            <apex:outputPanel >
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid3,innerpanelgrid4"
+                                    style="width:100%" border="0">
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Expected Timeframe:" for="timeFrame" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputField styleclass="selectlist parallelspace"
+                                            style="color:#084B8A;" id="timeFrame1"
+                                            value="{!leadQualificationObj.Timeframe__c}" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel parallelspace"
+                                        value="Budget Per Month:" for="BudgetperMonth" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputField styleclass="selectlist parallelspace"
+                                            id="BudgetperMonth1"
+                                            value="{!leadQualificationObj.Budget_Per_Month__c}"
+                                            style="color:#084B8A;" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel parallelspace"
+                                        value="How many phones are needed?" for="phonesInterested" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield">&nbsp;</div>
+                                        <apex:inputField styleclass="selectlist parallelspace"
+                                            id="phonesInterested1"
+                                            value="{!leadQualificationObj.How_many_phones_are_needed__c}"
+                                            style="color:#084B8A;" />
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                        </apex:panelGrid>
+                    </div>
+                </div>
+                <div id="internetDetail" class="customInfo">
+                    <div style="">
+                        <apex:panelGrid columns="3"
+                            columnClasses="panelgrid1,panelgrid2,panelgrid3" border="0"
+                            style="width:100%">
+                            <apex:outputPanel >
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid1,innerpanelgrid2"
+                                    style="width:100%" border="0">
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Current Internet Provider:" for="currentprovider" />
+                                    <apex:outputpanel >
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            id="currentprovider1"
+                                            value="{!leadQualificationObj.Current_Internet_Provider__c}"
+                                            maxlength="255"/>
+                                    </apex:outputpanel><br/>  
+                                     <apex:outputpanel >
+                                    <a href="http://www.ringcentral.com/support/capacity.html"
+                                        target="_blank" class="bandwidthTest textlabel parallelspace"
+                                        style="margin-left: 10px;">
+                                        </a> <br/>
+                                </apex:outputpanel>
+                                    
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Has this Lead purchased services from you before?:"
+                                        for="serviceBefore" />
+                                    <apex:outputpanel >
+                                        <div class="requiredfield  ">&nbsp;</div>
+                                        <apex:selectRadio onchange="javascript:fnHavePurchase();"
+                                            styleclass="radioButtonsCls serviceRadio currentContractRadioBut"
+                                            value="{!leadQualificationObj.Has_this_Lead_purchased_services_before__c}">
+                                            <apex:selectOptions value="{!HasPurchasedBefore}" />
+                                        </apex:selectRadio>
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                            <apex:outputPanel >
+                            <div style="height: 23px;">
+                                <a href="http://www.ringcentral.com/support/capacity.html"
+                                    target="_blank" class="textlabel" style="margin-left: 28px;">Customer’s
+                                    Network, click here to test internet speed</a>
+                            </div>
+                                <apex:panelGrid columns="2"
+                                    columnClasses="innerpanelgrid3,innerpanelgrid4"
+                                    style="width:100%" border="0">
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Internet Download Speed (In Mbps):" for="downloadSpeed" />
+                                    <apex:outputpanel >
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            id="downloadSpeed1"
+                                            value="{!leadQualificationObj.Internet_Download_Speed_in_kBps__c}"
+                                             maxlength="255" style="color:#084B8A;" />
+                                    </apex:outputpanel>
+                                    <apex:outputLabel styleclass="textlabel"
+                                        value="Internet Upload Speed (In Mbps):" for="uploadSpeed" />
+                                    <apex:outputpanel >
+                                        <apex:inputText styleclass="selectlist parallelspace"
+                                            title="Internet Upload Speed (In Mbps)" id="uploadSpeed"
+                                            value="{!leadQualificationObj.Internet_Upload_Speed_In_Kbps__c}" maxlength="255"/>
+                                            
+                                    </apex:outputpanel>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                        </apex:panelGrid>
+                        <div style="margin-bottom: 10px; margin-left: 35px;">
+                            <apex:outputLabel styleclass="textlabel parallelspace"
+                                value="What type of services has Lead purchased from you?"
+                                for="servicePurchased"
+                                style="float:left;margin-left: -16px;width: 174px;" />
+                            <apex:outputpanel id="servicePurchasedPanel" >
+                                <div class="requiredfield" style="height:90px; margin-left:-7px; ">&nbsp;</div>
+                                <apex:inputField onChange="javascript:fnCheckOtherService();"
+                                    style="color:#084B8A;margin-left:2px; min-height:100px; min-width:200px;" id="servicePurchased1"
+                                    value="{!leadQualificationObj.What_type_of_services_has_Lead_purchased__c}" />
+                            </apex:outputpanel>
+                            <br />
+                            <div>
+                                <apex:outputLabel styleclass="textlabel"
+                                    value="Other services Purchased:" for="otherService"
+                                    id="otherServiceLabel1"
+                                    style="display:none;float:left;margin-top:-5px;margin-left:-2px;" />
+                            </div>
+                            <apex:outputpanel >
+                                 <div class="requiredfield" id="otherServiceRequired"
+                                style="display: none; margin-top: -10px;">&nbsp;</div>
+                                   <apex:inputText styleclass="selectlist parallelspace"
+                                    title="Other services Purchased"
+                                    value="{!leadQualificationObj.Other_purchased_services__c}"
+                                    id="otherService1" maxlength="40"
+                                    style="display:none;margin-top:-10px; margin-left:6px;width:22%;" />
+                            </apex:outputpanel>
+
+                        </div>
+                    </div>
+                </div>
+            </apex:outputPanel>
+            <script>
+                $(document)
+                        .ready(
+                                function() {
+                                    $("[id$=whencontractexpire]").attr(
+                                            "disabled", true);
+                                    $(".bandwidthTest").closest("td").attr('colspan',2).css("text-align","left");
+                                    fnCheckLeadNeed1();  
+                                    fnCheckOtherService1();  
+                                    copyContactDetail();                                             
+                                    fnHavePurchase();                                   
+                                    fnCheckLeadNeed();
+                                    fnCurrentContract();
+                                    fnCurrentContract1();
+                                    fnCheckOtherService();
+                                    //fnCheckOtherService2();
+                             
+                                    $(".defaultText")
+                                            .click(
+                                                    function(srcc) {
+                                                        if ($(this).val() == $(this)[0].title) {
+                                                            $(this)
+                                                                    .removeClass(
+                                                                            "defaultTextActive");
+                                                            $(this).val("");
+                                                        }
+                                                    });
+                                    $(".defaultText")
+                                            .focus(
+                                                    function(srcc) {
+                                                        if ($(this).val() == $(this)[0].title) {
+                                                            if ($(this)[0].title != 'First Name') {
+                                                                $(this)
+                                                                        .removeClass(
+                                                                                "defaultTextActive");
+                                                                // alert($(this)[0].title);
+                                                                $(this).val("");
+                                                            }
+                                                        }
+                                                    });
+                                    $(".defaultText")
+                                            .blur(
+                                                    function() {
+                                                        if ($(this).val() == "") {
+                                                            $(this)
+                                                                    .addClass(
+                                                                            "defaultTextActive");
+                                                            $(this)
+                                                                    .val(
+                                                                            $(this)[0].title);
+                                                        } else if ($(this)
+                                                                .val() != "") {
+                                                            if ($(this)[0].title == "Contact Phone Number"
+                                                                    && $(this)
+                                                                            .val() != "Contact Phone Number") {
+                                                                var phoneVal = FormatNumber($(
+                                                                        this)
+                                                                        .val());
+                                                                $(this)
+                                                                        .val(
+                                                                                phoneVal);
+                                                            } else if ($(this)
+                                                                    .val() == $(this)[0].title) {
+                                                                $(this)
+                                                                        .addClass(
+                                                                                "defaultTextActive");
+                                                                $(this)
+                                                                        .val(
+                                                                                $(this)[0].title);
+                                                            }
+                                                        }
+                                                    });
+                                    $(".defaultText").blur();
+                                });
+
+                $(document).ready(function() {
+                    if ($.browser.mozilla) {
+                        $('textarea[rows]').each(function(i, el) {
+                            if (!$(el).data('ffRowsFixed')) {
+                                var rows = parseInt($(el).attr('rows'));
+                                if (rows > 1) {
+                                    $(el).attr('rows', (rows - 1));
+                                }
+                                $(el).data('ffRowsFixed', true);
+                            }
+                        });
+                    }
+                });
+
+                function fnCurrentContract() {
+            var value = $(".currentContractRadio input[type=radio]:checked").val();
+            if (value != 'Yes' && value != 'yes') {
+            if($("[id$=whencontractexpire1]").is("select")){
+                $("[id$=whencontractexpire1]").get(0).selectedIndex = 0;
+                }
+                $("[id$=whencontractexpire1]").attr("disabled", true);
+                $(".contractRequired").hide();
+                           
+              } else {
+                $(".contractRequired").show();
+                $("[id$=whencontractexpire1]").removeAttr("disabled");
+            }
+        }   
+            function fnCurrentContract1() {
+                var value = $(".currentContractRadio input[type=radio]:checked").val();
+                if (value != 'Yes' && value != 'yes') {
+                $("[id$=whencontractexpire1]").attr("disabled", true);
+                $(".contractRequired").hide();  
+                                         
+              } else {
+                $(".contractRequired").show();
+                $("[id$=whencontractexpire1]").removeAttr("disabled");
+            }
+        }
+
+                function fnHavePurchase() {
+                    var value = $(".serviceRadio input[type=radio]:checked").val();
+                    console.log('fnHavePurchase===='+value);
+                    if (value != 'Yes' && value != 'yes') {
+                        console.log('fnHavePurchase==== IN IF');
+                            clearPickListValue();                       
+                    } else {
+                        console.log('fnHavePurchase==== IN ELSE');
+                        $("[id$=servicePurchased1_unselected]").removeAttr(
+                                "disabled");
+                        $("[id$=servicePurchased1_selected]").removeAttr(
+                                "disabled");
+                    }
+
+                }
+            
+                
+                 
+                
+             function disableServicePurchased(){
+                    $("[id$=servicePurchased_unselected]").attr("disabled",
+                                "disabled").css("width","200px");
+                    $("[id$=servicePurchased_selected]").attr("disabled",
+                                "disabled").css("width","200px");
+                    $(".serviceRequired").hide();
+            }
+            
+             function disableServicePurchased1(){
+                    $("[id$=servicePurchased1_unselected]").attr("disabled",
+                                "disabled").css("width","200px");
+                    $("[id$=servicePurchased1_selected]").attr("disabled",
+                                "disabled").css("width","200px");
+                    $(".serviceRequired").hide();
+            }
+            
+          
+                function copyContactDetail() {
+                    try{
+                    //alert(1);
+                    $("[id$=errorMessage]").hide();
+                    var value = $(
+                            ".decisionMakerRadio input[type=radio]:checked")
+                            .val();
+                        $("[id$=Phone1]").val($("[id$=Phone1]").val().replace(/[^0-9]/g,''));                        
+                            
+                    if ('Same as Contact' == value) {
+                        var firstName = $("[id$=FirstName1]").val();
+                        var lastName = $("[id$=LastName1]").val();
+                        var emailAddress = $("[id$=Email1]").val();
+                        var phoneNumber = $("[id$=Phone1]").val();
+                        var title = $("[id$=title1]").val();
+                        var phoneAlt = $("[id$=phoneAlt1]").val();
+
+                        console.log("firstName====" + firstName);
+                        console.log("lastName====" + lastName);
+                        console.log("emailAddress====" + emailAddress);
+                        console.log("phoneNumber====" + phoneNumber);
+                        if (firstName == '' || lastName == ''
+                                || emailAddress == '' || phoneNumber == '') {
+                            $("[id$=errorMessage]").show();
+                            $(".decisionMakerRadio input[type=radio]:checked")
+                                    .attr("checked", false);
+                        } else {
+                            disableAllDecissionMaker(false);
+                            $("[id$=decisonMakerFirstName1]").val(firstName);
+                            $("[id$=decisionMakerlastName1]").val(lastName);
+                            $("[id$=emailAddress1]").val(emailAddress);
+                            $("[id$=phoneNumber1]").val(phoneNumber);
+                            $("[id$=decisionMakerTitle1]").val(title);
+                            $("[id$=phoneNumberAlternate1]").val(phoneAlt);
+
+                        }
+                        
+                    } else if ('Unknown' == value) {
+                        disableAllDecissionMaker(true);
+                    } else {
+                        enableAllDecissionMaker();
+                        $("[id$=phoneNumber1]").val($("[id$=phoneNumber1]").val().replace(/[^0-9]/g,''));
+                        $("[id$=phoneAlt1]").val($("[id$=phoneAlt1]").val().replace(/[^0-9]/g,''));
+                    }
+                    }catch(exception){}
+                }
+
+                function disableAllDecissionMaker(emptyFields) {
+                    $("[id$=whoDecisionMaker] input[type=Text]").each(
+                            function() {
+                                if (emptyFields) {
+                                    $(this).val('');
+                                }
+                                $(this).addClass("disableCls");
+                                $(this).attr("disabled", true);
+                            });
+                }
+
+                function enableAllDecissionMaker() {
+                    $("[id$=whoDecisionMaker] input[type=Text]").each(
+                            function() {
+                                $(this).removeAttr("readOnly");
+                                $(this).removeClass("disableCls");
+                                var showMode = '{!toShowViewMode}'
+                                if (showMode == 'false') {
+                                    $(this).attr("disabled", false);
+                                }
+                            });
+                }
+            </script>
+        </apex:outputPanel>
+        <script>
+            var toshowViewMode = 'true';
+            var prevselected;
+            $(document).ready(
+                    function() {
+                        $("table tr td input[name=LQSelection]:radio").click(
+                                function(srcc) {
+                                    try {
+                                        if (toshowViewMode == 'false') {
+
+                                        } else {
+                                            $(".inputselect").closest('tr')
+                                                    .css('background-color',
+                                                            'transparent');
+                                            $(this).closest('tr').css(
+                                                    'background-color',
+                                                    '#F0F0F0');
+                                        }
+                                    } catch (e) {
+                                        alert(e);
+                                    }
+                                });
+                    });
+            function selectRow() {
+                var selectedVal = '{!selectedLeadQual}';
+                $("table tr td input[name=LQSelection]:radio").each(function() {
+                    if (selectedVal != "" && $(this).val() != "") {
+                        if (selectedVal == $(this).val()) {
+                            prevselected = $(this).val();
+                            $(this).attr("checked", true);
+                            $(this).closest('tr').css('background', '#F0F0F0');
+                        }
+                    }
+                });
+            }
+            selectRow();
+            function loadLeadQualDet(id) {
+                if (toshowViewMode == 'false') {
+
+                    var isConfirm = confirm('Do you really want to continue without saving changes?');
+                    if (isConfirm) {
+                        toshowViewMode = 'true';
+                        prevselected = $(
+                                "table tr td input[name=LQSelection]:radio:checked")
+                                .val();
+                        loadLeadQualDet1(id);
+                    } else {
+                        document.getElementById(prevselected).checked = true;
+                    }
+                } else {
+                    prevselected = $(
+                            "table tr td input[name=LQSelection]:radio:checked")
+                            .val();
+                    toshowViewMode = 'true';
+                    loadLeadQualDet1(id);
+                }
+            }
+
+            function backClorRowIE() {
+                //alert(1);
+                $(".inputselect").closest('tr').css('background-color',
+                        'transparent');
+                var selRow = 'tr' + prevselected;
+                document.getElementById(selRow).style.background = '#F0F0F0';
+            }
+
+            function EditMode() {
+                toshowViewMode = 'false';
+                EditMode1();
+            }
+
+            function SaveLeadQ() {
+                toshowViewMode = 'true';
+                SaveLeadQ1();
+            }
+
+            function CancelLeadQual() {
+                if (toshowViewMode == 'false') {
+                    var isConfirm = confirm('Do you really want to continue without saving changes?');
+                    if (isConfirm) {
+                        toshowViewMode = 'true';
+                        CancelLeadQual1();
+                    }
+                } else {
+                    toshowViewMode = 'true';
+                    CancelLeadQual1();
+                }
+            }
+        </script>
+
+        <apex:actionFunction name="loadLeadQualDet1"
+            oncomplete="backClorRowIE();return false;"
+            action="{!loadLeadQualDet}" rerender="LeadQualPanel,msgPanel"
+            status="ajaxStatus">
+            <apex:Param name="param1" value="" />
+        </apex:actionFunction>
+        <apex:actionFunction name="EditMode1" action="{!editLeadQualDet}"
+            rerender="LeadQualPanel,msgPanel" status="ajaxStatus" />
+        <apex:actionFunction name="SaveLeadQ1" action="{!updateLeadQual}"
+            rerender="form1,msgPanel" status="ajaxStatus" />
+        <apex:actionFunction name="SaveLeadQ76" rerender="msgPanel"
+            status="ajaxStatus" />
+        <apex:actionFunction name="CancelLeadQual1" action="{!cancel}"
+            rerender="LeadQualPanel,msgPanel" status="ajaxStatus" />
+        <apex:actionStatus id="ajaxStatus" onStart="showOverlay();"
+            onstop="hideOverlay();" />
+        <!--  <div class="btnDiv" id="topBtnLevel4" >
+       <apex:commandButton action="{!backToDetail}" value="Back" status="ajaxStatus"  />
+       <apex:commandButton onclick="SaveLeadQ();return false;" value="Save" status="ajaxStatus" />
+       <apex:commandButton onclick="CancelLeadQual();return false;" value="Cancel" status="ajaxStatus" />
+    </div> -->
+    </apex:form>
+</apex:page>

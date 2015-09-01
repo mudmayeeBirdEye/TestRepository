@@ -1,0 +1,337 @@
+<apex:page sidebar="true" id="thepage"   >
+<!-- controller="TerritoryChangeController"
+<apex:includeScript value="{!URLFOR($Resource.jquery, '/js/jquery-1.4.2.min.js')}" />
+<script>
+    function numbersOnly(e) {
+      var evt = (e) ? e : window.event;
+      var key = (evt.keyCode) ? evt.keyCode : evt.which;
+
+      if(key != null) {
+        key = parseInt(key, 10);
+
+        if((key < 48 || key > 57) && (key < 96 || key > 105)) {
+          if(!isUserFriendlyChar(key))
+            return false;
+        }
+        else {
+          if(evt.shiftKey)
+            return false;
+        }
+      }
+
+      return true;
+    }
+    
+        function isUserFriendlyChar(val) {
+      // Backspace, Tab, Enter, Insert, and Delete
+      if(val == 8 || val == 9 || val == 13 || val == 45 || val == 46)
+        return true;
+
+      // Ctrl, Alt, CapsLock, Home, End, and Arrows
+      if((val > 16 && val < 21) || (val > 34 && val < 41))
+        return true;
+
+      // The rest
+      return false;
+    }
+    
+function show_confirm()
+{
+    var r=confirm("Do you really want to make changes?");
+    return r;
+}
+    
+var checkTotal;
+var enableBtn;
+var enableBtn2;
+$(document).ready(function(){
+
+    checkTotal = function(id_) {
+        //alert(id_);
+        var sum = 0;
+        //alert($("input.qty").size());
+        if($("input.qty").size()==0) {
+            alert('Please select at least one user.');
+            return false;           
+        }
+        
+        $("input.qty").each(function(){
+            sum += parseInt(this.value);
+        });
+        
+        if(sum == 0) {
+            alert('Current record count is 0. Please enter some quantity.');
+            return false;
+        } else if(sum > {!recordCount}) {
+            alert('Current record count('+sum+') is exceeding Total record count('+{!recordCount}+')');
+            return false; 
+        } 
+        return show_confirm();
+    };
+    
+        /*  document.getElementById("thepage:theForm:block:userBlockSec:add_usr_btn").disabled = true;
+            document.getElementById("thepage:theForm:block:userBlockSec:add_usr_btn").style.color = "grey";
+    enableBtn = function(){
+        var count = 0;
+        $("input.userCbox").each(function(){
+            if(this.checked && this.disabled==false) {
+                count++;
+            }
+        });
+
+        if(count>0) {
+            document.getElementById("thepage:theForm:block:userBlockSec:add_usr_btn").disabled = false;
+            document.getElementById("thepage:theForm:block:userBlockSec:add_usr_btn").style.color = "black";
+        } else {
+            document.getElementById("thepage:theForm:block:userBlockSec:add_usr_btn").disabled = true;
+            document.getElementById("thepage:theForm:block:userBlockSec:add_usr_btn").style.color = "grey";
+        }
+    };
+
+  
+       enableBtn2 = function(){
+        var count = 0;
+        $("input.userCbox1").each(function(){
+            if(this.checked) {
+                count++;
+            }
+        });
+
+        if(count>0) {
+            document.getElementById("thepage:theForm:block:resultsBlock2:remove_usr_btn").disabled = false;
+            document.getElementById("thepage:theForm:block:resultsBlock2:remove_usr_btn").style.color = "black";
+        } else {
+            document.getElementById("thepage:theForm:block:resultsBlock2:remove_usr_btn").disabled = true;
+            document.getElementById("thepage:theForm:block:resultsBlock2:remove_usr_btn").style.color = "grey";
+        }
+    };
+    
+    $(".remove_usr_btn").live('click', function(){
+
+            enableBtn2();
+            enableBtn();
+        
+        
+    });*/
+    
+    enableBtn = function(){
+        var count = 0;
+        $("input.userCbox").each(function(){
+            if(this.checked) {
+                count++;
+            }
+        });
+
+        if(count==0) {
+            alert('Please select user above to add.');
+            return false;
+        } 
+        
+        //return true;
+    };
+    
+        enableBtn2 = function(){
+        var count = 0;
+        $("input.userCbox1").each(function(){
+            if(this.checked) {
+                count++;
+            }
+        });
+
+        if(count==0) {
+            alert('Please select user above to remove.');
+            return false;
+        } 
+        
+        //return true;
+    };
+});   
+
+</script>
+
+ <apex:sectionHeader title="Team Changes" subtitle="Step 3 of 4" />
+  <apex:form id="theForm">
+  
+ <apex:pageMessages escape="false" id="mymessages" ></apex:pageMessages>
+   <apex:pageBlock title="Total records to be affected: {!recordCount}" mode="" id="block">
+      
+
+
+<!--<apex:commandlink onclick="javascript:window.top.location='https://ringcentral.secure.force.com/rcsurvey/MultiSheetExcelGenerate?userid={!u1.id}&objtype={!objectvalue}&username={!u1.Name}';" rendered="{!IF(recordCount > 0, true, false)}">
+         <apex:image value="http://www.veryicon.com/icon/png/Application/3D%20Cartoon%20Icons%20Pack%20III/Microsoft%20Office%20Excel.png" height="27px" width="37px"/>
+</apex:commandlink> -->
+
+<!--<apex:pageBlock rendered="{!IF(recordCount > 0, true, false)}">
+<apex:outputText >
+You can download related data from here by clicking on download icon.
+<hr/>
+
+<!--</apex:outputText>
+<apex:panelGrid columns="4" width="30%">
+<apex:image value="{!URLFOR($Resource.tc_backup_logo)}" height="32" width="51" onclick="javascript:window.top.location='http://ringcentral.secure.force.com/rcsurvey/MultiSheetExcelGenerate?userid={!u1.id}&objtype={!objectvalue}&username={!u1.Name}';" style="cursor:pointer"/>
+<!--<input type="button" onclick="javascript:window.top.location='http://ringcentral.box2.cs3.force.com/rcsurvey/MultiSheetExcelGenerate?userid={!u1.id}&objtype={!objectvalue}&username={!u1.Name}';" style="cursor:pointer" value="Generate Backup Excel Workbook" />-->
+<!--<apex:image value="{!URLFOR($Resource.tc_arrow)}" width="109" height="37" />
+<apex:image value="{!URLFOR($Resource.tc_info_0)}" />
+</apex:panelGrid>
+<!--</apex:pageBlock>
+    
+    
+<apex:pageBlockSection title="Select Destination User" rendered="{!IF(recordCount > 0, true, false)}" >
+<apex:pageBlockSectionItem >
+
+
+<apex:panelGrid columns="4" style="width:500px" rendered="{!IF(recordCount > 0, true, false)}">
+<apex:outputLabel for="searchText">Search for Users</apex:outputLabel>
+<apex:inputText id="searchText" value="{!searchText1}" />
+<!-- We could have rerendered just the resultsBlock below but we want the -->
+<!-- 'See Results' button to update also so that it is clickable. -->
+
+<!--<apex:selectList value="{!selectedDProfile}" size="1"  title="Select for Profile Based Search">
+                <apex:selectOptions value="{!ProfileDName}"/>
+</apex:selectList>
+  
+  
+<!--<apex:commandButton value="Search" action="{!search1}" status="status2" rerender="resultsBlock,otpNav2" style="font-size:12px;"/>
+
+
+
+
+<apex:actionStatus startText="Requesting..." id="status2">
+<apex:facet name="start">
+<apex:image url="{!$Resource.TeamChanges}" />
+
+</apex:facet>
+
+</apex:actionStatus>
+</apex:panelGrid>
+
+</apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+<div id="resultDiv">
+<apex:pageBlockSection columns="1" id="userBlockSec"  rendered="{!IF( recordCount > 0, true, false)}">
+
+<apex:pageBlockTable value="{!searchResults1}" var="c" 
+rendered="{!NOT(ISNULL(searchResults1))}" style="width:700px" id="resultsBlock">
+<apex:column >
+
+
+<apex:variable var="disableVal" value="true" />
+<apex:inputCheckbox value="{!c.checked}" id="user_cbox" disabled="{!IF(c.checked, true, false)}" selected="{!IF(c.checked, true, false)}" styleClass="userCbox"  >
+
+</apex:inputCheckbox>
+</apex:column>
+<apex:column value="{!c.usr.Name}" headerValue="Name" />
+<apex:column value="{!c.usr.UserRole.name}" headerValue="Role" />
+<apex:column value="{!c.usr.Manager.name}" headerValue="Manager" />
+<apex:column value="{!c.usr.Profile.name}" headerValue="Profile" />
+</apex:pageBlockTable>
+
+
+
+
+
+<apex:actionStatus startText="Requesting..." id="status" >
+<apex:facet name="start">
+<apex:outputPanel styleClass="pShowLess noLink"
+style="color:red;text-align:center;display:block;font-size:11px;width:700px">Loading...</apex:outputPanel>
+</apex:facet>
+<apex:facet name="stop">
+
+
+<apex:outputPanel layout="block" styleClass="pSearchShowMore"
+id="otpNav2" rendered="{!NOT(ISNULL(searchResults1))}" style="width:500px">
+<div style="float:left;width:100px;">
+<apex:commandButton onclick="enableBtn();" value="Add Selected" action="{!selectUser}" 
+reRender="resultsBlock,resultsBlock2,mymessages,managerBlock" 
+style="font-size:12px" status="status7" 
+id="add_usr_btn"
+rendered="{!!next_btn1}"
+/>
+
+</div>
+
+Total Records Found: <apex:outputText rendered="{!IF(Con1.resultSize==10000,true,false)}">10000 +</apex:outputText>
+<apex:outputText rendered="{!IF(Con1.resultSize < 10000,true,false)}">{!Con1.resultSize}</apex:outputText>
+<apex:image url="/img/search_prevarrow_disabled.gif"
+styleClass="prevArrow" rendered="{!NOT(Con1.HasPrevious)}" />
+<apex:image url="/img/search_prevarrow.gif" title="Previous Page"
+styleClass="prevArrow" rendered="{!Con1.HasPrevious}" />
+<apex:commandLink action="{!Previous1}" title="Previous Page"
+value="Previous Page" rendered="{!Con1.HasPrevious}"
+reRender="resultsBlock,otpNav2" status="status" />
+<apex:outputPanel styleClass="pShowLess noLink"
+style="color:grey" rendered="{!NOT(Con1.HasPrevious)}">Previous Page</apex:outputPanel>
+&nbsp;({!IF(Con1.PageNumber == 1,1,((Con1.PageNumber -1) * Con1.PageSize)+1)}-{!IF(Con1.resultSize < Con1.PageSize,Con1.resultSize,Con1.PageNumber * Con1.pageSize)})&nbsp;
+<apex:outputPanel styleClass="pShowLess noLink" style="color:grey"
+rendered="{!NOT(Con1.HasNext)}">Next Page</apex:outputPanel>
+<apex:commandLink title="Next Page" value="Next Page"
+rendered="{!Con1.HasNext}" action="{!next1}"
+reRender="resultsBlock,otpNav2" status="status" />&nbsp;
+<apex:image url="/img/search_nextarrow.gif" title="Next Page"
+styleClass="nextArrow" rendered="{!Con1.HasNext}" />
+<apex:image url="/img/search_nextarrow_disabled.gif"
+rendered="{!NOT(Con1.HasNext)}" />
+
+
+
+
+</apex:outputPanel>
+
+</apex:facet>
+</apex:actionStatus>
+
+</apex:pageBlockSection></div>
+
+<apex:pageBlockButtons location="both">
+<apex:commandButton value="Back" action="{!back}" style="font-size:12px;" />
+<apex:commandButton value="Submit" action="{!step3}"   status="status3"
+id="step3" onclick="return checkTotal('{!$Component.resultsBlock2}')" 
+rendered="{!IF(recordCount > 0, true, false) }"  style="font-size:12px;" />
+</apex:pageBlockButtons>
+
+
+<apex:actionStatus startText="Requesting..." id="status3">
+<apex:facet name="start">
+<apex:image url="{!$Resource.TeamChanges}" />
+</apex:facet>
+</apex:actionStatus>
+
+<apex:pageBlockSection columns="1" id="resultsBlock2">
+<apex:pageBlockTable value="{!toUserList}" var="t"
+rendered="{!NOT(ISNULL(toUserList))}" style="width:400px" id="adduserlist" >
+<apex:column headerValue="Remove" style="width:50px">
+
+<apex:inputCheckbox value="{!t.checked}" id="rem_user_cbox"  styleClass="userCbox1"/>
+
+</apex:column>
+<apex:column value="{!t.usr.Name}" headerValue="User" />
+<apex:column headerValue="Quantity">
+<apex:inputText value="{!t.quantity}" style="text-align:right; width:75px" onkeydown="return numbersOnly(event);" onchange="if(this.value=='')this.value='0'" styleClass="qty" />
+</apex:column>
+</apex:pageBlockTable>
+<apex:commandButton onclick="enableBtn2()" value="Remove Selected" 
+id="remove_usr_btn" action="{!removeUser}" 
+rendered="{!NOT(ISNULL(toUserList))}" reRender="resultsBlock,resultsBlock2,mymessages"  
+styleClass="remove_usr_btn" style="font-size:12px;"/>   
+
+
+<apex:panelGrid columns="3"  rendered="{!NOT(ISNULL(toUserList))}" 
+title="Optional Select Manager For records Only for Lead or Opportunity" bgcolor="">
+     <apex:outputText value="Manager" id="managerlabel"/>
+     <apex:inputField value="{!usrm.managerid}" id="managerid"/>
+
+ </apex:panelGrid>
+<apex:panelGrid columns="1" rendered="{!NOT(ISNULL(toUserList))}">
+<apex:outputText escape="false" value="<b>Note:</b> This Lookup is only for Lead and Opportunity records please ignore it if Object is not Lead or Opportunity." />  
+<apex:outputText escape="false" value="For successfully Manager field updation please check <b><i>IsTmtTriggersDisabled</i></b> checkbox on <i>USER</i>."/>
+</apex:panelGrid>
+
+
+</apex:pageBlockSection>
+ 
+</apex:pageBlock>
+
+
+ </apex:form>-->
+
+</apex:page>

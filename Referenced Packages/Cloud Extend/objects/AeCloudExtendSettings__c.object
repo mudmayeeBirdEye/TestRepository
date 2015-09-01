@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <customSettingsVisibility>Protected</customSettingsVisibility>
+    <description>Cloud Extend Settings</description>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>HostUrl__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Cloud Extend Host URL Information allows the use of Sales Guides within the organization.</description>
+        <externalId>false</externalId>
+        <label>Cloud Extend Host URL</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Host_Auth_Token__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Shared secret used to verify Apex requests are from a registered source</description>
+        <externalId>false</externalId>
+        <label>Host Authorization Token</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Host_Private_Key__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Private key for encryption/decryption</description>
+        <externalId>false</externalId>
+        <label>Host Private Key</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>UseConnectedApp__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Use connected app signed request when enabled</description>
+        <externalId>false</externalId>
+        <label>Use Connected App</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Cloud Extend Settings</label>
+</CustomObject>

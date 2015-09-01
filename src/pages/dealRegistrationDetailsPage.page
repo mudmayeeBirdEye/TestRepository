@@ -1,0 +1,39 @@
+<apex:page standardController="VAR_Deal_Registration__c" >
+  <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+  
+   <apex:Detail subject="{!VAR_Deal_Registration__c.ID}" relatedList="true" />
+ 
+     <script type="text/javascript">
+        if ('{!VAR_Deal_Registration__c.Registration_Status__c}' == 'Pending' || '{!VAR_Deal_Registration__c.Extension_Status__c}' == 'Pending' )
+        {
+            hideButton("request_extension");
+            hideButton("resubmit_deal_request");
+        }
+        if('{!VAR_Deal_Registration__c.Registration_Status__c}'=='Approved'){
+           hideButton("resubmit_deal_request");
+        } 
+         if ('{!VAR_Deal_Registration__c.Registration_Status__c}' == 'Rejected' || '{!VAR_Deal_Registration__c.Extension_Status__c}'=='Approved')
+        {
+            hideButton("request_extension");
+        } 
+        
+       if('{!$Profile.Name}'.indexOf('Partner')>0){
+                   hideButton("piRemove");
+                   hideButton("piSubmit");
+                   $(".actionColumn").empty().html("");
+             
+              if($('div.pShowMore a:first').text().indexOf('Show')>-1){
+                     $('div.pShowMore a:first').remove();
+              }
+          }
+            //hideButton("piSubmit");
+      function hideButton(btnName) {
+        try{
+            var buttons = parent.document.getElementsByName(btnName);
+            $(buttons).remove();
+          }catch(e) {
+            //alert("Some error has occurred, please contact System Administrator.");
+         }
+      }
+  </script>
+</apex:page>

@@ -1,0 +1,299 @@
+<apex:component controller="ce4sf20_001.AeSecurityTokenCE" access="global">
+  <apex:attribute name="objectType"     access="global" required="true"  type="String"  description="The type of record the sales guides will be used with for example Account when used with accounts. Note that this is a required parameter." />
+  <apex:attribute name="objectId"       access="global" required="true"  type="String"  description="The id of the object to be used as the context of the guides.  For example Account.Id for use accounts. Note that this is a required parameter." />
+  <apex:attribute name="guideName"      access="global" required="false" type="String"  description="If a specific Sales Guide is to be displayed, its name goes here."/>
+  <apex:attribute name="useResponsive"  access="global" required="false" type="Boolean" default="false" description="Using this flag when loading a named mobile guide on a desktop or tablet will allow it to run."/>
+  <apex:attribute name="alwaysNewGuide" access="global" required="false" type="Boolean" default="false" description="Using this flag avoids any correlation for running guides so guides that are opened are always started from the beginning"/>
+  <apex:attribute name="extraInfo"      access="global" required="false" type="String"  description="For reporting purposes extra info to be displayed in cloud extend reports go here."/>
+  <apex:attribute name="height"         access="global" required="false" type="String"  default=""      description="Optional height of the sales guide area iframe, if not given then it be the 100 percent of its container."/>
+  <apex:attribute name="width"          access="global" required="false" type="String"  default="100%"  description="Width of the sales guide area iframe if not given then the default is 100 percent of its container."/>
+  <apex:attribute name="openIfOne"      access="global" required="false" type="Boolean" default="false" description="If there is only one guide to display open it and don not show the navigator, note this is always true if a guideName is provided, regardless of this setting."/>
+  <apex:attribute name="showCategories" access="global" required="false" type="Boolean" default="true"  description="Turns displaying tags as categories on when true. Tags with equal signs in them are never shown regardless as well as tags that start with a period."/>
+  <apex:attribute name="match"          access="global" required="false" type="String"  description="Comma separated list of tags which will be displayed.  Guides that don't contain one of the tags will be filtered out of list for user.  This allows for both static filtering and dynamic filtering as tags can be field values for example Status:Warm"/>
+  <apex:attribute name="entryIds"       access="global" required="false" type="String"  description="Comma separated list of entry ids to be displayed."/>
+  <!-- deprecated as of CE 2.07 -->
+  <apex:attribute name="closeOnDone"    access="global" required="false" type="Boolean" default="false" description="True if a the window should be closed when user clicks done, used when guide is launched in its own window"/>
+  <apex:attribute name="nothingOnDone"  access="global" required="false" type="Boolean" description="Do nothing on done causes the browser page to stay where it is when the user hits done. Note the tab for the finished guide will however be closed."/>
+  <apex:attribute name="topLevelWindow" access="global" required="false" type="Boolean" description="If false, shows the 'open in new window' link. True means the navigator is a top level window. Default is false."/>
+  <script>
+       // iframe url used only for non-connected apps.
+       var aeRuntimeUrl = null;
+
+       // find and returns the guide frame element
+       function aeGetGuideIFrameEl() {
+           var iframeEl = null;
+           // first, check to see if canvas app container is available. if so, grab its enclosing iframe
+           var containerEl = document.getElementById('ae_pb_guideframe_container');
+           if (containerEl) {
+               var iframeElList = containerEl.getElementsByTagName("IFRAME");
+               if (iframeElList && iframeElList.length > 0) {
+                  iframeEl = iframeElList[0];
+               }
+           }
+           if (!iframeEl) {
+               // not using connect/canvas app.
+               iframeEl = document.getElementById('ae_pb_guideframe');
+           }
+           return iframeEl;      
+       }
+      
+       // this function creates the url for the frame so extra info and guide names can be properly encoded
+       function aeSetGuideFrameSize() {
+           var iframeEl = aeGetGuideIFrameEl();
+           var frameHeight = aeFrameHeight();
+           if(iframeEl && ("{!height}" !== "" || frameHeight > 10) ) {
+               frameHeight =  "{!height}" !== "" ? "{!height}" : frameHeight;
+               iframeEl.height = frameHeight;
+               if (aeRuntimeUrl) {
+                  iframeEl.src = aeRuntimeUrl;
+               }
+           } else {
+               function aeSetFrameHeightAndSource() {
+                   var iframeEl = aeGetGuideIFrameEl();
+                   var frameHeight =  aeFrameHeight();
+                   if(iframeEl && frameHeight > 10) {
+                      iframeEl.height = frameHeight;
+                      if (aeRuntimeUrl) {
+                        iframeEl.src = aeRuntimeUrl;
+                      }                      
+                   } else {
+                       // delay loading url a 250 ms if height has not been calculated yet
+                       setTimeout(aeSetFrameHeightAndSource, 250);
+                   }
+               }
+               // delay loading url a 150 ms if height has not been calculated yet
+               setTimeout(aeSetFrameHeightAndSource, 150);
+           }
+       }
+
+       // get the frame height note that this takes into account ie issues
+       function aeFrameHeight() {
+           var frameHeight = 0;
+           // the more standards compliant browsers use window.innerHeight
+           if (typeof window.innerHeight != 'undefined') {
+              frameHeight = window.innerHeight;
+           // Else if IE6-8 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
+           } else if (typeof document.documentElement != 'undefined'
+                   && typeof document.documentElement.clientHeight != 'undefined' 
+                   && document.documentElement.clientHeight != 0) {
+              frameHeight = document.documentElement.clientHeight;
+           // Else older versions of IE
+           } else { 
+              frameHeight = document.getElementsByTagName('body')[0].clientHeight;
+           }
+           return frameHeight-5;
+        }
+        
+        // called by canvas app after app has been loaded.
+        function aeOnCanvasAppLoad() {
+            aeSetGuideFrameSize();
+        }       
+                
+       // called by the non-canvas iframe. this function creates the url for the runtime.
+       function aeSetGuideFrame() {
+              // get extraInfo from component args
+              var extraInfo = "{!JSENCODE(extraInfo)}";
+              var objectType = "{!JSENCODE(objectType)}";
+              var objectId = "{!JSENCODE(objectId)}";
+              var guideName = "{!JSENCODE(guideName)}";
+              // if extra info is not supplied, then use object's name as extra info.
+              if(extraInfo === "") {
+                  // use objectName if objectType is given and it is not '_any'. In the latter case use 'Home Sales Guides' (for AeHomePageGuides).
+                  extraInfo = (objectType !== "" && objectType !== "_any") ?  "{!JSENCODE(objectName)}" : "Home Sales Guides";
+              }
+              var frameUrl = guideName ? (aeIsMobileAgent() || {!useResponsive} ? '{!mobileGuideUrl}' : '{!guideUrl}') : '{!guideNavigatorUrl}';
+              frameUrl += '?aepToken={!securityToken}'
+                     + '&host-ObjectType=' + encodeURIComponent(objectType)
+                     + '&host-ObjectId=' + encodeURIComponent(objectId)
+                     + '&host-OrganizationId={!$Organization.Id}'
+                     + '&host-SessionId={!$Api.Session_ID}'
+                     + '&host-SessionURL={!$Api.Enterprise_Server_URL_270}'
+                     + '&host-UserId={!userId}'
+                     + '&aever={!versionNumber}';
+              if(extraInfo !== "") frameUrl += '&host-ExtraInfo=' + encodeURIComponent(extraInfo);
+
+              // if guide name add elements to launch guide otherwise info for guide listing
+              if(guideName) {
+                 var guideId = aeGetGuideId(guideName);
+                 frameUrl += '&avsf_sflow_uri=project:/sf.' + guideId + '/' + guideId + '.xml';
+                 frameUrl += '&_sfMode=runtime&_sfGuideName=' + encodeURIComponent(guideName);
+                 if('{!alwaysNewGuide}' != 'true') {
+                    frameUrl += '&correlationId={!$Organization.Id}' + objectId + guideId;
+                 }
+              } else {
+                 // add conditional elements to url for guide list
+                 frameUrl += '&guidesSource=sf';
+                 // add additional query string params if non-default values are given
+                 if("{!entryIds}" !== "") frameUrl += '&entryIds=' + encodeURIComponent('{!entryIds}');
+                 if("{!match}" !== "") frameUrl += '&match=' + encodeURIComponent("{!match}");
+                 if("{!alwaysNewGuide}" === "true") frameUrl += '&alwaysNewGuide=true';        
+                 if("{!openIfOne}" === "true") frameUrl += '&openIfOne=true';       
+                 if("{!nothingOnDone}" === "true") frameUrl += '&nothingOnDone=true';
+                 if("{!showCategories}" === "false") frameUrl += '&showCategories=false';
+                 if("{!topLevelWindow}" === "true") frameUrl += '&topLevelWindow=true';
+              }
+              
+              // add user locale, timezone and currency info query string.
+              frameUrl += '&lang_sfdc={!language}';
+              frameUrl += '&lang={!locale}';
+              frameUrl += '&host-UserLocale={!locale}';
+              frameUrl += '&__currencySymbol='  + encodeURIComponent('{!JSENCODE(currencySymbol)}');
+              frameUrl += '&__timeZoneOffset='  + encodeURIComponent('{!JSENCODE(timeZoneOffset)}');
+              frameUrl += '&host-UserTimeZone=' + encodeURIComponent('{!JSENCODE(timeZoneName)}');
+
+              // assign url
+              if(guideName && aeIsMobileAgent()) {
+                 window.top.location = frameUrl; 
+              } else {
+                 aeRuntimeUrl = frameUrl;
+                 aeSetGuideFrameSize();
+              }
+       }        
+        
+       // Replace non-alphanumeric characters in guide name and make sure it starts with an alpha character
+       function aeGetGuideId(aGuideName) {
+         var guideId = aGuideName.replace(/[\W+|=^`~$<>]/g, "_");
+         var firstChar = guideId.length > 0 ? guideId.charAt(0):'_';
+         if(! ((firstChar >= 'a' && firstChar <= 'z') || (firstChar >= 'A' && firstChar <= 'Z')) ) {
+           guideId = '_' + guideId;
+         }
+         return guideId;
+       }
+       
+       // this function binds to the window event listener for messages looking for callbacks from the guide navigator
+       function aeCallbackReceiveMessage(evt) {
+           // if the event is a screen flow done then refresh the page through ajax call
+           var msg = ("" + evt.data);
+           
+           // ignore aesf-clear events
+           if (msg === "aesf-clear")
+               return;
+
+           // for done and milestone messages, check if we are being redirected or just reloaded           
+           if (msg.indexOf("aesf-done") === 0 || msg.indexOf("aesf-milestone") === 0) {
+              var redirectUrl = aeGetUrlFromDoneMessage(msg);
+           
+              // If there is url specified - redirect to it;
+              // if the topLevelWindow param is set it means we are in our own top window
+              // otherwise just reload if they didn't set nothing on done to true
+              if (redirectUrl) {
+                  window.top.location = redirectUrl;
+              } else if("{!topLevelWindow}" === "true" || "{!closeOnDone}" === "true") {
+                  window.top.close();
+              } else if(msg.indexOf("aesf-milestone") === 0 || "{!nothingOnDone}" !== "true") {
+                  var objectId = "{!JSENCODE(objectId)}";
+                  var objectType = "{!JSENCODE(objectType)}";
+                  if(objectId !== "" && objectType !== "_any") {
+                     window.parent.location.href = "https://" + window.location.host + "/" + encodeURIComponent(objectId);
+                  } else {
+                     window.location.reload();
+                  }
+              }
+           }
+       }
+              
+       /**
+        * Get redirect url from done message
+        * (NOTE: Copied directly from ae-playbook-salesguides.js) 
+        * @param aMessage "aesf-done" message
+        * @returns url to redirect to or null to refresh current page
+        */
+       function aeGetUrlFromDoneMessage(aMessage) {
+          // aMessage formats:
+          // a) refresh current page -> aesf-done|
+          // b) goto reference -> aesf-done|reference:005E0000000DzkWIAS
+          // c) goto url -> aesf-done|url:http://www.cloudextend.com
+          
+          // remove leading 'aesf-done|' or 'aesf-milestone|', end up with empty string (refresh current), reference:<id> or url:<www_url>
+          var message = aMessage.replace(/aesf-(done|milestone)\|/, "");
+          
+          // if message is empty, return null to indicate refresh current page.         
+          if (!message) {
+             return null;
+          }
+          
+          // construct url based on message contents
+          var url = "";
+          if (message.indexOf("reference:") === 0 && message.replace(/reference:/, "")) {
+             url = "https://" + window.location.host + "/" + message.replace(/reference:/, "");
+          } else if (message.indexOf("url:") === 0) {
+             url = message.replace(/url:/, "");
+          }
+          // if the url is filled in but missing a protocl fill it in with http automatically         
+          if (url && ! (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) ) {
+             url = "http://" + url;
+          }
+         
+          return url;
+       };
+       
+       // detect whether we are on a user agent which is mobile as we have a different url for launching guides directy
+       function aeIsMobileAgent() {
+          // check for mobile user agent (skip iPad since it is assumed to be equivalent to a desktop ui)
+          if (navigator && navigator.userAgent &&
+              ( navigator.userAgent.match(/.*iPhone.*/i) || 
+                navigator.userAgent.match(/.*Android.*/i) ||
+                navigator.userAgent.match(/.*BB10.*/i) ||
+                navigator.userAgent.match(/.*BlackBerry.*/i) ||
+                navigator.userAgent.match(/.*IEMobile.*/i)
+              )) {
+              return true;
+          }
+          return false;
+       }
+
+       // Subscribe to window message events.
+       // IE 8 doesn't support addEventListener method; use attachEvent method instead if
+       // addEventListener method is unavailable.
+       if (window.addEventListener){ 
+          // IE9,FF,Webkit
+         window.addEventListener('message', aeCallbackReceiveMessage, false); 
+       } else if (window.attachEvent){ 
+         // IE7/8
+         window.attachEvent('onmessage', aeCallbackReceiveMessage); 
+       }
+       // set the background to transparent
+       try {
+          document.getElementsByTagName('BODY')[0].style.backgroundColor="transparent";
+       } catch (ex) {
+       }
+   </script>
+   <apex:form rendered="{!useConnectedApp}">
+      <div id="ae_pb_guideframe_container"></div>  
+      <apex:canvasApp developerName="CloudExtendConnApp" namespacePrefix="ce4sf20_001"
+                onCanvasAppLoad="aeOnCanvasAppLoad"
+                id="ae_pb_guideframe"
+                canvasId="ae_pb_guideframe_canvas"
+                containerId="ae_pb_guideframe_container"
+                scrolling="no"
+                border="0"
+                width="{!IF(width == '', '100%', width)}"
+                height="{!IF(height == '', '450px', height)}"  
+                parameters="{'url': '{!JSENCODE(guideNavigatorUrl)}',
+                'aepToken' : '{!securityToken}',
+                'aever' : '{!versionNumber}',
+                'redirDelay' : 25,
+                'host-ObjectType': '{!JSENCODE(objectType)}',
+                'host-ObjectId': '{!JSENCODE(objectId)}',
+                'host-Name':  '{!JSENCODE(objectName)}',
+                'host-ExtraInfo': '{!JSENCODE(extraInfo)}',
+                'guideName' : '{!JSENCODE(guideName)}',
+                'topLevelWindow' : '{!IF(topLevelWindow, 'true', 'false')}',
+                'match' : '{!JSENCODE(match)}', 
+                'alwaysNewGuide' : '{!alwaysNewGuide}' ,
+                'showCategories' : '{!showCategories}',
+                'currencySymbol' : '{!JSENCODE(currencySymbol)}',
+                'timeZoneOffset' : '{!JSENCODE(timeZoneOffset)}',
+                'timeZoneName' : '{!JSENCODE(timeZoneName)}',             
+                'entryIds' :'{!entryIds}'  
+                }" />
+   </apex:form>
+   <apex:form rendered="{!NOT(useConnectedApp)}">
+      <iframe id="ae_pb_guideframe" style="border:none;" frameborder="false" scrolling="false" width="{!width}" height="{!height}" src=""/>
+      <apex:actionFunction name="refreshMeNow" action="{!refresh}"/>
+      <script>
+          // set iframe url
+          aeSetGuideFrame();    
+      </script>               
+   </apex:form>
+</apex:component>

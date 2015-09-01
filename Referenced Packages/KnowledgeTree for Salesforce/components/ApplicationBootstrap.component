@@ -1,0 +1,113 @@
+<apex:component allowDML="true" controller="ktree.RemoteController">
+  <apex:attribute name="backingController" description="Object from whose data we will find relevant documents" type="ktree.ApplicationBootstrapController" required="true"/>
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>KnowledgeTree for Salesforce</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700' rel='stylesheet' type='text/css'/>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{!URLFOR($Resource.static, 'styles/vendor.css')}"/>
+
+    <link rel="stylesheet" href="{!URLFOR($Resource.static, 'styles/main.css')}"/>
+  </head>
+  <body id="ng-app" ng-app="ktSalesforce" ng-controller="appController">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!--[if lte IE 8]>
+      <script src="{!URLFOR($Resource.static, '/components/es5-shim/js/es5-shim.js')}"></script>
+      <script src="{!URLFOR($Resource.static, '/components/json3/js/json3.min.js')}"></script>
+    <![endif]-->
+
+    <div id="top" class="scrollablePage-header">
+      <div class="navbar">
+
+        <ul ng-cloak="exp" ng-if="!isClickwallActive" class="nav navbar-nav navbar-right">
+          <li id="ktLogo">
+            <a href="#/">
+              <img class="hidden-sm hidden-md hidden-lg" src="{!URLFOR($Resource.static, '/images/header-logo.png')}"/>
+              <img class="hidden-xs" src="{!URLFOR($Resource.static, '/images/header-logo-full.png')}"/>
+            </a>
+          </li>
+          <li>
+            <message-popup></message-popup>
+          </li>
+          <li>
+            <dropdown-menu ng-controller="tagDropdownController"
+                           icon="tags"
+                           items="tags"
+                           style="ghost-gray">
+            </dropdown-menu>
+          </li>
+          <li class="navbar-search">
+            <div global-search="exp" class="global-search"></div>
+          </li>
+          <li unhide="isQuickplaysOn" class="hidden">
+            <button class="btn btn-ghost-gray"
+                    ng-click="showQuickplays()">
+              <i class="fa fa-bolt"></i>
+              <span class="hidden-xs">QuickPlays</span>
+              <i class="fa fa-angle-double-left"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <pane-alert></pane-alert>
+    </div>
+
+    <div id="asset-content" class="scrollablePage-container">
+      <div class="scrollablePage-content">
+
+        <clickwall ng-if="isClickwallActive"></clickwall>
+
+        <div ng-if="!isClickwallActive" ng-view="ng-view"></div>
+
+        <preview-modal ng-if="!isClickwallActive"></preview-modal>
+
+      </div>
+    </div>
+
+    <quickplays ng-if="!isClickwallActive && isQuickplaysOn"></quickplays>
+
+    <div kt-loadmask="exp" show="{{loading}}" text="{{loadingMessage}}" opaque="{{loadingIsOpaque}}"></div>
+
+    <script>
+      /*
+      {!backingController.configurationJavascript}
+      */
+     /* salesforce-production-js-config */
+     window.ktConfigurationValues.staticDir = '{!URLFOR($Resource.static, '/')}';
+     /**/
+    </script>
+
+    <script src="{!URLFOR($Resource.static, 'src/modules.js')}"></script>
+
+    <script type="text/javascript">
+        jQuery.browser = {};
+        (function () {
+            jQuery.browser.msie = false;
+            jQuery.browser.version = 0;
+            if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+                jQuery.browser.msie = true;
+                jQuery.browser.version = RegExp.$1;
+            }
+        })();
+    </script>
+
+    <script src="{!URLFOR($Resource.static, 'src/app.js')}"></script>
+
+    <!-- Wistia external script -->
+    <script charset="ISO-8859-1" src="//fast.wistia.com/assets/external/E-v1.js" defer=""></script>
+  </body>
+</html>
+
+</apex:component>

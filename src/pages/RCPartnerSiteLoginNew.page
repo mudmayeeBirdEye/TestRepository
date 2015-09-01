@@ -1,0 +1,31 @@
+<apex:page showheader="false" sidebar="false" standardStylesheets="false" controller="RCSiteLoginController" docType="html-5.0" cache="false">
+    <apex:composition template="RCPartnerPortalTemplateNew">
+        <apex:define name="body"> 
+            <div>
+                <apex:form id="loginForm" forceSSL="true">
+                    <h2>Login</h2>
+                    <div class="field">
+                        <label>Username</label>
+                         <apex:inputText id="username" value="{!username}" size="40"/>
+                    </div>
+                    <div class="field">
+                        <label>Password</label>
+                         <apex:inputSecret id="password" value="{!password}" size="40" />
+                    </div>
+                    <div class="ckbox">
+                        <input type="checkbox"/>
+                        <label>Remember Username</label>
+                    </div>
+                    <apex:outputPanel >
+                         <apex:pageMessages id="error" />
+                    </apex:outputPanel>
+                    <div class="buttons">
+                         <button class="btn" onclick='loginAction();return false;'><span>Login</span></button>
+                        <a href="{!$Page.RCForgotPassword}" title="Forgot your password?">Forgot your password?</a>
+                    </div>  
+                    <apex:actionfunction name="loginAction" action="{!login}" />
+                </apex:form>
+            </div>
+        </apex:define>
+    </apex:composition>  
+</apex:page>

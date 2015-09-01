@@ -1,0 +1,96 @@
+<apex:page controller="RCSupportController2012" showHeader="false" cache="true" expires="{!cacheMaxAge}">
+ 
+ <style>
+ 
+ .supportPhoneNo{
+ font-weight:bold;
+ color:#015BA7;
+ }
+  </style>
+    <apex:composition template="{!$Site.Template}">
+    <apex:define name="search">  
+      
+       <span   style="margin-left:5%;">
+           <a href="javascript:history.back()" style="color: #015BA7;">« Go Back </a>
+          </span>
+      <apex:outputPanel layout="block"><BR/><BR/>
+          <!--<div class="tab_content" style="background-color:#ffffff;">-->
+          <div class="tab_content" >
+            <div class="box_tab visible">
+                <div class="info_line phone">
+                    <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contact Support</h2>
+                    <TABLE width="100%" border="0px;" style="font-size:11pt; font-weight:normal;">
+                        <TR>
+                            <TD width="5%">&nbsp;</TD>
+                            <TD width="60%">
+                                <TABLE width="100%">
+                                    <!--<TR>
+                                        <TD colspan="3">
+                                            <b>24 hours a day, 7 days a week<BR/>
+                                            for technical, billing and account questions</b><BR/>                                     
+                                        </TD>
+                                    </TR>-->
+                                    <TR><TD colspan="3">&nbsp;</TD></TR>
+                                    <TR>
+                                        <TD ><span class="supportPhoneNo">1-888-898-4591</span><BR/>(within the United States)</TD>
+                                        <!--<TD ><span class="supportPhoneNo">1-888-855-0318</span><BR/>(within the United States)</TD>-->
+                                        <!--<TD ><span class="supportPhoneNo">605-553-9159</span><BR/>(within the United States)</TD>-->
+                                        <TD>&nbsp;</TD>
+                                        <TD><span class="supportPhoneNo">800-591-6543</span><BR/>(within Canada)</TD>
+                                        <!--<TD><span class="supportPhoneNo">605-553-9159</span><BR/>(within Canada)</TD>-->
+                                    </TR>
+                                    <TR><TD colspan="3">&nbsp;</TD></TR>
+                                 <!--   <TR>
+                                        <TD><span class="supportPhoneNo">1-925-264-3200</span><BR/>(outside the United States)</TD>
+                                        <TD>&nbsp;</TD>
+                                        <TD><span class="supportPhoneNo">0800-032-5308</span><BR/>(within the United Kingdom)</TD>
+                                    </TR> -->
+                                </TABLE>
+                            </TD>
+                            <TD align="right" valign="top">                            
+                                <!-- <TABLE>
+                                    <TR>
+                                        <TD align="center">Need help?</TD>
+                                    </TR>
+                                    <TR>
+                                        <TD align="center">
+                                            <a href="">
+                                                <img height="55" width="68" title="" alt="" src="{!URLFOR($Resource.RCSupportCss, 'images/support/inc_images/rblock_img_2.png')}" />
+                                            </a>                                                
+                                        </TD>
+                                    </TR>
+                                    <TR>
+                                        <TD align="centre">Chat with us Live!</TD>
+                                    </TR>
+                                </TABLE>     -->                           
+                            </TD>
+                        </TR>
+                        
+                        <TR>
+                            <TD width="5%">&nbsp;</TD>
+                            <TD colspan="2">
+                                <div style="border: 0px dotted;border-top:1px dotted;" />
+                            </TD>
+                        </TR>
+                    </TABLE>
+                    <span  style="font-size:10pt;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    When calling, please be prepared to provide your RingCentral Phone Number and Security Answer<br/><br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    Support Hours:<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    24/7 Customer Support for Office subscribers with 2 or more Digital Lines<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    5AM to 6PM Pacific Monday-Friday for US/Canada Fax, Mobile and Office subscribers with 1 Digital Line<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    5AM to 6PM GMT Monday-Friday for UK Fax and Mobile subscribers                          
+                    </span>
+                </div>                
+            </div>
+         </div>
+      </apex:outputPanel>
+
+    </apex:define>
+    </apex:composition>
+      
+</apex:page>

@@ -1,0 +1,267 @@
+<apex:page standardcontroller="RC_Quote_Template__c" extensions="GenerateQuoteTemplateCTRL" id="pg" >
+    <script src="{!URLFOR($Resource.ckeditor, 'ckeditor/ckeditor.js')}"></script>
+    <link rel="stylesheet" href="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery-ui.css')}" type="text/css" media="screen" />
+    <apex:includeScript value="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery-ui.min.js')}"/>
+
+    <style>
+        .display {
+            height:200px;border:1px solid gray;border-radius:5px;width:100%;margin-bottom:20px;background:bisque;
+        }
+        p {font-size:14px;}
+       
+        #overlayNew {
+            background: no-repeat scroll top center gray;
+            border: 0px solid #000000;
+            bottom: 0;
+            left: 0;
+            opacity: 0.75;
+            position: absolute;
+            top: 0;
+            display: none;
+            width: 100%;
+            z-index: 9999;
+            zIndex: 9999;
+            height:100%;
+        }
+        .ui-widget-overlay{
+            background: #aaaaaa !important;
+        }
+        .btnDiv {
+            /*width: 95%;*/
+            margin: auto;
+            border: 1px solid #A5A6A5;
+            /* min-height: 100px; */
+            margin-top: 5px;
+            //margin-bottom: 5px;
+            background: #FFF;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            /*behavior: url({!$Resource.BorderRadiusHTC});*/
+            box-shadow: 0px -48px 54px -20px #1797C0 inset;
+            -webkit-box-shadow: 0px -48px 54px -20px #1797C0 inset;
+            -moz-box-shadow: 0px -48px 54px -20px #1797C0 inset;
+            text-align: center;
+            /*padding:10px;*/
+            padding-top : 3px;
+            padding-bottom : 3px;
+            margin-bottom:10px;
+        }
+        select {
+            box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           /*width: 268px !important;*/
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+        }
+        .styled-select{
+           box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           width: 268px !important;
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+           /*height: 34px !important;*/
+           /*-webkit-appearance: none !important;*/
+        }
+        input:focus, select:focus, textarea:focus {
+            outline-size: none;
+            outline-style: none;
+            outline-color: none;
+            border-radius: 10px;
+            border: 1px solid gray;
+        }
+        p {
+            word-wrap: break-word !important;
+            width: 90% !important;
+            margin-left: 30px !important;
+        }
+        .fancybox-close { 
+            position: absolute; 
+            top: -11px; 
+            right: -16px; 
+            width: 36px; 
+            height: 36px; 
+            cursor: pointer; 
+            z-index: 8040; 
+            background-image:URL("{!URLFOR($Resource.RCSupportPortal, 'supportPortal/img/fancybox_sprite.png')}"); 
+        } 
+    </style>
+    <body>
+        <apex:form id="frm">
+            <script>
+                function showOverlay() {
+                    var o = document.getElementById('overlayNew');
+                    o.style.display = 'block';
+                }       
+                function hideOverlay() {
+                    var o = document.getElementById('overlayNew');
+                    o.style.display = 'none';                           
+                }   
+                function showDialog(){    
+                    $("#dialog-modal").dialog({
+                        width: 740,
+                        height: 400                                 
+                     });                            
+                }    
+                function renderContinueLink(obj, id) {
+                    try {
+                        for(var i = 0; i < obj.options.length; i++) {
+                            var id = obj.options[i].value;
+                            document.getElementById(id).style.display = 'none';
+                        }
+                        var selectedTemplateId = obj.options[obj.selectedIndex].value;
+                        document.getElementById(selectedTemplateId).style.display = '';
+                        /* pg:frm:j_id6_lkid*/
+                    } catch(x){alert(x);}
+                }             
+            </script>
+            <div id="overlayNew" style="text-align:center;padding-top:20px;">
+                <div class='overLay' style="display:block;z-index:99999;zIndex:99999;"></div>
+                <div class="loader-static" style='z-index:100000;zIndex:100000;'>
+                    <div class="loader-static-panel">
+                        <div style='margin-top:400px;font-weight:bold;'>
+                            <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                            <span class="waitingDescription" style="font-weight:bold; font-size:20px; position:absolute;z-index:10; color:white;">Please Wait...</span>
+                        </div>
+                    </div>
+                    <div class="loader-fix"></div>
+                </div>
+            </div>
+            <apex:outputpanel id="addSection" >
+                <div id="addSectionPanel" style="display:none;position:absolute;width:100%;height:100%;top:0px;left:0px;">
+                    <div class='overLay' style="z-index:99;zIndex:99;position: absolute;width:100%;height:100%;background: black;opacity: 0.5;"></div>
+                    <div style="z-index: 999;position: fixed;background: #f8f8f8;border: 1px solid gray;border-radius: 5px;top: 30%;right:25%;left: 25%;padding:10px;">
+                        <div > 
+                            <table style="width:100%;">
+                                <tr>
+                                    <td>
+                                        <b>Quote: </b> 
+                                        <apex:inputField label="Quote" value="{!rcTemplateObj.RC_Quote__c}" styleclass="styled-select">
+                                            <!-- <apex:actionsupport event="onchange" rerender="">
+                                                    <apex:param assignTo="{!previewId}" name="quoteid" value="{!rcTemplateObj.RC_Quote__c}" />
+                                                    <apex:param name="recordType" value="q" />
+                                                </apex:actionsupport> -->
+                                        </apex:inputField>
+                                        <!-- <a id="continueLink" href="/apex/viewTemplate?id={!IF(rcTemplateObj != null && rcTemplateObj.id != null, rcTemplateObj.id, null)}&quoteid={!rcTemplateObj.RC_Quote__c}" class="btn" target="_blank">Continue</a> -->
+                                        <apex:outputpanel id="theCommandLink" >
+                                            <apex:commandLink action="{!onPreview}" value="Continue" target="_blank" styleclass="btn" style="padding:5px;text-decoration:none;"/>
+                                        </apex:outputpanel>
+                                    </td>
+                                </tr>
+                            </table>
+                            <a class="fancybox-item fancybox-close" href="javascript:void(0)" onclick="document.getElementById('addSectionPanel').style.display='none';" title="Close"></a>
+                        </div> 
+                    </div>
+                </div>
+            </apex:outputpanel>
+            <!-- <apex:actionFunction name="saveTemplateAction" action="{!saveTemplate}" reRender="frm" status="Ajaxstatus">
+                <apex:param name="param1" assignTo="{!strHeader}" value=""/>
+                <apex:param name="param2" assignTo="{!strLineItme}" value=""/>
+                <apex:param name="param3" assignTo="{!strCondition}" value=""/>
+                <apex:param name="param4" assignTo="{!strTerms}" value=""/>
+            </apex:actionFunction>
+            <apex:actionFunction name="previewAction" action="{!onPreview}" reRender="frm" status="Ajaxstatus"/> -->
+            <apex:actionStatus id="Ajaxstatus" onStart="showOverlay();"  onstop="hideOverlay();"/>
+            
+            <apex:pageBlock mode="maindetail" id="pb">
+                <apex:outputPanel id="msgPanel">
+                    <apex:pageMessages ></apex:pageMessages>  
+                </apex:outputPanel>
+                <div class="btnDiv" id="topBtnLevel" >
+                    <apex:commandButton value="Save Template" action="{!saveTemplate}" style="padding:10px;" rerender="pb,sectionPanel,msgPanel"/>
+                    <!-- <apex:commandButton value="Preview" action="{!onPreview}" style="padding:10px;"/> -->
+                    <!-- <apex:commandLink action="{!onPreview}" value="Preview" id="theCommandLink" target="_blank" styleclass="btn" style="padding:9px;text-decoration:none;"/> -->
+                    <a href="javascript:void(0)" onclick="document.getElementById('addSectionPanel').style.display=''" class="btn" style="padding:9px;text-decoration:none;">Preview</a>
+                     <!-- <apex:actionRegion id="area51" renderRegionOnly="false">
+                        <apex:commandButton value="Preview" action="{!onPreview}" style="padding:10px;"/>
+                     </apex:actionRegion>
+                    <apex:commandButton value="Cancel" style="padding:10px;"/> -->
+                </div> 
+                <div id="topBtnLevel" >
+                    <div style="text-align:left;padding-left:20px;">
+<!--                    <b>Template Name:</b> <apex:inputField value="{!rcTemplateObj.Name}" styleclass="styled-select" style="width:300px !important;" required="true"/> -->
+                        <table style="text-align:left;padding-left:20px;width:100%;">
+                            <tr>
+                                <td style="width:50%;"><b>Template Name:</b> <apex:inputField value="{!rcTemplateObj.Name}" styleclass="styled-select" style="width:300px !important;" required="true"/></td>
+                                <td><b>Description:</b><br/><apex:inputField value="{!rcTemplateObj.Description__c}" styleclass="styled-select"/></td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%;"><b>Brand:</b> <apex:inputField value="{!rcTemplateObj.Brand__c}" required="true"/></td>
+                                <td><b>Type:</b> <apex:inputField value="{!rcTemplateObj.Type__c}" required="true"/></td>
+                            </tr>
+                           <!-- -------------------------------------------------------As/simplion/8/12/2014 start--------------------------------- --> 
+                            <tr>
+                                <td style="width:50%;">
+	                                <b>Sort Order:</b> <apex:inputField value="{!rcTemplateObj.Sorting_Order__c}" styleclass="styled-select" style="width:300px !important;" required="true"/>
+	                                <br/>
+	                                <apex:outputlabel rendered="{!!ISBLANK(rcTemplateObj.Version__c)}"><b>Version:</b></apex:outputlabel><br/> <apex:outputtext value="{!rcTemplateObj.Version__c}" styleclass="styled-select" style="width:300px !important;display: block;background: rgb(228, 228, 228);"  rendered="{!!ISBLANK(rcTemplateObj.Version__c)}"/>
+	                                <br/>
+	                                <b>Active:</b> <apex:inputField value="{!rcTemplateObj.Active__c}"  />
+                                </td>
+                               <td style="width:50%;"><br/><b>Opportunity Type:</b> <apex:inputField value="{!rcTemplateObj.Opportunity_Record_Type__c}" required="true" /></td>
+                            </tr>
+                            
+                            <!-- -------------------------------------------------------As/simplion/8/12/2014 ends--------------------------------- -->
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <div class="btnDiv" id="topBtnLevel">
+                        Sections:
+                        <apex:outputpanel id="existingSections" rendered="{!IF(sectionList != null && sectionList.size != 0, true, false)}">
+                            <apex:selectList value="{!selectedSection}" size="1">
+                                <apex:selectOptions value="{!sectionList}"/>
+                            </apex:selectList>
+                        </apex:outputpanel>
+                        Position: <apex:inputtext value="{!position}" styleclass="styled-select"/>
+                        <apex:commandbutton styleclass="btn" action="{!addTemplateSection}" value="Add" rerender="sectionPanel,msgPanel,pb" style="padding:7px !important;"/>
+                    </div>
+                </div> 
+                <apex:outputpanel id="sectionPanel" rendered="{!IF(sectionWrapperList.size != 0, 'true', 'false')}">
+                    <apex:variable var="index" value="0" />
+                    <apex:repeat var="section" value="{!sectionWrapperList}" >
+                        <div style="width:98%;overflow:auto;border:1px solid lightgray; border-radius:5px; padding:10px; margin-bottom:10px;">
+                            <!-- <span style="font-weight:bolder;"><a href="apex/AddTemplateSection?id={!section.sectionId}" style="color: #015ba7;">Edit</a> | <a href="#" style="color: #015ba7;">Remove</a></span> -->
+                            <div style="font-weight:bolder;background: white;border-radius: 5px;box-shadow: 0px -48px 54px -20px rgb(167, 167, 254) inset;">
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td style="text-align:left;vertical-align:middle;">
+                                            <a href="/apex/AddTemplateSection?id={!section.sectionId}&retURL=/apex/GenerateQuoteTemplate?id={!rcTemplateObj.id}" style="color: #015ba7;">Edit</a><span> | </span> 
+                                            <apex:commandlink style="color: #015ba7;" action="{!deleteTemplateSection}" rerender="pb">
+                                                <apex:param name="removalSectionId" assignTo="{!removalSectionId}" value="{!section.sectionId}"/>
+                                                <apex:param name="currentIndex" assignTo="{!currentIndex}" value="{!VALUE(index)}"/>
+                                                <apex:variable var="index" value="{!VALUE(index)+1}" />
+                                            Remove </apex:commandlink><apex:inputtext style="width:30px !important;" value="{!section.positionIndex}" styleclass="styled-select"/>
+                                        </td>
+                                        <td style="text-align:right;vertical-align:middle;font-size:15px;">
+                                            <a href="/apex/AddTemplateSection?id={!section.sectionId}&retURL=/apex/GenerateQuoteTemplate?id={!rcTemplateObj.id}" style="color: #015ba7;">{!section.sectionName}</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <apex:outputtext escape="false" value="{!section.content}"/>
+                        </div>
+                    </apex:repeat>
+                </apex:outputpanel>
+            </apex:pageBlock>
+        </apex:form> 
+        <script>
+            function showPreview(){
+                previewAction();
+            }
+        </script>
+    </body>    
+</apex:page>

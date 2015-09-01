@@ -1,0 +1,705 @@
+<apex:page standardController="Opportunity"
+    extensions="OpportunityClosedWizard">
+    <apex:stylesheet value="{!URLFOR($Resource.Upsell_Style)}" />
+    <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.RCBlockUI, 'blockUI/js/jquery.blockUI.js')}" />
+    <style>
+.overlay {
+    background-color: black;
+    opacity: 0.6;
+    /* Generic for Major browsers */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    /* IE 5-7 */
+    filter: alpha(opacity =      
+                                                                 
+                60);
+    /* Netscape */
+    -moz-opacity: 0.6;
+    /* Safari 1.x */
+    -khtml-opacity: 0.6;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    zIndex: 99;
+}
+
+.fancybox-close {
+    position: absolute;
+    top: -30px;
+    right: 270px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    z-index: 99999;
+    background-image:
+        url('http://ringcentral.box5.cs12.force.com/RCSupportPortal/resource/1365653662000/RCSupportPortal/supportPortal/img/fancybox_sprite.png');
+}
+
+div.ex {
+    box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+    background: #f8f8f8;
+    /*border: 1px solid black;*/
+    /*border-radius: 10px;*/
+    outline: none;
+    /* margin-left: 250px; */
+    width: 100%;
+    /* padding: 45px; */
+    padding: 20px;
+}
+
+.upperdiv {
+    width: 100%;
+    height: 60px;
+    background-color: white;
+    height: 60px;
+    /*border: 1px solid black;*/
+    padding-left: 20px;
+    padding-right: 20px;
+    /* margin-left: 21%; */
+    box-shadow: 0px 0px 35px 5px lightgray inset;
+    /*border-radius: 10px;*/
+}
+
+.formLabel { /*color: #363636;*/
+    color: rgb(49, 79, 79);
+    font-size: 15px;
+    font-family: arial, verdana, geneva;
+    font-weight: bold;
+    /*padding: 8px;*/
+    text-align: left;
+    text-transform: none;
+}
+
+.formInputField {
+    color: #363636;
+    font: normal 13px/18px Arial;
+    padding: 1px;
+    padding-left: 5px;
+    text-transform: none;
+    width: 190px;
+    height: 20px;
+    outline: none;
+    /* border: solid 2px #999; */
+    border-radius: 5px;
+}
+
+.btnDiv { /*width: 100%;*/
+    margin: auto;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    /* border: 1px solid #A5A6A5;*/
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* background: #FFF !important;*/
+    -moz-border-radius: 11px;
+    -webkit-border-radius: 11px;
+    border-radius: 11px;
+    /* -webkit-box-shadow: 0px -71px 101px -19px #DEEBEF inset;*/
+    -moz-box-shadow: 0px -71px 101px -19px #DEEBEF inset;
+    text-align: center;
+}
+
+.btn {
+    color: #084B8A !important;
+    background-color: #E16222 !important;
+    border: 1px solid #A5A6A5 !important;
+    padding: 9px !important;
+    vertical-align: center;
+}
+
+.btnDivNew { /*width: 95%;*/
+    margin: auto;
+    border: 1px solid skyblue;
+    /* min-height: 100px; */
+    margin-top: 5px; //
+    margin-bottom: 5px;
+    background: #FFF !important;
+    text-align: center;
+    /*padding:10px;*/
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-left: 9px;
+}
+
+.bPageBlock .pbTitle {
+    width: auto !important;
+}
+
+.implementationButton {
+    width: 100px;
+    height: 25px;
+    background-color: #e8e8e9 !important;
+    padding: 4px 3px !important;
+}
+
+.MessageLeadSource {
+    left: 1px;
+    right: 1px;
+    margin-top: 15px;
+    max-height: 130px;
+    overflow: auto;
+    border: 1px solid rgb(51, 153, 255);
+    background-color: rgb(252, 252, 204);
+    border-radius: 4px;
+    padding: 6px 8px 6px 6px;
+    margin-left: 20px;
+    margin-right: 20px;
+    min-width: 276px;
+    padding-right: 51px;
+    
+}
+
+.popup {
+    background-color: white;
+    border-width: 2px;
+    border-style: solid;
+    z-index: 9999;
+    left: 50%;
+    padding: 10px;
+    position: absolute;
+    width: 500px;
+    margin-left: -250px;
+    top: 80px;
+}
+
+.popupBg {
+    background-color: black;
+    opacity: 0.20;
+    filter: alpha(opacity =           70);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+}
+</style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            fnshowSubSectionOfWhoDidWeWin();
+        });
+
+        function fnremoveVal() {
+            var removeValue = '';
+            $(".reasonSelection").each(function() {
+                var isChecked = $(this).attr('checked');
+                if (!isChecked) {
+                    removeValue = removeValue + '###' + $(this).val();
+                }
+            });
+            $("#strremoveWhoDidWeWin").val(removeValue);
+        }
+
+        function yesCheckedFields() {
+            $('.yesChecked').each(function() {
+                $(this).attr('checked', true);
+            });
+        }
+
+        function fnshowSubSectionOfWhoDidWeWin($fieldRef) {
+            var fieldVal = $fieldRef.val();
+            var wonAllCheck = $("#WonReason-All").attr('checked');
+            var serviceCheck = $("#ServicesandFeatures").attr('checked');
+            var integrationCheck = $("#Integrations").attr('checked');
+            var isChecked = false;
+
+            if (wonAllCheck) {
+                $("#ServicesandFeatures").attr('checked', false);
+                $("#Integrations").attr('checked', false);
+                $("#ServicesandFeatures").attr('disabled', true);
+                $("#Integrations").attr('disabled', true);
+                isChecked = true;
+            } else {
+                $("#ServicesandFeatures").attr('disabled', false);
+                $("#Integrations").attr('disabled', false);
+            }
+
+            if ((serviceCheck || integrationCheck) && !isChecked) {
+                $("#WonReason-All").attr('checked', false);
+                $("#WonReason-All").attr('disabled', true);
+            } else {
+                $("#WonReason-All").attr('disabled', false);
+            }
+
+            $("#strWhoDidWeWin").val(fieldVal);
+            fnremoveVal();
+            showSubSectionOfWhoDidWeWin();
+        }
+
+        function showOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'visible';
+        }
+
+        function hideOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'hidden';
+        }
+        $(function() {
+            $
+                    .blockUI({
+                        message : '<div class="preloader"><img src="'
+                                + '{!URLFOR($Resource.loading)}'
+                                + '" /><div align="center" id="block-ui-msg"><span id="firstmsg">Please wait</span></div></div>',
+                        css : {
+                            padding : '0',
+                            margin : '0',
+                            width : '500px',
+                            border : 'none',
+                            height : '200px',
+                            left : '32%',
+                            top : '30%',
+                            background : 'none'
+                        }
+                    });
+
+            $(window).load(function() {
+                $.unblockUI();
+            });
+        });
+
+        /*  $('.reasonSelection input:radio').live(
+                    'click',
+                    function() {
+                        $('.reasonSelection input:radio').filter(':checked').not(
+                                this).removeAttr('checked');
+                    });*/
+    </script>
+    <apex:pageMessages escape="false" id="error" />
+    <apex:form id="formclosed">
+      
+       
+        
+            <div id="overlay" style="text-align: center; padding-top: 190px;">
+                <apex:image value="{!$Resource.loading}"></apex:image>
+            </div>
+            <apex:PageBlock id="pageBlock">
+
+                <div class="btnDivNew">
+                    <apex:outputpanel id="btnsectiontop">
+                        <apex:commandButton action="{!OpportunityUpdate}" value="Update"
+                            rerender="btnsectiontop,btnsection,errorMsg1,error,implementationScheduler,formclosed"
+                            status="Ajaxstatus5" style="margin-left:5px;margin-right:5px"
+                            onComplete="yesCheckedFields();" />
+                        <apex:commandButton action="{!cancel}" value="Cancel"
+                            id="btnCanceltop" />
+                        <apex:actionStatus id="Ajaxstatus5" onStart="showOverlay();"
+                            onstop="hideOverlay();" />
+                    </apex:outputpanel>
+                </div>
+                <apex:PageBlockSection id="cancellationreason" columns="1">
+                    <apex:outputpanel id="mainpanel">
+                        <apex:outputPanel id="errorMsg1">
+                            <!-- --1.{!tempList}--2.{!toshowerrorMsg}  -->
+                            <apex:dataTable value="{!tempList}" var="a" id="theTable1"
+                                rendered="{!toshowerrorMsg}" styleClass="centerAlign"
+                                style="width:100%;margin-bottom:5px;background-color: #FFFF99; font-family:TRebuchet MS;font-weight: bold;
+                                border:2.5px solid #32588E;-moz-border-radius:9px 9px 9px 9px;border-radius:9px 9px 9px 9px;vertical-align:middle;">
+                                <apex:column id="thecolumn1"
+                                    style="vertical-align:middle;width:15%;text-align:center;height:85px;">
+                                    <apex:image value="{!$Resource.WarningRed}" width="48"
+                                        height="40" style="padding:5px" />
+                                </apex:column>
+                                <apex:column id="thecolumn2"
+                                    style="vertical-align:middle;padding-bottom: 5px;padding-top: 5px;">
+                                    <apex:repeat value="{!errorMsgList}" var="errorvalue">&bull;
+                                    <apex:outputText style="padding:5px;" escape="false" value="{!errorvalue}">
+                                        </apex:outputText>
+                                        <br />
+                                    </apex:repeat>
+                                </apex:column>
+                            </apex:dataTable>
+                        </apex:outputPanel>
+                        <apex:outputpanel id="tdw">
+                            <div>
+                                <table border="0" cellpadding="0" cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="pbTitle">
+                                                <h2 class="mainTitle" style="font-size: 20px;">Opportunity
+                                                    Close</h2></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <table width="100%" border="0"
+                                    style="border: 1px solid #F98400; box-shadow: 0px 0px 20px 0px #F98400 inset;"
+                                    cellpadding="5px" cellspacing="5px;">
+                                    <tr>
+                                        <td rowspan="7">
+                                            <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                <!--<tr>
+                                            <td>
+                                                <apex:OutputLabel style="font-weight:Bold;" value="Downgrade Details" for=""></apex:OutputLabel>&nbsp;
+                                            </td>
+                                            </tr>-->
+                                                <tr>
+                                                    <td style="border: 1px solid #F98400; background: white;">
+                                                        <table>
+                                                            <tr>
+                                                                <td><apex:OutputLabel style="font-weight:Bold;text-decoration:underline;"
+                                                                        value="Who did we beat?" for=""></apex:OutputLabel>&nbsp;
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><apex:selectRadio value="{!strSelectedWhoDidWeBeat}"
+                                                                        layout="pageDirection" styleClass="reasonSelection">
+                                                                        <apex:actionSupport event="onclick"
+                                                                            reRender="subsectionWhoDidWeBeat,Other_WhoDidWeBeat,errorMsg1"
+                                                                            action="{!showSubSectionOfWhoDidWeBeat}"
+                                                                            status="Ajaxstatus5" />
+                                                                        <apex:selectOptions value="{!WhoDidWeBeat}" />
+                                                                    </apex:selectRadio></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><apex:outputPanel id="Other_WhoDidWeBeat">
+                                                                        <apex:outputpanel rendered="{!toOtherWhoDidWeBeat}">
+                                                                            <span style="Color: Red;">* </span>
+                                                                        </apex:outputpanel>
+                                                                        <apex:inputText Value="{!strsectiontOtherWhoDidWeBeat}"
+                                                                            rendered="{!toOtherWhoDidWeBeat}" />
+                                                                    </apex:outputPanel>
+                                                                </td>
+                                                            </tr>
+                                                        </table></td>
+                                                </tr>
+                                            </table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><apex:outputPanel id="subsectionWhoDidWeBeat">
+                                                <apex:outputPanel rendered="{!toshowHostedPBX}">
+                                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                        <tr>
+                                                            <td style="border: 1px solid #F98400; background: white;">
+                                                                <table>
+                                                                    <tr>
+                                                                        <th><u>Hosted PBX </u></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><apex:selectRadio value="{!strsectedHostedPBXdetail}"
+                                                                                layout="pageDirection">
+                                                                                <apex:selectOptions value="{!HostedPBX}" />
+                                                                                <apex:actionSupport event="onclick"
+                                                                                    reRender="OtherOnprePBX_HostedPBX,errorMsg1"
+                                                                                    action="{!showtoOtherHostedPBX}"
+                                                                                    status="Ajaxstatus5" />
+                                                                            </apex:selectRadio></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><apex:outputPanel id="OtherOnprePBX_HostedPBX">
+                                                                                <apex:outputpanel rendered="{!toOtherHostedPBX}">
+                                                                                    <span style="Color: Red;">* </span>
+                                                                                </apex:outputpanel>
+                                                                                <apex:inputText Value="{!strvalOtherHostedPBX}"
+                                                                                    rendered="{!toOtherHostedPBX}"
+                                                                                    style="margin-left: 30px;" />
+                                                                            </apex:outputPanel></td>
+                                                                    </tr>
+                                                                </table></td>
+                                                        </tr>
+                                                    </table>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!toshowOnPremisePBX}">
+                                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                        <tr>
+                                                            <td style="border: 1px solid #F98400; background: white;">
+                                                                <table>
+                                                                    <tr>
+                                                                        <th><u>On-Premise PBX </u></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><apex:selectRadio value="{!strsectedOnPremisePBXdetail}"
+                                                                                layout="pageDirection">
+                                                                                <apex:selectOptions value="{!OnPremisePBX}" />
+                                                                                <apex:actionSupport event="onclick"
+                                                                                    reRender="Other_OnPremisePBX,errorMsg1"
+                                                                                    action="{!showtoOtherOnPremisePBX}"
+                                                                                    status="Ajaxstatus5" />
+                                                                            </apex:selectRadio></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><apex:outputPanel id="Other_OnPremisePBX">
+                                                                                <apex:outputpanel rendered="{!toOtherOnPremisePBX}">
+                                                                                    <span style="Color: Red;">* </span>
+                                                                                </apex:outputpanel>
+                                                                                <apex:inputText Value="{!strvalOtherOnPremisePBX}"
+                                                                                    rendered="{!toOtherOnPremisePBX}"
+                                                                                    style="margin-left: 30px;" />
+                                                                            </apex:outputPanel>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table></td>
+                                                        </tr>
+                                                    </table>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel></td>
+                                    </tr>
+                                </table>
+                                <table width="100%" border="0"
+                                    style="border: 1px solid #F98400; box-shadow: 0px 0px 20px 0px #F98400 inset;"
+                                    cellpadding="5px" cellspacing="5px;">
+                                    <tr>
+                                        <td rowspan="7">
+                                            <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                <tr>
+                                                    <td style="border: 1px solid #F98400; background: white;">
+                                                        <table>
+                                                            <tr>
+                                                                <td><apex:OutputLabel style="font-weight:Bold;text-decoration:underline;"
+                                                                        value="Who/What are we replacing?" for=""></apex:OutputLabel>&nbsp;
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><apex:selectRadio value="{!strSelectedWhoDidWeBeat1}"
+                                                                        layout="pageDirection" styleClass="reasonSelection">
+                                                                        <apex:actionSupport event="onclick"
+                                                                            reRender="subsectionWhoDidWeBeat1,errorMsg1"
+                                                                            action="{!showSubSectionOfWhoDidWeBeat1}"
+                                                                            status="Ajaxstatus5" />
+                                                                        <apex:selectOptions value="{!WhoWhatAreWeReplacing}" />
+                                                                    </apex:selectRadio></td>
+                                                            </tr>
+                                                        </table></td>
+                                                </tr>
+                                            </table></td>
+                                    </tr>
+                                    <tr>
+                                        <td><apex:outputPanel id="subsectionWhoDidWeBeat1">
+                                                <apex:outputPanel rendered="{!toshowHostedPBX1}">
+                                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                        <tr>
+                                                            <td style="border: 1px solid #F98400; background: white;">
+                                                                <table>
+                                                                    <tr>
+                                                                        <th><u>Hosted PBX </u></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><apex:selectRadio value="{!strsectedHostedPBXdetail1}"
+                                                                                layout="pageDirection">
+                                                                                <apex:selectOptions value="{!HostedPBX}" />
+                                                                                <apex:actionSupport event="onclick"
+                                                                                    reRender="OtherOnprePBX_HostedPBX1,errorMsg1"
+                                                                                    action="{!showtoOtherHostedPBX1}"
+                                                                                    status="Ajaxstatus5" />
+                                                                            </apex:selectRadio></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><apex:outputPanel id="OtherOnprePBX_HostedPBX1">
+                                                                                <apex:outputpanel rendered="{!toOtherHostedPBX1}">
+                                                                                    <span style="Color: Red;">* </span>
+                                                                                </apex:outputpanel>
+                                                                                <apex:inputText Value="{!strvalOtherHostedPBX1}"
+                                                                                    rendered="{!toOtherHostedPBX1}"
+                                                                                    style="margin-left: 30px;" />
+                                                                            </apex:outputPanel></td>
+                                                                    </tr>
+                                                                </table></td>
+                                                        </tr>
+                                                    </table>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!toshowOnPremisePBX1}">
+
+                                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                        <tr>
+                                                            <td style="border: 1px solid #F98400; background: white;">
+                                                                <table>
+                                                                    <tr>
+                                                                        <th><u>On-Premise PBX </u></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><apex:selectRadio value="{!strsectedOnPremisePBXdetail1}"
+                                                                                layout="pageDirection">
+                                                                                <apex:actionSupport event="onclick"
+                                                                                    reRender="OtherOnprePBX1,errorMsg1"
+                                                                                    action="{!showtoOtherOnPremisePBX1}"
+                                                                                    status="Ajaxstatus5" />
+                                                                                <apex:selectOptions value="{!OnPremisePBX1}" />
+                                                                            </apex:selectRadio></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><apex:outputPanel id="OtherOnprePBX1">
+                                                                                <apex:outputpanel rendered="{!toOtherOnPremisePBX1}">
+                                                                                    <span style="Color: Red;">* </span>
+                                                                                </apex:outputpanel>
+                                                                                <apex:inputText Value="{!strvalOtherOnPremisePBX1}"
+                                                                                    rendered="{!toOtherOnPremisePBX1}"
+                                                                                    style="margin-left: 30px;" />
+                                                                            </apex:outputPanel></td>
+                                                                    </tr>
+                                                                </table></td>
+                                                        </tr>
+                                                    </table>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel></td>
+                                    </tr>
+                                </table>
+                                <table width="100%" border="0"
+                                    style="border: 1px solid #F98400; box-shadow: 0px 0px 20px 0px #F98400 inset;"
+                                    cellpadding="5px" cellspacing="5px;">
+                                    <tr>
+                                        <td rowspan="7">
+
+                                            <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                <tr>
+                                                    <td style="border: 1px solid #F98400; background: white;">
+
+                                                        <table>
+                                                            <tr>
+                                                                <td><apex:OutputLabel style="font-weight:Bold;text-decoration:underline;"
+                                                                        value="Why Did We win?" for=""></apex:OutputLabel>&nbsp;
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><div style="margin-left: 15px;">
+                                                                        <apex:repeat value="{!WhoDidWeWin}" var="obj">
+                                                                            <input type="checkbox" id="{!mapClass[obj.value]}"
+                                                                                value="{!obj.value}"
+                                                                                class="reasonSelection {!if(mapisChecked[obj.value],'yesChecked','')}"
+                                                                                onclick="javascript:fnshowSubSectionOfWhoDidWeWin($(this));" />{!obj.value}<br />
+                                                                        </apex:repeat>
+                                                                    </div> <input type="hidden" name="strWhoDidWeWin"
+                                                                    id="strWhoDidWeWin" /> <input type="hidden"
+                                                                    name="strremoveWhoDidWeWin" id="strremoveWhoDidWeWin" />
+                                                                    <apex:actionFunction name="showSubSectionOfWhoDidWeWin"
+                                                                        reRender="subsectionWhoDidWeWin,subsectionWhoDidWeWin23,subsectionWhoDidWeWinee,errorMsg1"
+                                                                        action="{!showSubSectionOfWhoDidWeWin}"
+                                                                        status="Ajaxstatus5" />
+                                                                </td>
+                                                            </tr>
+                                                        </table></td>
+                                                </tr>
+                                            </table></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+											 <apex:outputPanel id="subsectionWhoDidWeWin23">
+                                                <apex:outputPanel rendered="{!toshowWonReasonServiceAndFeatures}">
+
+                                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                        <tr>
+                                                            <td style="border: 1px solid #F98400; background: white;">
+                                                                <table>
+                                                                    <tr>
+                                                                        <th><u> Services and Features </u></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><apex:selectCheckboxes value="{!lstSelectedWonReasonServiceAndFeatures}"
+                                                                                layout="pageDirection">
+                                                                                <apex:selectOptions value="{!WonReasonServiceAndFeatures}" />
+
+                                                                            </apex:selectCheckboxes>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table></td>
+                                                        </tr>
+                                                    </table>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel> 
+											<apex:outputPanel id="subsectionWhoDidWeWin">
+                                                <apex:outputPanel rendered="{!toshowWonReasonIntegrations}">
+
+                                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                        <tr>
+                                                            <td style="border: 1px solid #F98400; background: white;">
+                                                                <table>
+                                                                    <tr>
+                                                                        <th><u> Integrations </u></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><apex:selectCheckboxes value="{!lstSelectedWonReasonIntegrations}"
+                                                                                layout="pageDirection">
+                                                                                <apex:selectOptions value="{!WonReasonIntegrations}" />
+                                                                            </apex:selectCheckboxes></td>
+                                                                    </tr>
+                                                                </table></td>
+                                                        </tr>
+                                                    </table>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+											<apex:outputPanel id="subsectionWhoDidWeWinee">
+                                                <apex:outputPanel rendered="{!toshowWonReasonAll}">
+                                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                        <tr>
+                                                            <td style="border: 1px solid #F98400; background: white;">
+                                                                <table>
+                                                                    <tr>
+                                                                        <th><u> Won Reason-All </u></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><apex:selectCheckboxes value="{!lstSelectedWonReasonAll}"
+                                                                                layout="pageDirection">
+                                                                                <apex:selectOptions value="{!WonReasonAll}" />
+                                                                            </apex:selectCheckboxes></td>
+                                                                    </tr>
+                                                                </table></td>
+                                                        </tr>
+                                                    </table>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+										</td>
+                                    </tr>
+
+
+                                </table>
+
+
+                            </div>
+                        </apex:outputpanel>
+                    </apex:outputpanel>
+                </apex:PageBlockSection>
+                <apex:pageBlockSection >
+                </apex:pageBlockSection>
+                <div class="btnDivNew">
+                    <apex:outputpanel id="btnsection">
+                        <apex:commandButton action="{!OpportunityUpdate}" value="Update"
+                            rerender="btnsectiontop,btnsection,errorMsg1,error,implementationScheduler,formclosed"
+                            status="Ajaxstatus5" style="margin-left:5px;margin-right:5px"
+                            onComplete="yesCheckedFields();" />
+                        <apex:commandButton action="{!cancel}" value="Cancel"
+                            id="btnCancelbottom" />
+                    </apex:outputpanel>
+                </div>
+                <apex:outputpanel rendered="{!toShowImplementationScheduler}"
+                    id="implementationScheduler">
+                    <div class="overlay"></div>
+                    <div
+                        style="position: fixed; z-index: 99999; top: 15%; left: 20%; width: 55%;">
+                        <div class="upperdiv" align="center">
+                            <br /> <b><apex:outputpanel style="font:Bold 25px arial;"> Schedule an Appointment ? </apex:outputpanel>
+                            </b>
+                        </div>
+                        <div class="ex" align="center" style="width: 100%;">
+                            <div style="width: 100%;">
+                                <span class="formLabel" style="font-size: 18px"> Would
+                                    you like to schedule an Implementation Appointment for this
+                                    Customer ? </span>
+                            </div>
+                            <div style="height: 20px">&nbsp;</div>
+                            <div>
+                                <apex:outputLabel value="Most Recent Implementation Contact"
+                                    styleClass="formLabel" style="padding-right: 5%;" />
+                                <apex:inputField value="{!holdOpp.Primary_Opportunity_Contact__c}"
+                                    styleClass="formInputField" />
+                            </div>
+                            <div style="height: 20px">&nbsp;</div>
+                            <div>
+                                <apex:commandButton value="Yes"
+                                    onclick="window.open('/apex/Implementation_Scheduler?contactId={!implementationContact}', '_self');return false;"
+                                    style="width: 100px;height: 25px;background-color: #e8e8e9 !important;padding: 4px 3px !important;" />
+                                <apex:commandButton value="No"
+                                    onclick="window.open('/{!opportunityObj.Id}', '_self');return false;"
+                                    style="width: 100px;height: 25px;background-color: #e8e8e9 !important;padding: 4px 3px !important;" />
+                            </div>
+                        </div>
+                    </div>
+                    <a class="fancybox-close" href="/{!opportunityObj.Id}"
+                        title="Close"></a>
+                </apex:outputpanel>
+            </apex:PageBlock>
+  </apex:form>
+</apex:page>

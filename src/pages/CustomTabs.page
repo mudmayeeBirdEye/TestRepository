@@ -1,0 +1,463 @@
+<apex:page showHeader="false" sidebar="false" controller="CustomTabsController">
+<title>Salesforce.com-Enterprise Edition</title>
+<style>
+    #para1
+    {
+        text-align:left;
+        
+        border-style:solid;
+        font-size:12px;
+        border-width:15px;
+        padding:10px;
+        Background-color:lightYellow;
+        font-family:arial;
+        height:245px;
+        border: 1px solid Red;
+        border-radius:20px;
+    } 
+body {
+    background: #1797C0 url('/img/alohaSkin/gradient_body.png') repeat-x;
+    
+}
+body, td{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #222;
+    font-size: 12px;
+}
+body #AppBodyHeader1 {
+    background-image: none;
+}
+.bPageHeader td.left {
+    background: url("/img/alohaSkin/appHeader_l.png") no-repeat scroll left bottom transparent;
+}
+
+#AppBodyHeader1 .phHeader {
+    background-color: #1797C0;
+}
+#AppBodyHeader1 .phHeader {
+    margin-bottom: 10px;
+}
+.bPageHeader .phHeader {
+    background-position: right top;
+    background-repeat: no-repeat;
+}
+.bPageHeader .phHeader, .tabsNewBar {
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+ td.left {
+    width: 230px;
+}
+.bPageHeader td.left {
+    background: url("/img/alohaSkin/appHeader_l.png") no-repeat scroll left bottom transparent;
+}
+
+.bPageHeader .phHeader td {
+    vertical-align: top;
+}
+/*
+.bPageHeader, .bPageHeader td.left {
+    background-image: url("/img/bgTop.gif");
+    background-position: left top;
+    background-repeat: repeat-x;
+}
+*/
+/*
+body, td {
+    color: #333333;
+    margin: 0;
+}
+*/
+.tabsNewBar {
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.tabsNewBar .tabNavigation {
+    background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+    margin: 0 5px;
+    padding: 3px 0 0;
+    position: relative;
+}
+.tabNavigation {
+    font-family: 'Verdana','Geneva',sans-serif;
+    font-size: 91%;
+    margin-bottom: 6px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+.tabsNewBar .tabNavigation .tabBarLeft {
+    background: url("/img/alohaSkin/tabbar_sprite.png") no-repeat scroll 0 0 transparent;
+    height: 100%;
+    left: -15px;
+    position: absolute;
+    top: 0;
+    width: 15px;
+}
+body .tabsNewBar .tabNavigation .tab {
+    height: 25px;
+}
+table.tab {
+    line-height: normal;
+}
+body .tabNavigation .tab td div {
+    color: #4B4B57;
+    font-family: Arial,Helvetica,sans-serif;
+   /* font-size: 1.18em;*/
+    font-weight: bold;
+    max-height: 15px;
+    padding: 7px 10px;
+}
+body .tabNavigation .tab a {
+    color: #353535;
+}
+ .primaryPalette {
+    background-color: #E39321;
+    border-color: #E39321;
+}
+body .tabNavigation .tab .currentTab {
+    background-image: url("/img/alohaSkin/tabs_sprite.png");
+    background-position: left 0;
+    background-repeat: no-repeat;
+}
+
+.tab td.currentTab {
+    border: 0 none;
+    font-weight: bold;
+}
+.bgdPalette {
+    background-color: #E39321;
+}
+
+.hdBottom{
+    -moz-border-radius-topleft:5px;  /* FF 3.6 */
+    -moz-border-radius-topright:5px;
+    -webkit-border-top-left-radius:5px;
+    -webkit-border-top-right-radius:5px;
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+    -moz-box-shadow:0 3px 10px #7CA8B5;
+    -webkit-box-shadow:0 3px 10px #7CA8B5;
+    box-shadow:0 3px 10px #7CA8B5;
+    background:-moz-linear-gradient(#E5F2F6,#CDE8F0);
+    background:-webkit-linear-gradient(#E5F2F6,#CDE8F0);
+    background:linear-gradient(#E5F2F6,#CDE8F0);
+}
+</style>
+    <style>
+    .inactiveTab:hover {
+        text-decoration:underline;
+        cursor:pointer;
+    }
+    .activeTab:hover {
+        text-decoration:underline;
+        
+    }
+        
+     .activeTab{
+        text-decoration:none;
+        background-color: #538FCB;
+        color:white;
+        height:20px;
+        background-image:none;
+        padding:5px 15px 5px 15px;
+        font-weight:bold;
+        /*font-size:11px;*/
+         background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 12px);
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+        box-shadow: 3px 0 5px -3px #999999, -3px 0 5px -3px #999999;
+        font-size: 1.083em;
+    }
+    .inactiveTab{ 
+        text-decoration:none;
+        background-color: #DAEDF3; 
+        color:black;
+        background-image:none;
+        font-size: 1.083em;
+    }
+
+    .rich-tabhdr-side-cell{
+        border:0px !important;
+    }
+    body .bPageTitle .ptBody .pageType {
+    font-size: .9em;
+    font-weight:bold;
+    color: #4a4a56;
+    padding-left:1px;
+    }    
+.rich-tabhdr-side-border{
+   background-image:none;
+}
+.rich-tab-inactive {
+  border-style: none;
+}
+.rich-tab-active {
+    border-style: none;
+}
+.rich-tabhdr-side-border {
+    background-image: none;
+    display: none;
+}
+body .rich-tabpanel-content {
+    font-weight:12px;
+}
+ .tabStyle {
+    height: 40px;
+ }
+    </style>
+
+
+    <!-- <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" /> -->
+     <script type="text/javascript" >
+     function callFunction(tabname) {
+     // alert(window.location);
+        if(tabname == 'name1') {
+            window.parent.location.href = "/home/home.jsp";
+        } else {
+            var currentURL = decodeURIComponent(window.location.toString());
+            if(currentURL.indexOf("?") == -1) {
+                 window.parent.location.href = currentURL + "?" +"tabname="+ tabname;
+            } else {
+                currentURL = currentURL.split('?')[0];
+                window.parent.location.href = currentURL + "?" +"tabname="+ tabname;
+            }
+            
+            
+            
+            
+            
+            /*
+            alert(currentURL );
+            var separator = "";
+            if(currentURL.indexOf('tabname') != -1) {
+               
+                currentURL = currentURL.split('tabname=')[0];
+            } else {
+                if(currentURL.indexOf("?") == -1) {
+                    separator = "?";
+                } else if(currentURL.indexOf("&") == -1) {
+                    separator = "&";
+                } 
+            }
+            if(currentURL.indexOf("?") == -1) {
+                separator = "?";
+            } 
+            
+            // alert(currentURL );
+            window.parent.location.href = currentURL + separator +"tabname="+ tabname;
+            */
+        }
+     }
+     </script>       
+    <!-- Create Tab panel --> 
+    <div id="AppBodyHeader1" class="bPageHeader">
+        <table cellspacing="0" cellpadding="0" border="0" id="phHeader" class="phHeader" style="width: 100%;">
+            <tr>
+                <td class="left">
+                    <img height="65" width="175" title="Salesforce.com" id="phHeaderLogoImage" alt="Salesforce.com" src="/img/seasonLogos/sales_logo_aloha_win12.png" />
+                    <img height="1" width="1" title="" class="spacer" alt="" src="/s.gif" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <apex:tabPanel switchType="client" value="{!selectedTabName}" id="AccountTabPanel" tabClass="activeTab" inactiveTabClass="inactiveTab" styleClass="hdBottom" >
+        <apex:tab styleClass="tabStyle" label="Home" name="name1" id="homeId" ontabenter="callFunction('name1');">Going to Home....</apex:tab>
+        <apex:tab styleClass="tabStyle" label="Exception And Notifcation History" name="name2" id="tab2" ontabenter="callFunction('name2');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name2', true, false)}"> 
+            <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="Exception And Notification History" styleClass="pageTitleIcon" title="Exception And Notification History" style="height:50px;width:50px;"/>
+            <h1 class="pageType">Exception And Notification History
+            <span class="titleSeparatingColon">:</span></h1><br/>
+            <h2 class="pageDescription"> Home</h2>
+            <apex:ListViews type="Exception_And_Notification_History__c" />
+            </apex:outputPanel>
+        </apex:tab>
+         <apex:tab styleClass="tabStyle" label="Rackspace Change Log" name="name230" id="tab230" ontabenter="callFunction('name230');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name230', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="Rackspace Change Log" styleClass="pageTitleIcon" title="Rackspace Change Log" style="height:50px;width:50px;"/>
+                <h1 class="pageType">Rackspace Change Log
+                <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription"> Home</h2>
+                <apex:ListViews type="Rackspace_Distribution_Log__c" />
+            </apex:outputPanel>
+        </apex:tab>
+        
+        <apex:tab styleClass="tabStyle" label="Lead Assignment Rules" name="name3" id="tab3" ontabenter="callFunction('name3');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name3', true, false)}">
+                <!--<div id = "para1">
+                    <span>
+                        <span>o Campaign LARs:</span>
+                            <ul type="square">
+                                <li>Identify the Lead Source/s for Leads tied to this Campaign</li>
+                            </ul>
+                            <ul type="circle">
+                                <ul>
+                                    <li>If all Leads will be flagged as a single Lead Source, see if the LAR for that Lead Source is suitable</li>
+                                </ul>
+                                <ul>
+                                    <li>Do not create an LAR if the Lead Source LAR would route the Leads as desired</li>
+                                </ul>
+                            </ul>
+                            
+                            <ul type="square">
+                                <li>If the Lead Source routing only partially fulfills the Lead Routing need, then create the necessary LAR on the Campaign, but don’t create any redundant LARs
+                                </li>
+                            </ul>
+                            <ul>
+                                <ul>
+                                    <li>Example</li>
+                                </ul>
+                                <ul type="circle">
+                                    <ul type="circle">
+                                        <li>Campaign LeadGen Jan 2014 should route to CDRs and EDRs</li>
+                                    </ul>
+                                    <ul type="circle">
+                                        <li>Lead Source LeadGen is routed to SDRs and EDRs</li>
+                                    </ul>
+                                    <ul type="circle">
+                                        <li>Create LAR on Campaign for CDRs only, as 250+ would be routed to EDR based on the LS LAR</li>
+                                    </ul>
+                                </ul>
+                            </ul>
+                        
+                        <span>o Lead Source LARs:</span>
+                            <ul type="square">
+                                <li>Ensure there is no company size overlap for the same Lead Source</li>
+                            </ul>
+                    </span>
+                </div> <br/>-->
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="Lead Assignment Rules" styleClass="pageTitleIcon" title="Lead Assignment Rules" style="height:50px;width:50px;"/>
+                <h1 class="pageType">Lead Assignment Rules
+                <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription"> Home</h2>
+                <apex:ListViews type="Lead_Assignment_Rules__c" />
+            </apex:outputPanel>
+        </apex:tab>
+        <apex:tab styleClass="tabStyle" label="Promotions" name="name4" id="tab4" ontabenter="callFunction('name4');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name4', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="Promotions" styleClass="pageTitleIcon" title="Promotions" style="height:50px;width:50px;"/>
+                <h1 class="pageType">Promotions
+                <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription"> Home</h2>
+                <apex:ListViews type="Offer_Id__c" />
+            </apex:outputPanel>
+        </apex:tab>
+        <apex:tab styleClass="tabStyle" label="SignUp Links" name="name5" id="tab5" ontabenter="callFunction('name5');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name5', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="SignUp Links" styleClass="pageTitleIcon" title="SignUp Links" style="height:50px;width:50px;"/>
+                <h1 class="pageType">SignUp Links
+                <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription">Home</h2>
+                <apex:ListViews type="SignUpLink__c" />
+            </apex:outputPanel>
+        </apex:tab>
+        <apex:tab styleClass="tabStyle" label="RC Site Setups" name="name6" id="tab6" ontabenter="callFunction('name6');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name6', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="RC Site Setups" styleClass="pageTitleIcon" title="RC Site Setups" style="height:50px;width:50px;"/>
+                <h1 class="pageType">RC Site Setups
+                <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription"> Home</h2>
+                <apex:ListViews type="RCSiteSetup__c" />
+            </apex:outputPanel>
+        </apex:tab>
+        <apex:tab styleClass="tabStyle" label="OPS users" name="name7" id="tab7" ontabenter="callFunction('name7');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name7', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="OPS users" styleClass="pageTitleIcon" title="OPS users" style="height:50px;width:50px;"/>
+                <h1 class="pageType">OPS users
+                <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription"> Home</h2>
+                <apex:ListViews type="OpsAssignmentRules__c" />
+            </apex:outputPanel>
+        </apex:tab>
+         <apex:tab styleClass="tabStyle" label="Skills" name="name8" id="tab8" ontabenter="callFunction('name8');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name8', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="Skills" styleClass="pageTitleIcon" title="Skills" style="height:50px;width:50px;"/>
+                <h1 class="pageType">Skills
+                <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription"> Home</h2>
+                <apex:ListViews type="Skill__c" />
+            </apex:outputPanel>
+        </apex:tab>
+         <apex:tab styleClass="tabStyle" label="Employees" name="name9" id="tab9" ontabenter="callFunction('name9');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name9', true, false)}">
+            <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="Employees" styleClass="pageTitleIcon" title="Employees" style="height:50px;width:50px;"/>
+            <h1 class="pageType">Employees
+            <span class="titleSeparatingColon">:</span></h1><br/>
+            <h2 class="pageDescription"> Home</h2>
+            <apex:ListViews type="Employee__c" />
+            </apex:outputPanel>
+        </apex:tab>
+         <apex:tab styleClass="tabStyle" label="Agent Credits" name="name10" id="tab10" ontabenter="callFunction('name10');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name10', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="Agent Credits" styleClass="pageTitleIcon" title="Agent Credits" style="height:50px;width:50px;"/>
+                <h1 class="pageType">Agent Credits
+                <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription"> Home</h2>
+                <apex:ListViews type="Agent_Credit__c" />
+            </apex:outputPanel>
+        </apex:tab>
+        
+         <apex:tab styleClass="tabStyle" label="TOTD" name="name11" id="tab11" ontabenter="callFunction('name11');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name11', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="TOTD" styleClass="pageTitleIcon" title="TOTD" style="height:50px;width:50px;"/>
+                <h1 class="pageType">TOTD
+                <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription"> Home</h2>
+                <apex:ListViews type="TOTD__c" />
+            </apex:outputPanel>
+        </apex:tab>
+        <BR/>
+         <apex:tab styleClass="tabStyle" label="RC User Rating" name="name12" id="tab12" ontabenter="callFunction('name12');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name12', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="TOTD" styleClass="pageTitleIcon" title="TOTD" style="height:50px;width:50px;"/>
+                <h1 class="pageType">RC User Rating
+              <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription"> Home</h2>
+                <apex:ListViews type="RC_User_Article_Rating__c" />
+            </apex:outputPanel>
+        </apex:tab>
+        <apex:tab styleClass="tabStyle" label="UserSkills" name="name13" id="tab13" ontabenter="callFunction('name13');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name13', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="UserSkills" styleClass="pageTitleIcon" title="UserSkills" style="height:50px;width:50px;"/>
+                <h1 class="pageType">UserSkills
+              <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription"> Home</h2>
+                <apex:ListViews type="User_Skill__c" />
+            </apex:outputPanel>
+        </apex:tab>
+        <!--<apex:tab styleClass="tabStyle" label="Intranet Tabs" name="name14" id="tab14" ontabenter="callFunction('name14');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name14', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="UserSkills" styleClass="pageTitleIcon" title="Intranet Tab" style="height:50px;width:50px;"/>
+                <h1 class="pageType">Intranet Tabs
+              <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription">Intranet Tabs</h2>
+                <apex:ListViews type="Intranet_Main_Tab__c"/>
+            </apex:outputPanel>
+        </apex:tab>-->
+        <apex:tab styleClass="tabStyle" label="NDA Contracts" name="name15" id="tab15" ontabenter="callFunction('name15');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name15', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="NDA Contracts" styleClass="pageTitleIcon" title="NDA Contracts" style="height:50px;width:50px;"/>
+                <h1 class="pageType">NDA Contracts
+              <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription">NDA Contracts</h2>
+                <apex:ListViews type="NDA_Contract__c"/>
+            </apex:outputPanel>
+        </apex:tab>
+         <apex:tab styleClass="tabStyle" label="System Status" name="name16" id="name16" ontabenter="callFunction('name16');">
+            <apex:outputPanel rendered="{!IF(selectedTabName == 'name16', true, false)}">
+                <apex:image url="{!URLFOR($Resource.HomeImage)}" height="50px" width="50px" alt="NDA Contracts" styleClass="pageTitleIcon" title="NDA Contracts" style="height:50px;width:50px;"/>
+                <h1 class="pageType">System Status
+              <span class="titleSeparatingColon">:</span></h1><br/>
+                <h2 class="pageDescription">System Status</h2>
+                <apex:ListViews type="System_Status__c"/>
+            </apex:outputPanel>
+        </apex:tab>
+        
+        
+        
+    </apex:tabPanel>
+</apex:page>

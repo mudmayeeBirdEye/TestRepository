@@ -1,0 +1,4 @@
+<apex:page standardController="Cancel_Request__c"  extensions="CreateCancelRequestObject" action="{!actCreateCancelRequestObject}">
+  
+  
+</apex:page>

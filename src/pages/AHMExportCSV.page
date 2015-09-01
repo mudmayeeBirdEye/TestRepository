@@ -1,0 +1,37 @@
+<!----------------------------------------------------------------------------------------------------------------
+* Project Name..........: Account Metrics Reporting                                                              *
+* File..................: AHMExportCSV.Page                                                                      *
+* Version...............: 1.0                                                                                    *
+* Created by............: Simplion Technologies                                                                  *
+* Created Date..........: 11-09-2013                                                                             *
+* Last Modified by......: Simplion Technologies                                                                  *
+* Last Modified Date....: 11-09-2013                                                                             *
+* Description...........: This page is used for account metrics reporting                                        *
+----------------------------------------------------------------------------------------------------------------->
+
+<apex:page controller="AccountMetricsReportingController" sidebar="false" showHeader="false"  contentType="application/csv#AccountMetricsReport.csv" readOnly="true">
+<!-- <apex:page controller="AHMController" sidebar="false" standardstylesheets="false" showHeader="false"  contentType="text/csv#AccountMetricsReport.csv" cache="true"> -->
+    <apex:variable var="index" value="1" />
+    <apex:outputText value="Account Name," />
+    <apex:repeat value="{!queryResult}" var="thisField" id="headerList" >
+        <apex:outputText value="{!thisField.Name}{!IF(VALUE(index) == queryResult.size, '', ',')}" />
+        <apex:variable var="index" value="{!VALUE(index)+1}" />
+    </apex:repeat>
+        
+    <apex:repeat value="{!mainResult}" var="thisResult" id="dataList" >
+        <apex:variable var="index" value="1" />
+        <apex:variable var="content" value="{!thisResult['Account_ID__r.Name']}" />
+        <apex:repeat value="{!queryResult}" var="thisField" id="headerList" >
+            <apex:variable var="content" value="{!content},{!IF(thisField.Type__c == 'Currency' && thisResult[thisField.API_Name__c] != NULL,thisResult['Account_ID__r.CurrencyIsoCode'],'')}
+                                                {!IF(thisField.Suggested_Values__c == '1,0' && thisResult[thisField.API_Name__c] == 1,'Yes',
+                                                  IF((thisField.Suggested_Values__c == '1,0' && thisResult[thisField.API_Name__c] == 0) || (thisField.Suggested_Values__c == '1,0' && ISBLANK(thisResult[thisField.API_Name__c])), 'No',
+                                                  IF(thisField.Suggested_Values__c == null && thisResult[thisField.API_Name__c] == true,'Yes',
+                                                  IF((thisField.Suggested_Values__c == null && thisResult[thisField.API_Name__c] == false) || ((thisField.Type__c == 'Boolean' || thisField.Type__c == 'Checkbox') && ISBLANK(thisResult[thisField.API_Name__c])),'No',
+                                                  IF(thisResult[thisField.API_Name__c] == null, '',
+                                                  IF(thisField.Type__c == 'Percent',thisResult[thisField.API_Name__c]*100,thisResult[thisField.API_Name__c]))))))}
+                                                {!IF(thisField.Type__c == 'Percent' && thisResult[thisField.API_Name__c] != NULL,' %','')}"/>            
+            <apex:variable var="index" value="{!VALUE(index)+1}" />
+        </apex:repeat>
+        {!content}
+    </apex:repeat>
+</apex:page>

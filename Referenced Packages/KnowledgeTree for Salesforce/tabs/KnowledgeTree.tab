@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <frameHeight>2000</frameHeight>
+    <hasSidebar>false</hasSidebar>
+    <icon>KnowledgeTreeLogo/KnowledgeTree_Logo.png</icon>
+    <label>KnowledgeTree</label>
+    <mobileReady>true</mobileReady>
+    <motif>Custom315: TV Widescreen</motif>
+    <url>https://manager.knowledgetree.com</url>
+    <urlEncodingKey>UTF-8</urlEncodingKey>
+</CustomTab>

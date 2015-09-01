@@ -1,0 +1,229 @@
+<apex:page sidebar="false" controller="LiquidPlanner.LiquidPlannerProjectController" action="{!loadLiquidPlannerProjects}" tabStyle="Liquid_Planner__tab">
+  <script src="{!URLFOR($Resource.jQueryFiles, 'js/jquery-1.4.4.min.js')}" type="text/javascript" charset="utf-8"></script>
+  <script src="{!URLFOR($Resource.jQueryFiles, 'js/jquery.tablesorter.min.js')}" type="text/javascript" charset="utf-8"></script>    
+  <link rel="stylesheet" href="{!URLFOR($Resource.jQueryFiles, 'css/sort-style.css')}" type="text/css" charset="utf-8" />
+  <script type="text/javascript">
+    $(document).ready(function() { 
+        // call the tablesorter plugin 
+        $("table").tablesorter({ 
+            // sort on the second column, order asc 
+            sortList: [[1,0]] 
+        }); 
+      }); 
+  </script>
+
+  <style type="text/css">
+      .para {
+          margin-top: 0;
+          margin-bottom: 0;
+      }
+      .hide {
+        display: none;
+      }
+    </style>
+
+  <apex:pageBlock >     
+    <apex:variable var="activeUrl" value="/apex/LiquidPlannerProjects"/>
+    <apex:variable var="doneUrl" value="/apex/LiquidPlannerProjects?filter=done"/>
+    <apex:variable var="allUrl" value="/apex/LiquidPlannerProjects?filter=all"/>
+
+    <apex:form >
+      <table style="width:100%;padding-bottom:15px;" align="left" cellspacing="0">
+        <tr style="height:34px; background:#505759">
+          <td style="Width:300px">
+            <h1 align="left" style="color:White;margin-left:10px;Padding:0px">LiquidPlanner Projects (Linked in Salesforce)</h1>
+          </td>
+          <td colspan = "3">
+            <img align="right" style="margin-right:10px;Padding:0px" src="{!URLFOR($Resource.Images, 'LiquidLogo.png')}"/>
+          </td>
+        </tr>
+      </table>
+      
+      <apex:outputPanel rendered="{!!IsValidCredential}">
+        <center>
+        <br/>
+        <br/>
+        <br/>
+        <apex:outputText value="{!InvalidCredentialMessage}"/>
+        </center>
+      </apex:outputPanel>
+
+      <div>
+        <apex:outputPanel id="linkActiveOff" rendered="{! IF (FilterCode == 'done' || FilterCode == 'all',IsValidCredential,'False')}">
+          <a href="{!activeUrl}" target="_parent" style="text-decoration:none">Active</a>
+        </apex:outputPanel>
+        <apex:outputPanel id="linkAactiveOn" rendered="{! IF (FilterCode != 'done' && FilterCode != 'all',IsValidCredential,'False')}">
+          <a href="{!activeUrl}" target="_parent" style="font-weight:bold">Active</a>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IsValidCredential}">
+         |
+        </apex:outputPanel>
+        <apex:outputPanel id="linkDoneOff" rendered="{! IF (FilterCode == 'done','False',IsValidCredential)}">
+          <a href="{!doneUrl}" target="_parent"  style="text-decoration:none">Done</a>
+        </apex:outputPanel>
+        <apex:outputPanel id="linkDoneOn" rendered="{! IF (FilterCode == 'done',IsValidCredential,'False')}">
+          <a href="{!doneUrl}" target="_parent"  style="font-weight:bold">Done</a>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IsValidCredential}">
+         |
+        </apex:outputPanel>
+        <apex:outputPanel id="linkAllOff" rendered="{! IF (FilterCode == 'all','False',IsValidCredential)}">
+          <a href="{!allUrl}" target="_parent" style="text-decoration:none">All</a>
+        </apex:outputPanel>
+        <apex:outputPanel id="linkAllOn" rendered="{! IF (FilterCode == 'all',IsValidCredential,'False')}">
+          <a href="{!allUrl}" target="_parent" style="font-weight:bold">All</a>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IsValidCredential}">
+        &nbsp;
+        <apex:commandLink action="{!loadLiquidPlannerProjects}" type="image/png" title="Refresh LiquidPlanner projects">
+          <apex:image value="{!URLFOR($Resource.LiquidPlanner__Images,'sync.jpg')}" width="22px" height="22px" style="vertical-align:middle"/>
+        </apex:commandlink>
+        </apex:outputPanel>
+        <apex:outputPanel style="float:right" rendered="{!IsValidCredential}">
+          <apex:commandLink value="Download CSV" action="{!downloadProjectsCSV}"/>
+        </apex:outputPanel>
+      </div>
+
+      <apex:outputPanel layout="block" style="overflow:auto;" rendered="{!IsValidCredential}">
+        <apex:pageBlockTable value="{!LiquidPlannerProjects}" var="item" cellspacing="1" style="background:whitesmoke" id="theaddrs" styleClass="tablesorter" headerClass="header">
+          <apex:column style="background-color: white; text-align:right; vertical-align:top;">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Workspace" />
+            </apex:facet>
+             <apex:outputLink value="{!LPURL}/space/{!item.space.id}/home" id="workspaceLink" target="_blank">{!item.space.name}</apex:outputLink>
+          </apex:column>
+          
+          <apex:column style="background-color: white; text-align:right; vertical-align:top;">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Project" />
+            </apex:facet>
+             <apex:outputLink value="{!LPURL}/space/{!item.space.id}/projects/show/{!item.id}" id="projectLink" target="_blank">{!item.name}</apex:outputLink>
+          </apex:column>
+          
+          <apex:column value="{!item.owner.Name}" style="background-color: white; vertical-align:top">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Project Owner" />
+            </apex:facet>                      
+          </apex:column>             
+
+          <apex:column style="background-color: white; vertical-align:top">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Accounts (Clients)" />
+            </apex:facet>
+            <apex:variable var="index" value="{!0}" />
+            <apex:repeat value="{!item.accounts}" var="l">
+                 <apex:repeat value="{!l}" var="account">
+                     <apex:variable var="index" value="{!index+1}"/>
+                     <p class="para"><apex:outputLink value="/{!account.Id}">{!account.Name}</apex:outputLink></p>
+                     <br class="{!IF(index == item.accounts.size && item.opportunities.size == 0, 'hide', '')}"/>
+                 </apex:repeat>
+             </apex:repeat>
+             <apex:variable var="index" value="{!0}" />
+             <apex:repeat value="{!item.opportunities}" var="l">
+                  <apex:repeat value="{!l}" var="opportunity">
+                      <apex:variable var="index" value="{!index+1}"/>
+                      <p class="para"><apex:outputLink value="/{!opportunity.Account.Id}">{!opportunity.Account.Name}</apex:outputLink></p>
+                      <br class="{!IF(index == item.opportunities.size, 'hide', '')}"/>
+                  </apex:repeat>
+              </apex:repeat>
+          </apex:column>
+
+          <apex:column style="background-color: white; vertical-alaign:top">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Opportunities" />
+            </apex:facet>
+            <apex:variable var="index" value="{!0}" />
+            <apex:repeat value="{!item.accounts}" var="l">
+                 <apex:repeat value="{!l}" var="account">
+                     <apex:variable var="index" value="{!index+1}"/>
+                     <p class="para">&nbsp;</p>
+                     <br class="{!IF(index == item.accounts.size && item.opportunities.size == 0, 'hide', '')}"/>
+                 </apex:repeat>
+            </apex:repeat>
+            <apex:variable var="index" value="{!0}" />
+            <apex:repeat value="{!item.opportunities}" var="l">
+                 <apex:repeat value="{!l}" var="opportunity">
+                     <apex:variable var="index" value="{!index+1}"/>
+                     <p class="para"><apex:outputLink value="/{!opportunity.Id}">{!opportunity.Name}</apex:outputLink></p>
+                     <br class="{!IF(index == item.opportunities.size, 'hide', '')}"/>
+                 </apex:repeat>
+             </apex:repeat>
+          </apex:column>
+
+          <apex:column value="{!item.expected_finish_formatted}" style="background-color: white; text-align:right; vertical-align:top; width:50px;">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Expected Finish" />
+            </apex:facet>
+          </apex:column>
+          <apex:column value="{!item.promise_by_formatted}" style="background-color: white; text-align:right; vertical-align:top; width:50px;">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Deadline" />
+            </apex:facet>
+          </apex:column>
+
+          <apex:column style="background-color: white; text-align:right; vertical-align:top; width:50px;">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="% Complete" />
+            </apex:facet>
+             <apex:outputText value="{0,number,0%}" >
+                <apex:param value="{!item.percent_complete}" />
+             </apex:outputText>
+          </apex:column>
+          <apex:column value="{!item.max_effort}" style="background-color: white; text-align:right; vertical-align:top; width:50px;">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Max Effort" />
+            </apex:facet>
+          </apex:column>
+          <apex:column style="background-color: white; text-align:right; vertical-align:top; width:50px;">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Expected Total Effort" />
+            </apex:facet>
+            <apex:outputText value="{0,number,0.00}" >
+               <apex:param value="{!item.expected_total_effort}" />
+            </apex:outputText>
+          </apex:column>
+          <apex:column value="{!item.work}" style="background-color: white; text-align:right; vertical-align:top; width:50px;">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Total Logged" />
+            </apex:facet>
+          </apex:column>
+          <apex:column style="background-color: white; text-align:center; vertical-align:top; width:30px;">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Done" />
+            </apex:facet>
+             <apex:outputText >
+                 <apex:inputCheckbox value="{!item.is_done}" disabled="true"></apex:inputCheckbox>
+             </apex:outputText>
+          </apex:column>
+          <!-- Custom fields -->
+          <apex:column value="{!item.started_on_formatted}" style="background-color: white; text-align:right; vertical-align:top; width:50px;" rendered="{!DisplayCustomFieldDateStarted}">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Date Started" />
+            </apex:facet>
+          </apex:column>
+          <apex:column value="{!item.delay_until_formatted}" style="background-color: white; text-align:right; vertical-align:top; width:50px;" rendered="{!DisplayCustomFieldDelayUntil}">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Delay Until" />
+            </apex:facet>
+          </apex:column>
+          <apex:column style="background-color: white; text-align:center; vertical-align:top; width:50px;" rendered="{!DisplayCustomFieldOnHold}">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="On Hold" />
+            </apex:facet>
+             <apex:outputText >
+               <apex:inputCheckbox value="{!item.is_on_hold}" disabled="true"></apex:inputCheckbox>
+             </apex:outputText>
+          </apex:column>
+          <apex:column value="{!item.external_reference}" style="background-color: white; text-align:right; vertical-align:top" rendered="{!DisplayCustomFieldExternalReference}">
+            <apex:facet name="header">
+              <apex:outputText styleClass="header" value="Reference" />
+            </apex:facet>
+          </apex:column>
+        </apex:pageBlockTable>
+      </apex:outputPanel>
+    </apex:form>
+    <apex:outputPanel rendered="{!IsValidCredential && LiquidPlannerProjects.size <= 0}">
+        No project with this filter condition.
+    </apex:outputPanel>
+  </apex:pageBlock>
+</apex:page>

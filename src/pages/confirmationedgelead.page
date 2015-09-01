@@ -1,0 +1,18 @@
+<apex:page sidebar="false" showHeader="false">
+<style type="text/css">
+.font_msg{
+font-weight:bold;
+font-size:12px;
+font-family:Arial;
+}
+</style>
+  <table>
+      <tr>
+          <td class="font_msg">
+              Thank you,<br/><br/>Your Lead has been submitted to <a href="#">ringcentral@newedgenetworks.com</a> .<br/>
+          </td>
+      </tr>
+  </table>
+    <br/>
+<br/>
+</apex:page>

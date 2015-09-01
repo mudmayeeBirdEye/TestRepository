@@ -1,0 +1,163 @@
+<apex:page showheader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" cache="false">
+<head>
+    <meta charset="utf-8" />
+     <title>RingCentral Cloud Phone System, Virtual PBX, Toll Free 800 Number</title>
+         <link href='https://c.cs1.visual.force.com/sCSS/29.0/sprites/1371760580000/Theme3/default/gc/elements.css' rel='stylesheet' />
+         <!--<link href='https://c.cs1.visual.force.com/sCSS/28.0/sprites/1371760580000/Theme3/default/gc/elements.css' rel='stylesheet' />-->
+        <link href='//fonts.googleapis.com/css?family=Lato:400,700,300,300italic,400italic,700italic' rel='stylesheet' />
+       <apex:stylesheet value="{!URLFOR($Resource.RCPartnerPortalLoginCSSNew, 'RCPartnerPortalLoginCSSNew/style.css')}" />
+   <style>
+    .message{
+      margin-left:0px;
+    }
+    .message .messageText h4 {
+        display:none;
+    }
+    .form h2 {
+        padding: 20px 0 0 !important;
+    }
+    .form .field {
+        margin: 36px 0 0 !important;
+    }
+    .form .ckbox {
+        margin: 7px 0px 7px !important;
+    }
+    .message {
+        width: 94% !important;
+    }
+    .buttons {
+        margin: 10px 0 34px !important;
+    }
+    .errorM3 .msgIcon, .errorMedium {
+        
+    }
+    
+    .overlay {
+        background-color: black;
+        opacity: 0.6;
+        /* Generic for Major browsers */
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+            /* IE 5-7 */
+            filter: alpha(opacity=60);
+            /* Netscape */
+            -moz-opacity: 0.6;
+            /* Safari 1.x */
+            -khtml-opacity: 0.6;            
+           position: fixed;
+           width: 100%;
+           height: 100%;
+           top: 0;
+           left: 0;
+           z-index: 99;
+           zIndex: 99;
+       }
+   </style>
+  <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+  <script type="text/javascript">
+     function bookmarksite(){
+       try{
+             var  title='Ringcentral Partner Portal';
+             var url=window.location;
+             if (window.sidebar){ // firefox
+                 window.sidebar.addPanel(title, url, "");
+             }else if(window.opera && window.print){ // opera
+                var elem = document.createElement('a');
+                elem.setAttribute('href',url);
+                elem.setAttribute('title',title);
+                elem.setAttribute('rel','sidebar');
+                elem.click();
+             }else if(document.all){
+                  window.external.AddFavorite(url, title);
+              }
+              }catch(e){
+                //alert(e);
+              }
+        }
+        
+        /*$(document).ready(function() {          
+            $(".messageText").html().replace('User Name','Username');
+            $(".messageText").html(replaced);
+        });*/
+        
+        $(document).ready(function() {
+           try {
+               if($(".messageText").html() != '' && $(".messageText").html() != null) {
+                   var replaced = $(".messageText").html().replace('User Name','Username');
+                   $(".messageText").html(replaced);
+               }
+           } catch(e) {}
+        });
+    
+    </script>
+   
+    </head>  
+    
+   <body>
+<div class="overlay" id="overlay" style="display:none;"></div>
+<div style="display:none;position:fixed;background:white;left:15%;right:15%;top:5%;z-index:9999;border:1px solid lightgray;border-radius:5px;" id="varPanel">
+    <div class="login">
+        <center><c:SearchResellerAccounts /></center>
+    </div>
+</div>   
+<div class="header clearfix">
+    <div class="logo"></div>
+    <div class="bookmark">
+        <a title="Bookmark this page"  href='javascript:void(0);' onClick="javascript:bookmarksite()">Bookmark this page</a>
+    </div>
+    <!--- FOR ACTIVE REMOVE COMMENT FROM BELOW -->
+
+         <apex:outputPanel rendered="{!$Profile.Name == 'RCPartner Profile'}">
+            <div style="float: right;right:400px; margin-bottom: 0; margin-left: 0;margin-right: 0;margin-top: 25px;width: 180px;">
+                <a href="javascript:void(0);" 
+                    onclick="document.getElementById('overlay').style.display='';document.getElementById('varPanel').style.display='';document.getElementById('j_id0:j_id1:j_id7:j_id8:j_id10:searchBtn').focus();">
+                   Find a Reseller near you
+                </a> 
+            </div>
+        </apex:outputPanel>
+
+    <!--- FOR ACTIVE REMOVE TILL ABOVE---> 
+</div>
+<h1>Welcome to the <span class="blue">Ring</span><span class="orange">Central</span> Partner Portal</h1>
+<div class="content">
+    <div class="contentBody clearfix">
+        <div class="form" style='min-height:329px'>
+              <apex:insert name="body" />
+        </div>
+        <div class="cloud">
+
+                <div class="adealer"></div>
+                <p class="textBlue">You've joined the winning team.</p>
+                <p class="textGray">We're here to help you succeed in selling the most<br/> advanced, complete cloud business phone solution.</p>
+
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <p class="footerHeader">To learn more about how to become a RingCentral Sales Agent Complete the <a href="http://www.ringcentral.com/partner/agent.html" target="_blank" title="Online Partner Application">Online Partner Application*</a></p>
+    <div class="footrBottom clearfix">
+        <p class="copy">&copy; 1999-2013 RingCentral, Inc. All rights reserved.</p>
+        <div class="social">
+           <a class="soc1" target="_blank" href="http://twitter.com/ringcentral" title="Twitter"></a>
+            <a class="soc2" target="_blank" href="http://www.linkedin.com/company/ringcentral" title="LinkedIn"></a>
+            <a class="soc3" target="_blank" href="http://www.facebook.com/ringcentral" title="Facebook"></a>
+            <a class="soc4" target="_blank" href="https://www.google.com/+ringcentral" title="Google+"></a>
+        </div>
+        <p class="bmenu">
+            <a href="http://www.ringcentral.com/whyringcentral/contactus.html" title="Contact Us">Contact Us</a>
+            <span>|</span>
+            <a href="http://www.ringcentral.com/whyringcentral/company.html" title="About RingCentral">About RingCentral</a>
+            <span>|</span>          
+            <a href="http://www.ringcentral.com/partner/overview.html" title="Partners">Partners</a>
+            <span>|</span>          
+            <a href="http://www.ringcentral.com/legal.html" title="Legal">Legal</a>
+            <span>|</span>          
+            <a href="http://www.ringcentral.com/security-statement.html" title="Security Policy">Security Policy</a>
+            <span>|</span>          
+            <a href="http://www.ringcentral.com/sitemap.html" title="Site Map">Site Map</a>
+        </p>
+    </div>
+</div>
+</body> 
+    
+    
+</apex:page>

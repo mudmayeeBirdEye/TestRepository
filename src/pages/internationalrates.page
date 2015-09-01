@@ -1,0 +1,216 @@
+<apex:page showHeader="false" sidebar="false" controller="ATTInternationalratesCsvhnadler">
+ <style>
+ div.left-menu1 { 
+    width: 99%;
+    border: 1px solid #D9D9D9;
+    background-color: #FFF;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    margin-bottom:90px;
+    min-height:288px;
+    font-family:Arial;
+   }
+ div.ie-browser{display:block !important;}
+ .left-menu1 p.heading {
+    font-weight: bold;
+    font-family:Arial;
+    padding: 7px 0 0 18px;
+    font-size:16px;
+    color:#333333;
+}
+.brows1 {
+    background: none repeat scroll 0 0 #C3DAE8;
+    border: 1px solid #C3DAE8;
+    border-radius: 6px 6px 0 0;
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+   font-family:Arial;
+  }
+.headerDiv{
+    font-family:Arial;
+    color: #4B4B4B;
+    font-size: 20px;
+    font-weight: normal;
+    margin: 3px -1px 0px;
+    text-shadow: none;
+    font-size:16px;
+    color:#333333;
+}
+.headerDiv2{
+   padding-top:15px;
+   padding-bottom:20px;
+   color:#666666;
+   font-size:12px;
+   font-family:Arial;
+}
+.selectDiv{
+    margin-left: 20px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    margin-right:20px;
+    font-family:Arial;
+    
+}
+.searchSelection a{
+  text-decoration:underline;
+  padding:6px;
+  font-weight:bolder;
+  font-size:12px;
+  color:#063f60;
+  font-family:Arial;
+  
+}
+.selectedText{
+  color:#666666 !important;
+  text-decoration:none !important;
+}
+th{
+   font-size:12px;
+   font-weight:bold;
+   color:#666666;
+   font-family:Arial;
+}
+#resultBlock tr:nth-child(even)    { background-color:#F4F2F3; }
+#resultBlock tr:nth-child(odd)    { background-color:#fff; }
+#resultBlock{
+  text-decoration:none;
+  margin-left:20px;
+  margin-right:20px;
+  font-family:Arial;
+  font-size:12px;
+  color:#666666;
+  font-family:Arial;
+}
+.selectClass{
+   width:250px;
+   font-family:Arial;
+   border-radius:6px;
+   height:25px;
+}
+select{
+  border:1px solid #ccc !important;
+  border-radius:6px !important;
+}
+.searchButton{
+    background:#093E63;
+    font-size:15px;
+    font-family:Arial;
+    color:#fff;
+    width:90px;
+    padding-top:3px;
+    padding-bottom:3px;
+    text-align:center;
+    border: 1px solid #093E63;
+    border-radius: 6px 6px 6px 6px;
+   -moz-border-radius: 6px 6px 6px 6px;
+   -webkit-border-radius: 6px 6px 6px 6px;
+   margin-left:25px;
+   cursor:pointer;
+}
+ </style>
+ 
+    <apex:composition template="{!$Site.Template}">
+     <apex:define name="content">
+     <apex:form id="frmId">
+      <c:actionstatus />
+       <div> 
+       <div class='headerDiv'>Office@Hand International Rates</div>
+       <div class='headerDiv2'>User the pull-down menu to view international rates by country,or
+       <!--   <a style='text-decoration:underline' href='#'>View all International Rates</a> -->
+        &nbsp;<apex:commandLink style="font-size:12px;color:#063f60;font-weight:bold;text-decoration:underline;" action="{!getCountryDetailBasedCountry}" reRender="frmId" status="status" value="View all International Rates">
+            <apex:param value="A" assignTo="{!strSelectedCountry}" />
+         </apex:commandLink>
+       
+       </div>
+        </div> 
+       <div class="ie-browser left-menu1 sub-active-none" id="left-nav">
+       <p class="heading brows1" style="background:#C3DAE8">
+            Country
+        </p>
+          <div>
+             <div class='selectDiv'>
+                 <div style='float:left'>
+                     <apex:selectList value="{!strSelectedCountry}" size="1" styleclass="selectClass">
+                         <apex:selectOptions value="{!lstCountry}"></apex:selectOptions>
+                     </apex:selectList>
+                 </div>
+                 <div >
+                  <apex:commandButton action="{!getCountryDetailBasedCountry}" reRender="frmId" status="status" value="Search" styleclass="searchButton">
+                   </apex:commandButton>
+                   </div>
+                <apex:outputpanel rendered="{!strSelectedCountry=='A'}">
+                 <div style='background:#C3DAE8;margin-top:15px;padding:11px; margin-left:-17px;' class='searchSelection'>
+                   <apex:repeat value="{!lstKeySet}" var="obj"> 
+                      <apex:commandLink action="{!getCountryWiseDetail}" reRender="frmId" status="status" value="{!obj}" styleclass="{!IF(strSingleWord==obj,'selectedText','')}">
+                          <apex:param value="{!obj}" name="{!obj}" assignTo="{!strSingleWord}" />
+                       </apex:commandLink>
+                   </apex:repeat>
+                                   
+                 
+                 </div>
+                  </apex:outputpanel>
+              </div>
+             <apex:outputpanel rendered="{!lstCountryName.size>0}">  
+             <apex:pageMessages ></apex:pageMessages>
+             <table width='93%' id='resultBlock'>
+               <tr>
+                  <th>Country</th>
+                   <th>Type</th>
+                    <th>Code</th>
+                     <th>Rate Per Unit</th>
+                     
+               </tr>
+               
+             <apex:repeat value="{!lstCountryName}" var="countryName"> 
+               <apex:outputText rendered="{!IF(countryName!='' && countryName!='A',true,false)}">
+                <!--<apex:variable value="{!obj}" var="countryName"/>-->
+                 <apex:variable value="{!0}" var="Count"/>
+                <apex:repeat value="{!mapInternationalRates[countryName]}" var="mapKey">
+               
+                <apex:variable value="{!0}" var="CountCode"/>
+                <apex:variable value="{!0}" var="CountRate"/>
+                <tr>
+                    <td>
+                       <apex:outputText rendered="{!Count==0}">{!countryName}</apex:outputText> 
+                        <apex:variable value="{!Count+1}" var="Count"/>
+                    </td>
+                     <td>
+                        {!mapKey}
+                        
+                    </td>
+                     <td>
+                         <apex:repeat value="{!mapInternationalRates[countryName][mapKey].lstCode}" var="objCode">
+                            <apex:outputText rendered="{!CountCode>0}">,</apex:outputText> 
+                          {!objCode}
+                            <apex:variable value="{!CountCode+1}" var="CountCode"/>
+                       </apex:repeat> 
+                    </td>
+                    <td>
+                       
+                      <apex:repeat value="{!mapInternationalRates[countryName][mapKey].lstRatePerUnit}" var="objRate">
+                            <apex:outputText rendered="{!CountRate>0}">,</apex:outputText> 
+                          ${!objRate}
+                            <apex:variable value="{!CountRate+1}" var="CountRate"/>
+                       </apex:repeat>
+                       
+                      <!--${!mapInternationalRates[countryName][mapKey].lstRatePerUnit}-->
+                    </td>
+                   
+                </tr>
+              </apex:repeat>
+              </apex:outputText>
+           </apex:repeat>
+          
+         </table>
+          </apex:outputpanel>
+       </div>
+        
+        
+        
+        </div>
+     </apex:form>
+ 
+    </apex:define>
+    </apex:composition>
+</apex:page>

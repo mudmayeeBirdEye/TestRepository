@@ -1,0 +1,515 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" docType="html-5.0">
+	<style>
+		#headline {
+			width: 710px;
+			/*height: 90px;*/
+			position: relative;
+			margin-top: 19px;
+		}
+		#headline .features_title1 {
+			/*color: #808080;
+			font-family: Helvetica,arial,sans-serif;
+			font-size: 15px;
+			padding: 25px 0 0;*/
+			color: #f8981d;
+			font-size: 12px;
+			font-family: Arial,sans-serif;
+			text-transform: uppercase;
+			font-weight: bold;
+			padding-top: 9px;
+			padding-left: 9px;
+		} 
+		#headline h1 {
+			/*font-family: Helvetica,arial,sans-serif;
+			font-size: 31px;
+			color: #0f517f;
+			line-height: 1.2;*/
+			color: #5d6067;
+			font-family: 'Lato',Helvetica,Arial,sans-serif;
+			font-size: 65px;
+			font-weight: 200;
+			padding: 0;
+		}
+		#headline .headline-bottomline {
+			border-bottom: 1px solid #adadad;
+			height: 16px;
+		}
+		/*#bottomline {
+			width: 710px;
+			height: 0px;
+			margin: 10px auto 0;
+			border-top: 1px solid #adadad;
+			position: relative;
+		}*/
+		.feat_c {
+			float: left;
+			/*width: 560px;*/
+			padding: 0px;
+			padding-bottom: 10px;
+		}
+		.faq .cont {
+			overflow: hidden;
+			font-family: Arial;
+			padding: 0;
+		}
+		.cont .title {
+			/*color: #007DAA;*/
+			color: #666666;
+			font-size: 15px;
+			cursor: pointer;
+		}
+		.cont .titleFlip {
+			/*color: #007DAA;*/
+			color: #666666;
+			font-size: 15px;
+			cursor: pointer;
+		}
+		.feat_c div {
+			color: #f8981d;
+			line-height: 1.3;
+			padding-left: 19px;
+			font-size:14px;
+		}
+		.feat_c p {
+			color: #f8981d;
+			line-height: 1.3;
+			padding: 8px 0;
+		}
+		.cont .title img {
+			display: inline;
+			padding-right: 7px;
+		}
+		.hid a {
+			/*color: #007DAA;*/
+			color: #f8981d !important;
+			text-decoration: none;
+			font-weight: bold;
+		}
+		.hid {
+			color: #999999 !important;
+			/*padding-top: 25px !important;*/
+			font-size: 12px;
+			padding-left: 20px;
+			line-height: 15px;
+		}
+		.hid p {
+			color: #999999 !important;
+			/*padding-top: 25px !important;*/
+			font-size: 12px;
+			padding-left: 20px; 
+			line-height: 15px;
+		}
+		.hid table {
+			color: #999999 !important;
+			/*padding-top: 25px !important;*/
+			font-size: 12px;
+			padding-left: 20px;
+			line-height: 15px;
+		}
+		.lastUL li{display: inline-table;}
+		.subhead1 {
+			font-size: 15px;
+			color: #0f517f;
+			font-weight: bold;
+			font-family: Helvetica,arial,sans-serif;
+		}
+		.subhead2{
+			padding-top: 10px;
+			color: #f8981d;
+			font-size: 15px;
+			font-family: Helvetica,arial,sans-serif;
+		}
+		.line {
+			left: 0px;
+			width: 764px;
+			margin-top: 28px;
+			float: left;
+			position: relative; 
+		}
+		.lccontainer * {
+			font-family: 'Lato',Helvetica,Arial,sans-serif;
+		}
+		::selection {
+			color: #fff;
+			text-shadow: none;
+			background: #F8971C;
+		}		
+	</style>
+	
+	<apex:composition template="RCSupportPortalHomeTemplate">
+	<apex:define name="content">
+	<c:RCSystemStatus Text="Customer Support Center"/>
+    <article class="box top" style="width: 200px;height: 450px;margin-bottom:0px;border-right:none;margin-right: 0px">
+            <h3>Popular Articles</h3>
+            <ul>
+                <li>
+                    <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/Call-Handling-Forwarding-Overview?retURL=%2Fapex%2FRCSupportSearch2013%3Fc%3DAll%26k%3Dcall%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=Call%20Handling%20&%20Forwarding%20Overview
+                    ">
+                        Call Handling
+                    </a>
+                </li>
+                <li>
+                    <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/How-to-Change-Payment-Method-2013?retURL=%2Fapex%2FRCSupportSearch2013%3Fc%3DAll%26k%3Dupdate%2Bcredit%2Bcard%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=How%20to%20change%20Payment%20Method
+                    ">
+                        Update Credit Card
+                    </a>
+                </li>
+                <li>
+                    <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/How-to-Download-and-Install-the-RingCentral-SoftPhone-on-a-Windows-PC?retURL=%2Fapex%2FRCSupportSearch2013%3Fc%3DAll%26k%3Dsoftphone%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=How%20to%20Download%20and%20Install%20the%20RingCentral%20SoftPhone%20on%20a%20Windows%20PC
+                    ">
+                        Softphone Installation Setup
+                    </a>
+                </li>
+                <li>
+                    <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/5-10-Transferring-your-Phone-Number-to-RingCentral-Number-Porting?retURL=%2Fapex%2FRCSupportSearch2013%3Fc%3DAll%26k%3Dporting%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=How%20to%20Transfer%20Existing%20Phone%20Number%20to%20RingCentral
+                    ">
+                        How to Transfer a Number to RingCentral
+                    </a>
+                </li>
+                <li>
+                    <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/Frequently-Asked-Questions-Billing?retURL=%2Fapex%2FRCSupportSearch2013%3Fc%3DAll%26k%3Dplan%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=Frequently%20Asked%20Questions:%20Billing
+                    ">
+                        Billing Questions
+                    </a>
+                </li>
+                <li>
+                    <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/Basic-Troubleshooting-Tips-for-your-Phones?retURL=%2Fapex%2FRCSupportSearch2013%3Fc%3DAll%26k%3Dqos%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=Basic%20troubleshooting%20tips%20for%20your%20phones
+                    ">
+                        Phone Troubleshooting
+                    </a>
+                </li>
+                <li>
+                    <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/New-Password-Reset-Tool?retURL=%2Fapex%2FRCSupportSearch2013%3Fc%3DAll%26k%3Dpassword%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=New%20Password%20Reset%20Tool
+                    ">
+                        Resetting Password
+                    </a>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/Uploading-Company-Business-Hours-Greeting?retURL=%2Fapex%2FRCSupportSearch2013%3Fc%3DAll%26k%3Dgreetings%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=How%20to%20Customize%20Company%20Hours%20Greeting%20as%20an%20Administrator
+                    ">
+                        Custom Company Greeting
+                    </a>
+                </li>
+                <li>
+                    <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/5-10-Editing-your-Extension-s-Notification-Settings?retURL=%2Fapex%2FRCSupportSearch2013%3Fc%3DAll%26k%3Dnotification%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=How%20to%20change%20your%20extension's%20Notification%20settings
+                    ">
+                        Notification Settings
+                    </a>
+                </li>
+                <li>
+                    <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/Department-Overview?retURL=%2Fapex%2FRCSupportSearch2013%3Fc%3DAll%26k%3DDepartments%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=Department%20Overview
+                    ">
+                        Setting up Departments
+                    </a>
+                </li>
+            </ul>
+            <h3 style="margin-top:25px;">WHAT'S NEW</h3>
+            <ul>
+              <li><a href="{!$Site.CurrentSiteUrl}RCSupportPortalLearningCenter?LCtabId=TopFeatures_1">Business SMS </a></li>
+              <li><a href="{!$Site.CurrentSiteUrl}RCSupportPortalLearningCenter?LCtabId=TopFeatures_2">Conferencing</a></li>
+              <li><a href="{!$Site.CurrentSiteUrl}RCSupportPortalLearningCenter?LCtabId=TopFeatures_3">Salesforce Integration</a></li>
+              <li><a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/Internal-Caller-ID-Overview?retURL=%2Fapex%2FRCSupportSearch2013%3Fc%3DAll%26k%3D3676%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=Internal%20Caller%20ID%20Overview&mkt_tok=3RkMMJWWfF9wsRow5%2FmYJoDpwmWGd5mht7VzDtPj1OY6hB8oJb%2BJK1TtuMFUGpsqOPuXDwUTFp510g1U">Internal Caller ID Update</a></li>
+              <li><a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/New-Password-Reset-Tool?retURL">New Password Rules</a></li>
+            </ul>
+        </article>
+      
+      <div class="lccontainer" style="border:none;border-left:1px solid #E5E5E5">
+      <div class="formated clearfix">
+			<div class="shadow_main"></div>
+			<div id="headline" style="margin-left:50px;">
+				<p class="features_title1">RingCentral Fax</p>
+				<h1>Frequently<br/>Asked Questions</h1>
+			</div>
+			<div style="margin-left:50px;">
+				<p class="subhead1">Top 10 Questions on Fax</p>
+				<p class="subhead2">Click any of the questions below to get the answers you need</p>
+			</div>
+			<!--<img class="line" src="http://www.ringcentral.com/images/br_design/how_it_work/shadow.png" 
+						style="margin-bottom:10px;" />
+			-->
+			<div style="float:right;width:688px;margin-bottom:10px;margin-top:10px;
+							background:url('{!URLFOR($Resource.RCSupportPortal, 'supportPortal/img/LC-DD-three-column.png')}') 0px 5px no-repeat;">&nbsp;</div>
+			<!-- http://ringcentral.box5.cs12.force.com/RCSupportPortal/resource/1371530809000/RCSupportPortal/supportPortal/img/LC-DD-three-column.png -->
+		
+			<div class="feat faq" style="min-height: 350px;margin-left:50px;">
+				<div class="feat_c">
+					<div class="cont">
+						<p class="title" onclick="pull(this);">
+							<img src="http://www.ringcentral.com/images/br_design/how_it_work/plus.png" />
+								I am getting a "Mailbox is Full" message, what are possible causes for this error? <sub style="font-size: 16px;vertical-align: bottom;color: #E8861D;">&raquo;</sub></p>
+						<div class="hid" style="display: none;">
+				         	<p>You may be getting this error message due to the following:</p>
+                            <ul style="padding-left: 30px;line-height: 20px;font-size:12px;"> 
+                               <li style="list-style-type:disc;list-style-position: inside;"> 
+                                   The mailbox has reached the maximum message limit of 200 messages. 
+                               </li>
+                               <li style="list-style-type:disc;list-style-position: inside;">
+                                   The Account has run out of Calling Credit.  
+                               </li>
+                               <li style="list-style-type:disc;list-style-position: inside;" >
+                                   "Block All Calls" is active.
+                               </li>
+                             </ul>
+                               <p>For further information on how to resolve this issue, 
+                               	<a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/Receiving-The-Mailbox-is-Full-Message?retURL">
+                               		click here</a></p>
+                    	</div>
+					</div>
+	
+					<div class="cont">
+						<p class="title" onclick="pull(this);">
+							<img src="http://www.ringcentral.com/images/br_design/how_it_work/plus.png" />
+							   Why can’t I attach a file to my fax message? <sub style="font-size: 16px;vertical-align: bottom;color: #E8861D;">&raquo;</sub></p>
+						<div class="hid" style="display: none;">
+				         	<p>You may be encountering issues with attaching faxes due to the following reasons:</p>
+                            <ul style="padding-left: 30px;line-height: 20px;font-size:12px;"> 
+                               <li style="list-style-type:disc;list-style-position: inside;"> 
+                                   The document may be corrupt. You can try sending another file or make a text document in Notepad, save it, 
+                                   and then attach a test file. 
+                               </li>
+                               <li style="list-style-type:disc;list-style-position: inside;">
+                                   The file type may be unsupported. Make sure that the file type is supported by RingCentral. 
+                                   To view the list of supported fax attachment types, 
+                                   <a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/142?retURL">click here</a>. 
+                               </li>
+                               <li style="list-style-type:disc;list-style-position: inside;" >
+                                   The file size may have exceeded the 20MB limit. You can try sending a smaller file size.
+                               </li>
+                             </ul>
+                               <p>For more information on other troubleshooting steps, <a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/Fax-Attachment-Issues?retURL">click here</a></p>
+                    	</div>
+					</div>
+	
+					<div class="cont"> 
+						<p class="title" onclick="pull(this);">
+							<img src="http://www.ringcentral.com/images/br_design/how_it_work/plus.png" />Why am I unable to receive faxes from fax machines? <sub style="font-size: 16px;vertical-align: bottom;color: #E8861D;">&raquo;</sub></p>
+						<div class="hid" style="display: none;">
+				         	<p>This may be due to the fax machine you or the receiving party is using. Below are a few tips to help resolve your fax machine issue:</p>
+                            <ul style="padding-left: 30px;line-height: 20px;font-size:12px;"> 
+                               <li style="list-style-type:disc;list-style-position: inside;"> 
+                                   Avoid using DSL phone filters and phone splitters, as it may cause interference when sending a fax through the fax machine. 
+                               </li>
+                               <li style="list-style-type:disc;list-style-position: inside;">
+                                   Use a short phone line cord; it can minimize chance of signal loss.
+                               </li>
+                               <li style="list-style-type:disc;list-style-position: inside;" >
+                                   You may set up your line at your RingCentral online account. You can set the number as <b>Voice Only</b> 
+                                   in <b>Settings > Phone System > Company Number and Info</b> – setting the number to <b>Voice Only</b> 
+                                   disables incoming fax detection and allows the fax machine to answer.
+                               </li>
+                             </ul>
+                               <p></p>
+                    	</div>
+					</div>
+	
+					<div class="cont">
+						<p class="title" onclick="pull(this);">
+							<img src="http://www.ringcentral.com/images/br_design/how_it_work/plus.png" />
+							 	Why am I missing faxes? <sub style="font-size: 16px;vertical-align: bottom;color: #E8861D;">&raquo;</sub></p>
+						<div class="hid" style="display: none;">
+				         	<p>The fax may have been delivered to the wrong extension or you may be logged in to the wrong extension. To resolve this, 
+				         			follow the steps below:</p>
+                           	<table>
+                            		<tr>
+                            			<td style="font-weight: bold;">
+                            				Step 1:
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td style="color: #666666;">
+                            				Click <b>Company settings</b>.
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td>
+                            				<br/>
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td style="font-weight: bold;">
+                            				Step 2:
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td style="color: #666666;">
+                            				Click Edit under rules for the specified extension.
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td>
+                            				<br/>
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td style="font-weight: bold;">
+                            				Step 3:
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td style="color: #666666;">
+                            				Click on Business Hours or whichever rule it was applied.
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td>
+                            				<br/>
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td style="font-weight: bold;">
+                            				Step 4:
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td style="color: #666666;">
+                            				Set the specified extension to the "deliver new messages to extension" drop down box.
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td>
+                            				<br/>
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td style="font-weight: bold;">
+                            				Step 5:
+                            			</td>
+                            		</tr>
+                            		<tr>
+                            			<td style="color: #666666;">
+                            				Click Submit.
+                            			</td>
+                            		</tr>
+                           	</table>
+                      	 </div>
+					</div>
+	
+					<div class="cont">
+						<p class="title" onclick="pull(this);">
+							<img src="http://www.ringcentral.com/images/br_design/how_it_work/plus.png" />
+							 	How do I set up my ATA adapter so I can send faxes with my fax machine? 
+							 	<sub style="font-size: 16px;vertical-align: bottom;color: #E8861D;">&raquo;</sub></p>
+						<div class="hid" style="display: none;">
+				         	<p>You can set up your ATA adapter by configuring the settings from your online account.  
+				         		To view the complete instructions, <a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/4661?retURL">
+				         		click here.</a> 
+			         		</p>
+                    	</div> 
+					</div>
+	
+					<div class="cont">
+						<p class="title" onclick="pull(this);">
+							<img src="http://www.ringcentral.com/images/br_design/how_it_work/plus.png" />
+							 	Why can’t I receive faxes on the Softphone?  <sub style="font-size: 16px;vertical-align: bottom;color: #E8861D;">&raquo;</sub></p>
+						<div class="hid" style="display: none;">
+				         	<p>This may be due to the messages not synchronized with your Softphone. To resolve this issue, you will need to 
+				         	rename the RingCentral’s Local Storage on your computer.  
+				         	To view the complete instructions, <a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/How-to-Rename-Local-Storage-Windows-7?retURL">click here.</a></p>
+                    	</div>
+					</div>
+					
+					<div class="cont">
+						<p class="title" onclick="pull(this);">
+							<img src="http://www.ringcentral.com/images/br_design/how_it_work/plus.png" />
+							 	How do I customize my fax cover sheet? <sub style="font-size: 16px;vertical-align: bottom;color: #E8861D;">&raquo;</sub></p>
+						<div class="hid" style="display: none;">
+				         	<p>You can customize your fax cover sheet in two ways: 1) Through the RingCentral Softphone and 
+				         			2) through your online account.  For complete instructions, click on the links below:</p>
+                            <ul style="padding-left: 30px;line-height: 20px;font-size:12px;"> 
+                               <li style="list-style-position: inside;"> 
+                                   <a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/Fax-Series-3-see-how?retURL">
+                                   Customizing the fax cover sheet through the Softphone</a> 
+                               </li>
+                               <li style="list-style-position: inside;">
+                                   <a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/4536?retURL">
+                                   Customizing the fax cover sheet through the online account</a>
+                               </li>
+                               <li style="list-style-position: inside;" >
+                                  <a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/4611?retURL">
+                                  Customizing the fax cover sheet through the RingCentral mobile app</a>
+                               </li>
+                             </ul>
+                    	</div>
+					</div>
+					
+					<div class="cont">
+						<p class="title" onclick="pull(this);">
+							<img src="http://www.ringcentral.com/images/br_design/how_it_work/plus.png" />
+							 	 	Why am I not able to receive faxes from email?  <sub style="font-size: 16px;vertical-align: bottom;color: #E8861D;">&raquo;</sub></p>
+						<div class="hid" style="display: none;">
+				         	<p>You may need to set up your notification email to notify you whenever you receive fax messages and voicemail or 
+				         		miss a call.  This will also help notify you to confirm that an outbound fax was successfully sent. 
+				         		To view complete instructions, click on the links below:</p>
+                            <ul style="padding-left: 30px;line-height: 20px;font-size:12px;"> 
+                               <li style="list-style-position: inside;"> 
+                                   <a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/Notification-settings-enhancement?retURL">
+                                   Notification setting enhancement for extensions</a> 
+                               </li>
+                               <li style="list-style-position: inside;">
+                                   <a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/How-to-edit-the-notification-settings-of-a-department?retURL">
+                                   Notification setting enhancement for departments</a>
+                               </li>
+                             </ul>
+                    	</div>
+					</div>
+					
+					<div class="cont">
+						<p class="title" onclick="pull(this);">
+							<img src="http://www.ringcentral.com/images/br_design/how_it_work/plus.png" />
+							 	Why am I unable to send faxes through my email?  <sub style="font-size: 16px;vertical-align: bottom;color: #E8861D;">&raquo;</sub></p>
+						<div class="hid" style="display: none;">
+				         	<p>Your email address may not be registered to the Trusted Email Address list. 
+				         		Adding your email address to this list allows you to send out faxes.  
+				         		To view complete instructions on how to add your email address, 
+				         		<a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/How-to-add-emails-permitted-to-send-faxes?retURL">
+				         		click here.</a></p>
+                    	</div>
+					</div> 
+					
+					<div class="cont">
+						<p class="title" onclick="pull(this);">
+							<img src="http://www.ringcentral.com/images/br_design/how_it_work/plus.png" />
+							 	 	Why are my faxes from my online account being automatically deleted?  
+							 	 	<sub style="font-size: 16px;vertical-align: bottom;color: #E8861D;">&raquo;</sub></p>
+						<div class="hid" style="display: none;">
+				         	<p>Your RingCentral inbox has a maximum storage limit of 200 messages (voice and fax combined).  
+				         		Your current settings may have been configured to automatically delete fax messages once it 
+				         		reaches the maximum capacity. To view instructions on how to change your settings,
+				         		 <a target="_blank" href="http://success.ringcentral.com/articles/RC_Knowledge_Article/5-11-How-do-I-avoid-having-to-log-into-my-online-account-to-check-messages-all-the-time?retURL">
+				         		 click here.</a></p>
+                    	</div>
+					</div>
+				</div>
+			</div><!--
+			 <img class="line" src="http://www.ringcentral.com/images/br_design/how_it_work/shadow.png" 
+						style="margin-bottom:10px;" />
+		   --></div>
+		   </div>
+		<div style="float:right;width:688px;margin-bottom:10px;
+						background:url('{!URLFOR($Resource.RCSupportPortal, 'supportPortal/img/LC-DD-three-column.png')}') 0px 0px no-repeat;">&nbsp;</div>
+		   
+		   <script>
+		    function pull(element) {
+		    	if(!$(element).parent().hasClass('titleFlip')) {
+		    		$(element).parent().siblings().removeClass('titleFlip');
+		    		$(element).parent().siblings().each(function (element1) {
+		    			var immchild = $(this).children('.title');
+		    			$(immchild).children('img').attr('src', 'http://www.ringcentral.com/images/br_design/how_it_work/plus.png');
+		    			$(immchild).next('.hid').css('display', 'none');		
+		    		});
+		    		$(element).parent().addClass('titleFlip');
+		    		$(element).children('img').attr('src', 'http://www.ringcentral.com/images/br_design/how_it_work/minus.png');
+		    		$(element).next('.hid').css('display', 'block');
+		    		
+		    	} else if($(element).parent().hasClass('titleFlip')) {
+		    	    $(element).parent().removeClass('titleFlip');
+		    		$(element).children('img').attr('src', 'http://www.ringcentral.com/images/br_design/how_it_work/plus.png');
+		    		$(element).next('.hid').css('display', 'none');		
+		    	}
+		    }	
+		   </script>
+      </apex:define>
+      </apex:composition>
+ </apex:page>

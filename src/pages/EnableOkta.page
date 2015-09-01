@@ -1,0 +1,225 @@
+<apex:page showHeader="true" sidebar="true" standardstylesheets="true"  standardController="Account" extensions="EnableOkta">
+     <apex:form id="form1">
+    <head>
+        <style>
+            .infopanel {
+                margin: auto;
+                border: 1px solid #c5dbec;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                /*box-shadow: 2px 0px 45px -8px #dfeffc inset;
+                -webkit-box-shadow: 2px 0px 45px -8px #dfeffc inset;
+                -moz-box-shadow: 2px 0px 45px -8px #dfeffc inset;
+                */
+                box-shadow:7px -9px 107px 30px #dfeffc inset;
+                -webkit-box-shadow:7px -9px 107px 30px #dfeffc inset;
+                -moz-box-shadow:7px -9px 107px 30px #dfeffc inset;
+                background: white;
+                padding: 5px;
+                /*width:50%;*/
+                width:900px;
+                height:50%;
+                min-height:165px;
+                min-width:500px;
+            }
+            .positionCSS {
+                position:fixed;
+                left:20%;
+                top:20%;
+                z-index: 999;
+                zIndex: 999;
+            }
+            .overLay{
+                z-index: 99;
+                zIndex:99;
+                border: none;
+                margin: 0px;
+                padding: 0px;
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                background-color: rgb(0, 0, 0);
+                opacity: 0.6;
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+                /* IE 5-7 */
+                filter: alpha(opacity=60);
+                /* Netscape */
+                -moz-opacity: 0.6;
+                /* Safari 1.x */
+                -khtml-opacity: 0.6;
+                /*cursor: wait;*/
+                position: fixed;
+            }
+             #overLay1{
+                z-index: 99999;
+                zIndex:99999;
+                border: none;
+                margin: 0px;
+                padding: 0px;
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                background-color: rgb(0, 0, 0);
+                opacity: 0.6;
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+                /* IE 5-7 */
+                filter: alpha(opacity=60);
+                /* Netscape */
+                -moz-opacity: 0.6;
+                /* Safari 1.x */
+                -khtml-opacity: 0.6;
+                /*cursor: wait;*/
+                position: fixed;
+            }
+            .fancybox-close { position: absolute; top: -18px; right: -18px; width: 36px; height: 36px; cursor: pointer; z-index: 8040; background-image: url('http://ringcentral.box5.cs12.force.com/RCSupportPortal/resource/1365653662000/RCSupportPortal/supportPortal/img/fancybox_sprite.png'); }
+            .Parent .btn {
+                color: #084B8A !important;
+                border: 1px solid #A5A6A5 !important;
+                padding: 9px !important;
+                margin:5px !important;
+            }
+            .btnDiv {
+                padding-top:5px;
+            }
+            .innerPanel {
+                padding-top: 20px;
+            }
+            .messageText {
+                font-size:20px;
+            }
+            .Parent {
+                margin-top: 20px;
+            }
+            .message {
+                background-color: #ffc;
+                border-style: solid;
+                border-width: 1px;
+                color: #000;
+                padding: 6px 8px 6px 6px;
+                margin: 4px 20px;
+            }
+            #loadingPanel {
+                z-index: 99999;
+                zIndex:99999;
+                display: none;
+                font-size: 30px;
+                position: absolute;
+                position: absolute;
+                left: 46%;
+                top: 50%;
+                height: 100%;
+                z-index: 1000;
+                text-align: center;
+                font-weight: bold;
+            }
+            .fancybox-close { 
+                position: absolute; 
+                top: -18px; 
+                right: -20px; 
+                width: 36px; 
+                height: 36px; 
+                cursor: pointer; 
+                z-index: 8040; 
+                background-image: url("{!URLFOR($Resource.RCSupportPortal, 'supportPortal/img/fancybox_sprite.png')}"); 
+            }
+        </style>
+        <script>
+            function hideOverlay() {
+                try {
+                    document.getElementById('loadingPanel').style.display = 'none';
+                    document.getElementById('overLay1').style.display = 'none';
+                } catch(x){
+                }
+            }
+            function showOverlay() {
+                try {
+                    document.getElementById('loadingPanel').style.display = 'block';
+                    document.getElementById('overLay1').style.display = 'block';
+                } catch(x){}
+            }
+            function closePanel() {
+                closePanel();
+            }
+        </script>
+    </head>
+    <body style="width:100%;height:100%;" >
+        <div id='overLay1' style="display:none;">
+            <div style="display:none;" id="loadingPanel">Please wait...</div>
+        </div>
+        <apex:actionStatus id="Ajaxstatus" onStart="showOverlay();" onstop="hideOverlay();"/>
+        <apex:actionfunction name="closePanel" action="{!cancel}" />
+        <div class='overLay'>
+        <div class="positionCSS">
+            <div class="infopanel">
+                <div class="innerPanel">
+                    <!-- {!isErrorOccured} -->
+                    <a class="fancybox-item fancybox-close" href="Javascript:void(0);" title="Close" onclick="closePanel();return false;">&nbsp;</a>
+                    <apex:outputPanel id="MainPanel">
+                        <apex:outputpanel rendered="{!isErrorOccured}">
+                            <div class="message infoM3 Parent">
+                                <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+                                    <tr>
+                                        <td>
+                                            <div style="font-size:25px;">
+                                                <img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR"/> 
+                                                <span style="padding-left: 10px;">{!strErrorMsg}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </apex:outputpanel>                
+                        <apex:outputpanel rendered="{!!isErrorOccured}">
+                           
+                                <apex:outputpanel rendered="{!isLanding}" id="confirmationPanel">
+                                    <div class="message infoM3 Parent">
+                                        <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+                                            <tr>
+                                                <td>
+                                                    <div style="font-size:25px;">
+                                                        Are you sure you want to enable okta for Account : <a href="/{!Account.Id}" style="color:#084B8A;">{!Account.Name}</a> ?
+                                                    </div>
+                                                    <div class="btnDiv">
+                                                        <apex:commandButton status="Ajaxstatus" action="{!excuteProcess}"  
+                                                            value="Continue" id="validateuser" reRender="MainPanel" />
+                                                        <apex:commandButton status="Ajaxstatus" action="{!cancel}" value="Cancel" id="cancel" />
+                                                    </div> 
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </apex:outputpanel>
+                                <apex:outputpanel >
+                                    <apex:outputpanel id="msgpanel" rendered="{!!isLanding}">
+                                        <div class="message infoM3 Parent">
+                                            <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+                                                <tr>
+                                                    <td>
+                                                        <div style="font-size:25px;">
+                                                            <img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR"/> 
+                                                            <span style="padding-left: 10px;">
+                                                                Account : <a href="/{!Account.Id}" style="color:#084B8A;">{!Account.Name}</a> successfully
+                                                                enabled on Okta.
+                                                            </span>
+                                                        </div> 
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </apex:outputpanel>
+                                </apex:outputpanel>
+                            
+                        </apex:outputpanel>
+                    </apex:outputPanel>
+                </div>
+            </div>
+            </div>
+            <a class="fancybox-item fancybox-close" href="/{!Account.Id}" title="Close"></a>
+        </div>
+       <!--  <apex:detail subject="{!Account.Id}" relatedList="false" title="false" inlineEdit="true"/> -->
+    </body>
+    </apex:form>
+</apex:page>

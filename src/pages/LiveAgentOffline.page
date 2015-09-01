@@ -1,0 +1,291 @@
+<apex:page sidebar="false" showHeader="false" showchat="false" controller="LiveAgentOfflineController" id="page1">
+ 	<apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+	<style>
+	    #page {
+	        width: 50%;
+	        min-height: 400px;
+	        background: none;
+	        border: 1px solid lightgray;
+	        margin: 0px auto;
+	        border-radius: 10px;
+	        -moz-box-border-radius: 10px;
+	        -webkit-box-border-radius: 10px;
+	        box-shadow: 0 0 92px 5px #DADADA inset;
+	        -moz-box-shadow: 0 0 92px 5px #dadada inset;
+	        -webkit-box-shadow: 0 0 92px 5px #DADADA inset;
+	    }
+	    #mainDiv {
+	        width: 90%;
+	        //min-height: 500px;
+	        background: none;
+	        margin: 0px auto;
+	        margin-top: 30px;
+	        margin-bottom: 30px;
+	        //border: 1px solid;
+	    }
+	    .btnclass {
+	        background: #ED741D;
+	        color: white;
+	        border-radius: 5px;
+	        width: 86px;
+	        height: 25px;
+	    }
+	    .inputBoxClass {
+	    	border: 1px solid darkgray;
+	    	border-radius: 5px;
+	    	width: 95%;
+	    	height: 20px;
+	    	color:gray;
+	    }
+	    .inputBoxClass2 {
+	    	border: 1px solid darkgray;
+	    	border-radius: 5px;
+	    	width: 95%;
+	    	height: 20px;
+	    	color:gray;
+	    }
+	    .inputBoxClass1 {
+	    	border: 1px solid darkgray;
+	    	border-radius: 5px;
+	    	width: 95%;
+	    	height: 105px;
+	    	resize:none;
+	    	overflow:hidden;
+	    	color:gray; 
+	    }
+	</style>
+	
+	<apex:form id="form1">
+	    <div id="page">
+	    	<apex:PageMessages ></apex:PageMessages>
+	        <div id="mainDiv">
+	            <div style="font-size: 30px;color: #ED741D;">Sorry!</div> 
+	            <div style="width:70%;margin-top: 25px;"><span style="color: darkGray;font-size: 17px;font-weight: bold;">
+	            		RingCentral LiveChat is Currently Off-line.</span></div>
+	            <div style="font-size: 15px;color:darkgrey;margin-top: 25px;width:80%">Please fill out the form below and our sales representative
+	            	will contact you within 24 hours.</div>
+	            <div style="margin-top: 25px;">
+	            	<table border="0" width="95%">
+	            		<tr>
+	            			<td style="width:50%">
+	            				<apex:Inputtext maxlength="40" title="First Name" id="firstName" styleclass="inputBoxClass" value="{!leadObj.FirstName}"></apex:Inputtext> 
+	            				<!--<input type="text" name="First Name" title="First Name" class="inputBoxClass"  />-->
+	           				</td>
+	           				<td style="width:50%;text-align:right;">
+	           					<!--<input type="text" disabled = "disabled"  name="Question" value="How many employees do you have?" 
+	           						class="inputBoxClass" />-->
+	           					<!--<select class="inputBoxClass2">
+	           					  <option value="How many employees do you have?">How many employees do you have?</option>
+								  <option value="Just me">Just me</option>
+								  <option value="2-9">2-9</option>
+								  <option value="10-19">10-19</option>
+								  <option value="20-49">20-49</option>
+								  <option value="50-99">50-99</option>
+								  <option value="100-249">100-249</option>
+								  <option value="250-500">250-500</option>
+								  <option value="500+">500+</option>
+								</select>-->
+								<apex:selectList value="{!selectedEmployeeRange}" styleclass="inputBoxClass2" id="selectedEmpRange" multiselect="false" size="1">
+            						<apex:selectOptions value="{!employeeRangeItems}"/>
+        						</apex:selectList>
+	           				</td>
+	         			</tr>
+	            		<tr>
+	            			<td>
+	            				<apex:InputText title="Last Name" maxlength="80" id="lastName" styleclass="inputBoxClass" value="{!leadObj.LastName}"></apex:InputText> 
+	            				<!--<input type="text" name="Last Name" title="Last Name" class="inputBoxClass" />-->
+	           				</td>
+	           				<td rowspan="4" style="width:50%;text-align:right;">
+	           					<apex:InputTextArea title="How can we help?" onkeypress="return checkLength(this, 250,event);"  styleclass="inputBoxClass1" value="{!leadObj.Comments__c}">
+	           					</apex:InputTextArea>
+	           					<!--<textarea name ="comments" title="How can we help?" class="inputBoxClass1"></textarea>-->
+	           				</td>
+	         			</tr>
+	            		<tr>
+	            			<td>
+	            				<apex:InputText title="Email" maxlength="50" id="email" styleclass="inputBoxClass" value="{!leadObj.Email}"></apex:InputText>
+	            				<!--<input type="text" name="Email" title="Email" class="inputBoxClass" />-->
+	           				</td>
+	           				
+	         			</tr>
+	            		<tr>
+	            			<td>
+	            				<apex:InputText title="Confirm Email" maxlength="50" id="confirmemail" styleclass="inputBoxClass" value="{!leadObj.Email}"></apex:InputText>
+	            				<!--<input type="text" name="Confirm Email" title="Confirm Email" class="inputBoxClass" />-->
+	           				</td>
+	           				
+	         			</tr>
+	            		<tr>
+	            			<td>
+	            				<apex:InputText title="Phone Number" id="phone" maxlength="20" styleclass="inputBoxClass" value="{!leadObj.phone}"></apex:InputText>
+	            				<!--<input type="text" name="Phone Number" title="Phone Number" class="inputBoxClass" />-->
+	           				</td>
+	          			</tr>
+	            	</table>
+	                <br/>
+	                &nbsp;&nbsp;<span style="color:gray">Required fields</span><span style="color: #ED741D;font-size: 15px;">&nbsp;*</span>  
+	            </div>
+	            <div style="text-align: right;width:95%;margin-top: 10px;">
+	            	<!--<apex:CommandButton styleclass = "btnclass"  value="Submit" action="{!createLead}"></apex:CommandButton>-->
+	            	<input class = "btnclass" type="submit" name="Submit" value="Submit" onclick="createLead();return false;" />
+	           	</div>
+	        </div>
+	    </div>
+	    <apex:ActionFunction name="createWebToLead" action="{!createLead}"></apex:ActionFunction>
+    </apex:form>
+	
+	
+	<script>
+		$(document).ready(function() {
+		    $(".inputBoxClass").focus(function(srcc) {
+		        if ($(this).val() == $(this)[0].title+'*') {
+		            $(this).val("");
+		        }
+		    });
+		    
+		    $(".inputBoxClass").blur(function() {
+		        if ($(this).val() == "") {
+		        	$(this).css({'color': 'gray'});
+		        	//var star = $(this).html($(this)[0].title + "<div style='color:red'>*</div>");
+		           	$(this).val($(this)[0].title+"*");
+		        }
+		    });
+		    
+		    $(".inputBoxClass").blur(); 
+		    
+		    $(".inputBoxClass1").focus(function(srcc) {
+		        if ($(this).val() == $(this)[0].title) {
+		            $(this).val("");
+		        }
+		    });
+		    
+		    $(".inputBoxClass1").blur(function() {
+		        if ($(this).val() == "") {
+		        	//$(this).css({'color': 'gray'});
+		           	$(this).val($(this)[0].title);
+		        }
+		    });
+		    
+		    $(".inputBoxClass1").blur();       
+		});
+		
+		function createLead() {
+			var firstName = document.getElementById('{!$component.page1:form1:firstName}').value;
+			var lastName = document.getElementById('{!$component.page1:form1:lastName}').value;
+			var email = document.getElementById('{!$component.page1:form1:email}').value;
+			var confirmEmail = document.getElementById('{!$component.page1:form1:confirmemail}').value;
+			var phonenumber = document.getElementById('{!$component.page1:form1:phone}').value;
+			if(firstName == 'First Name*' || lastName == 'Last Name*' || email == 'Email*' || phonenumber == 'Phone Number*' 
+				|| confirmEmail == 'Confirm Email*') {
+					alert('Please Enter all the required fields.');
+					return false;
+			}
+			if(!validateEmail(email)) {
+				alert('Please provide a valid email address.');
+				return false;
+			}
+			if(email != confirmEmail) {
+				alert('Email value not matches with confirm email.');
+				return false;
+			}
+			
+			//alert(1);
+			var selectedValue1 = document.getElementById('{!$Component.page1:form1:selectedEmpRange}').options[document.getElementById('{!$Component.page1:form1:selectedEmpRange}').selectedIndex].value;
+			if(selectedValue1 == 'How many employees do you have?') {
+				alert('Please select the number of employees.');
+				return false;
+			}
+			//alert(selectedValue1);
+			//return false;
+			
+			validatePhoneNumber(phonenumber);
+			createWebToLead();
+			$(".inputBoxClass1").blur();
+			$(".inputBoxClass").blur(); 
+			
+			
+			//var isValidPhone = validatePhoneNumber(phonenumber);
+			//alert(isValidPhone);
+			//if(isValidPhone) {
+				//validatePhoneNumber(phonenumber);
+				//var selectedEmployeeRange = '{!selectedEmployeeRange}';
+				//alert(selectedEmployeeRange);
+				//if(selectedEmployeeRange == 'How many employees do you have?') {
+					//alert('Please select Employee Range.');
+					//return false;
+				//}
+				//createWebToLead();
+				//$(".inputBoxClass1").blur();
+				//$(".inputBoxClass").blur(); 
+			//}
+		}
+		
+		function validateEmail(email1) {
+			var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			if (!filter.test(email1)) {
+				//alert('Please provide a valid email address.');
+				return false;
+			} 
+			else {
+				return true;
+			}
+		}
+		
+		/*function validatePhoneNumber(phone) {
+			var phoneregEx = /^(\+\d)*\s*(\(\d{3}\)\s*)*\d{3}(-{0,1}|\s{0,1})\d{2}(-{0,1}|\s{0,1})\d{2}$/;
+			if (!phoneregEx.test(phone)) {
+				alert('Please provide a valid phone.');
+				return false;
+			} else {
+				return true;
+			}
+		}*/
+		
+		function validatePhoneNumber(phoneNum)
+		{ 
+		     var sVal='';
+		     var oldValue;
+		     var nVal = phoneNum.length;
+		     var sChar='';
+		     oldValue=phoneNum;
+		     try {
+			      for(c=0;c<nVal;c++) {
+			          sChar = phoneNum.charAt(c);
+			          sChar = phoneNum.charAt(c);      
+			          nChar = sChar.charCodeAt(0);
+			          if ((nChar >=48) && (nChar <=57))  { 
+			         	 sVal += phoneNum.charAt(c);   
+		              }
+			      }
+			   } catch (exception) { //AlertError("Format Number",exception); 
+			        sVal = oldValue;
+		          }
+	         if(sVal.length>10){
+	           try{
+	               oldValue = sVal;
+	               sVal = sVal.substring((sVal.length-10));
+	            }catch(exception){
+	                sVal = oldValue;
+	            }
+	        }
+	        document.getElementById('{!$component.page1:form1:phone}').value = sVal;
+			//return sVal;
+		}
+		
+		function checkLength(control, maximum,e) {
+	        var keycode;
+	        if (window.event) keycode = window.event.keyCode;
+	        else if (e) keycode = e.which;
+	       // alert()
+	        if(keycode != 8) {
+	            var length = control.value.length;
+	            if (length >= maximum) {
+	                alert('Please limit your message to '+ maximum +' characters. There are currently ' + length + '.');
+	                return false;
+	            }
+	            return true;
+	        }
+    	}
+	
+	</script>
+</apex:page>

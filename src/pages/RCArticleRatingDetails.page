@@ -1,0 +1,113 @@
+<apex:page Controller="RCArticleRatingDetails" showHeader="false" sidebar="false">
+<style>
+.pageDescription1 {
+font-size: 1.8em;
+font-weight: normal;
+line-height: 1.1em;
+}
+.pageType1 {
+font-size: .9em;
+font-weight: bold;
+color: #4A4A56;
+padding-left: 1px;
+}
+
+.btn1 {
+padding: 2px 3px;
+padding-top: 2px;
+padding-right: 3px;
+padding-bottom: 2px;
+padding-left: 3px;
+}
+
+.pbTitle1{
+font-size: 1.3em;
+}
+</style>
+
+
+<div class="content">
+<img src="/s.gif" alt="RC Article Rating Details " class="pageTitleIcon" title="RC Article Rating Details"/>
+<br/><br/>
+
+</div>
+
+ <apex:form title="RC Article Rating Details">
+  
+ <table>
+     <tr>
+          
+          <Td>
+            Created By<apex:selectList value="{!strcreatedBy}" size="1">
+                             <apex:selectOptions value="{!listUser}"> </apex:selectOptions>
+             </apex:selectList> 
+        </td>
+         <Td> Modified By<apex:selectList value="{!strModifiedBy}" size="1">
+                             <apex:selectOptions value="{!listUser}"> </apex:selectOptions>
+             </apex:selectList> 
+         
+         </td>
+         <Td><apex:commandButton action="{!showArticleDetails}" value="Search" reRender="resultsBlock,otpNav2,otpNav3" status="status"/></td>
+     </tr>
+   </table>
+  <div class="blank">&nbsp;</div>
+
+ <apex:pageBlock >
+ <h3 class="pbTitle1">RC Article Rating Details</h3>
+  <apex:pageBlockSection >
+  <apex:outputPanel layout="block" styleClass="pSearchShowMore" id="otpNav3" rendered="{!NOT(ISNULL(enh))}" style="width:700px">
+      Total Records Found: <apex:outputText rendered="{!IF(Con.resultSize==10000,true,false)}">10000 +</apex:outputText>
+     <apex:outputText rendered="{!IF(Con.resultSize < 10000,true,false)}">{!Con.resultSize}</apex:outputText>
+          <apex:image url="/img/search_prevarrow_disabled.gif" styleClass="prevArrow" rendered="{!NOT(Con.HasPrevious)}" />
+          <apex:image url="/img/search_prevarrow.gif" title="Previous Page" styleClass="prevArrow" rendered="{!Con.HasPrevious}" />
+          <apex:commandLink action="{!Previous}" title="Previous Page" value="Previous Page" rendered="{!Con.HasPrevious}" reRender="resultsBlock,otpNav2,otpNav3" status="status" />
+          <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(Con.HasPrevious)}">Previous Page</apex:outputPanel>
+               &nbsp;({!IF(Con.PageNumber == 1,1,((Con.PageNumber -1) * Con.PageSize)+1)}-{!IF((Con.PageNumber * Con.pageSize)>Con.resultSize,Con.resultSize,Con.PageNumber * Con.pageSize)})&nbsp;
+         <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(Con.HasNext)}">Next Page</apex:outputPanel>
+          
+          <apex:commandLink title="Next Page" value="Next Page" rendered="{!Con.HasNext}" action="{!next}" reRender="resultsBlock,otpNav2,otpNav3" status="status" />&nbsp;
+             <apex:image url="/img/search_nextarrow.gif" title="Next Page" styleClass="nextArrow" rendered="{!Con.HasNext}" />
+              <apex:image url="/img/search_nextarrow_disabled.gif" rendered="{!NOT(Con.HasNext)}" />
+    <c:actionstatus ></c:actionstatus>
+   </apex:outputPanel>
+   
+  </apex:pageBlockSection>
+ <apex:pageBlockSection id="resultsBlock" >
+   
+     <apex:pageBlockTable value="{!enh}" var="e"  style="width:1200px;" >
+                
+                  <apex:column headerValue="History Id" >
+                  <apex:outputLink value="/{!e.id}" target="_blank">{!e.Name}</apex:outputLink>
+                  </apex:column>
+                  <apex:column value="{!e.of_User_Rate_This_Article__c}" headerValue="No of User Rate This Article"/> 
+                  <apex:column value="{!e.Article_Rating_Count__c}" headerValue="Article Rating Count "/> 
+                  <apex:column value="{!e.RC_Average_Rating__c }" headerValue=" Averag Rating"/> 
+                   <apex:column value="{!e.RCCreatedByName__c }" headerValue="Created By"/>
+                   <apex:column value="{!e.RCLastModifiedByName__c }" headerValue="Last Modified By"/> 
+                   <apex:column value="{!e.RCLastModifiedDate__c }" headerValue="Last Modified Date"/> 
+                  <apex:column value="{!e.RCArticle_Title__c }" headerValue="Article Title"/> 
+               
+     </apex:pageBlockTable>
+  </apex:pageBlockSection>
+  <apex:pageBlockSection >
+  <apex:outputPanel layout="block" styleClass="pSearchShowMore" id="otpNav2" rendered="{!NOT(ISNULL(enh))}" style="width:700px">
+      Total Records Found: <apex:outputText rendered="{!IF(Con.resultSize==10000,true,false)}">10000 +</apex:outputText>
+     <apex:outputText rendered="{!IF(Con.resultSize < 10000,true,false)}">{!Con.resultSize}</apex:outputText>
+          <apex:image url="/img/search_prevarrow_disabled.gif" styleClass="prevArrow" rendered="{!NOT(Con.HasPrevious)}" />
+          <apex:image url="/img/search_prevarrow.gif" title="Previous Page" styleClass="prevArrow" rendered="{!Con.HasPrevious}" />
+          <apex:commandLink action="{!Previous}" title="Previous Page" value="Previous Page" rendered="{!Con.HasPrevious}" reRender="resultsBlock,otpNav2,otpNav3" status="status" />
+          <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(Con.HasPrevious)}">Previous Page</apex:outputPanel>
+               &nbsp;({!IF(Con.PageNumber == 1,1,((Con.PageNumber -1) * Con.PageSize)+1)}-{!IF((Con.PageNumber * Con.pageSize)>Con.resultSize,Con.resultSize,Con.PageNumber * Con.pageSize)})&nbsp;
+         <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(Con.HasNext)}">Next Page</apex:outputPanel>
+          
+          <apex:commandLink title="Next Page" value="Next Page" rendered="{!Con.HasNext}" action="{!next}" reRender="resultsBlock,otpNav2,otpNav3" status="status" />&nbsp;
+             <apex:image url="/img/search_nextarrow.gif" title="Next Page" styleClass="nextArrow" rendered="{!Con.HasNext}" />
+              <apex:image url="/img/search_nextarrow_disabled.gif" rendered="{!NOT(Con.HasNext)}" />
+    <c:actionstatus ></c:actionstatus>
+   </apex:outputPanel>
+   
+  </apex:pageBlockSection>
+  
+ </apex:pageBlock>
+ </apex:form> 
+</apex:page>

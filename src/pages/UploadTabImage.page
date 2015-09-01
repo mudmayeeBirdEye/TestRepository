@@ -1,0 +1,115 @@
+<apex:page standardController="Intranet_Main_Tab__c" extensions="UploadTabImage" showHeader="false" sidebar="false"> 
+   <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+   <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-ui-1.8.4.custom.min.js')}" />
+   <apex:includeScript value="{!URLFOR($Resource.PopPupBox, 'PopPupBox/SimpleDialog-2.0.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.RCBlockUI, 'blockUI/js/jquery.blockUI.js')}" />
+ <script>
+   function closePopup(){
+    $('#showDiv').closeAllpopup();   
+}
+  
+  function show(){
+    $('#showDiv').showpopup({ top: 0,enableclose:true,draggable:true,closeIcon:"{!URLFOR($Resource.PopPupBox, 'PopPupBox/close-icon.png')}",ismodal:true,overlayStyle:{background:"RED"}});
+  }
+ function hideDiv(){
+   
+   closePopup();
+   
+  var loadingContent="<div class='waitingSearchDiv' id='el_loading' style='background-color: #fbfbfb;"+
+                           " height: 100%;opacity:0.65;width:100%;'><div class='waitingHolder' ><img class='waitingImage' src='/img/loading.gif' title='Please Wait...' />"+
+                           " <span class='waitingDescription'>Loading...</span>"+
+                           " </div></div>";
+     $("#message-panel").empty().html(loadingContent);
+ window.opener.location.reload();
+
+ } 
+  </script>
+   <script type="text/javascript">
+    $(function() {
+        $.blockUI({
+        message : '<div class="preloader"><img src="' + '{!URLFOR($Resource.RCBlockUI,"blockUI/js/loading.gif")}' + '" /><div align="center" id="block-ui-msg"><span id="firstmsg">Please wait</span></div></div>',
+        css : {
+        padding : '0',
+        margin : '0',
+        width: '500px',
+        border: 'none',
+        height: '200px',
+        left: '32%',
+        top: '30%',
+        background: 'none'
+        }
+     });
+     $(window).load(function() { $.unblockUI(); });
+     });
+     </script>
+      
+     <style>
+     	.msgStyle {
+     		background-color: #FFFFCC;
+		    border-style: solid;
+		    border-width: 1px;
+		    color: #000000;
+		    margin: 4px 20px;
+		    padding: 6px 8px 6px 6px;
+		    border-color: #3399FF;	
+     	}
+     </style> 
+ <!--    
+<apex:outputPanel id="msgPanel"  rendered="{!!isValidUser}">
+	<apex:pageBlock >
+		<apex:pageBlockSection columns="1" >
+				<apex:messages id="msgPanel" styleClass="msgStyle" rendered="{!!isValidUser}" />
+				<apex:PageMessages />
+		</apex:pageBlockSection>
+	</apex:pageBlock>
+</apex:outputPanel>
+ -->
+ <!--<apex:messages id="msgPanel" styleClass="msgStyle" rendered="{!!isValidUser}" />-->
+
+
+<apex:outputPanel id="uploadPanel">
+    <apex:pageBlock title="Upload an Image">
+        <apex:pageBlockButtons location="both">
+             <input type='button'  value="Close"  onclick="window.close();window.opener.location.reload();"/>
+        </apex:pageBlockButtons>
+         <apex:pageBlockSection columns="2" id="block1" >
+               <apex:form >
+               	   <apex:PageMessages />
+                   <apex:pageBlockSectionItem labelTitle="{!mainTabObj.Name}" dataTitle="{!mainTabObj.Name}" helpText="{!mainTabObj.Name}" datastyle="width:20%;">
+                       
+                           <apex:panelGroup >
+                               <apex:outputText value="{!mainTabObj.Name}" />
+                               <BR/>
+                               <apex:outputPanel id="imgPanel">
+                                    <apex:image URL="/servlet/servlet.FileDownload?file={!mainTabObj.Tab_Image_Id__c }"  height="100" width="100"/>
+                                </apex:outputPanel>
+                            
+                            </apex:panelGroup>
+                      
+                   </apex:pageBlockSectionItem>
+             </apex:form>
+          
+          <apex:pageBlockSectionItem dataStyle="border-left:1px solid lightgray;width:80%;" >
+          <apex:panelGroup >
+              <div id="showDiv">
+                  <apex:form enctype="multipart/form-data">
+                  <apex:outputLabel value="File Name" for="fileName"/>
+                  <apex:inputText value="{!strFilename}" id="fileName2" />
+                  <BR/>
+                  <apex:outputLabel value="Tab Image " for="file"/>
+                  <apex:inputFile value="{!objThumbanailDocument.body}" filename="{!objThumbanailDocument.name}"  id="file2"/>
+                  <BR/>
+                  <apex:commandButton action="{!uploadImage}" value="Upload" onclick="window.opener.location.reload();"/>
+                  </apex:form>
+                  </div>
+              </apex:panelGroup>
+              
+          </apex:pageBlockSectionItem>
+          
+      </apex:pageBlockSection>
+     
+    </apex:pageBlock>
+   
+</apex:outputPanel>
+
+</apex:page>

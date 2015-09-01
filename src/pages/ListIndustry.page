@@ -1,0 +1,18 @@
+<apex:page controller="GetIndustry">
+	<apex:sectionHeader title="Industry"/>
+    	<apex:form >
+	    	<apex:pageBlock >
+    			<div style="width:500px;">
+    				<apex:commandButton action="{!URLFOR($Action.Industry__c.New)}" value="Create a new Industry"/><br/><br/>
+    				<apex:pageBlockSection columns="8" >
+    					<apex:repeat value="{!Summaries}" var="summary">
+        					<apex:commandbutton value="{!summary.Name}" title="{!summary.Name}" style="width: 220px; height:50px;" action="/apex/SalesBattleCards?id={!summary.Id}">
+        					</apex:commandbutton>
+        						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+        				</apex:repeat>
+        			</apex:pageBlockSection>
+    			</div>
+ 			</apex:pageBlock>
+    	</apex:form>
+</apex:page>

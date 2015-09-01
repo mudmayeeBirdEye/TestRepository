@@ -1,0 +1,194 @@
+<apex:page cache="true" controller="LP.Settings" action="{!init}" setup="true" >
+    <apex:form id="myform">
+        
+        <apex:sectionHeader title="Liveperson Configuration" help="/apex/Setting_Help"/>
+        
+        <apex:image value="{!$Resource.LP__LivePerson_Logo}" />
+        <br/><br/>
+        <div class="Description">
+   			This page provides the setup utilities to configure the LivePerson integration with Salesforce: definition of the way Salesforce users will be authenticated when attempting to view chats in LivePerson; User Interface customization of the integration; and the mapping utility of Salesforce fields to LivePerson variables.<br/> Refer to the Help on this page for details on each section.
+    		<br/><br/>
+    	</div>
+        <apex:pageBlock id="pgBlockId" title="Settings" mode="edit">
+            
+            <div width="100%" class="pbInfo"><apex:outputPanel rendered="{!hasSaveSuccessful}" styleClass="pbInfo" style="width:100%;text-align:center">Save was successful.</apex:outputPanel></div>
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!save}" onclick="checkRequired(event)"/>
+            </apex:pageBlockButtons>
+			 
+            <apex:pageBlocksection title="Authentication Settings" collapsible="false" id="pblocksection" columns="2">
+            
+            <apex:pageBlockSectionItem id="p1">
+                <apex:selectRadio value="{!selectedAuthType}" id="selectId"  onclick="endisableUserInput();">
+                    <apex:selectOptions value="{!authTypes}"/>
+                </apex:selectRadio>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem />
+            
+            <apex:pageBlockSectionItem />
+            <apex:pageBlockSectionItem />
+            
+            <apex:pageBlockSectionItem id="p2">
+                <apex:outputLabel value="Server Domain" for="serverDomainId"/>
+                <apex:inputText value="{!serverDomain}" id="serverDomainId" ></apex:inputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem />
+            
+            
+            <apex:pageBlockSectionItem id="p3">
+                <apex:outputLabel value="Site ID" for="siteIdId"/>
+                <apex:inputText value="{!siteId}" id="siteIdId"></apex:inputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem />
+            
+            
+            <apex:pageBlockSectionItem id="p4">
+               <apex:outputLabel value="User Name" for="userNameId"/>
+               <apex:inputText value="{!userName}" id="userNameId"></apex:inputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem />
+            
+            
+            <apex:pageBlockSectionItem id="p5">
+                <apex:outputLabel value="Password" for="pswdId"/>
+                <apex:inputSecret redisplay="true" value="{!password}" id="pswdId"></apex:inputSecret>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem />
+            
+            
+                        
+            </apex:pageBlocksection>
+            
+            <apex:pageBlocksection title="Creation Settings" collapsible="false">
+            </apex:pageBlocksection>
+            <div style="padding-left:5px">
+                <apex:inputCheckbox value="{!intoActivityHistory}" id="activityHistoryCheckboxId"/>Create chat activities in Activity History (instead of in Open Activities)
+            </div>
+            
+             <apex:pageBlocksection title="User Interface" collapsible="false">
+            </apex:pageBlocksection>
+            <div style="padding-left:5px">
+                <apex:inputCheckbox value="{!Newwindow}" />Open links in new window
+            </div>
+            <div style="padding-left:5px">
+                <apex:inputCheckbox value="{!FullScreen}" />Open links without header and sidebar
+            </div>
+        
+        </apex:pageBlock>
+        <!-- ---------------------------MAPPING-------------------------- -->
+        
+        
+        
+        
+        
+        <apex:pageBlock title="Mapping">
+            <apex:pageBlockTable value="{!mappingViewTable}" var="aMappingViewRow">
+                <apex:column >
+                    <apex:facet name="header">Action</apex:facet>
+                    <apex:commandLink action="{!editObj}" value="Edit">
+                        <!--  <apex:param value="{!aContact.name}" assignto="{!selectedWhoId}"/> -->
+                        <apex:param name="objToEdit" value="{!aMappingViewRow.objName}" />
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">SF Object</apex:facet>
+                    <apex:outputText value="{!aMappingViewRow.objName}">&nbsp;</apex:outputText>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Number of mapped fields</apex:facet>
+                    <apex:outputText value="{!aMappingViewRow.countInMapping}">&nbsp;</apex:outputText>
+                </apex:column>
+            </apex:pageBlockTable>
+            
+        
+        
+        
+        </apex:pageBlock>
+    </apex:form>
+    
+    
+<script language="javascript">
+
+window.onload = function doOnLoad(){
+    endisableUserInput(); 
+    
+}
+
+function endisableUserInput()
+{
+    var obj = document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p1.selectId}');
+
+    var elems = obj.getElementsByTagName("input");
+    var val;
+    for(var i=0 ; i < elems.length; i++)
+    {
+        if(elems[i].type == "radio" && elems[i].checked == true)
+        {
+            val = elems[i].value;
+            break;
+        }
+    }       
+       var b = true;
+    if(val == 'Automatic')
+        b = false
+    else
+    {
+        b = true;
+        document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p4.userNameId}').value = '';
+        document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p5.pswdId}').value = '';
+    }
+            
+    //document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p2.serverDomainId}').disabled=b;
+    //document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p3.siteIdId}').disabled=b;
+    document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p4.userNameId}').disabled=b;
+    document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p5.pswdId}').disabled=b;
+}
+
+function checkRequired(ev)
+{
+    var obj = document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p1.selectId}');
+    var elems = obj.getElementsByTagName("input");
+    var val;
+    for(var i=0 ; i < elems.length; i++)
+    {
+        if(elems[i].type == "radio" && elems[i].checked == true)
+        {
+            val = elems[i].value;
+            break;
+        }
+    }       
+    if(val=='Automatic')
+    {
+        var prob = false;
+        if(document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p2.serverDomainId}').value == '')
+            {alert('Server Domain is missing.');prob=true;}
+        else if(document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p3.siteIdId}').value== '')
+            {alert('Site Id is missing.');prob=true;}
+        else if(document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p4.userNameId}').value == '')
+            {alert('Username is missing.');prob=true;}
+        else if(document.getElementById('{!$Component.myform.pgBlockId.pblocksection.p5.pswdId}').value == '')
+            {alert('Password is missing.');prob=true;}
+        
+        if(prob)
+        {
+             if(window.event)
+             {
+                window.event.cancelBubble = true;
+                window.event.returnValue= false;
+                return false;
+             }
+             else
+             {
+               ev.preventDefault();
+             }  
+         }
+    }
+        
+}
+</script>   
+    
+    
+    
+</apex:page>

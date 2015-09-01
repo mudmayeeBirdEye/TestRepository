@@ -1,0 +1,189 @@
+<apex:page controller="ATTControllerNew" showHeader="false" title="Public Knowledge Base" cache="true" expires="{!cacheMaxAge}" >
+   <style type="text/css">
+    ul li, ol li {
+    margin-left: 0px;
+    padding-left: 0;
+    //padding-bottom:10px;
+    font-size: 15px;
+    color: #0670B4;
+    padding-bottom:5px;
+     }
+    .videoText{
+      border-bottom: 1px solid rgb(204, 204, 204); 
+      padding-bottom: 8px;
+      margin-bottom:8px;
+     }
+    .rn_ProductCategoryList .rn_HierList{
+       width:95% !important;
+      
+     }
+     .rn_ProductCategoryList{
+       margin-left:36px;
+     }
+     li a{
+      color:#0670B4;
+     }
+     .rn_HierList ul li a:hover{
+       text-decoration:underline !important;
+       color:#015BA7 !important;  
+      }
+      #ContentHeader {
+        text-align: center;
+        color: #B80000;
+        font-size: 30px;
+        font-weight: bold;
+      }
+      #Contentbody {
+        
+      }
+      #ContentbodyHeader {
+        font-weight: bold;
+        font-size: 18px;
+        text-align: center;
+        width: 100%;
+     }
+     #ContentBodyLinks {
+        //padding-left: 90px;
+        padding-left: 170px;
+     }
+     .links {
+        font-size:14px;
+        margin-top:5px;
+     }
+     </style>
+    <apex:composition template="{!$Site.Template}">
+     <apex:define name="search">  
+    
+     <div style='margin-bottom:15px;margin-top:10px;' >
+           <!-- <a href="{!$Site.CurrentSiteUrl}" class="rn_Selected rn_FilterItem" style='text-decoration:underline'>Support Home</a>->Videos-->
+      </div>
+         <table border="0" width="100%" cellspacing="0">
+              <tr>
+              <td valign="top">
+                    <div id="Div2" class="rn_ProductCategoryList" style="width: 100%;">
+                        <!--<div style="width:49%;float:left">
+                               <div class="rn_HierList rn_HierList_1068 rn_FloatLeft">
+                                    <div class="rn_HierList rn_HierList_1068 rn_FloatLeft">
+                                          <h3>Account Management</h3>
+                                          <div class="videoText"> </div>
+                                          <ul>
+                                                <li><a href="http://youtu.be/sYOWdGuPIus" target="_blank">
+                                                        <apex:outputText value="Add a Department for Office@Hand: AT&T How to Video Series"></apex:outputText>
+                                                   </a></li>
+                                                <li><a href="http://www.youtube.com/watch?v=FtKAehHH3Mw&feature=uploademail" target="_blank">
+                                                      <apex:outputText value="Add a New User for Office @ Hand with Office @ Hand Web Online Interface: AT&T How to Series"></apex:outputText>
+                                                </a></li>
+                                                <li><a href="http://www.youtube.com/watch?v=QxwtjRckaWA&feature=uploademail" target="_blank">
+                                                <apex:outputText value="Add More Users to Office @ Hand: AT&T How to Video Series"></apex:outputText>
+                                                </a></li>
+                                                <li><a href="http://www.youtube.com/watch?v=yTBlz9ZbvY0&feature=uploademail" target="_blank">
+                                                     <apex:outputText value="Instantly Add a Direct Extension Number for Office @ Hand: AT&T How to Video Series"></apex:outputText>
+                                                </a></li>
+                                        </ul>
+                                    </div>
+                               </div>
+                                 <div class="rn_HierList rn_HierList_1080 rn_FloatLeft ">               
+                                        <div class="rn_HierList rn_HierList_1080 rn_FloatLeft">
+                                           <h3>FAX</h3>
+                                           <div class="videoText"> </div>
+                                            <ul>
+                                            <li><a href="http://www.youtube.com/watch?v=zxKr0pQ-fOc&feature=uploademail" target="_blank">
+                                                   <apex:outputText value="Send a Fax via Email from Office @ Hand: AT&T How to Video Series"></apex:outputText>
+                                            </a></li>
+                                            </ul>
+                                             
+                                         </div>
+                                            
+                                  </div>
+                              
+                              </div>  
+                             <div style="width:49%;margin-left:5px;float:left">
+                                       <div class="rn_HierList rn_HierList_35 rn_FloatRight">
+                                        <h3>Call Screening/Handling</h3>
+                                              <div class="videoText"> </div>
+                                                <ul>
+                                                    <li><a href="http://youtu.be/VOAiIEzaPXY" target="_blank">
+                                                          <apex:outputText value="Call Forwarding with Office@Hand: AT&T How to Video Series"></apex:outputText>
+                                                    </a></li>
+                                                    <li><a href="http://www.youtube.com/watch?v=oIUIRG2Q7iA&feature=uploademail" target="_blank">
+                                                         <apex:outputText value="Change the Hold Music for Office @ Hand: AT&T How to Video Series"></apex:outputText>
+                                                    </a></li>
+                                                     <li><a href="http://www.youtube.com/watch?v=tlB0sqMGUU4&feature=uploademail" target="_blank">
+                                                            <apex:outputText value="Custom Department Greeting for Office @ Hand: AT&T How to Video Series"></apex:outputText>
+                                                     </a></li>
+                                                      <li><a href="http://www.youtube.com/watch?v=ZLZdk_uzY8c&feature=uploademail" target="_blank">
+                                                               <apex:outputtext value="Enable Call Screening for Office at Hand: AT&T How to Video Series" />
+                                                          </a></li>
+                                                      <li><a href="http://www.youtube.com/watch?v=ZsmeSO5NYgU&feature=uploademail" target="_blank">
+                                                             <apex:outputText value="Enable or Disable Do Not Disturb DND Feature for Office @ Hand: AT&T How to Video Series"></apex:outputText>
+                                                           </a></li>
+                                                      <li><a href="http://www.youtube.com/watch?v=Lao_Pm3PhYo&feature=uploademail" target="_blank">
+                                                            <apex:outputText value="Setup Afterhours Calls for a department using Office at Hand: AT&T How to Video Series"></apex:outputText>
+                                                         </a></li>
+                                                      <li><a href="http://www.youtube.com/watch?v=wfjfsM1b5U4&feature=uploademail" target="_blank">
+                                                             <apex:outputText value="Setup Caller ID, Business Phone Identity for Office @ Hand for Android(tm): AT&T How to Video Series"></apex:outputText>
+                                                         </a></li>
+                                                </ul>
+                                </div>
+                           </div>-->          
+                           <div id="ContentDiv" style="width: 100%;">
+                                <div id="ContentHeader">Coming Soon.</div>
+                                <br/><br/>
+                                <!-- <div id="Contentbody">
+                                    <div id="ContentbodyHeader">"How-To-Videos" for RingCentral Office@Hand from AT&amp;T:</div>
+                                    <br/>
+                                    <div id="ContentBodyLinks">
+                                        <ul>   
+                                           <li class="links"><a href="http://youtu.be/PITI6ExWAwc">Add a Department for RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/81KbHIIKqU4">Add a New User for the RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/0uHecVEtkqs">Call Forwarding with RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/lSb4hW5m8ZY">Call Handling Options for RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/VGETWj-0pWs">Change &amp; Reset Your Online Account Password for RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/qbeXSBhT0YA">Change the Hold Music for RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/yswbehIviCE">Custom Department Greeting for RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/_XKxUGL7c1Q">Downloading Softphone for Windows® for RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/W_oNdyfcB5k">Enable Call Screening for RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/wzYokqOWPr4">Enable or Disable the DND Feature for Office@Hand from AT&amp;T on your Android™</a></li>
+                                           <li class="links"><a href="http://youtu.be/cYuyQ_rCLRw">Instantly Add a Direct Extension Number for RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/Q4BC28PzwSU">Send and Forward a Fax via Email using RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/eBkmUTlkByk">Setting Afterhours Calls for a Department using RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/Smr5Ez5kbGE">Setting Up How Incoming Calls are Handled for RingCentral Office@Hand from AT&amp;T</a></li>
+                                           <li class="links"><a href="http://youtu.be/bzAjjCQz2gs">Setup Caller ID Business Phone Identity for Office@Hand for Android™</a></li>
+                                           <li class="links"><a href="http://youtu.be/LAMzYn24QjA">Upgrade your Service Plan to Add More Users to RingCentral Office@Hand from AT&amp;T</a></li>
+                                       </ul>
+                                    </div>
+                                    <br/>
+                                </div>-->
+                           </div>         
+                    </div>
+                </td>  
+                <td width="5%">
+                &nbsp;
+                </td>
+                </tr>
+          </table>
+        </apex:define>
+    </apex:composition>
+</apex:page>
+
+
+ <!--
+                                        <ul>   
+                                           <li>Add  a department</li>
+                                           <li>Add a new user</li>
+                                           <li>Add more users</li>
+                                           <li>Call Forwarding </li>
+                                           <li>Call Handling options</li>
+                                           <li>Change the Hold music</li>
+                                           <li>Customer Department greeting</li>
+                                           <li>Download Soft phone</li>
+                                           <li>Enable Call Screening</li>
+                                           <li>How to change/reset account password</li>
+                                           <li>Instantly add a direct extension number</li>
+                                           <li>Send and Forward a FAX</li>
+                                           <li>Setting up how incoming calls are handled</li>
+                                           <li>Setup Caller ID</li>
+                                           <li>Enable or disable Do-Not-Disturb</li>
+                                           <li>Setup After Hours calls</li>
+                                       </ul>
+                                       -->

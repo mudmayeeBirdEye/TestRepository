@@ -1,0 +1,115 @@
+<apex:page standardController="TOTD__c" sidebar="false" showHeader="false" title="TOTD Preview Page">
+   <apex:stylesheet value="{!URLFOR($Resource.jquery, '/css/totd-theme/jquery-ui-1.8.4.custom.css')}" />
+  <apex:includeScript value="{!URLFOR($Resource.jquery, '/js/jquery-1.4.2.min.js')}" />  
+  <apex:includeScript value="{!URLFOR($Resource.jquery, '/js/jquery-ui-1.8.4.custom.min.js')}" />  
+  <script src="/soap/ajax/24.0/connection.js"></script>   
+ <title>TOTD Preview Page </title>
+ 
+<script>
+var j$ = jQuery.noConflict();
+j$(document).ready(function() {
+              j$.fx.speeds._default = 500;
+                 j$('#dialog').dialog({
+                            autoOpen: true, 
+                            width: 600,
+                            height: 250,
+                            show:"slide",
+                            hide: "explode",
+                            modal:true,
+                            buttons: 
+                                  { "I have read this": function() {
+                                                          j$(this).dialog("close");
+                                                          returnDetailsPage();
+                                                        },
+                                    "Close": function() { 
+                                                         j$(this).dialog("close");
+                                                         returnDetailsPage();
+                                                       }
+                                  }
+                                });
+                                 j$('.ui-icon.ui-icon-closethick').click(function(){
+                                   j$('#dialog').html('');
+                                   returnDetailsPage();
+                              }); 
+                         }); 
+function returnDetailsPage(){
+       /* window.location="{!URLFOR($Action.TOTD__c.view, TOTD__c.id)}"; */
+       window.close();
+     }  
+                   
+</script>
+
+<div id='dialog'>
+   <apex:outputPanel rendered="{!TOTD__c.Content_Type__c=='HTML'}">
+          <div>
+             <table cellpadding='0' cellspacing='5' border='0' width='100%' height='100%'>
+                 <tr>
+                     <td width='150px' align='left' valign='top'>
+                           <apex:outputPanel rendered="{!(TOTD__c.Image__c==null) || (TOTD__c.Image__c=='') || (TOTD__c.Image__c=='<br>')}">
+                                <img src='/resource/1284552471000/TOTDSource/monday.jpg' width='150px'/>
+                           </apex:outputPanel>
+                             <apex:outputPanel rendered="{!(TOTD__c.Image__c!=null) && (TOTD__c.Image__c!='') &&  (TOTD__c.Image__c!='<br>')}">
+                                 <!-- <img src='{!TOTD__c.Image__c}' width='150px'/> -->
+                                 <apex:outputtext escape="false" value="{!TOTD__c.Image__c}" />
+                           </apex:outputPanel>
+                       </td>
+                       <td style='font:arial;font-family:Arial;font-size:13px;font-weight:normal;' align='left' valign='top'>
+                         <apex:outputText escape="false" value="{!TOTD__c.Content__c}" />
+                       </td>
+                   </tr>
+               </table>
+            </div>
+  </apex:outputPanel>
+  
+   <apex:outputPanel rendered="{!TOTD__c.Content_Type__c=='Only Video'}">
+       <iframe src="{!TOTD__C.VideoLink__c}" width='100%' height='390' id='frameId' scrolling='no' frameborder='0'></iframe>
+   </apex:outputPanel>
+   
+   <apex:outputPanel rendered="{!TOTD__c.Content_Type__c=='Video And Text'}">
+       <iframe src="{!TOTD__C.VideoLink__c}" width='100%' height='390' id='frameId' scrolling='no' frameborder='0'></iframe>
+       <div style='height:20%; width: 100%;'>
+         <apex:outputText escape="false" value="{!TOTD__c.Content__c}" />
+          </div>
+
+  </apex:outputPanel>
+   
+   <apex:outputPanel rendered="{!TOTD__c.Content_Type__c=='Flash'}">
+     <iframe src="{!TOTD__C.FlashLink__c}" width='100%' height='390' id='frameId' scrolling='no' frameborder='0'>
+     </iframe>
+  </apex:outputPanel>
+ </div>
+    <script>
+      j$(document).ready(function() {
+        try{ 
+              j$('#dialog').dialog("option", "title", 'For Your Information <font style=\"font-size:larger;color:#C90101;\" >{!TOTD__c.Day__c}</font>'); 
+               if('{!TOTD__c.Content_Type__c}'=='HTML'){
+                   var contentheight=j$('#dialog')[0].scrollHeight;
+                          if(contentheight>250){
+                             j$("#dialog").height("250px");
+                          }else{
+                            j$("#dialog").height(contentheight);
+                          }
+                  
+                  }  
+                   if('{!TOTD__c.Content_Type__c}'=='Only Video'){
+                      j$("#dialog").height("400px");
+                  }  
+                   if('{!TOTD__c.Content_Type__c}'=='Video And Text'){
+                      var contentheight=j$('#dialog')[0].scrollHeight;
+                     if(contentheight>450){
+                         j$("#dialog").height("450px");
+                     }else{
+                         j$("#dialog").height(contentheight);
+                     }
+      
+                  } 
+                   if('{!TOTD__c.Content_Type__c}'=='Flash'){
+                     j$("#dialog").height("400px");
+                  
+                  }      
+        }catch(e){
+        
+        }
+        });
+    </script>
+</apex:page>

@@ -1,0 +1,118 @@
+<apex:page controller="SystemStatusExt">
+	<link
+		href="{!URLFOR($Resource.RCPartnerResource, 'PartnerPortalSystemSts/style.css')}"
+		type="text/css" rel="stylesheet" media="screen" />
+	<script
+		src="{!URLFOR($Resource.RCPartnerResource, 'PartnerPortalSystemSts/jquery-1.8.2.js')}"></script>
+	<style>
+.status {
+	background-position: 0px -609px;
+	float: left;
+}
+
+.status .status-bg-left {
+	font-size: 12px;
+	color: rgb(0,0,255);
+}
+
+.arrow_box {
+	position: relative;
+	background: #88b7d5;
+	border: 1px solid #c2e1f5;
+}
+
+.arrow_box:after,.arrow_box:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: #88b7d5;
+	border-width: 30px;
+	margin-left: -30px;
+}
+
+.arrow_box:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-bottom-color: #c2e1f5;
+	border-width: 31px;
+	margin-left: -31px;
+}
+
+.status .statusSpan {
+	width: 79px;
+}
+
+}
+</style>
+	<script>
+		function openStatusPage() {
+			var url = '{!$Site.CurrentSiteUrl}RcSystemStatus';
+			window.open(url, '_blank');
+		}
+	</script>
+
+	<div class="status" id="status">
+		<a href="javascript:void(0);" onClick="javascript:openStatusPage();"
+			class="status-bg-left"> <span
+			class="{!severity_class} statusSpan"
+			style="text-decoration: underline;">System Status</span> </a>
+
+		<div class="system-msg">
+			<div class="status-bg-top"></div>
+			<div class="status-bg-btm">
+				<!--<apex:outputText rendered="{!if(isPublicDescFound && openDescriptionLst.size > 0,true,false)}" escape="false">
+                <h4>Current Issues</h4>
+                <apex:repeat var="descStr" value="{!openDescriptionLst}">
+                    <p style="white-space:pre-wrap;">{!descStr}</p>
+                </apex:repeat>
+             <br/>    
+            </apex:outputText>-->
+
+				<!--<apex:outputText rendered="{!if(isPublicDescFound && resolveDescriptionLst.size >0,true,false)}" escape="false">
+                <h4>Resolved Issues</h4>
+                <apex:repeat var="descStr" value="{!resolveDescriptionLst}">
+                    <p style="white-space:pre-wrap;">{!descStr}</p>
+                </apex:repeat>
+            </apex:outputText>-->
+				<apex:outputText escape="false">
+					<h4>No Known Issues</h4>
+					<p></p>
+					<p class="imp"></p>
+				</apex:outputText>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		var alreadysystemClick = 0;
+		$(document).click(function(e) {
+			if ($(e.target).is('.status,.status *')) {
+				if (alreadysystemClick == 0) {
+					alreadysystemClick = 1;
+					$('.system-msg').show();
+				} else if (alreadysystemClick == 1) {
+					var $target = $(e.target);
+					//alert($target);
+					if ($target.is("a")) {
+						//alert(1); 
+					} else {
+						alreadysystemClick = 0;
+						$('.system-msg').hide();
+					}
+				}
+			} else {
+				alreadysystemClick = 0;
+				$('.system-msg').hide();
+			}
+		});
+	</script>
+</apex:page>

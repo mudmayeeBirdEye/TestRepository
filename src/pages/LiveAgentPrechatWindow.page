@@ -1,0 +1,93 @@
+<apex:page sidebar="false" showHeader="false" cache="false" showchat="false" id="page1">  
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+<style>
+    #page {
+        width: 100%;
+        min-height: 700px; 
+        background: none;
+        border: 1px solid lightgray;
+        margin: 0px auto;
+        //border-radius: 10px;
+        //-moz-box-border-radius: 10px;
+        //-webkit-box-border-radius: 10px;
+        box-shadow: 0 0 92px 5px #DADADA inset;
+        -moz-box-shadow: 0 0 92px 5px #dadada inset;
+        -webkit-box-shadow: 0 0 92px 5px #DADADA inset;
+    }
+    #mainDiv {
+        width: 90%;
+        //min-height: 500px;
+        background: none;
+        margin: 0px auto;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        //border: 1px solid;
+    }
+    #body1 {
+        overflow:hidden;
+    }
+    .btnclass {
+        background: #ED741D;
+        color: white;
+        border-radius: 5px;
+        width: 86px;
+        height: 25px;
+    }
+    
+     .inputBoxClass {
+            border: 1px solid darkgray;
+            border-radius: 5px;
+            width: 95%;
+            height: 20px;
+            color:gray;
+        }
+</style>
+
+<form method='post' id='prechatForm'>
+    <body id="body1">
+    <div id="page">
+        <div id="mainDiv">
+            <div style="font-size: 30px;color: #ED741D;">Welcome!</div>
+            <div style="width:60%;margin-top: 25px;"><span style="color: darkGray;font-size: 17px;font-weight: bold;">
+                    Please press "Start Chat" below to connect our sales representative. <br/>Thank You.</span>
+            </div>
+            <div style="font-size: 15px;color:darkgrey;margin-top: 25px;">What is your name?</div> 
+            <div style="margin-top: 25px;">
+                <input type='text' name='liveagent.prechat:Visitor Name' placeholder="First Name*" id='prechat_field' class="inputBoxClass"/>  
+                &nbsp;&nbsp;<span style="color:gray">Required fields</span><span style="color: #ED741D;font-size: 15px;">&nbsp;*</span>  
+            </div>
+            <div style="text-align: right;padding-right: 30px;margin-top: 10px;">
+                <!--<input type="hidden" name="liveagent.prechat.Create:Visitor Name" value="LiveChatTranscript,LiveChatTranscript.VisitorName__c"/>-->
+                <input type='submit' value='Start Chat' class = "btnclass" id='prechatsubmit' />
+            </div>
+        </div>
+    </div>
+    </body>
+</form>
+<script>
+          $("#prechatsubmit").click( function() {
+         var firstName = document.getElementById('prechat_field').value;
+             if(firstName == '') {
+                alert('Please enter your First Name.');
+                return false;
+             } else {
+                 return true; 
+             }
+           }
+        );
+         
+     (function () {
+        function handlePageLoad() {
+            var endpointMatcher = new RegExp("[\\?\\&]endpoint=([^&#]*)");
+            document.getElementById('prechatForm').setAttribute('action',
+            decodeURIComponent(endpointMatcher.exec(document.location.search)[1]));
+        }
+        if (window.addEventListener) {
+            window.addEventListener('load', handlePageLoad, false);
+        } else {
+            window.attachEvent('onload', handlePageLoad, false);
+        }
+    })();
+
+</script>
+</apex:page>

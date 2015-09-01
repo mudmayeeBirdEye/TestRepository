@@ -1,0 +1,504 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="true">
+    <script type="text/javascript">
+        var __sfdcSessionId = '{!GETSESSIONID()}';
+    </script>
+    <!--[if IE 7]><script>var ie7 = true;</script><![endif]-->
+    <!--[if gte IE 8]>    <script>var ie8 = true;</script>    <![endif]-->
+    <script src="/soap/ajax/22.0/connection.js?{!GETSESSIONID()}"></script>
+    <script src="/resource/1291739010000/ring__jquery_min?{!GETSESSIONID()}"></script>
+
+    <script src="/resource/1287562561000/ring__json?{!GETSESSIONID()}"></script>
+    <script src="/resource/1319630283000/ring__md5?{!GETSESSIONID()}"></script>
+    <script src="/resource/1287478496000/ring__socket_io?{!GETSESSIONID()}"></script>
+    <script src="/resource/1287562632000/ring__jquery_cookie?{!GETSESSIONID()}"></script>
+    <script src="/resource/1287752717000/ring__jquery_tablesorter_min?{!GETSESSIONID()}"></script>
+    <script src="/resource/1299770489000/ring__jquery_fixedtableheader_min?{!GETSESSIONID()}"></script>
+    <script src="/resource/1287752717000/ring__MyWidget_Core?{!GETSESSIONID()}"></script>
+    <script src="/resource/1294059063000/ring__MyWidget_UI?{!GETSESSIONID()}"></script>
+    <script src="/resource/1294058996000/ring__MyWidget_Manager?{!GETSESSIONID()}"></script>
+    <link rel="stylesheet" type="text/css" href="/resource/1286540783000/ring__MyCss?{!GETSESSIONID()}"/>
+    
+<!--[if lt IE 7 ]> <div id="rc-panel" class="ie6"> <![endif]-->
+<!--[if IE 7 ]> <div id="rc-panel" class="ie7"> <![endif]-->
+<!--[if IE 8 ]> <div id="rc-panel" class="ie8"> <![endif]-->
+<!--[if IE 9 ]> <div id="rc-panel" class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <div id="rc-panel"> <!--<![endif]-->
+
+        <div class="shadow" style="display: none;">
+        </div>
+        <div class="rc-panel-bgr">
+        <!--Logo start-->
+        <h1 class="logo">
+            <span>RingCentral</span>
+        </h1>
+        <!--Logo End-->
+        <script type="text/javascript">
+        var keyValue = window.location.search.match(/(key=[^$&]*)($|&)/);
+        var randValue = 1;
+        if(keyValue != null && typeof keyValue[1] != "undefined") {
+            randValue = keyValue[0];
+        } 
+        document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="1px" height="1px" id="getter" align="middle">\
+                <param name="movie" value="/resource/1291371196000/ring__MyGetter"/>\
+                <param name="allowScriptAccess" value="always" />\
+                <param name=FlashVars value="'+randValue+'">\
+                <param name="quality" value="high" />\
+                <param name="scale" value="noscale" />\
+                <param name="salign" value="lt" />\
+                <param name="bgcolor" value="#ffffff"/>\
+                <embed src="/resource/1291371196000/ring__MyGetter" bgcolor="#ffffff" FlashVars="'+randValue+'" width="1px" height="1px" name="getter" quality="high" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash" />\
+            </object>');
+        </script>
+        <!--Top Menu Start-->
+        <div class="rc-menu round">
+            <div class="round-bgr">
+                <div class="svetofor red">&nbsp;</div>
+                <div class="dnd arrow"><a class="" href="javascript:;"><span>DND Off</span></a>
+                    <div class="drop-down">
+                        <div class="drop-content">
+                            <a href="javascript:;"><span class="all-calls">Take all calls</span></a>
+                            <!--a href="#"><span class="depart-calls">Do not accept department calls</span></a-->
+                            <a href="javascript:;"><span class="any-calls">Do not accept any calls</span></a>
+                        </div>
+                        <div class="drop-footer"></div>
+                        </div>
+                </div>
+                <div class="settings"><a href="javascript:;">Settings</a></div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <!--Top Menu End-->
+        <div class="gray-button log" style="margin:0 5px 0 86px;width:80px; display: none; ">
+            <a href="javascript:;" name="Logout" id="Logout">Logout</a>
+        </div>
+        <div class="clear"></div>
+        <!--Tab Start-->
+        <div class="tabb noactivecalls" style="display:none;">
+            <div class="status">
+                <h2>Messages</h2>
+                <div class="status-bgr" style="padding:1px;">
+                <div class="calls">
+                    
+                </div>
+                </div>
+            </div>
+            <div class="padd-margin"></div>
+            <div class="margin" style="width: 184px;">
+                <div class="haxe_wav" id="num1">
+                    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="165" height="27" id="haxe" align="middle">
+                        <param name="movie" value="/resource/1290189999000/ring__WavPlayer?gui=full&h=20&w=100"/>
+                        <param name="allowScriptAccess" value="always" />
+                        <param name="quality" value="high" />
+                        <param name="scale" value="noscale" />
+                        <param name="salign" value="lt" />
+                        <param name="bgcolor" value="#F3F3F3"/>
+                        <param name="wmode" value="opaque"/>
+                        <embed src="/resource/1290189999000/ring__WavPlayer?gui=full&h=20&w=100" wmode="opaque" bgcolor="#F3F3F3" width="165" height="27" name="haxe" quality="high" align="middle" scale="noscale" allowScriptAccess="always" type="application/x-shockwave-flash" />
+                    </object>
+                </div>
+                <div class="haxe_wav" id="num2">
+                    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" type="application/x-shockwave-flash" data="/resource/1294665344000/ring__MyMP3Player" width="165" height="27" id="haxe_mp3" align="middle">
+                        <param name="movie" value="/resource/1294665344000/ring__MyMP3Player"/>
+                        <param name="allowScriptAccess" value="always" />
+                        <param name="quality" value="high" />
+                        <param name="scale" value="noscale" />
+                        <param name="salign" value="lt" />
+                        <param name="bgcolor" value="#F3F3F3"/>
+                        <param name="wmode" value="opaque"/>
+                        <embed src="/resource/1294665344000/ring__MyMP3Player" wmode="opaque" bgcolor="#F3F3F3" width="165" height="27" name="haxe_mp3" quality="high" align="middle" scale="noscale" allowScriptAccess="always" type="application/x-shockwave-flash" />
+                    </object>
+                </div>
+                <div class="haxe_pdf" >
+                    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="100" height="27" id="haxe_pdf" align="middle">
+                        <param name="movie" value="/resource/1291201132000/ring__pdfSaver"/>
+                        <param name="allowScriptAccess" value="always" />
+                        <param name="quality" value="high" />
+                        <param name="scale" value="noscale" />
+                        <param name="salign" value="lt" />
+                        <param name="bgcolor" value="#F3F3F3"/>
+                        <param name="wmode" value="opaque"/>
+                        <embed src="/resource/1291201132000/ring__pdfSaver" wmode="opaque" bgcolor="#F3F3F3" width="100" height="27" name="haxe_pdf" quality="high" align="middle" scale="noscale" allowScriptAccess="always" type="application/x-shockwave-flash" />
+                    </object>
+                </div>
+                <a href="javascript:;" class="stop" alt="Delete message" title="Delete message" style="display:none"><img src="/resource/1289552208000/ring__button_stop2"/></a>
+                <!--img src="img/flash.png" alt="flash" align="middle"/-->
+            </div>
+            <div class="padd-margin"></div>
+            <div class="green-button float-left" style="margin:0 5px 0 0;width:80px; "><a href="javascript:;" name="callBack" id="callBack" style="display:none">Call Back</a></div>
+            <div class="green-button float-left" style="margin:0;width:85px; "><a href="javascript:;" name="openContact" id="openContact" style="display:none">Open Contact</a></div>    
+            <div class="clear"></div>
+        </div>
+        <!--Tab End-->
+        <!--Tab Start-->
+        <div class="tabb callusother" style="display:none;">
+            <div class="round margin">
+                <div class="round-bgr">
+                    <div class="select"><a class="select-arrow" style="padding-left: 5px;" title="Home" href="javascript:;">&nbsp;</a></div>
+                </div>
+                <div class="option-div" style="display:none;">
+                        <p><a href="javascript:;">Mobile: <span>&nbsp;</span></a></p>
+                      <div class="option-div-footer"></div>
+                </div>
+             </div>
+             <div class="padd-margin"></div>
+             <div class="round select margin" style="display:none;">
+                <div class="round-bgr">
+                    <div class="input"><input type="text" id="auslt-other"/></div>  
+                </div>
+             </div>
+             <div class="padd-margin"></div>
+             <div class="check c">
+                    <input type="checkbox" name="ausl" id="ausl" class="ausl"/>Always use selected location
+             </div>
+             
+             <div class="padd-margin"></div>
+             <div class="round select margin">
+                <div class="round-bgr">
+                    <div class="input"><input type="text" id="auslt"/></div>  
+                </div>
+             </div>
+             
+             
+         <div class="padd-margin"></div>    
+         <div class="margin">    
+            <div class="green-button float-left" style="margin:0 5px 0 0;width:84px;"><a href="javascript:;" name="callBack" id="callBackRing">Call</a></div>
+            <div class="green-button float-left" style="margin:0;width:84px;"><a href="javascript:;" name="cancelcall" id="cancelcall">Cancel</a></div>
+        </div>  
+        </div>
+        <!--Tab End-->
+        <!--Tab Start-->
+        <div class="tabb mainn" style="display:none;">
+            <object id="hidden_mp3_player" type="application/x-shockwave-flash" data="/resource/1290525209000/ring__player_mp3_mini" width="1" height="1">
+                <param name="movie" value="/resource/1290525209000/ring__player_mp3_mini" />
+                <param name="bgcolor" value="#E8E8E8" />
+                <param name="FlashVars" value="" />
+                <param name="wmode" value="opaque"/>
+                <embed src="/resource/1290525209000/ring__player_mp3_mini" bgcolor="#E8E8E8" width="1px" height="1px" name="hidden_mp3_player" quality="high" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"  />
+            </object>
+            <div class="status">
+                <h2>Status</h2>
+                <div class="status-bgr">
+                    <p class="numberr"><strong>&nbsp;</strong></p>
+                    <p class="last-call">&nbsp;</p>
+                </div>
+                <div class="status-footer">&nbsp;</div>
+            </div>
+            <div class="padd-margin"></div>
+            <div class="round margin" id="openCallingContact" style="display:none">
+                <div class="round-bgr">
+                    <div class="select oc"><a title="Open Contact" href="javascript:;">Open Contact</a></div>
+                </div>
+             </div>
+            
+            
+            
+            <div class="padd-margin"></div>
+            <div class="round margin">
+                <div class="round-bgr">
+                    <a class="double-button" href="javascript:;" id="newlead">New lead</a><a class="double-button second" href="javascript:;" id="newcon">New contact</a>
+                </div>
+             </div>
+             
+             <div class="status" style="display:none">
+                <h2>Multiple contacts found</h2>
+                <div class="status-bgr scroll">
+                    
+                </div>
+                <div class="status-footer">&nbsp;</div>
+            </div>
+             
+             <div class="double-border"></div>
+             <div class="padd-margin"></div>
+             <div class="round margin">
+                <div class="round-bgr">
+                    <div class="select stv"><a title="Send to Voicemail" href="javascript:;">Send to Voicemail</a></div>
+                </div>
+             </div>
+             <div class="padd-margin"></div>
+             <div class="round margin">
+                <div class="round-bgr">
+                    <div class="select ignore"><a title="Ignore" href="javascript:;">Ignore</a></div>
+                </div>
+             </div>
+             <div class="padd-margin"></div>
+             <div class="round margin">
+                <div class="round-bgr">
+                    <div class="select answer-using"><a class="select-arrow" title="Answer using" href="javascript:;">Answer using</a></div>
+                </div>
+                <div class="option-div" style="display:none;z-index: 100;">
+                        
+                      <div class="option-div-footer"></div>
+                    </div>
+             </div>
+             <div class="padd-margin"></div>
+             <div style="display:none;">
+                    <div class="input">
+                        <label>Enter number to forward call to</label>
+                        <div class="round select margin">
+                            <div class="round-bgr">
+                                <div class="input"><input type="text" /></div>  
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+        <div class="padd-margin"></div>            
+        <div class="margin">    
+            <div class="gray-button float-left" style="margin:0 5px 0 0;width:84px;"><a href="javascript:;" name="forward" id="forward">Forward</a></div>
+            <div class="gray-button float-left" style="margin:0;width:84px;"><a href="javascript:;" name="cancelfor" id="cancelfor">Cancel</a></div>
+        </div>
+                    
+                    
+                    
+                    
+                </div>
+             
+             <div class="padd-margin"></div>
+             <div class="round margin">
+                <div class="round-bgr">
+                    <div class="select reply"><a class="select-arrow" title="Reply: Call Me Back..." href="javascript:;">Reply: Call Me Back...</a></div>
+                </div>
+                <div class="option-div" style="display:none;z-index: 100;">
+                        <p><a href="javascript:;" class="wcyb"><span>Will Call You Back In...</span></a></p>
+                        <p><a href="javascript:;" class="cmbi"><span>Call Me Back In...</span></a></p>
+                        <p><a href="javascript:;" class="somw"><span>On My Way</span></a></p>
+                        <p><a href="javascript:;" class="iotol"><span>I’m on the other line</span></a></p>
+                        <p><a href="javascript:;"><span>Other</span></a></p>
+                      <div class="option-div-footer"></div>
+                    </div>
+             </div>
+             
+             <div style="display: none;z-index: 0;">
+                    <div class="input">
+                        <label>Enter your reply</label>
+                        <div class="round select margin">
+                            <div class="round-bgr">
+                                <div class="input"><input type="text" name="enteryr" id="enteryr" /></div>  
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+        <div class="padd-margin"></div>            
+        <div class="margin">    
+            <div class="gray-button float-left" style="margin:0 5px 0 0;width:84px;"><a href="javascript:;" name="sendr" id="sendr">Send</a></div>
+            <div class="gray-button float-left" style="margin:0;width:84px;"><a href="javascript:;" name="cancelsendr" id="cancelsendr">Cancel</a></div>
+        </div>
+                    
+                    
+
+            </div>
+
+            <div style="display: none; position: relative;z-index: 0;">
+                    <div class="input">
+                        <label>Enter time</label>
+                        
+                        <div class="round select margin" style="width: 38px;">
+                            <div class="round-bgr">
+                                <div class="input"><input type="text" value="10" name="time_input" maxlength="3" id="time_input" /></div>  
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <div class="divtime">
+                            <div class="padd-margin"></div>
+                            <div class="check margin c"><input type="checkbox" name="time" id="minutes" class="iausl" />Minutes</div>
+                            <div class="padd-margin"></div>
+                            <div class="check margin"><input type="checkbox" name="time" id="hours" class="iausl" />Hours</div>
+                            <div class="padd-margin"></div>
+                            <div class="check margin"><input type="checkbox" name="time" id="days" class="iausl" />Days</div>
+                        </div>
+                    </div> <b></b>
+                    
+                    <div class="clear"></div>
+                    <br /><br />
+                    <div class="padd-margin"></div>
+                    <div class="margin">    
+                        <div class="gray-button float-left" style="margin:0 5px 0 0;width:84px;"><a href="javascript:;" name="sendtime" id="sendtime">Send</a></div>
+                        <div class="gray-button float-left" style="margin:0;width:84px;"><a href="javascript:;" name="canceltime" id="canceltime">Cancel</a></div>
+                    </div>
+                </div>
+             
+                  
+        </div>
+        <!--Tab End-->
+        <!--Tab Start-->
+        <div class="tabb accinfo" style="display:none;">
+            <br/>
+            <div class="logintab slide">
+                <a class="tab-header" href="javascript:;">Account info</a>
+                <div class="tabs-body">
+                    <br/>
+                    <form id="submitform" action="javascript:return false;">
+                        <div class="slide-content">
+                            <div class="input">
+                                <div class="padd-margin"></div>
+                                <label>RingCentral Number</label><!--input id="ringnum" name="ringnum" type="text" /-->
+                                <div class="round select margin">
+                                    <div class="round-bgr">
+                                        <div class="input"><input id="ringnum" name="ringnum" type="text"/></div>  
+                                    </div>
+                                 </div>
+                            </div>
+                            
+                            <div class="input">
+                                <div class="padd-margin"></div>
+                                <label>RingCentral Extension (optional)</label><!--input id="ringex" name="ringex" type="text" /-->
+                                
+                                <div class="round select margin">
+                                    <div class="round-bgr">
+                                        <div class="input"><input id="ringex" name="ringex" type="text"/></div>  
+                                    </div>
+                                 </div>
+                            </div>
+                            <div class="input">
+                                <div class="padd-margin"></div>
+                                <label>Password</label><!--input id="pass" name="pass" type="password" /-->
+                                <div class="round select margin">
+                                    <div class="round-bgr">
+                                        <div class="input"><input id="pass" name="pass" type="password"/></div>  
+                                    </div>
+                                 </div>
+                                <!--input id="pass2" name="submit" type="submit" style="visibility: hidden;" /-->
+                            </div>
+                            <div class="input">
+                                <div class="padd-margin"></div>
+                                <div class="check margin">
+                                    <input type="checkbox" name="autologin" id="autologin" class="chocinc"/>Save my Credentials                  
+                                </div>
+                                <div class="padd-margin"></div>
+                            </div>
+                            <p>
+                                Not a User Yet? <a href="http://www.ringcentral.com/office/plansandpricing.html" target="_blank" style="padding-left: 10px;"> Learn More</a>
+                            </p>
+                            <p>
+                            </p>
+                        </div>
+                    </form>
+                    <div id="closetab0" class="closetab" title="Close">Close</div>
+                    <div class="clear clear_ie7"></div>
+                </div>
+            </div>
+            <div class="padd-margin"></div>
+            <div class="callstab slide">
+                <a class="tab-header" href="javascript:;">Calls</a>
+                <div class="tabs-body">
+                <br/>
+                <div class="check c margin">
+                    <input type="checkbox" name="chdsca" id="chdsca" class="chdsca"/>Display Salesforce calls only
+                </div>
+                <div class="padd-margin"></div>
+                <div class="check c margin">
+                    <input type="checkbox" name="chocinc" id="chocinc" class="chocinc"/>Open contact on incoming call                     
+                </div>
+                <div class="padd-margin"></div>
+                <p>Default calling location</p>
+                <div class="padd-margin"></div>
+                <div class="round margin">
+                <div class="round-bgr">
+                    <div class="select"><a class="select-arrow" style="padding-left: 5px;" title="Call using ..." href="javascript:;">Call using ...</a></div>
+                </div>
+                <div class="option-div" style="display:none;">
+                        <p><a href="javascript:;">Mobile: <span>&nbsp;</span></a></p>
+                      <div class="option-div-footer"></div>
+                </div>
+                
+             </div>
+                <div class="input" style="display:none;" id="phother">
+                    <p>Phone number</p>
+                    <div class="round select margin">
+                        <div class="round-bgr"><input type="text" name="phnum" id="phnum"/></div>
+                     </div>
+                </div>
+                <div class="padd-margin"></div>
+                <div class="check margin">
+                    <input type="checkbox" name="ausl" id="ausl" class="ausl"/>Always use selected location                     
+                </div>
+                
+                <div id="closetab1" class="closetab" title="Close">Close</div>
+                <div class="clear clear_ie7"></div>
+            </div>    
+            </div>
+            <div class="padd-margin"></div>
+            <div class="generaltab slide">
+                <a class="tab-header" href="javascript:;">General</a>
+                <div class="tabs-body">
+                    <p>Main number: <span id="main_numberID"></span> </p>
+                    <p>Extention: <span id="extentionID"></span> </p>
+                    <br/>
+                    <p>Ringtone</p>
+                <div class="round margin">
+                <div class="round-bgr">
+                    <div class="select"><a class="select-arrow" style="padding-left: 5px;" title="None" href="javascript:;">None</a></div>
+                </div>
+                <div class="option-div" style="display:none;">
+                        <p><a href="javascript:;">Mobile: <span>&nbsp;</span></a></p>
+                      <div class="option-div-footer"></div>
+                </div>
+                </div>
+                <div class="padd-margin"></div>
+                <div class="play-stop">
+                    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="185" height="27" id="ring_player" align="middle">
+                        <param name="movie" value="/resource/1290525209000/ring__player_mp3_mini"/>
+                        <param name="allowScriptAccess" value="always" />
+                        <param name="quality" value="high" />
+                        <param name="scale" value="noscale" />
+                        <param name="salign" value="lt" />
+                        <param name="bgcolor" value="#F3F3F3"/>
+                        <param name="wmode" value="opaque"/>
+                        <embed src="/resource/1290525209000/ring__player_mp3_mini" wmode="opaque" bgcolor="#F3F3F3" width="185" height="27" name="ring_player" quality="high" align="middle" scale="noscale" allowScriptAccess="always" type="application/x-shockwave-flash" />
+                    </object>
+                </div>
+                    <div id="closetab2" class="closetab" title="Close">Close</div>
+                    <div class="clear clear_ie7"></div>
+                </div>
+            </div>
+            <div class="padd-margin"></div>
+            <div class="moretab slide">
+                <a class="tab-header" href="javascript:;">More Settings</a>
+                <div class="tabs-body">
+                    <br/>
+                    <p>To configure your account, login to RingCentral service site. </p>
+                    <div class="gray-button" style="margin:10px auto 0 auto;"><a href="https://service.ringcentral.com/" style="font-size:10px;line-height:18px;" name="butc" id="butc">Load RingCentral Service site</a></div>
+                    <div id="last_close">
+                        <span style="float: left; margin-top: 15px;">Version: 2.19</span>
+                        <div id="closetab3" class="closetab" title="Close">Close</div>
+                    </div>
+                    <div class="clear clear_ie7"></div>
+                </div>
+            </div>
+            <br/>
+            <div align="center">
+                <div class="gray-button" style="margin:0 5px 0 0;width:80px;">
+                    <a href="javascript:;" name="busave" id="busave">Save</a>
+                </div>
+                <div class="spinner-button" style="margin:0 5px 0 0;width:80px;">
+                    <img src="/resource/1309278078000/ring__button_spinner" style="display:none" id="busave_spinner"/>
+                </div>
+            </div>
+        </div>
+        <!--Tab End-->
+        <!--Tab Start-->
+        <div class="tabb stattus" style="display:none;">
+            <div class="status">
+                <h2>Status</h2>
+                <div class="status-bgr">
+                    <h4>RingOut Call</h4>
+                    <br/>
+                    <p id="FromToFrom" class="fromto"><strong>From: </strong></p>
+                    <p id="FromToStat" class="fromto"><strong>Status: </strong>Dialing</p>
+                    <br/>
+                    <p id="FromToTo" class="fromto"><strong>To: </strong></p>
+                    <p id="FromToStatus" class="fromto"><strong>Status: </strong>Waiting to connect you</p>
+                </div>
+                <div class="status-footer">&nbsp;</div>
+            </div>
+            <div class="gray-button" style="margin:10px auto 0 auto; width:80px;"><a href="javascript:;" name="butc" id="butcRing">Cancel</a></div>
+        </div>
+        <!--Tab End-->
+    </div>
+    <div class="rc-panel-footer">&nbsp;</div>
+</div>
+
+</apex:page>

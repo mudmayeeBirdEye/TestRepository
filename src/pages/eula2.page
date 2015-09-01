@@ -1,0 +1,14 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+  <apex:composition template="{!$Site.Template}">
+    <apex:define name="search">  
+     <style>
+       iframe {
+         overflow: hidden;
+       }
+     </style>
+      <apex:iframe src="{!$Site.CurrentSiteUrl}resource/1348553082000/ATTEndUserLicensingAgreement" 
+        frameborder="false" width="100%" scrolling="false"></apex:iframe>
+    
+     </apex:define>
+     </apex:composition>
+</apex:page>

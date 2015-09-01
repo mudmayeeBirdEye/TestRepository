@@ -1,0 +1,22 @@
+<apex:page controller="RCSupportController" showHeader="false" standardStylesheets="false" cache="true" expires="{!cacheMaxAge}" action="{!localeSetting}">
+<html>
+<head>
+<script type="text/javascript">
+function check()
+{
+if (window.top!=window.self) 
+  {
+  document.write("<p>This window is not the topmost window! Am I in a frame?</p>")
+  }
+else
+  { 
+  document.write("<p>This window is the topmost window!</p>")
+  } 
+}
+</script>
+</head>
+<body>
+<input type="button" onclick="check()" value="Check window" />
+</body>
+</html>
+</apex:page>

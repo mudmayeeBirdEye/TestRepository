@@ -1,0 +1,10 @@
+<apex:page Controller="LP.ChatTranscriptPDF"  action="{!init}" renderas="PDF">
+    <apex:form id="myform">
+    
+        <apex:pagemessages />
+        <apex:outputField value="{!chatTranscriptObj.LP__Transcript2__c}" />
+        <!-- 
+        <apex:outputText value="{!chatTranscriptObj.Transcript__c}"  />
+         -->
+    </apex:form>
+</apex:page>

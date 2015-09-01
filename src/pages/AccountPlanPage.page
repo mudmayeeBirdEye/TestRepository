@@ -1,0 +1,655 @@
+<apex:page StandardController="Account" extensions="AccountPlanExtn" sidebar="false" showHeader="false" standardStylesheets="true">
+    <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+    <style type="text/css">
+        .font_PageHeader{
+            color:black;
+            font-weight:bold;   
+            font-size:43px;
+            padding-top:10px;
+        }
+        h2, h3 {
+            color: #333 !important;
+            font-weight:bolder !important;
+            text-align:left!important;
+        }
+        .pbSubheader {
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function confirmCancel() {
+            window.top.close();
+        }
+        
+        /*function adjustDLDField(fromPlan) {
+             try {
+            if(fromPlan == '1'){  
+                document.getElementById('j_id0:form1:j_id5:rcServiceSectionFromPlan:accountDLD').innerHTML = 
+                    document.getElementById('j_id0:form1:j_id5:accountNumOfEmployeesFromPlan').value - 
+                        document.getElementById('j_id0:form1:j_id5:rcServiceSectionFromPlan:accountNoOfDL').innerHTML ;
+            } else {
+                document.getElementById('j_id0:form1:j_id5:rcServiceSectionFromAccount:accountDLD').innerHTML = 
+                    document.getElementById('j_id0:form1:j_id5:accountNumOfEmployeesFromAccount').value - 
+                        document.getElementById('j_id0:form1:j_id5:rcServiceSectionFromAccount:accountNoOfDL').innerHTML ;        
+            }
+            } catch(x) {alert(x)} 
+            
+        }*/
+        
+        function switchPBS(currentElement, event) {
+           var el = event.target || event.srcElement.tagName,
+               topdiv = $(el).parents('.pbSubsection');
+                       // alert($(topdiv).hasClass('pbSubsection'))
+            //var a = $(event.target).find('h3') 
+            if(!$(topdiv).hasClass('pbSubsection')){
+                var imageVar = $(currentElement).find('img');
+            	if($(currentElement).find('img').hasClass('hideListButton')) {
+	                $(currentElement).children('.pbSubsection').hide();
+	                $(currentElement).find('img').removeClass('hideListButton');
+	                $(currentElement).find('img').addClass('showListButton');
+	            } else if($(currentElement).find('img').hasClass('showListButton')) {
+			                $(currentElement).children('.pbSubsection').show();
+			                $(currentElement).find('img').removeClass('showListButton');
+			                $(currentElement).find('img').addClass('hideListButton');
+	            }
+            } 
+        }
+            
+        function hideUpsellDiv(divId) {
+                var imageVar = $(divId).find('img');
+                if($(divId).find('img').hasClass('hideListButton')) {
+                    $('#UpsellOpportunitiesDiv').hide();
+                    $(divId).find('img').removeClass('hideListButton');
+                    $(divId).find('img').addClass('showListButton');
+                } else if($(divId).find('img').hasClass('showListButton')) {
+                            $('#UpsellOpportunitiesDiv').show();
+                            $(divId).find('img').addClass('hideListButton');
+                            $(divId).find('img').removeClass('showListButton');
+                }
+        }
+        function hideUpsellDiv1(divId) {
+                var imageVar = $(divId).find('img');
+                if($(divId).find('img').hasClass('hideListButton')) {
+                    $('#CrossSellOpportunitiesDiv').hide();
+                    $(divId).find('img').removeClass('hideListButton');
+                    $(divId).find('img').addClass('showListButton');
+                } else if($(divId).find('img').hasClass('showListButton')) {
+                            $('#CrossSellOpportunitiesDiv').show();
+                            $(divId).find('img').addClass('hideListButton');
+                            $(divId).find('img').removeClass('showListButton');
+                }
+        }
+        $(document).ready(function() {
+            $('#expand').click(function() {
+                $('.ProfDescCls').show();
+                $('.ProfDescCls').prev().find('img').removeClass('showListButton');
+                $('.ProfDescCls').prev().find('img').addClass('hideListButton');
+                $('.pbSubsection').show();
+                $('.pbSubsection').prev().find('img').removeClass('showListButton');
+                $('.pbSubsection').prev().find('img').addClass('hideListButton');
+                $('.pbsub').show();
+                 
+            });
+            $('#collaspse').click(function() {
+                $('.ProfDescCls').hide();
+                $('.ProfDescCls').prev().find('img').removeClass('hideListButton');
+                $('.ProfDescCls').prev().find('img').addClass('showListButton');
+                $('.pbSubsection').hide();
+                $('.pbSubsection').prev().find('img').removeClass('hideListButton');
+                $('.pbSubsection').prev().find('img').addClass('showListButton');
+                $('.pbsub').hide();
+                
+            }); 
+            
+        });
+        
+        function switchPgBlock(currentElement) {
+            //alert(1);
+            var imageVar = $(currentElement).find('img');
+            if($(currentElement).find('img').hasClass('hideListButton')) {
+                $(currentElement).find('img').removeClass('hideListButton');
+                $(currentElement).find('img').addClass('showListButton');
+                $(currentElement).next().hide();
+               // $(currentElement).find('img').removeClass('hideListButton');
+              //  $(currentElement).find('img').addClass('showListButton');
+            } else if($(currentElement).find('img').hasClass('showListButton')) {
+                 $(currentElement).find('img').removeClass('showListButton');
+               	 $(currentElement).find('img').addClass('hideListButton');
+               	 $(currentElement).next().show();
+               
+               // $(currentElement).find('img').addClass('hideListButton');
+               // $(currentElement).find('img').removeClass('showListButton');
+            }
+        }   
+        
+        function toogleFilterALL(getType) {
+            var getFilterDiv1 = document.getElementById("img_{!$Component.pblk1.divCase}");  
+            var getFilterDiv2 = document.getElementById("img_{!$Component.pblk1.divActivityHistories}");     
+            var getFilterDiv3 = document.getElementById("img_{!$Component.pblk1.divContactRoles}"); 
+            var getFilterDiv4 = document.getElementById("img_{!$Component.pblk1.divOpenActivities}");   
+            if(getType == 0) {
+             if(getFilterDiv1.className == "hideListButton"){
+                twistSection(getFilterDiv1);
+             }
+             if(getFilterDiv2.className == "hideListButton"){
+                 twistSection(getFilterDiv2);
+             }
+             if(getFilterDiv3.className == "hideListButton"){
+                twistSection(getFilterDiv3);
+             }
+             if(getFilterDiv4.className == "hideListButton"){
+                twistSection(getFilterDiv4);
+             }
+            }else {
+           
+             if(getFilterDiv1.className == "showListButton"){
+                twistSection(getFilterDiv1);
+             }
+             if(getFilterDiv2.className == "showListButton"){
+                 twistSection(getFilterDiv2);
+             }
+             if(getFilterDiv3.className == "showListButton"){
+                twistSection(getFilterDiv3);
+             }
+             if(getFilterDiv4.className == "showListButton"){
+                twistSection(getFilterDiv4);
+             }
+            }
+        }
+        function toogleFilterALL_customer(getType){
+            var getFilterDiv1 = document.getElementById("img_{!$Component.pblk2.divAccountHealthSummay}");  
+            var getFilterDiv2 = document.getElementById("img_{!$Component.pblk2.divNotesAndAttachments}"); 
+            var getFilterDiv3 = document.getElementById("img_{!$Component.form1.PageBlock.Pgbnew}");  
+            var getFilterDiv4 = document.getElementById("img_{!$Component.form1.PageBlock.PBS3}"); 
+            if(getType == 0) {
+             if(getFilterDiv1.className == "hideListButton"){
+                twistSection(getFilterDiv1);
+                $('.pbsub').hide();
+             }
+             if(getFilterDiv2.className == "hideListButton"){
+                 twistSection(getFilterDiv2);
+                 $('.pbsub').hide();
+             }
+             if(getFilterDiv3.className == "hideListButton"){
+                 twistSection(getFilterDiv3);
+                 $('#UpsellOpportunitiesDiv').hide();
+                 
+             }
+             if(getFilterDiv4.className == "hideListButton"){
+                 twistSection(getFilterDiv4);
+                 $('#CrossSellOpportunitiesDiv').hide();
+             }
+             }else{
+                     if(getFilterDiv1 .className == "showListButton"){
+                twistSection(getFilterDiv1 );
+             }
+             if(getFilterDiv2.className == "showListButton"){
+                twistSection(getFilterDiv2 );
+             }
+             }
+        }
+    </script> 
+
+    <apex:form id="form1">      
+        <table width="100%" border="0" style="background-color:#F6F6F6;" >
+             <tr> 
+                 <td  class="font_PageHeader" valign="top" width="40%">
+                     <apex:image url="/servlet/servlet.FileDownload?file=01580000001C4QY"  rendered="true"/>  
+                 </td>
+                 <td  class="font_PageHeader" valign="top" width="60%">                 
+                     Account <font color="#CF2525">PLAN</font>
+                 </td>
+             </tr>
+         </table>
+        <apex:pageBlock id="PageBlock" >   
+            <apex:pageMessage severity="info" strength="1" rendered="{!bShowSaveMessage}">
+                Account Plan was saved successfully.
+            </apex:pageMessage>
+            <table width="100%">
+             	<tr>
+             	 	<td style="width:89%;">
+             	 	  <table  width="100%;">
+             	 	  	<tr>
+             	 	  		<td style="padding-left:50%;">
+             	 	  			<apex:commandButton action="{!save}" value="Submit" rendered="{!bEnableSaveButton}"/>
+                      			<apex:commandButton onclick="confirmCancel()" value="Cancel"/>
+             	 	  		</td>
+             	 	  	</tr>
+             	 	  </table>
+                  	</td>   
+                    <td align="right" style="width:11%;">
+                        <a href="javascript:void(0)" id="expand">Expand All</a> &nbsp;&nbsp;
+                        <a href="javascript:void(0)" id="collaspse">Collapse All</a>
+                    </td>        
+                </tr>
+            </table>
+            <apex:pageBlockSection title="Profile Description" columns="3" collapsible="true" id="PBS1" onclick="switchPgBlock(this); return false;"></apex:pageBlockSection>
+                 <div id="ProfDesc" class="ProfDescCls"> 
+                    <table width="100%" cellpading="0" cellspacing="0">
+                        <tr>
+                            <td valign="top"  width="100%">
+                                <table border="0"  width="100%" cellpading="5" cellspacing="5">
+                                    <tr>
+                                        <td valign="top" class="labelCol"  width="18%">Business Description</td>
+                                        <td valign="top" width="35%">                             
+                                            <apex:inputTextarea id="accountBusinessDescription"  value="{!objAccountPlan.Account_Plan_Value__c}" rows="10"  cols="75"/>
+                                        </td> 
+                                        <td valign="top" class="labelCol" width="15%">Key Features Used/<br/>Why RC for this User?</td>                       
+                                        <td valign="top">
+                                            <apex:inputTextarea id="accountWhyRC"  value="{!objAccountPlan.Key_Features_Used_Why_RC_for_this_User__c}" rows="10" cols="75"  />
+                                        </td>
+                                    </tr>
+                                </table>                                
+                            </td>
+                        </tr>
+                    </table>
+                 </div> 
+            
+            <apex:pageBlockSection title="Profile" id="PBS2"  columns="3" onclick="switchPgBlock(this); return false;" collapsible="true"  ></apex:pageBlockSection>
+                <div id="profileDiv" class="ProfDescCls" style="display:block;">
+                    <table width="100%" cellpading="5" cellspacing="5" border="0">
+                        <tr>
+                            <td width="100%" valign="top">                                
+                                <table border="0" cellpading="5" cellspacing="5" width="100%">
+                                    <tr>
+                                        <td valign="top" class="labelCol first" width="18%">Primary Contact</td>
+                                        <td width="35%"><apex:inputText size="67" maxlength="150" value="{!objAccountPlan.Primary_Contact__c}"/></td>
+                                        <td class="labelCol first" width="15%">Customer Type</td>
+                                        <td> <apex:inputField value="{!objAccountPlan.Customer_Type__c}" /> </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" class="labelCol first">Industry (from Rep)</td>
+                                        <!-- <td><apex:inputText size="67" maxlength="100" value="{!objAccountPlan.Industry_from_Rep__c}"/></td>-->
+                                        <td><apex:outputText value="{!Account.Industry}"/></td>
+                                        <td class="labelCol first">Number of Employees</td>
+                                        <!--  <td><apex:inputField id="accountNumOfEmployeesFromPlan" 
+                                            value="{!objAccountPlan.Number_of_Employees__c}"  style="width:40px;" 
+                                            onblur="javascript:adjustDLDField('1');"  rendered="{!bAccountPlanShowFromPlan}"/>-->
+                                        <td><apex:outputText value="{!Account.No_of_Employees__c}"/></td>       
+                                    <!--   <apex:inputField id="accountNumOfEmployeesFromAccount" 
+                                        value="{!objAccountPlan.Number_of_Employees__c}" style="width:40px;" 
+                                        onblur="javascript:adjustDLDField('0');" rendered="{!bAccountPlanShowFromAccount}" /></td>-->
+                                    </tr>
+                                    <tr>
+                                        <td class="labelCol first">Website</td>
+                                        <!-- <td><apex:inputText size="67" maxlength="100" value="{!objAccountPlan.Website__c}"/></td>-->
+                                        <td><apex:outputText value="{!Account.Website}"/></td>  
+                                                   
+                                                   
+                                        <td class="labelCol first">Number of Offices</td>
+                                        <!--<td><apex:inputField id="accountNumOfOfices"  value="{!objAccountPlan.Number_of_Offices__c}" style="width:40px;" />  </td>-->
+                                        <td><apex:outputText value="{!Account.Number_Of_Locations__c}"/></td>  
+                                    </tr> 
+                                    <tr>
+                                        <td class="labelCol first">Is the customer interested in porting?</td>
+                                        <!-- <td><apex:inputText size="67" maxlength="100" value="{!objAccountPlan.Website__c}"/></td>-->
+                                        <td><apex:outputText value="{!Account.Is_the_customer_interested_in_porting__c}"/></td>  
+                                    </tr> 
+                                </table>
+                            </td>                           
+                        </tr>
+                    </table>
+                </div>
+            
+            
+            <div style="display:none;">
+                <table width="100%">
+                    <tr>
+                        <td width="100%"><apex:pageBlockSection title="RC Service Details" id="PbsEcRC"   onclick="javascript:hideUpsellDiv(this);"/></td> <!-- onclick="switchPBS(this);return false;" -->
+                    </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                     <tr>
+                        <td width="100%" valign="top">
+                             <div id="CrossSellOpportunitiesDiv1" class="ProfDescCls" style="display:block;border:1px dotted;border-color:#898EC0;">
+                                <table border="0" cellpading="5" cellspacing="5"  width="100%">                       
+                                    <tr>
+                                        <td class="labelCol first" width="18%">Account Status</td>
+                                        <td width="20%"><apex:outputText id="accountAccountStatus" value="{!objAccountReadOnlyPlan.Account_Status__c}" /></td>
+                                        <td class="labelCol first">MRR</td>
+                                        <td><apex:outputText id="accountMRR" value="{!objAccountReadOnlyPlan.MRR__c}" /></td>
+                                    </tr>
+                                   <tr>
+                                        <td class="labelCol first">Brand</td>
+                                        <td> <apex:outputText id="accountBrand" value="{!objAccountReadOnlyPlan.Brand__c}" /> </td>
+                                        <td class="labelCol first">aMRR</td>
+                                        <td><apex:outputText id="accountaMRR" value="{!objAccountReadOnlyPlan.aMRR__c}" />  </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="labelCol first">Tier</td>
+                                        <td ><apex:outputText id="accountTier" value="{!objAccountReadOnlyPlan.Tier__c}" /></td>
+                                        <td class="labelCol first">Number of Extensions</td>
+                                        <td><apex:outputText id="accountNoOfExtension" value="{!objAccountReadOnlyPlan.Number_of_Extensions__c}" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="labelCol first">Service Name</td>
+                                        <td ><apex:outputText id="accountServiceName" value="{!objAccountReadOnlyPlan.Service_Name__c}" />  </td>
+                                        <td class="labelCol first">Number of DL's</td>
+                                        <td><apex:outputText id="accountNoOfDL" value="{!objAccountReadOnlyPlan.Number_of_DL_s__c}"   /></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="labelCol first" >Digital Line Difference</td>
+                                        <td ><apex:outputText id="accountDLD"  value="{!objAccountReadOnlyPlan.Digital_Line_Difference__c}" /></td>
+                                        <td class="labelCol first">Number of IP Devices</td>
+                                        <td><apex:outputText id="accountNoOfIPDevices" value="{!objAccountReadOnlyPlan.Number_of_IP_Devices__c}" /> </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="labelCol first" >Payment Plan</td>
+                                        <td><apex:outputText id="accountPaymentPlan" value="{!Account.Payment_Plan__c}" />       </td>
+                                        <td class="labelCol first">-</td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                                </div>
+                            </td>
+                     </tr>        
+                </table>
+            </div>
+            <apex:pageBlockSection title="RC Service Details" id="rcServiceSectionFromPlan"  rendered="{!bAccountPlanShowFromPlan}" columns="2"  onclick="switchPBS(this,event); return false;"> <!--"javascript:hideUpsellDiv(this);"  -->
+                      <apex:outputField id="accountAccountStatus" value="{!objAccountReadOnlyPlan.Account_Status__c}" >
+                      </apex:outputField>
+                      <apex:inputField id="accountUsingDesktopPh1" rendered="{!bAccountPlanShowFromAccount}" value="{!objAccountPlan.Using_Desktop_Phones__c}" />
+                      <apex:outputField id="accountMRR" value="{!objAccountReadOnlyPlan.MRR__c}" />
+                      <apex:outputField id="accountBrand" value="{!objAccountReadOnlyPlan.Brand__c}" /> 
+                      <apex:outputField id="accountaMRR" value="{!objAccountReadOnlyPlan.aMRR__c}" />  
+                      <apex:outputField id="accountTier" value="{!objAccountReadOnlyPlan.Tier__c}" />
+                      <apex:outputField id="accountNoOfExtension" value="{!objAccountReadOnlyPlan.Number_of_Extensions__c}" />              
+                      <apex:outputField id="accountServiceName" value="{!objAccountReadOnlyPlan.Service_Name__c}" />  
+                      <apex:outputField id="accountNoOfDL" value="{!objAccountReadOnlyPlan.Number_of_DL_s__c}"  />
+                      <apex:outputField id="accountDLD"  value="{!objAccountReadOnlyPlan.Digital_Line_Difference__c}" />
+                      <apex:outputField id="accountNoOfIPDevices" value="{!objAccountReadOnlyPlan.Number_of_IP_Devices__c}" />  
+                      <apex:outputField id="accountPaymentPlan" value="{!Account.Payment_Plan__c}" />       
+            </apex:pageBlockSection> 
+            <apex:pageBlockSection title="RC Service Details" id="rcServiceSectionFromAccount" rendered="{!bAccountPlanShowFromAccount}"  onclick="switchPBS(this, event); return false;">
+                    <apex:outputField id="accountAccountStatus" value="{!objAccountObject.RC_Account_Status__c}"   />
+                    <apex:outputField id="accountDLD"  value="{!objAccountObject.RC_Digital_Line_Difference__c}" />
+                    <apex:outputField id="accountBrand" value="{!objAccountObject.RC_Brand__c}" /> 
+                    <apex:outputField id="accountServiceName" value="{!objAccountObject.RC_Service_name__c}" />      
+                    <apex:outputField id="accountTier" value="{!objAccountObject.RC_Tier__c}" />
+                    <apex:outputField id="accountMRR" value="{!objAccountObject.MRR__c}" />
+                    <apex:outputField id="accountaMRR" value="{!objAccountObject.aMRR__c}" />          
+                    <apex:outputField id="accountNoOfDL" value="{!objAccountObject.Number_of_DL_s__c}"  />
+                    <apex:outputField id="accountNoOfExtension" value="{!objAccountObject.Number_of_Extensions__c}" /> 
+                    <apex:outputField id="accountNoOfIPDevices" value="{!objAccountObject.Number_of_IP_Devices__c}" />  
+                    <apex:outputField id="accountPaymentPlan" value="{!objAccountObject.Payment_Plan__c}" />       
+            </apex:pageBlockSection>
+            <table width="100%">
+                <tr>
+                    <td width="100%"><apex:pageBlockSection title="Upsell Opportunities" onclick="javascript:hideUpsellDiv(this)" id="Pgbnew" /></td><!-- onclick="javascript:hideUpsellDiv('UpsellOpportunitiesDiv')" -->
+                </tr>
+            </table>
+            <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="100%">
+                     <div id="UpsellOpportunitiesDiv" class="ProfDescCls" style="display:block;border:1px dotted;border-color:#898EC0;">
+                        <table border="0" cellpading="5" cellspacing="5"  width="100%">                       
+                            <tr>
+                                <td class="labelCol first" width="18%">Asked for Referrals</td>
+                                <td width="33%"><apex:inputField id="accountAskedForReferrals"  value="{!objAccountPlan.Asked_for_Referrals__c}" />  </td>
+                                <td class="labelCol first">Offered line for Fax Machine</td>
+                                <td> <apex:inputField id="accountOfferedLineForFax"  value="{!objAccountPlan.Offered_line_for_Fax_Machine__c}" />    </td>
+                            </tr>
+                            <tr>
+                                <td class="labelCol first">Presented Additional Numbers to be&nbsp;Local</td>
+                                <td> <apex:inputField id="accountPresentedAddlNoToLocal"  value="{!objAccountPlan.Presented_Additional_Numbers_to_be_Local__c}" /> </td>
+                                
+                                <td class="labelCol first">Presented Addl. No.to track Marketing</td>
+                                <td><apex:inputField id="accountPresentedAddlNoToTrackMarkting"  value="{!objAccountPlan.Presented_Addl_No_to_track_Marketing__c}" />  </td>
+                            </tr>
+                            <tr>
+                                <td class="labelCol first">Using Desktop Phones</td>
+                                <td><apex:inputField id="accountUsingDesktopPh"  value="{!objAccountPlan.Using_Desktop_Phones__c}" /> </td>
+                                
+                                <td class="labelCol first">Offered Line for Conferencing Phone</td>
+                                <td><apex:inputField id="accountOfferedLineForConfPhone"  value="{!objAccountPlan.Offered_Line_for_Conferencing_Phone__c}" />  </td>
+                            </tr>
+                            <tr>
+                                <td class="labelCol first">International Usage</td>
+                                <td><apex:inputField id="accountIntrnlUsage"  value="{!objAccountPlan.International_Usage__c}" />  </td>
+                                
+                                <td class="labelCol first">Other Upsell Opportunities</td>
+                                <td><apex:inputText id="accountOtherUpsellOpportunities" maxlength="250"  value="{!objAccountPlan.Other_Upsell_Opportunities__c}" size="67" /> </td>
+                            </tr>
+                        </table></div>
+                    </td>
+                </tr>        
+            </table>
+            <table width="100%">
+                <tr>
+                    <td width="100%"><apex:pageBlockSection id="PBS3" title="Cross-Sell Opportunities" onclick="javascript:hideUpsellDiv1(this)" /></td>
+                </tr>
+            </table>
+            <table width="100%" cellpadding="0" cellspacing="0">
+             <tr>
+                <td width="100%" valign="top">
+                     <div id="CrossSellOpportunitiesDiv" class="ProfDescCls" style="display:block;border:1px dotted;border-color:#898EC0;">
+                        <table border="0" cellpading="5" cellspacing="5"  width="100%">                       
+                            <tr>
+                                <td class="labelCol first" width="18%">Conference Calling Provider / Cost</td>
+                                <td width="37%"><apex:inputText id="accountConferenceCallPrvdrCost" maxlength="250" value="{!objAccountPlan.Conference_Calling_Provider_Cost__c}" size="67" /></td>
+                                <td class="labelCol first">CRM Provider</td>
+                                <td><apex:inputText id="accountCRMPrvdr" maxlength="250" value="{!objAccountPlan.CRM_Provider__c}" size="67" /></td>
+                            </tr>
+                           
+                            <tr>
+                                <td class="labelCol first">Type of Internet Provider / Cost</td>
+                                <td><apex:inputText id="accountTypeIspCost" maxlength="255" value="{!objAccountPlan.Type_of_ISP_Cost__c}" size="67" /></td>
+                                <td class="labelCol first">Primary Mobile Phone Device</td>
+                                <td><apex:inputField id="accountPrimaryMobilePhoneDevice" value="{!objAccountPlan.Primary_Mobile_Phone_Device__c}" /></td>
+                            </tr>
+                            
+                        </table>
+                        </div>
+                    </td>
+             </tr>        
+            </table>
+        </apex:pageBlock>
+        <div style="margin: 7px 12px 7px;">
+	          <table width="100%">
+	             	<tr>
+	            		<!-- <td align="center" style="width:89%"> -->
+	            		<td style="width:89%;">
+	             	 	  <table  width="100%;;">
+	             	 	  	<tr>
+	             	 	  		<td style="padding-left:50%">
+	             	 	  			<apex:commandButton action="{!save}" value="Submit" rendered="{!bEnableSaveButton}"/>
+	                      			<apex:commandButton onclick="confirmCancel()" value="Cancel"/>
+	             	 	  		</td>
+	             	 	  	</tr>
+	             	 	  </table>
+	                  	</td>     
+	                    <td align="right" style="width:11%;">
+	                        &nbsp;
+	                    </td>        
+	                </tr>
+	         </table>
+         </div>
+    </apex:form>
+    <apex:pageBlock id="pblk1" title="Account Activity" >
+       <!--  <table width="100%">
+            <tr>
+                <td align="right">
+                    <a href="javascript:void(0)" onclick="javascript:toogleFilterALL('1');">Expand All</a> &nbsp;&nbsp;
+                    <a href="javascript:void(0)" onclick="javascript:toogleFilterALL('0');">Collapse All</a>
+                </td>        
+            </tr>
+        </table>
+        <BR/>
+     -->
+        <table border="0" height="100%" width="100%">
+            <tr>
+                <td>
+                     <a href="javascript:void(0)" onclick="javascript:toogleFilter('divCase','{!$Component.imgDep}');"></a>
+                    
+                            <apex:pageBlockSection title="Case" id="divCase" columns="1" collapsible="true" onclick="switchPgBlock(this); return false;"> </apex:pageBlockSection>
+                            <div id="divCase" class="pbsub" style="height: 150px;overflow-y: scroll;"> 
+                                <apex:relatedList pageSize="20" list="Cases" />
+                           
+                            </div>
+                </td>
+            </tr>
+            <tr>
+                <td>    
+                    <!-- <a href="#" onclick="javascript:toogleFilter('divActivityHistories','{!$Component.imgDep}');"><b>Activity Histories</b></a>
+                    <div id="divActivityHistories">  -->
+                        <apex:pageBlockSection title="Activity History" id="divActivityHistories" columns="1" collapsible="true" onclick="switchPgBlock(this); return false;"></apex:pageBlockSection>
+                        <div class="pbsub" style="height: 150px;overflow-y: scroll;">
+                            <apex:relatedList pageSize="20" list="ActivityHistories"/>  
+                        
+                         </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <!-- <a href="#" onclick="javascript:toogleFilter('divContactRoles','{!$Component.imgDep}');"><b>Contact Roles</b></a>
+                    <div id="divContactRoles">  -->
+                        <apex:pageBlockSection title="Contact Roles" id="divContactRoles" columns="1" collapsible="true" onclick="switchPgBlock(this); return false;"> </apex:pageBlockSection> 
+                        <div class="pbsub" style="height: 150px;overflow-y: scroll;">
+                            <apex:relatedList pageSize="20" list="AccountContactRoles"/>
+                        
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <!-- <a href="#" onclick="javascript:toogleFilter('divOpenActivities','{!$Component.imgDep}');"><b>Open Activities</b></a>
+                    <div id="divOpenActivities">  -->   
+                        <apex:pageBlockSection id="divOpenActivities" title="Open Activities" columns="1" onclick="switchPgBlock(this); return false;"> </apex:pageBlockSection>
+                            <div class="pbsub" style="height: 150px;overflow-y: scroll;">
+                            <apex:relatedList pageSize="20" list="OpenActivities" />
+                            <!--   <apex:relatedList pageSize="20" list="Histories"/> -->
+                        </div>
+                    <!-- </div> -->
+                </td>
+            </tr>
+        </table>
+    </apex:pageBlock> 
+    <apex:pageBlock id="pblk2" title="Customer Activity">
+        <!-- <table width="100%">
+            <tr>
+                <td align="right">
+                    <a href="javascript:void(0)" onclick="javascript:toogleFilterALL_customer('1');">Expand All</a> &nbsp;&nbsp;
+                    <a href="javascript:void(0)" onclick="javascript:toogleFilterALL_customer('0');">Collapse All</a>
+                </td>        
+            </tr>
+        </table><br/> -->
+        <table border="0" height="100%" width="100%">
+           <tr>
+               <td>
+                   <!-- <a href="#" onclick="javascript:toogleFilter('divAccountHealthSummay','{!$Component.imgDep}');"><b>Account Health Summary</b></a>
+                    <div id="divAccountHealthSummay">  -->
+                    <apex:pageBlockSection id="divAccountHealthSummay" title="Account Health Summary" columns="1" onclick="switchPgBlock(this); return false;"></apex:pageBlockSection>
+                    <div class="pbsub">  <!-- style="height: 150px;overflow-y: scroll;" -->
+                       <apex:include pageName="AccountHealthSummary" />
+                    
+                      </div>
+                </td>
+            </tr>
+            <tr>
+             <td>
+                 <!-- <a href="#" onclick="javascript:toogleFilter('divNotesAndAttachments','{!$Component.imgDep}');"><b>NotesAndAttachments</b></a>
+                 <div id="divNotesAndAttachments">  -->
+         <apex:pageBlockSection id="divNotesAndAttachments"  title="Notes" columns="1" onclick="switchPgBlock(this); return false;" ></apex:pageBlockSection>
+            <div class="pbsub" style="height: 150px;overflow-y: scroll;">
+                         <apex:relatedList pageSize="20" list="NotesAndAttachments"/> 
+                     <!-- </apex:pageBlockSection> -->
+                 </div> 
+                 
+             </td>
+            </tr>
+        </table>
+    </apex:pageBlock>
+
+    <!-- <script>     
+        document.getElementById('j_id0:form1:j_id5:rcServiceSectionFromPlan:accountDLD').innerHTML = 
+            document.getElementById('j_id0:form1:j_id5:accountNumOfEmployeesFromPlan').value - 
+                document.getElementById('j_id0:form1:j_id5:rcServiceSectionFromPlan:accountNoOfDL').innerHTML ;
+                
+        document.getElementById('j_id0:form1:j_id5:rcServiceSectionFromAccount:accountDLD').innerHTML = 
+            document.getElementById('j_id0:form1:j_id5:accountNumOfEmployeesFromAccount').value - 
+                document.getElementById('j_id0:form1:j_id5:rcServiceSectionFromAccount:accountNoOfDL').innerHTML ;         
+    </script>  -->
+    <script>
+        $(document).ready(function () {
+           // alert('1');
+            toogleFilterALL('0');
+            toogleFilterALL_customer('0');
+            
+            
+            var getval3 = document.getElementById("{!$Component.form1.PageBlock.PBS1}");
+            var getFilterDiv11 = document.getElementById("img_{!$Component.form1.PageBlock.PBS1}");
+            getFilterDiv11.removeAttribute("onclick");
+            getFilterDiv11.setAttribute("onclick","switchPgBlock1("+getval3+");");
+            
+             var getval0 = document.getElementById("{!$Component.form1.PageBlock.PbsEcRC}");
+            var getFilterDiv0 = document.getElementById("img_{!$Component.form1.PageBlock.PbsEcRC}");
+            getFilterDiv0.removeAttribute("onclick");
+            getFilterDiv0.setAttribute("onclick","hideUpsellDiv("+getval0+");");
+            
+            var id4 = "img_{!$Component.form1.PageBlock.PBS2}";
+            var getval4 = document.getElementById("{!$Component.form1.PageBlock.PBS2}");
+            var getFilterDiv12 = document.getElementById("img_{!$Component.form1.PageBlock.PBS2}");
+             getFilterDiv12.removeAttribute("onclick");
+             getFilterDiv12.setAttribute("onclick","switchPgBlock1("+getval4+");");
+            
+            var getval5 = document.getElementById("{!$Component.form1.PageBlock.Pgbnew}");
+            var getFilterDiv13 = document.getElementById("img_{!$Component.form1.PageBlock.Pgbnew}");
+            getFilterDiv13.removeAttribute("onclick");
+            getFilterDiv13.setAttribute("onclick","switchPgBlock1("+getval5+");");
+            
+            var getval6 = document.getElementById("{!$Component.form1.PageBlock.PBS3}");
+            var getFilterDiv14 = document.getElementById("img_{!$Component.form1.PageBlock.PBS3}");
+           getFilterDiv14.removeAttribute("onclick");
+           getFilterDiv14.setAttribute("onclick","hideUpsellDiv1("+getval6+");");
+           
+           var getFilterDiv1 = document.getElementById("img_{!$Component.pblk1.divCase}"); 
+           var FilterDiv1 = document.getElementById("{!$Component.pblk1.divCase}") 
+           getFilterDiv1.removeAttribute("onclick");
+           getFilterDiv1.setAttribute("onclick","switchPgBlock("+FilterDiv1+");");
+           
+           var getFilterDiv2 = document.getElementById("img_{!$Component.pblk1.divActivityHistories}"); 
+           var FilterDiv2 = document.getElementById("{!$Component.pblk1.divActivityHistories}")    
+           getFilterDiv2.removeAttribute("onclick");
+           getFilterDiv2.setAttribute("onclick","switchPgBlock("+FilterDiv2+");");
+           
+           var getFilterDiv3 = document.getElementById("img_{!$Component.pblk1.divContactRoles}"); 
+           var FilterDiv3 = document.getElementById("{!$Component.pblk1.divContactRoles}")
+           getFilterDiv3.removeAttribute("onclick");
+           getFilterDiv3.setAttribute("onclick","switchPgBlock("+FilterDiv3+");");
+           
+           var getFilterDiv4 = document.getElementById("img_{!$Component.pblk1.divOpenActivities}");
+           var FilterDiv4 = document.getElementById("{!$Component.pblk1.divOpenActivities}") 
+           getFilterDiv4.removeAttribute("onclick");
+           getFilterDiv4.setAttribute("onclick","switchPgBlock("+FilterDiv4+");");
+           
+           var getFilterDiv5 = document.getElementById("img_{!$Component.pblk2.divAccountHealthSummay}");
+           var FilterDiv5 = document.getElementById("{!$Component.pblk2.divAccountHealthSummay}") 
+           getFilterDiv5.removeAttribute("onclick");
+           getFilterDiv5.setAttribute("onclick","switchPgBlock("+FilterDiv5+");");  
+           
+           var getFilterDiv6 = document.getElementById("img_{!$Component.pblk2.divNotesAndAttachments}"); 
+           var FilterDiv6 = document.getElementById("{!$Component.pblk2.divNotesAndAttachments}") 
+           getFilterDiv6.removeAttribute("onclick");
+           getFilterDiv6.setAttribute("onclick","switchPgBlock("+getFilterDiv6+");");
+           
+           if({!bAccountPlanShowFromPlan} == true) {
+	            var id2 = "img_{!$Component.form1.PageBlock.rcServiceSectionFromAccount}";
+	            var getval1 = document.getElementById("{!$Component.form1.PageBlock.rcServiceSectionFromPlan}");
+	            var getFilterDiv10 = document.getElementById("img_{!$Component.form1.PageBlock.rcServiceSectionFromPlan}");
+	            getFilterDiv10.removeAttribute("onclick");
+	            getFilterDiv10.setAttribute("onclick","switchPBS("+getval1+");");
+            }
+            if({!bAccountPlanShowFromAccount} == true) {
+	           // var id = "img_{!$Component.form1.PageBlock.rcServiceSectionFromAccount}";
+	            var getval = document.getElementById("{!$Component.form1.PageBlock.rcServiceSectionFromAccount}");
+	            var getFilterDiv9 = document.getElementById("img_{!$Component.form1.PageBlock.rcServiceSectionFromAccount}");
+	            getFilterDiv9.removeAttribute("onclick");
+	            //alert(getFilterDiv9);
+	            getFilterDiv9.setAttribute("onclick","switchPBS("+getval+");");
+            }
+            
+          
+            });
+    </script>
+                             
+</apex:page>

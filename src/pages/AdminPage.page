@@ -1,0 +1,6 @@
+<apex:page >
+<!--<apex:enhancedList type="zqu__ProductRatePlan__c"  height="500"  rowsPerPage="50"     customizable="True"/>
+
+<apex:enhancedList type="zqu__ProductRatePlanCharge__c"  height="500"  rowsPerPage="50"     customizable="True"/>-->
+  
+</apex:page>

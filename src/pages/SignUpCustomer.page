@@ -1,0 +1,735 @@
+<apex:page showHeader="false" sidebar="false" standardController="Opportunity" extensions="SignUpCustomer"  
+        standardStylesheets="false" id="thePage" cache="false">
+    <!-- <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}"/> -->
+  
+    <script type="text/javascript">
+        function partnerUNcheck(){
+          var op = document.getElementsByName('thePage:form1:rbPartnerOffer'); 
+          for(var intChk = 0 ; intChk < op.length; intChk ++ ) {
+            
+            if(op[intChk].checked){
+              op[intChk].checked = false;
+            }
+           }
+        }
+      
+        function unCheckRet(curr){
+            if(curr == 'CAN'){
+              try{
+                var op1 = document.getElementsByName('thePage:form1:canPageBlk:canPageBlkSec_2:rbMainSerivceCANRET');
+                var op2 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+                unCheckOptions ( op1 , op2 );
+              }
+              catch (ex){
+                alert(ex);
+              } 
+            }
+            
+            if(curr == 'US'){
+              
+              try{
+                var op3 = document.getElementsByName('thePage:form1:usPageBlk:usPageBlkSec_2:rbMainSerivceUSRET');
+                var op4 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+                unCheckOptions ( op3 , op4 );
+              }
+              catch(ex) {
+                alert(ex);
+              }
+            }
+            if(curr == 'UK'){
+              
+              try{
+                var op5 = document.getElementsByName('thePage:form1:ukPageBlk:canPageBlkSec_2:rbMainSerivceUKRET');
+                var op6 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+                unCheckOptions ( op5 , op6 );
+              }
+              catch(ex) {
+                alert(ex);
+              }
+            }
+        }
+      
+        function unCheckCur(curr){
+            if(curr == 'CAN'){
+              try {
+                var op1 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+                var op2 = document.getElementsByName('thePage:form1:canPageBlk:canPageBlkSec_1:rbMainSerivceCANOFF');
+                unCheckOptions ( op1 , op2 );
+              }
+              catch (ex){
+                alert(ex);
+              } 
+            }
+            if(curr == 'US'){
+              
+              try{
+                var op3 = document.getElementsByName('thePage:form1:usPageBlk:usPageBlkSec_1:rbMainSerivceUSOFF');
+                var op4 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+                unCheckOptions ( op3 , op4 );
+              }
+              catch(ex) {
+                alert(ex);
+              }
+            }
+            
+            if(curr == 'UK'){
+              
+              try{
+                var op5 = document.getElementsByName('thePage:form1:ukPageBlk:ukPageBlkSec_1:rbMainSerivceUKOFF');
+                var op6 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+                unCheckOptions ( op5 , op6 );
+              }
+              catch(ex) {
+                alert(ex);
+              }
+            }
+        }
+      
+        function unCheckPar(){
+            /*
+            thePage:form1:ukPageBlk:ukPageBlkSec_1:rbMainSerivceUKOFF
+            thePage:form1:ukPageBlk:canPageBlkSec_2:rbMainSerivceUKRET
+            */
+            try{
+                var op1 = document.getElementsByName('thePage:form1:ukPageBlk:ukPageBlkSec_1:rbMainSerivceUKOFF');
+                var op2 = document.getElementsByName('thePage:form1:ukPageBlk:canPageBlkSec_2:rbMainSerivceUKRET');
+                unCheckOptions ( op1 , op2 );
+            }
+            catch (ex){
+                alert(ex);
+            }
+          
+          try{
+            var op3 = document.getElementsByName('thePage:form1:canPageBlk:canPageBlkSec_1:rbMainSerivceCANOFF');
+            var op4 = document.getElementsByName('thePage:form1:canPageBlk:canPageBlkSec_2:rbMainSerivceCANRET');
+            unCheckOptions ( op3 , op4 );
+          }
+          catch (ex){
+            alert(ex);
+          }
+          
+          try{
+            var op5 = document.getElementsByName('thePage:form1:usPageBlk:usPageBlkSec_1:rbMainSerivceUSOFF');
+            var op6 = document.getElementsByName('thePage:form1:usPageBlk:usPageBlkSec_2:rbMainSerivceUSRET');
+            unCheckOptions ( op5 , op6 );
+            
+          }
+          catch(ex) {
+            alert(ex);
+          }
+        }
+      
+      
+        function unCheckOptions ( op1 , op2){
+            try{
+              // alert( option2 );
+              /* var op1 = document.getElementById( option1 );
+            var op2 = document.getElementById( option2 );
+            */
+              
+              for(var intChk = 0 ; intChk < op1.length; intChk ++ ) {
+                
+                if(op1[intChk].checked){
+                  op1[intChk].checked = false;
+                }
+              }
+              
+              for(var intChk = 0 ; intChk < op2.length; intChk ++ ) {
+                
+                if(op2[intChk].checked){
+                  op2[intChk].checked = false;
+                }
+              }
+              
+            }
+            catch(ex) {
+                alert(ex);
+            }
+        }
+        
+        function showOverlay() {
+        /*$('#overlay').height($(document).height());
+        */
+             var o = document.getElementById('overlay');
+             o.style.display = 'block';
+        }
+      
+      function hideOverlay() {
+        var o = document.getElementById('overlay');
+        o.style.display = 'none';
+      }
+      
+      function emptySelected(id) {
+        var spanElem = document.getElementById(id);
+        try {
+          var inputElems = spanElem.getElementsByTagName('INPUT');
+          if(inputElems != null && inputElems.length != 0) {
+            (inputElems[0]).value = '';
+          }
+        }
+        catch(x) {
+            alert(x);
+        }
+      }
+      
+      
+      function doSave(){
+        var goBtn = document.getElementById('{!$Component.thePage:form1:btnSignUp}');
+        try {
+          
+          // alert(goBtn);       
+          //  if(window.event.keyCode == 13){
+          goBtn.click();
+          //   }
+        }
+        catch(ex){
+          alert(ex);
+        }
+        
+      }
+      
+      function doSearch(){
+        var goBtn = document.getElementById('{!$Component.thePage:form1:doSearch}');
+        try {
+          
+          // alert(goBtn);       
+          //  if(window.event.keyCode == 13){
+          goBtn.click();
+          //   }
+        }
+        catch(ex){
+          alert(ex);
+        }
+        
+      }
+    </script>
+  
+    <style type="text/css">
+    
+        .columnA{
+          width : 35%;
+          vertical-align: top;
+        }
+        .columnB{
+          width : 100%;
+          vertical-align: top;
+          border-style: none;
+        }
+        
+        .font_color {
+          color: white;
+          font-weight: bold;
+          font-size: 12px;
+        }
+        .font_header {
+          color: white;
+          font-weight: bold;
+          background-color: #4F98BF;
+          font-size: 12px;
+        }
+        
+        .font_headerTop {
+          /*
+          color: white;
+          font-weight: bold;
+          background-color: #4F98BF;
+          font-size: 16px;
+          */
+          
+          color: white;
+          font-weight: bold;
+          background-color: #0373AC;
+          font: bold 13px/16px arial;
+          padding: 6px;
+          box-shadow: 0 33px 24px -26px white inset;
+          -moz-box-shadow: 0 33px 24px -26px white inset;
+          -webkit-box-shadow: 0 33px 24px -26px white inset;
+          font: bold 13px/16px arial;
+        }
+        .font_headerSub {
+          /*color: white;
+          font-weight: bold;
+          background-color: #4F98BF;
+          font-size: 13px;
+          */
+          color: black;
+          font: bold 15px/16px arial;
+         /* background-color: #E19823;
+          box-shadow: 0 30px 24px -26px white inset;
+          -moz-box-shadow: 0 30px 24px -26px white inset;
+          -webkit-box-shadow: 0 30px 24px -26px white inset;*/
+          padding: 4px;
+          font: bold 15px/16px arial;
+        }
+        
+        .squarebutton:hover{
+          color: #4F98BF;
+          /*button text color*/
+        }
+        .tabCss{
+          /*
+          border-style: none;
+          background-color: #4F98BF;
+          width : 130px;
+          height : 24px;
+          */
+          border-style: none;
+          background-color: white;
+          width: 130px;
+          height: 20px;
+          box-shadow: 0 42px 24px -26px #E5F2F6 inset;
+          font: bold 12px/14px arial;
+        }
+        
+        /*#overlay
+        {
+        background: url("{
+      !URLFOR($Resource.loading)}
+      ") no-repeat scroll center center gray;
+      border: 0px solid #000000;
+      bottom: 0;
+      left: 0;
+      opacity: 0.75;
+      filter: alpha(opacity=40);
+      
+      position: absolute;
+      top: 0;
+      visibility: hidden;
+      width: 100%;
+      z-index: 1000;
+      zIndex:1000;
+    }
+      */
+      
+      #overlay {
+        border: 0px solid #000000;
+        bottom: 0;
+        left: 0;
+        opacity: 0.6;
+        filter: alpha(opacity=60);
+        
+        position: absolute;
+        top: 0;
+        display: none;
+        width: 100%;
+        z-index: 1000;
+        zIndex:1000;
+        background:black;
+      }
+      
+      #billingPanel {
+        display:none;
+        position:absolute;
+        top:34%;
+        left:35%;
+        background-color:#d3d3d3;
+        z-index:9999;
+        width:400px;
+        height:160px;
+      }
+      .columnAlign{
+        width:255px;
+        float:right;
+      }
+      div .detailList {
+        width:100% !important;
+        font-size:14px;
+        Color:#666;
+      }
+      .btn {
+        color: #084B8A !important;
+        border: 1px solid #A5A6A5 !important;
+        padding: 5px !important;
+        margin: 1px;
+        //font-weight: bold;
+        //font-size: .9em;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        font-size: 12px;
+        font-family: arial;
+      }
+      .btn:hover {
+        background-position: right -30px;
+      }
+      /*.input[type="radio"] + label { 
+        color: #989898;
+        font-size: 15px !important;
+      }*/
+      
+      .rich-tab-bottom-line {
+         border-bottom : none !important;
+      }
+        .containerSF{ 
+            width:1065px; 
+            overflow:hidden; 
+            margin:0px auto; 
+            font-family: Arial, Helvetica, sans-serif; color:#333;
+        }
+        .containerSF .leftContent{ 
+            width:45%; 
+            float:left;
+        }
+        .containerSF .rightContent{ 
+            width:47%; 
+            *width:46.5%;
+            float:left; 
+            background-color:#f4f4f4; 
+            border-radius:10px; 
+            padding:35px 4%; 
+            min-height:500px;
+            background: -webkit-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f1f1f1));
+            background: -moz-linear-gradient(top, #f9f9f9, #f1f1f1);
+            background: -o-linear-gradient(top, #f9f9f9, #f1f1f1);
+            background: -ms-linear-gradient(top, #f9f9f9, #f1f1f1);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#f1f1f1');
+        }
+        .containerSF h2, .containerSF h3{ 
+          
+            width:100%; 
+            font-size:24px; 
+            margin:0px; 
+            padding:0px; 
+            font-weight:normal;
+            padding-bottom:25px;
+        }
+        .containerSF h3{  
+            font-size:18px; 
+            padding:20px 0px 10px 0px;
+        }
+        .containerSF .radioOptions{
+            font-size:14px;
+            float:left;
+            clear:both;
+            padding-bottom:10px;
+            line-height:20px;
+            width:100%;
+            color:#666666;
+        }
+        .containerSF .radioOptions input{
+            float:left;
+            margin-right:10px;
+        }
+        .containerSF .signupBtn{
+            float:left;
+            clear:both;
+            border-radius:5px;
+            background-color:#cc6a0b;
+            color:#fff;
+            font-size:24px;
+            font-weight:bold;
+            border: 0px;
+            padding:10px 40px;
+            cursor:pointer;
+            background: -webkit-gradient(linear, left top, left bottom, from(#f8981d), to(#b65100));
+            background: -moz-linear-gradient(top, #f8981d, #b65100);
+            background: -o-linear-gradient(top, #f8981d, #b65100);
+            background: -ms-linear-gradient(top, #f8981d, #b65100);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8981d', endColorstr='#b65100');
+            margin-top:10px;
+            outline:none;
+            box-shadow: 0px 0px 4px #676767;
+            width:180px;
+            height:52px;
+        
+        }
+        .containerSF .signupBtn:hover{
+            background-color:#cc6a0b;
+            background: -webkit-gradient(linear, left top, left bottom, from(#b65100), to(#f8981d));
+            background: -moz-linear-gradient(top, #b65100, #f8981d);
+            background: -o-linear-gradient(top, #b65100, #f8981d);
+            background: -ms-linear-gradient(top, #b65100, #f8981d);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b65100', endColorstr='#f8981d');
+        
+        }
+        .containerSF ul.tabs{
+            float:left;
+            width:100%;
+            margin:0px;
+            padding:0px;
+        }
+        .containerSF ul.tabs li{
+            float:left;
+            height:28px;
+            font-size:15px;
+            font-weight:bold;
+            color:#a7a7aa;
+            /*background:no-repeat url(images/tab-bg-left.png) left top;*/
+            background:no-repeat url("{!URLFOR($Resource.PartnerSignUpImages1,'PartnerCustomerSignupimages/tab-bg-left.png')}") left top;
+            
+            margin:0px;
+            padding:0px;
+            list-style-type:none;
+            cursor:pointer;
+            width:125px;
+            text-align:center;
+            line-height:28px;
+        }
+        .containerSF ul.tabs li span{
+            float:right;
+            height:28px;
+            /*background:no-repeat url(images/tab-bg-right.png) right top;*/
+            background:no-repeat url("{!URLFOR($Resource.PartnerSignUpImages1,'PartnerCustomerSignupimages/tab-bg-right.png')}") right top;
+            text-align:center;
+            line-height:28px;
+            width:100%;
+        }
+        .containerSF ul.tabs li:hover, .containerSF ul.tabs li.active{
+            background-position:left -28px;
+            color:#fff;
+        }
+        .containerSF ul.tabs li:hover span, .containerSF ul.tabs li.active span{
+            background-position:right -28px;
+        }
+        .rich-tab-active {
+            background:no-repeat url("{!URLFOR($Resource.PartnerSignUpImages1,'PartnerCustomerSignupimages/tab-bg-left.png')}") left bottom;
+            height: 25px;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            top: 0px !important;
+        }
+        .rich-tab-inactive { 
+            background:no-repeat url("{!URLFOR($Resource.PartnerSignUpImages1,'PartnerCustomerSignupimages/tab-bg-left.png')}") left top; 
+            height: 25px;
+            color: black;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .rich-tab-inactive:hover { 
+            background:no-repeat url("{!URLFOR($Resource.PartnerSignUpImages1,'PartnerCustomerSignupimages/tab-bg-left.png')}") left bottom;
+            color: white;
+        }
+        .rich-tabhdr-side-border {
+            background : none !important;
+            display: none !important;
+        }
+        .rich-tabhdr-side-cell {
+            border:none !important;
+        }
+        .rich-tabhdr-side-border {
+            background-image: none !important;
+        }
+        /*. UKCls {
+            background:no-repeat url("{!URLFOR($Resource.PartnerSignUpImages1,'PartnerCustomerSignupimages/tab-bg-active.png')}") left top !important;
+        }*/
+        .defaultTextActive {
+            color: #9A9A9A;
+            border-radius: 10px;
+            padding-left: 7px;
+            height: 22px;
+            border: 1px solid #A5A6A5;
+            font-weight: bold;
+            outline: none;
+        }
+    </style>
+    <apex:form id="form1">
+        <span id="hiddenElem">
+          <apex:inputHidden id="hiddenvalue" value="{!selectedValueOffering}"/>
+        </span>
+        <div class="containerSF">
+            <div class="leftContent">  
+                <h2>Main Services</h2>  
+                <apex:tabPanel switchType="ajax" tabClass="tabs"  inactiveTabClass="inTab" activeTabClass="acTab"  
+                    id="tabPanel" value="{!tabName}" reRender="promotion" style="width:100%;">
+                    
+                    <apex:tab label="US"  style="{!if(isPartnerUserPro,'width:460px','width:131px')};background-color:white;border-style: none;top:0px;margin-left: -1px;" 
+                        name="US"  
+                         status="ajaxStatus" id="usTab" 
+                        ontabenter="selectTab('US')" reRender="promotion"  ontableave="partnerUNcheck()"  
+                        rendered="{!if(OR((isPartnerUserPro && oppBrandName == 'RingCentral'),isAdminOrNonPartnerPro),true,false)}">
+                      <apex:pageBlock id="usPageBlk">
+                        <apex:pageBlockSection columns="1" id="usPageBlkSec_1">
+                          <apex:selectRadio id="rbMainSerivceUSOFF"  value="{!selectedValueOffering}"  layout="pageDirection"  rendered="{!!ISBLANK(ServiceItemsOfferingUS)}" >
+                            <apex:actionSupport event="onclick" action="{!doSearch}"  reRender="promotion" status="ajaxStatus" onsubmit="unCheckRet('US');" />
+                            <apex:selectOptions value="{!ServiceItemsOfferingUS}"  id="usOptionsOff" />
+                          </apex:selectRadio>
+                        </apex:pageBlockSection>  
+                      </apex:pageBlock>
+                    </apex:tab>
+                    
+                    <apex:tab label="CANADA"  style="{!if(isPartnerUserPro,'width:460px','width:131px')};background-color:white;border-style: none;top:0px;margin-left: -1px;"  name="CAN"   status="ajaxStatus" 
+                            ontabenter="selectTab('CAN')" reRender="promotion" ontableave="partnerUNcheck();" id="caTab" 
+                            rendered="{!if(OR((isPartnerUserPro && oppBrandName == 'RingCentral Canada'),isAdminOrNonPartnerPro),true,false)}">
+                      <apex:pageBlock id="canPageBlk" >
+                        <apex:pageBlockSection columns="1" id="canPageBlkSec_1">
+                          <apex:selectRadio id="rbMainSerivceCANOFF"  value="{!selectedValueOffering}"  layout="pageDirection" rendered="{!!ISBLANK(ServiceItemsOfferingCAN)}" >
+                            <apex:actionSupport event="onclick" action="{!doSearch}"  reRender="promotion" status="ajaxStatus" onsubmit="unCheckRet('CAN');"/>
+                            <apex:selectOptions value="{!ServiceItemsOfferingCAN}" id="canOptionsOff"/>
+                          </apex:selectRadio>
+                        </apex:pageBlockSection>
+                      </apex:pageBlock> 
+                    </apex:tab>
+        
+                    <apex:tab label="UK" style="{!if(isPartnerUserPro,'width:460px','width:131px')};background-color:white;border-style: none;top:0px;margin-left: -1px;" name="UK"   status="ajaxStatus" 
+                        ontabenter="selectTab('UK')" reRender="promotion"  ontableave="partnerUNcheck();" id="ukTab" 
+                        rendered="{!if(OR((isPartnerUserPro && oppBrandName == 'RingCentral UK'),isAdminOrNonPartnerPro),true,false)}">
+                      <apex:pageBlock id="ukPageBlk">
+                        <apex:pageBlockSection columns="1"  id="ukPageBlkSec_1">
+                          <apex:selectRadio id="rbMainSerivceUKOFF"  value="{!selectedValueOffering}"  layout="pageDirection" rendered="{!!ISBLANK(ServiceItemsOfferingUK)}" >
+                            <apex:actionSupport event="onclick" action="{!doSearch}"  reRender="promotion" status="ajaxStatus" onsubmit="unCheckRet('UK');"/>
+                            <apex:selectOptions value="{!ServiceItemsOfferingUK}" />
+                          </apex:selectRadio>
+                        </apex:pageBlockSection>
+                      </apex:pageBlock>
+                </apex:tab>
+            
+                </apex:tabPanel>
+                
+                <apex:OutputPanel rendered="{!isAdminOrNonPartnerPro}">
+                        <h2 style="padding-top: 15px;padding-bottom: 15px;">Trial or Buy</h2>
+                    <span style="color:red;font-size: 14px;font-weight: bold;">
+                        NOTE: Invoicing is not available for Trials
+                    </span>
+                    <apex:selectRadio id="rbTrail" value="{!selectTrial}" layout="pageDirection"  style="font-size: 14px;color:#666;">
+                        <apex:selectOptions value="{!trialItems}"  />
+                    </apex:selectRadio>
+                </apex:OutputPanel>
+            </div>
+    
+            <div class="rightContent">
+                <apex:panelGrid columns="1"  border="0" width="100%">
+                <apex:pageBlock >
+                    <apex:outputPanel id="out"></apex:outputPanel>
+                    <apex:panelGroup id="promotion" >
+                        <apex:pageMessages /><br/>
+                        <apex:actionRegion >
+                            <h2>Pricing available for the selected service</h2>
+                           <apex:selectRadio id="rbPromotion" rendered="{!strRedenderdValue}" value="{!selectedPromotion}" 
+                                layout="pageDirection" style="font-size: 14px;color:#666;;">
+                             <apex:selectOptions value="{!promotionItems}"  />
+                           </apex:selectRadio>
+                            <BR></BR>
+                            <!-- <apex:commandButton value="SignUp" styleClass="signupBtn"  onclick="return signup();" /> -->
+                            <button type="button" name="" value="" class="signupBtn" onclick="return signup();">Sign Up</button>
+                                        <!-- image="{!URLFor($Resource.PartnerSignUpImages,'PartnerSignUpImages/SignUpBtn.gif')}" --> 
+                            <BR></BR><BR></BR>
+                        </apex:actionRegion>
+                    </apex:panelGroup>
+                </apex:pageBlock> 
+                <div style="padding-top: 50px;">
+                    <apex:panelGroup id="AddParameters" >
+                           <h2>Additional Account Parameters</h2>
+                           <table style="font-size: 14px;color:#666;width:100%;clear:both;">
+                                <tr>
+                                    <td>AID:</td><td><apex:Inputtext label="AID"  styleclass="defaultTextActive" value="{!AID}"/></td><td>BMID:</td><td><apex:Inputtext styleclass="defaultTextActive" value="{!BMID}" /></td> 
+                                </tr>
+                                <tr>
+                                    <td>PID:</td><td><apex:Inputtext styleclass="defaultTextActive" value="{!PID}"/></td><td>SID:</td><td><apex:Inputtext styleclass="defaultTextActive" value="{!SID}"/></td>
+                                </tr>
+                           </table>
+                    </apex:panelGroup>
+                </div>
+            </apex:panelGrid>
+            </div> 
+
+        </div>
+        
+        <div id="billingPanel" style="display:none;
+            position:absolute;
+            top:34%;
+            left:35%;
+            background-color:#d3d3d3;
+            z-index:9999;
+            width:400px;
+            height:160px;">
+  
+            <div class="font_headerTop">
+                Payment Method
+            </div>
+            <div style="width: 60%;margin: auto;text-align:center">
+                <apex:selectRadio id="Payment" value="{!selectedPaymentMethod}" 
+                layout="lineDirection" style="font-size: 15px;font-family: Arial,Verdana,sans-serif;width:100%;margin-top: 15px;
+                margin-bottom: 40px;">
+      
+                <apex:selectOptions value="{!PaymentItems}" /></apex:selectRadio>
+                <div id="btn" style="text-align:center;">
+                  <apex:commandButton value="Continue" styleclass="btn"  onclick="continuesignup();return false;" />
+                  &nbsp;
+                  <apex:commandButton value="Cancel"  styleClass="btn"  onclick="hideBillingPage();return false;" />
+                </div>
+            </div>
+        </div>
+        
+        <apex:actionStatus id="ajaxStatus" onStart="showOverlay();" onstop="hideOverlay();"/>
+
+        <div id="overlay">
+        </div>
+
+        <apex:actionFunction action="{!selectTab}" name="selectTab" rerender="showstate" reRender="promotion">
+          <apex:param name="tabName" assignTo="{!tabName}" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction action="{!resetAll}" name="resetAll" reRender="promotion"/>
+        <apex:actionFunction action="{!doSAve}" name="signUpAction"></apex:actionFunction>
+        <script>
+            //alert(abc); 
+            if('{!isPartnerUserPro}' == 'true') {
+                if('{!oppBrandName}' == 'RingCentral') {
+                    document.getElementById('thePage:form1:usTab_lbl').style.backgroundImage = "url('{!URLFOR($Resource.PartnerSignUpImages1,'PartnerCustomerSignupimages/tab-bg-active.png')}')";
+                } else if('{!oppBrandName}' == 'RingCentral Canada') {
+                    document.getElementById('thePage:form1:caTab_lbl').style.backgroundImage = "url('{!URLFOR($Resource.PartnerSignUpImages1,'PartnerCustomerSignupimages/tab-bg-active.png')}')";
+                } else if('{!oppBrandName}' == 'RingCentral UK') {
+                    document.getElementById('thePage:form1:ukTab_lbl').style.backgroundImage = "url('{!URLFOR($Resource.PartnerSignUpImages1,'PartnerCustomerSignupimages/tab-bg-active.png')}')";
+                }
+            } else {
+                var tableRow = document.getElementById('thePage:form1:caTab_cell').parentNode;
+                tableRow.deleteCell(2);
+                tableRow.deleteCell(3);
+            }
+        </script>
+    </apex:form>
+    
+    <script>
+      
+      function signup() { 
+        try {
+          var isSignup = '{!toShowSignUpPanel}';
+          if(isSignup == 'false' || '{!isPartnerUserPro}' == 'true') {
+            signUpAction();
+          }
+          else if(isSignup == 'true' && '{!isAdminOrNonPartnerPro}' == 'true') {
+            showBillingPage();
+          }
+        }
+        catch(x) {
+          alert(x);
+        }
+        return false;
+      }
+      
+      function continuesignup() {
+        signUpAction();
+        hideBillingPage();
+      }
+      
+      function showBillingPage() {
+        var options = document.getElementsByName('thePage:form1:rbTrail');
+        for(i = 0; i < options.length; i++) {
+          var opt = options[i];
+          if(opt.type == "radio") {
+            if(opt.checked) {
+              if(opt.value == '7D' || opt.value == '30D') {
+                document.getElementById('thePage:form1:Payment:0').disabled = true;
+                document.getElementById('thePage:form1:Payment:1').checked = true;
+              }
+              else {
+                document.getElementById('thePage:form1:Payment:0').disabled  = false;
+                document.getElementById('thePage:form1:Payment:0').checked = true;
+              }
+            }
+          }
+        }
+        showOverlay();
+        var obj = document.getElementById('billingPanel');
+        obj.style.display = 'block';
+      }
+      
+      function hideBillingPage() {
+        hideOverlay();
+        var obj = document.getElementById('billingPanel');
+        obj.style.display = 'none';
+      }
+    </script>
+
+</apex:page>

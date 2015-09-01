@@ -1,0 +1,51 @@
+<apex:page standardController="Case" extensions="CaseHighlighter"
+	id="CaseHighlighter" showHeader="false" sidebar="false">
+	<style>
+.backCss {
+	background-color: #fffcce !important;
+	border: 1px solid #cd9e5a !important;
+	border-radius: 5px;
+	-moz-border-radius: 5px !important;
+	-webkit-border-radius: 5px !important;
+}
+</style>
+	<apex:outputPanel id="message"
+		rendered="{!IF(bRedAccount || highlighterMsg != NULL, true, false)}">
+		<div class="backCss">
+			<apex:panelGrid columns="3" id="Paneltable">
+				<apex:image id="warning" value="/resource/WarningRed" width="48.7"
+					height="48.7" style="padding:5px;" />
+				<apex:outputpanel >
+					<apex:outputpanel rendered="{!bRedAccount}">
+						<apex:outputLabel escape="false">&#9830;&#160;</apex:outputLabel>
+						<apex:outputText escape="false">
+							<!-- This is a Red Account - Please see <a href="/{!strRedAccountId}" target='_blank'><b>here</b></a> for details.-->
+							<font color='#FFF'
+								style="background: red; font-size: 15px; font-weight: bold;">
+								This is a Red Account. Handle with Care. Please see <a
+								href="/{!strRedAccountId}" target='_blank'
+								style="font-weight: normal;"><b>here</b>
+							</a> for details. </font>
+						</apex:outputText>
+					</apex:outputpanel>
+					<BR/>
+					<apex:outputpanel rendered="{!IF(highlighterMsg != NULL , true, false)}">
+						<apex:outputLabel escape="false">&#9830;&#160;</apex:outputLabel>
+						<apex:outputText escape="false">
+							<font color='#FFF'
+								style="color: black; font-size: 15px; font-weight: bold;">This
+								is a
+								<b style="color: red;">{!highlighterMsg}</b> Case, please handle
+								with care.</font>
+						</apex:outputText>
+					</apex:outputpanel>
+				</apex:outputpanel>
+			</apex:panelGrid>
+		</div>
+	</apex:outputPanel>
+	<!-- <div class="backCss">
+  	<apex:outputText escape="false" rendered="{!IF(highlighterMsg != NULL , true, false)}">
+     	<font color='#FFF' style="color:red;font-size:15px;font-weight:bold;">{!highlighterMsg}</font>
+     </apex:outputText>
+  </div> -->
+</apex:page>

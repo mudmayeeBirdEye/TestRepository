@@ -1,0 +1,380 @@
+<apex:page showHeader="false" sidebar="false" cache="false" showChat="false" standardStylesheets="false">
+<title>Migration Request</title>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title></title>
+<apex:stylesheet value="{!URLFOR($Resource.Amarosa,'Amarosa/landingpagecss.css')}"/>
+<!--<apex:stylesheet value="{!URLFOR($Resource.Amarosa,'Amarosa/demo.css')}"/>-->
+<apex:stylesheet value="{!URLFOR($Resource.Amarosa,'Amarosa/basic.css')}"/>
+
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.Amarosa, 'Amarosa/jquery.simplemodal.js')}" />
+  <apex:stylesheet value="{!URLFOR($Resource.AmarosaNew,'Amarosa/successmessagecss.css')}"/>
+<!-- IE6 "fix" for the close png image -->
+<!--[if lt IE 7]>
+<link type='text/css' href='{!URLFOR($Resource.Amarosa,'Amarosa/basic_ie.css')}' rel='stylesheet' media='screen' />
+
+<![endif]-->
+
+<style type="text/css">
+
+.message1{
+  color:red;
+
+}
+
+#simplemodal-container ul{
+  /*padding:0px;*/
+}
+.message2{
+     background-color: #EC8A1E;
+     color: white;
+     font-family: Arial,Helvetica,sans-serif;
+     border-radius:6px;
+    /* padding:5px !important;*/
+}
+#simplemodal-container ul p{
+     color: #000;
+     /*font-family: Arial,Helvetica,sans-serif;*/
+ }
+ .message2 p{
+  color: #FFF !important;
+  font-size:15px !important;
+}
+#simplemodal-container{
+   border-left: 1px solid lightgray;
+   border-right: 1px solid lightgray;
+   box-shadow: 0 0 92px 5px #DADADA inset;
+   background-color:#FFF;   
+   border:0px;
+   border-radius:6px;
+   height:550px;
+   width:800px;
+   color: #000;
+   /*color: #666;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size:13px;*/
+}
+.simplemodal-wrap{
+
+}
+#simplemodal-container li{
+list-style:decimal;
+margin-left:30px;
+}
+html { margin: 0;padding: 0;}
+body { font-family: 'Lato',Helvetica,Arial,sans-serif;color: #797979; margin:  0;padding: 0;}
+p { margin: 1em 0;padding:0 64px 0 64px;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;color:#666666;line-height:22px;font-weight:300;}
+h3 { font: italic normal 1.4em georgia, sans-serif;letter-spacing: 1px; margin-bottom: 0; color: #7D775C;}
+a { font-weight: normal; text-decoration: underline; color: #ff9933;}
+a:hover { text-decoration: underline;color: #a75402;}
+ul { 
+list-style-image: url(http://marketo.ringcentral.com/rs/ringcentral/images/sfdc-lp-img-3.jpg);
+ }
+  ul.ulClass { color:#666666;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:150;
+ }
+ ul li, ol li {
+    margin-bottom: 3px !important;
+    margin-left:50px !important;
+}
+.clear{clear:both;}
+#wrapper {width:972px;margin:0 auto;padding:0;border:0;background:#ffffff;}
+#logo {margin:70px 0 15px 0;padding:0;float:left;border:0;}
+#header {width:972px;0;padding:0 0 20px 0; background: #fff url(http://marketo.ringcentral.com/rs/ringcentral/images/652-bg.png) top left no-repeat;height:339px;}
+#header h1{font-family: 'Lato',Helvetica,Arial,sans-serif;color:#5d6067;text-align:left;font-size:52px;font-weight:200;padding:130px 0 0 64px;line-height:50px;margin:0;}   
+#orange-container {}
+
+#orange-box {width:972x;height:409px; background:url(http://marketo.ringcentral.com/rs/ringcentral/images/652-bg2.png) no-repeat top left;margin:0 auto;}
+#orange-box h1 {font-family: 'Lato',Helvetica,Arial,sans-serif;color:#666666;font-size:21px;font-weight:300;padding-top:40px;text-align:left;padding-left:30px;}
+
+#orange-box p {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:14px;font-weight:300;color:#666666;text-align:left;padding:8px;line-height:16px;}
+#orange-box .first-box {float:left;width:243px;height:232px;padding:13px 0px 13px 0px;}
+#orange-box .first-box h1 {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:19px;font-weight:300;text-align:left;padding:0px 70px 0px 27px;margin-bottom:10px;}
+#orange-box .first-box p {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:14px;font-weight:300;color:#666666;text-align:left;height:16px;padding:0px 10px 0px 27px;margin:0;}
+#orange-box .second-box {float:left;width:240px;height:232px;padding:13px 0px 13px 0px;}
+#orange-box .second-box h1 {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:19px;font-weight:300;text-align:left;padding:0px 20px 0px 27px;margin-bottom:10px;}
+#orange-box .second-box p {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:14px;font-weight:300;color:#666666;text-align:left;line-height:16px;padding:0px 10px 0px 27px;margin:0;}
+#orange-box .third-box {float:left;width:241px;padding:13px 0px 13px 0px;}
+#orange-box .third-box h1 {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:19px;font-weight:300;text-align:left;padding:0px 0px 0px 13px;margin-bottom:10px;}
+#orange-box .third-box p {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:14px;font-weight:300;color:#666666;text-align:left;height:16px;padding:0px 5px 0px 13px;margin:0;}
+#orange-box .fourth-box {float:left;width:241px;padding:13px 0px 13px 0px;}
+#orange-box .fourth-box h1 {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:19px;font-weight:300;text-align:left;padding:0px 0px 0px 13px;margin-bottom:10px;}
+#orange-box .fourth-box p {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:14px;font-weight:300;color:#666666;text-align:left;height:16px;padding:0px 5px 0px 13px;margin:0;}
+#content {width:972px;height:auto;margin:0 auto;}
+#content h1 {font-family: 'Lato',Helvetica,Arial,sans-serif;color:#666666;font-size:26px;font-weight:300;line-height:31px;text-align:left;padding:0px 0px 0px 24px;margin:10px 0px 0px 0px;;}
+#content h2 {font-family: 'Lato',Helvetica,Arial,sans-serif;color:#666666;font-size:14px;font-weight:300;line-height:18px;text-align:left;padding:0px 150px 0px 24px;}
+#content .content-left {width:450px;float:left;text-align:left;margin:0px;padding:0;font-size:13px;}
+#content .content-left p {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;color:#666666;text-align:left;padding-right:10px;font-weight:300;padding-left:24px;}
+#content .content-right {width:470px;float:left;text-align:left;padding-left:5px;}
+#content .content-right p {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;color:#666666;text-align:left;padding-right:5px;font-weight:300;padding-left:10px;}
+#content .content-center {width:972px;float:left;text-align:left;padding:0;margin:0;}
+#content .content-center p {font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;color:#666666;text-align:left;padding-left:27px;padding-right:30px;padding-bottom:10px;font-weight:300;}
+#1-divider {width:972px;height:auto;margin:0;padding-top:10px;}
+#footer {width: 972px;margin: 0;padding:0px 0px 20px 0px;}
+#footer p {padding: 0px 70px 20px 27px;font-family:Arial;font-size:14px;color:#797979;font-weight:bold;margin:0;}
+#copyR {width:100%;margin:0 auto;padding:0;border:0;background:#c1c4cb;}
+#copyR .copyright-f { width:972px;border-top:1px solid #cccccc; background-color:#c1c4cb;}
+#copyR .copyright-f p {font-family:Arial;font-size:11px;color:#797979;padding-top:20px;padding-bottom:20px;text-align:center;}
+
+#orange-box .first-box{background:none;}
+#orange-box .second-box{background:none;}
+#orange-box .third-box{background:none;}
+#orange-box .fourth-box{background:none;}
+
+div.myButton input{
+    background: url("http://marketo.ringcentral.com/rs/ringcentral/images/652-button.png") no-repeat scroll 0 0 transparent;
+    border: medium none;
+    height: 35px;
+    margin: 0px;
+    overflow: visible;
+    text-indent: -9999px;
+    width: 138px !important;
+}
+div.myButton input:hover{
+    background-position:0 -35px ;
+        cursor:pointer;
+}
+
+
+
+</style>
+
+</head>
+
+<body>
+<div id="wrapper">
+<div id="logo"><a href="http://ringcentral.com"><img src="http://marketo.ringcentral.com/rs/ringcentral/images/rclogo-medium.png" border="0" alt="RingCentral" title="RingCentral" width="242" height="37" /></a></div>
+<div class="clear"></div>
+    <div id="header"><h1>RingCentral’s<br />Upgraded Platform</h1></div>
+  <p>Thank you for your request to upgrade your account to RingCentral’s newest platform.</p>
+ 
+<p>We’d like to tell you about some of the changes. Please read through them and then click on the "I agree" button at the bottom of this page and submit your request. We'll notify you when we have switched your account.</p>
+<p>In the meantime, you can find out more about the our new platform by checking out the following:</p> 
+<ul class="ulClass">
+    <!--<li style="padding-left:3px;color:#666666;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:200;"><a href="http://www.ringcentral.com/interactiveguide/rc2012.html#phonesys_home.png">Interactive Demo</a></li>
+    <li style="padding-left:3px;color:#666666;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:200;"><a href="http://success.ringcentral.com/RCSupportHome2013">Support Page</a></li>
+    <li style="padding-left:3px;color:#666666;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:200;"><a href="http://www.youtube.com/watch?v=4pmJBZMJjH0&feature=youtu.be">Interface Overview</a></li>-->
+    <li style="padding-left:3px;color:#666666;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:200;"><a href="http://success.ringcentral.com">Support Page</a></li>
+    <li style="padding-left:3px;color:#666666;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:200;"><a href="http://www.youtube.com/watch?v=TZbCF7-Ye2w">Interface Overview</a></li>
+</ul>
+  <div id="orange-box">
+    <h1>Some of the benefits you’ll enjoy (<a href="http://marketo.ringcentral.com/officefeatures.html">and more!</a>)</h1>
+        <div class="first-box"><img src="http://marketo.ringcentral.com/rs/ringcentral/images/652-img1.png" width="206" height="115" />
+      <h1>Easily navigate 
+your account</h1>
+<p>With our improved interface, you’ll be able to more easily make changes and manage the way you do business. </p></div>
+    <div class="second-box"><img src="http://marketo.ringcentral.com/rs/ringcentral/images/652-img2.png" width="206" height="115" />
+    <h1>Manage our system from your smartphone</h1>
+    <p>You will now have the freedom to manage your phone system directly from your smartphone. </p></div>
+    <div class="third-box"><img src="http://marketo.ringcentral.com/rs/ringcentral/images/652-img3.png" width="206" height="115" />
+    <h1>See who’s on the phone</h1>
+    <p><a href="http://www.ringcentral.com/office/features/presence/overview.html">RingCentral Presence</a> will tell you whose line is in use, even if they’re using their mobile phone. You'll be able to handle the call accordingly, saving time and creating a better customer experience.     
+      </p></div>
+      <div class="fourth-box"><img src="http://marketo.ringcentral.com/rs/ringcentral/images/652-img4.png" width="206" height="115" />
+    <h1>Business SMS</h1>
+    <p><a href="http://www.ringcentral.com/office/features/business-sms/overview.html">Use your business number</a> to text with customers, colleagues, and departments. Text seamlessly across devices including smart phones, tablets, and PCs    
+    </p></div>
+    <div class="clear"></div>
+</div>
+  <div id="content"> 
+  <h1>Some changes that you need to be aware of</h1>
+  <h2>Some less frequently used features have been simplified, are going away or have been reimagined in the new system. <a href="http://marketo.ringcentral.com/featurechanges">Please review</a>.</h2>
+  
+  <!--<div class="content-left"><p><strong>Account Defaults</strong> <br /><span style="font-size:14px;">Time display format has been standardized to 12-hour and home country code (the default used when you call out) has been set to US and Canada.</span></p>
+  <p><strong>Answering Rules</strong> <br /><span style="font-size:14px;">Several options for individual answering rules have been moved to departments.  In some cases you may need to use our departments feature to replicate your existing functionality. 
+       <a href="#" class='learnMore' id="AnsweringRules" >Learn more</a>.</span>
+   
+   </p>
+  <p><strong>Departments</strong><br />
+<span style="font-size:14px;">Department calls now follow the user's normal business hours, after hours, and other rules – the Agent Profile rule is no longer supported. Skills based, Longest Waiting and Fewest Number of Calls routing options for departments are no longer supported. Some other department call routing options are eliminated or simplified. 
+  <a href="#" class='learnMore' id="Departments">Learn more</a>.
+  </span></p>
+  </div>
+  
+    
+  <div class="content-right"><p><strong>Phones and Numbers</strong> <br /><span style="font-size:14px;">The ability to assign a phone number directly to the company directory has been removed. The welcome greeting is set up to guide callers to dial a number 
+to access the company directory.</span> </p>
+<p><span style="font-size:14px;">Lines set as 'Ring Device Directly' (which cause calls to that number to ring directly to the phone without any rules or greetings) are no longer supported and these lines will be set to ring the system extension and may require reconfiguration to restore the functionality 
+you need.</span></p>
+<p><strong>Call Blocking</strong><br />
+<span style="font-size:14px;">Call blocking options have been consolidated and some options eliminated.  The ability to only allow a selected list of calls through has been removed.  All calls from pay phones will be blocked and this option cannot be changed.
+ <a href="#" class='learnMore' id="CallBlocking">Learn more</a>.
+ 
+ </span></p>
+</div>
+<div class="content-center">
+   <p><strong>Other Settings</strong><br />
+<span style="font-size:14px;">Notifications (for voicemails, faxes, etc) have been simplified so all notifications go to the same email and text address for each user.  Permission settings have been simplified to include only administrator and international calling permission.  Custom greeting recording has been simplified to allow recording over the phone and via upload, and to keep only 1 available custom recording for each greeting.
+  <a href="#" class='learnMore' id="OtherSettings">Learn more</a>.
+  </span></p>
+ <p><strong>Announced Extension Name</strong><br />
+<span style="font-size:14px;">The feature allowing the name of the extension that the caller dialed (whether a department or direct extension) to be announced audible to the RingCentral user has been removed. Alternatives include using called number option or the alternative caller-ID option. </span></p>
+</div>-->
+
+</div>
+    
+  <div id="1-divider"><img src="http://marketo.ringcentral.com/rs/ringcentral/images/OnDemandMigation_landingpage_6.png" width="972" height="30" /></div>    
+
+  <div id="footer">
+ <script language="javascript">
+/*window.enabledisablenext=function()
+{
+    var boxeschecked = 0;
+    for (var i = 1; i<= 1; i++) {
+        if(document.getElementById("transcheck" + i).checked == true){ 
+        boxeschecked ++;
+        }
+    }
+    if (boxeschecked == 0) {document.getElementById("next").disabled= true;}
+    if (boxeschecked != 0) {document.getElementById("next").disabled= false;}
+}*/
+</script>
+
+<script>
+   $(document).ready(function(){
+    if($('#transcheck1').is(':checked')){
+      $('#message').html('');
+    }
+    $("input[type='checkbox']").click(function(){//alert(this.checked);
+       var obj=$("input[type='submit']");
+       if(this.checked){
+         obj.removeAttr('disabled');
+          obj.removeAttr('title');
+         obj.removeClass('btnDisabled').addClass('btn');
+         $('#message').html('');
+       }else{
+         obj.attr('disabled','disabled');
+         obj.attr('title','Please confirm you have read the information above before continuing');
+          $('#message').html('* Please confirm you have read the information above before continuing');
+         obj.removeClass('btn').addClass('btnDisabled');
+         
+       }
+     
+     });
+    });
+</script>
+<script>
+jQuery(function ($) {
+    // Load dialog on page load
+    //$('#basic-modal-content').modal();
+
+    // Load dialog on click
+    $('.learnMore').click(function (e) {
+        $('#basic-modal-content').modal();
+        $('#basic-modal-content').find('p').removeClass('message2');
+        $('.simplemodal-wrap').scrollTop(document.getElementById(this.id+'Div').offsetTop-15);
+        $('#'+this.id+'Div').addClass('message2');
+        return false;
+    });
+});
+
+</script>
+
+<form action='http://service.ringcentral.com/login.asp?p_next_page=MIGRATIONREQUEST' method='POST'>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="10%" align="center" valign="middle"><input type='checkbox' id='transcheck1'/></td>
+    <td width="69%" align="left" valign="middle" style="font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;color:#797979;font-weight:500;">
+      I’ve read this and I agree to continue with switching my account to RingCentral’s Amarosa platform. I understand that my account cannot be reverted back to the old platform. (After you click on submit, you’ll be asked to log in to your account for verification.)</td>
+    <td width="21%" align="center" valign="middle">
+      <div class="myButton">
+       <input type='submit' disabled='disabled' id='next'/>
+      </div>
+      
+      </td>
+  </tr>
+   <tr>
+   <td></td>
+     <td colspan='3'>
+      <div id='message' class='message1'>* Please confirm you have read the information above before continuing</div>
+      </td>
+  </tr>
+</table>
+</form> 
+</div>
+</div>
+  <div class="clear"></div>
+<div id="copyR">
+<div class="copyright-f"><p>© 1999-2012 RingCentral, Inc. All rights reserved.</p></div>
+</div>
+<div id="basic-modal-content">
+   <h4>Some less frequently used features have been simplified, are going away or have been reimagined in the new system. 
+   Please review.
+  </h4> 
+<ul id='phoneDiv'>
+    <strong>Phones and Numbers</strong>
+    <li> The ability to assign a phone number directly to the company directory
+        has been removed. The welcome greeting is set up to guide callers to dial
+        a number to access the company directory.</li>
+    <li> Lines set as &#39;Ring Device Directly&#39; (which cause calls to that
+        number to ring directly to the phone without any rules or greetings) are
+        no longer supported and these lines will be set to ring the system extension
+        and may require reconfiguration to restore the functionality you need.</li>
+</ul>
+<ul id='AnsweringRulesDiv'>
+    <strong>Answering Rules</strong>
+     <p><h4>Several options for individual answering rules have been moved to departments.
+        &nbsp;In some cases you may need to use our departments feature to replicate
+        your existing functionality. &nbsp;</h4></p>
+    <li> Setting the ability to interrupt music on hold with a prompt is only
+        supported within Departments.</li>
+    <li> Call forwarding options have been simplified with simultaneous or sequential
+        modes only.</li>
+    <li> Incoming call information is now displayed based on user settings, not
+        on phone settings.</li>
+    <li> Only your currently selected custom greeting is available (any previously
+        used greetings are deleted).</li>
+</ul>
+<ul id='CallBlockingDiv'>
+    <strong>Call Blocking</strong>
+     <p><h4>Call blocking options have been consolidated and some options eliminated.
+        &nbsp;</h4></p>
+      
+    <li> The ability to block ALL calls has been removed. You can continue to
+        block individual phone numbers.</li>
+    <li> The &quot;whitelist&quot; ability to accept calls only from specific
+        numbers has been removed.</li>
+    <li> Calls from payphones are now blocked.</li>
+    <li> The ability to block voicemail messages or fax messages from callers
+        without caller ID has been removed, but you can still block calls from
+        them.</li>
+</ul>
+<ul id='OtherSettingsDiv'>
+    <strong>Other Settings</strong>
+    <li> Urgent and normal messages are now handled with the same notification
+        settings.</li>
+    <li> The same email and text message recipients will be used for all types of notifications.</li>
+    <li> Old messages are automatically deleted after 200 messages.</li>
+    <li> Greetings can only be uploaded or recorded over the phone (you can no
+        longer directly record from your computer).</li>
+    <li> The maximum voicemail length is now set to 3 minutes per message.</li>
+    <li> Playback order of messages is now set to newest first.</li>
+    <li> Dial by Name Directory Search is now set to &quot;Last Name, First Name&quot;.</li>
+    <li> Extension permissions have been simplified &ndash; only administrator
+        and international calling options are available.</li>
+</ul>
+<ul id='DepartmentsDiv'>
+    <strong>Departments</strong>
+    <li> Department calls now follow the user&rsquo;s normal business hours,
+        after hours,and other rules &ndash; the Agent Profile rule is no longer
+        supported.</li>
+    <li> The system setting to prompt callers to skip music on hold and go directly
+        to the department voicemail has been removed.</li>
+    <li> Call screening and connect prompts are only available for users, not
+        departments.</li>
+    <li> Skills-based, Longest Waiting,and Fewest Number of Calls
+        routing options for departments are no longer supported.</li>
+    <li>Setting a department member to &ldquo;unavailable&rdquo; after they
+        miss a call is no longer supported.</li>
+    <li> Department priority for call routing is no longer supported.</li>
+</ul>
+
+</div>
+
+
+
+</body>
+</html>
+
+</apex:page>

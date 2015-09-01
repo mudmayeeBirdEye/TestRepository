@@ -1,0 +1,323 @@
+<apex:page >
+    <!-- Add the jQuery library 
+    <apex:includeScript value="{!$Resource.zqu__JQuery142}" />
+    <!-- Disable all input field right after editing one 
+    <script>
+        var j$ = jQuery.noConflict();
+        // Disable all text input (when editing a charge)
+        function disableAllInpput() {
+            j$("input[type=text]").attr('disabled', 'disabled');
+        }
+        // Select/Unselect all checkboxes on products
+        function selectAllProducts() {
+            if (j$(".productCheckbox").is(':checked')) {
+                j$(".productTable input:checkbox").attr('checked', true);
+            } else {
+                j$(".productTable input:checkbox").attr('checked', false);
+            }
+            refreshRatePlanPanel();
+        }
+        // Check the checkbox in the header when one product's checkbox is clicked
+        function markProductCheckbox() {
+            j$(".productCheckbox").attr('checked', true);
+        }
+        // Select/Unselect all checkboxes on rate plans
+        function selectAllRatePlans() {
+            if (j$(".ratePlanCheckbox").is(':checked')) {
+                j$(".ratePlanTable input:checkbox").attr('checked', true);
+            } else {
+                j$(".ratePlanTable input:checkbox").attr('checked', false);
+            }
+            refreshChargeGroupPanel();
+        }
+        // Check the checkbox in the header when one rate plan's checkbox is clicked
+        function markRatePlanCheckbox() {
+            j$(".ratePlanCheckbox").attr('checked', true);
+        }
+        j$('.productSelection input:radio').live('click',function() {
+            j$('.productSelection input:radio').filter(':checked').not(this).removeAttr('checked');
+            j$('.productSelection input:radio').attr('disabled', 'disabled');
+            displayProductRatePlan();
+        });
+        
+        j$(document).ready(function(){
+           j$('.productDetail table.list').each(function(){
+          j$('tr th:eq(3)',this).hide();
+           j$('tr th:eq(4)',this).hide();
+            j$('tr th:eq(7)',this).hide();
+             j$('tr th:eq(9)',this).hide();
+          
+          j$('tr',this).each(function(){
+            j$('td:eq(3)',this).hide();
+            j$('td:eq(4)',this).hide();
+            j$('td:eq(7)',this).hide();
+            j$('td:eq(9)',this).hide();
+          });
+         }); 
+        });
+      
+    </script>
+    <!-- Style sheet for the tables in the charge group 
+    <style type="text/css">
+    .charges-table {
+        margin-bottom: 10px;
+    }
+    .charges-caption {
+        line-height: 25px;
+        text-align: left;
+    }
+    </style>
+    <apex:sectionHeader title="Select Multiple Product(s) to add to the quote"
+                        subtitle="Product Selector" />
+    <apex:pageMessages id="msg" />
+    <apex:outputPanel id="existingCharges" styleClass="productDetail">
+        <c:Z_ExistingChargesComp quoteID="{!quote.Id}" from="AddProductPage" />
+    </apex:outputPanel>
+    <apex:form id="mainForm" rendered="{!initSuccess}">
+        <!-- Action function for the JS and the check all boxes function 
+        <apex:actionFunction name="refreshRatePlanPanel"
+                            action="{!displayProductRatePlan}"
+                            status="productSelectStatus"
+                            reRender="mainForm, msg, msg-bottom" />
+        <!-- Same but for rate plans 
+        <apex:actionFunction name="refreshChargeGroupPanel"
+                            action="{!displayChargeGroup}"
+                            status="ratePlanSelectStatus"
+                            reRender="mainForm, msg, msg-bottom" />
+        <!-- The Product Selector panel 
+        <apex:outputPanel id="panProductSelector" rendered="{!displayProductsPanel}">
+            <apex:pageBlock title="Product Group (Filtered by {!quote.zqu__Currency__c})">
+            <!--  Rate Plan Filters 
+              <apex:pageBlockSection title="Filter Plans" >
+                  <apex:repeat value="{!planFilters}" var="filter">
+                      <apex:selectList label="{!filter.label}" value="{!filter.selected}" multiselect="false">
+                          <apex:selectOptions value="{!filter.options}"/>
+                          <apex:actionSupport event="onchange"
+                                              action="{!displayProductRatePlan}"
+                                              status="productSelectStatus"
+                                              reRender="mainForm, msg, msg-bottom" />
+                      </apex:selectList>
+                  </apex:repeat>
+              </apex:pageBlockSection>
+              <!--  End Rate Plan Filters 
+                <apex:pageBlockTable styleClass="productTable" value="{!productList}" var="product" rendered="{!productList.size > 0}">
+                    <apex:column width="30px">
+                        <apex:facet name="header">
+                            <!-- <apex:inputCheckbox styleClass="productCheckbox" onchange="selectAllProducts();" /> 
+                        </apex:facet>
+                        <apex:selectRadio value="{!product.Selected_for_Quote__c}" styleClass="productSelection">
+                              <apex:selectOption itemLabel="" itemValue="true"/>
+                        </apex:selectRadio>
+                        
+                              
+                        <!-- <apex:inputField value="{!product.Selected_for_Quote__c}" styleClass="productSelection"> 
+                           <!--   <apex:actionSupport event="onchange"
+                                                action="{!displayProductRatePlan}"
+                                                status="productSelectStatus"
+                                                onsubmit="markProductCheckbox();"
+                                                reRender="mainForm, msg, msg-bottom" /> 
+                       <!--  </apex:inputField> 
+                    </apex:column>
+                    <apex:column value="{!product.name}" />
+                  <!--   <apex:column value="{!product.zqu__SKU__c}" /> 
+                    <apex:column value="{!product.zqu__Description__c}" width="40%" />
+               <!--     <apex:column headerValue="Required Plans" value="{!product.MinRatePlan__c}" width="5%" />
+                    <apex:column headerValue="Maximum Plans" value="{!product.MaxRatePlan__c}" width="5%" />
+                </apex:pageBlockTable>
+                <apex:outputText rendered="{!productList.size == 0}"
+                                    value="No product found. Make sure you synchronized your products from Zuora first and that at least a product is available in the quote currency." />
+                <apex:pageBlockButtons location="bottom">
+                    <apex:actionStatus id="productSelectStatus">
+                        <apex:facet name="stop">
+                            <apex:outputPanel >
+                                <apex:commandButton value="Show option(s)"
+                                                    status="productSelectStatus"
+                                                    reRender="mainForm, msg, msg-bottom"
+                                                    rendered="{!productList.size > 0}"
+                                                    action="{!displayProductRatePlan}" />
+                                <apex:commandButton value="Back to quote"
+                                                    status="productSelectStatus"
+                                                    reRender="mainForm, msg, msg-bottom"
+                                                    action="{!cancel}" />
+                            </apex:outputPanel>
+                        </apex:facet>
+                        <apex:facet name="start">
+                            <apex:outputPanel >
+                                <apex:image value="/img/loading32.gif" style="height: 12px" />
+                                <apex:commandButton value="Processing..."
+                                                    status="productSelectStatus"
+                                                    disabled="true" />
+                            </apex:outputPanel>
+                        </apex:facet>
+                    </apex:actionStatus>
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+        </apex:outputPanel>
+        <!-- The Product Rate Plan Panel Selector 
+        <apex:outputPanel id="panRatePlanSelector" rendered="{!displayProductRatePlanPanel}">
+            <apex:pageBlock title="Options">
+                <apex:pageBlockTable value="{!ratePlanList}" styleClass="ratePlanTable" var="ratePlan" rendered="{!ratePlanList.size > 0}">
+                    <apex:column width="30px">
+                        <apex:facet name="header">
+                            <apex:inputCheckbox styleClass="ratePlanCheckbox" onchange="selectAllRatePlans();" />
+                        </apex:facet>
+                        <apex:inputField value="{!ratePlan.Selected_for_Quote__c}">
+                            <apex:actionSupport event="onchange"
+                                                action="{!displayChargeGroup}"
+                                                status="ratePlanSelectStatus"
+                                                onsubmit="markRatePlanCheckbox();"
+                                                reRender="mainForm, msg, msg-bottom" />
+                        </apex:inputField>
+                    </apex:column>
+                    <apex:column value="{!ratePlan.Name}" headerValue="Option Name" />
+                    <apex:column value="{!ratePlan.zqu__Description__c}" width="50%" />
+                    <apex:column value="{!ratePlan.zqu__ZProduct__r.Name}" />
+                </apex:pageBlockTable>
+                <apex:outputText rendered="{!ratePlanList.size == 0}"
+                                    value="No rate plan found. Make sure you selected at least one product." />
+                <apex:pageBlockButtons location="bottom" rendered="{!ratePlanList.size > 0}">
+                    <apex:actionStatus id="ratePlanSelectStatus">
+                        <apex:facet name="stop">
+                            <apex:outputPanel >
+                                <apex:commandButton value="Show charge group(s)"
+                                                    status="ratePlanSelectStatus"
+                                                    action="{!displayChargeGroup}"
+                                                    reRender="mainForm, msg, msg-bottom" />
+                                <apex:commandButton value="Back to quote"
+                                                    status="productSelectStatus"
+                                                    reRender="mainForm, msg, msg-bottom"
+                                                    action="{!cancel}" />
+                            </apex:outputPanel>
+                        </apex:facet>
+                        <apex:facet name="start">
+                            <apex:outputPanel >
+                                <apex:image value="/img/loading32.gif" style="height: 12px" />
+                                <apex:commandButton value="Processing..."
+                                                    status="ratePlanSelectStatus"
+                                                    disabled="true" />
+                            </apex:outputPanel>
+                        </apex:facet>
+                    </apex:actionStatus>
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+        </apex:outputPanel>
+        <apex:outputPanel id="panChargeGroup" rendered="{!displayChargeGroupPanel}">
+            <apex:pageBlock title="Charge(s) Summary">
+                <apex:outputText rendered="{!chargeGroupList.size == 0}"
+                                    value="No charge(s) found. Make sure you selected at least one rate plan." />
+               
+                 <apex:repeat value="{!chargeGroupList}" var="chargeGroup">
+                        <apex:outputPanel >
+                        
+                            <apex:pageBlockTable styleClass="charges-table" value="{!chargeGroup.zCharges}" var="charge" rendered="true">
+                                <apex:facet name="caption">
+                                    <h3 class="charges-caption">{!chargeGroup.productName}&nbsp;&nbsp;:&nbsp;&nbsp;{!chargeGroup.ratePlanName}</h3>
+                                </apex:facet>
+                                                             
+                                <apex:column headerValue="Charge Name" width="20%"> 
+                                   {!charge.NAME}
+                                 
+                                </apex:column>
+                                <apex:column headerValue="Type" value="{!charge.CHARGE_TYPE}" width="12%" />
+                               <!--  <apex:column headerValue="Charge Type" value="{!mapPlanChargeType[charge.PRODUCT_RATE_PLAN_CHARGE_SFDC_ID]}" width="20%" /> 
+                                
+                                <apex:column headerValue="Model" value="{!charge.MODEL}" width="12%" />
+                               <!--  <apex:column headerValue="List Price" value="{!charge.LIST_PRICE}" width="7%" /> 
+                                <!-- Discount column, only display the '%' character if it's a number 
+                               <!--  <apex:column headerValue="Discount" width="7%">
+                                    <apex:outputText value="{!charge.DISCOUNT}" />
+                                    <apex:outputText value="%" rendered="{!ISNUMBER(charge.DISCOUNT)}" />
+                                </apex:column> 
+                                <!-- Effective price, only editable based on a boolean custom field? 
+                                <apex:column headerValue="Effective Price" width="7%">
+                                    <apex:outputText value="{!charge.EFFECTIVE_PRICE}"/>
+                                </apex:column> 
+                                <!-- Quantity column, editable only if the charge is per unit, etc. 
+                                <apex:column headerValue="Quantity" width="7%">
+                                    <apex:inputText style="width:85%;font-weight:bold"  styleClass="{!IF(mapPlanChargeType[charge.PRODUCT_RATE_PLAN_CHARGE_SFDC_ID]=='DL','dlClass','inputclass')}" 
+                                                    value="{!charge.QUANTITY}"
+                                                    rendered="{!charge.isQuantityEditable && !(mapPlanChargeType[charge.PRODUCT_RATE_PLAN_CHARGE_SFDC_ID]=='DLFee')}">
+                                      <!--  <apex:actionSupport event="onchange" 
+                                                            action="{!quantityChange}"
+                                                            status="addingChargesStatus"
+                                                            reRender="panChargeGroup" />  
+                                    </apex:inputText>
+                                     <apex:inputText style="width:85%;font-weight:bold" styleClass="dlFeeClass"
+                                                    value="{!charge.QUANTITY}"
+                                                    rendered="{!charge.isQuantityEditable && (mapPlanChargeType[charge.PRODUCT_RATE_PLAN_CHARGE_SFDC_ID]=='DLFee')}"> 
+                                    </apex:inputText>  
+                                                    
+                                    <apex:outputText value="{!charge.QUANTITY}" rendered="{!!charge.isQuantityEditable}" />
+                                </apex:column>
+                               <!--  <apex:column headerValue="UOM" value="{!charge.UNIT_OF_MEASURE}" width="7%" /> 
+                                <apex:column headerValue="Period" value="{!charge.PERIOD}" width="7%" />
+                               <!--  <apex:column headerValue="List Total" value="{!charge.LIST_TOTAL}" width="7%" /> 
+                                <apex:column headerValue="Total" value="{!charge.TOTAL}" width="7%" />
+                            </apex:pageBlockTable>
+                        </apex:outputPanel>
+                </apex:repeat>
+             
+                <apex:pageBlockButtons location="bottom">
+                    <apex:actionStatus id="addingChargesStatus" onStart="disableAllInpput();">
+                        <apex:facet name="stop">
+                            <apex:outputPanel >
+                                <apex:commandButton value="Save"
+                                                    status="addingChargesStatus"
+                                                    action="{!saveCharges}"
+                                                    rendered="{!chargeGroupList.size > 0}"
+                                                    reRender="mainForm, msg, msg-bottom" />
+                                <apex:commandButton value="Add Products"
+                                                    status="addingChargesStatus"
+                                                    action="{!saveAndNewCharges}"
+                                                    rendered="{!chargeGroupList.size > 0}"
+                                                    reRender="mainForm, msg, msg-bottom" />
+                                <apex:commandButton value="Cancel"
+                                                    status="addingChargesStatus"
+                                                    reRender="mainForm, msg, msg-bottom"
+                                                    action="{!cancel}" />
+                            </apex:outputPanel>
+                        </apex:facet>
+                        <apex:facet name="start">
+                            <apex:outputPanel >
+                                <apex:image value="/img/loading32.gif" style="height: 12px" />
+                                <apex:commandButton value="Processing..."
+                                                    status="addingChargesStatus"
+                                                    disabled="true" />
+                            </apex:outputPanel>
+                        </apex:facet>
+                    </apex:actionStatus>
+                </apex:pageBlockButtons>
+                 <script>
+                   j$(document).ready(function(){
+                      j$('.dlClass').change(function(){
+                       
+                       var objDL=j$(this).parent().closest('table').find('.dlClass');
+                    
+                       var totalQnt=0;
+                           j$.each(objDL, function() {
+                             if(!isNaN(parseInt(j$(this).val()))){
+                               totalQnt=totalQnt+parseInt(j$(this).val());    
+                             }
+                           });
+                       j$(this).parent().closest('table').find('.dlFeeClass').val(totalQnt);
+                     // j$(".dlFeeClass").val(j$(this).val());
+                       quantityChange();
+                    });
+                  
+                    j$('.inputclass').change(function(){
+                        quantityChange();
+                    });
+                    
+                    
+                    
+                      j$('.dlFeeClass').attr('disabled', 'disabled');
+                    
+                     });
+           </script>
+            </apex:pageBlock>
+        </apex:outputPanel>
+        <apex:actionfunction name="quantityChange" action="{!quantityChange}" status="addingChargesStatus" reRender="panChargeGroup" /> 
+        <apex:actionfunction name="displayProductRatePlan"  action="{!displayProductRatePlan}"  status="productSelectStatus"  reRender="mainForm, msg, msg-bottom" /> 
+    </apex:form>
+    <apex:pageMessages id="msg-bottom" />-->
+</apex:page>

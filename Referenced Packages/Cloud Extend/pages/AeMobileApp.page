@@ -1,0 +1,15 @@
+<apex:page controller="ce4sf20_001.AeSecurityTokenCE" docType="html-5.0" sidebar="false" showHeader="false" standardStylesheets="false" cache="true">
+    <apex:form >
+      <iframe id="ae_mobileapp_frame" style="border:none;" frameborder="false" scrolling="false" 
+       width="480" height="640" src=""/>
+    </apex:form>   
+    <script>
+       // ce url e.g: https://host:port/activevos-central   
+       var ae_cehostUrl = '{!hostUrl}';
+       var ae_mobileAppUrl = ae_cehostUrl + '/socrates/com.activevos.socrates.mobile/app-local/aesf-mobile-app.html';
+       var ae_mobileapp_frame_url = ae_mobileAppUrl + '?host-Username={!$User.Username}&host-OrganizationId={!$Organization.Id}&host-SessionId={!$Api.Session_ID}&host-SessionURL={!$Api.Enterprise_Server_URL_270}&host-UserId={!$User.Id}&avcUrl=' + ae_cehostUrl;
+       var ae_mobileapp_frame_element = document.getElementById('ae_mobileapp_frame');
+       ae_mobileapp_frame_element.src = ae_mobileapp_frame_url;
+       window.top.location.href = ae_mobileapp_frame_url;
+    </script>
+</apex:page>

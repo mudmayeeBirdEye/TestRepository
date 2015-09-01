@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>27.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Link to download a vCard for a Lead.
+      The direct link format:
+      https://&lt;your na.salesforce.com&gt;/apex/AeLeadVCardDownload?id=&lt;lead_ob_id&gt;</description>
+    <label>Lead vCard Download</label>
+</ApexPage>

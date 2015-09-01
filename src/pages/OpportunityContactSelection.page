@@ -1,0 +1,192 @@
+<apex:page standardController="Opportunity" extensions="OpportunityContactRoleExtension" action="{!callDispatcher}" readonly="true">
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"/>
+    <link href="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" />
+    <link href="https://code.jquery.com/jquery-1.10.2.js" />
+    <style>
+     .clss { table-layout: fixed;}
+     .btn {
+         color: #084B8A !important;
+         border: 1px solid #A5A6A5 !important;
+         padding: 6px !important;
+         border-radius: 5px;
+         border: 1px solid ;
+      }
+      th.headerRoww {
+          background:#9999FF !important;
+          color:white !important;
+      }
+      .disableInput {
+        background:white !important;
+    }
+    div.pbHeader { 
+            background: #9999FF !important;
+        } 
+        .mainTitle {
+            color: white !important;
+        }
+    .msgpanel {
+            background: white;
+            height: 25px;
+            vertical-align: middle;
+            padding-top: 10px;
+            border: 1px solid lightgray;
+            border-radius: 6px;
+            padding-left: 5px;
+            box-shadow: 0px 0px 5px 0px lightblue inset;
+            font-weight: bolder;
+        }
+        #overlay {
+            background: no-repeat scroll top center gray;
+            border: 0px solid #000000;
+            bottom: 0;
+            left: 0;
+            opacity: 0.75;
+            position: absolute;
+            top: 0;
+            visibility: hidden;
+            width: 100%;
+            z-index: 1000;
+        }
+    </style>
+    <script>
+        function showOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'visible';
+        }
+        
+        function hideOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'hidden';
+        }
+    </script>  
+ 
+ <apex:form id="MainForm">
+   <div id="overlay" style="text-align:center;padding-top:190px;">
+       <apex:image value="/img/loading.gif" ></apex:image>
+   </div>
+   <apex:actionStatus id="changetype" onStart="showOverlay();" onstop="hideOverlay();"/>
+   <apex:actionFunction name="redirectToOpp" action="{!createOpportunity}" reRender="MainForm" status="changetype">
+       <apex:param name="value" value="" assignTo="{!selectedContact}"  />
+   </apex:actionFunction>
+   <apex:actionFunction action="{!getContactLstOnAccountSelection}" name="getContactOnAccount" reRender="MainPanel,MainForm" status="changetype"/>
+   
+   <script>
+        function createOpportunityJS() {
+            var radioArray = $(".contactSelectRadio");
+            var value;
+            var i;
+            for (i=0; i < radioArray.length; i++){
+                if (radioArray[i].checked){
+                    value = radioArray[i].value;
+                    break;
+                }
+            }
+            redirectToOpp(value);
+        }
+   </script>   
+   
+       
+  <div class="pbHeader"> <apex:pageBlock title="Contact Selection" mode="detail" id="chargeBk">
+        <apex:outputPanel rendered="{!if(oppObj.AccountId == null || listContactWrapper.size == 0,true,false)}">
+            <apex:pageMessages />
+        </apex:outputPanel>    
+        <div style="margin-left:30px">  
+            <span style="font-weight:bold;font-color: #084B8A !important;">Please Choose Account:</span>
+            &nbsp;&nbsp; 
+            <apex:inputfield value="{!oppObj.AccountId}" id="AccountName" onchange="getContactOnAccount();return false;"/> </div><br/>
+            <apex:outputPanel id="MainPanel">
+           
+            <apex:outputpanel rendered="{!if(listContactWrapper.size>0,true,false)}">
+            <table cellspacing="0px" cellpadding="10px" frame="border" rules="rows" align="center" class="list tablesorter display " id="myTable">    
+                <thead>   
+                    <th class="headerRoww " style="height: 15px;width:10%;text-decoration: none;" scope="col">
+                    <center>Set as Primary</center>  </th> 
+                     <th class="headerRoww " style="height: 25px;width:15%;text-decoration: none;" scope="col"> 
+                    <center>First Name</center>  </th>                                                                    
+                    <th class="headerRoww " style="height: 25px;width:15%;text-decoration: none;" scope="col">
+                    <center>Last Name</center>  </th>                           
+                    <th class="headerRoww " style="height: 25px;width:15%;text-decoration: none;" scope="col"> 
+                    <center> Email </center> </th>                          
+                    <th class="headerRoww " style="height: 25px;width:15%;text-decoration: none;" scope="col"> 
+                    <center> Phone Number  </center> </th>                         
+                    <th class="headerRoww " style="height: 25px;width:15%;text-decoration: none;" scope="col"> 
+                    <center> Created Date  </center> </th>                         
+                    <th class="headerRoww " style="height: 25px;width:15%;text-decoration: none;" scope="col">
+                    <center> Last Modified Date  </center> </th>                         
+                    <!-- <th class="headerRoww " style="height: 25px;width:20%;text-decoration: none;" scope="col">
+                    <center> Lead Score  </center> </th>  -->                                                                   
+                </thead>                
+                
+                <!-- ---{!primaryContactId}---
+                ---{!selectedContact}--- -->
+                <apex:repeat value="{!listContactWrapper}" var="c" >   
+                    <tr>
+                        <td  style="vertical-align:center; word-wrap: break-word;text-align: center;">
+                         <input type="radio" class="contactSelectRadio" name="selectRadio" 
+                         value="{!c.strId}"/>
+                         <!-- {!c.setAsPrimary} -- {!c.strId} -->
+                        </td>
+                        <td  style="vertical-align:top; word-wrap: break-word;"><center>                      
+                            <apex:outputlink value="/{!c.strId}?nooverride=1" target="_blank">{!c.strFName}</apex:outputlink>  
+                            </center>           
+                        </td>                 
+                        <td style="vertical-align:top; word-wrap: break-word;">   <center>                        
+                        <apex:outputlink value="/{!c.strId}?nooverride=1" target="_blank">{!c.strFLame}</apex:outputlink>     </center>        
+                        </td>
+                        <td  style="vertical-align:top; word-wrap: break-word;">
+                       <center> <apex:outputText value="{!c.strEmail}"/>    </center>                            
+                        </td>
+                         <td  style="vertical-align:top; word-wrap: break-word;"><center>
+                        <apex:outputText value="{!c.strPhoneNumber}"/>   </center>                              
+                        </td>                            
+                         <td  style="vertical-align:top; word-wrap: break-word;"> <center>
+                        <apex:outputText value="{!c.strCreatedDate}"/>     </center>                            
+                        </td>
+                         <td  style="vertical-align:top; word-wrap: break-word;"> <center>
+                        <apex:outputText value="{!c.strLastMidifiedDate}"/>   </center>                              
+                        </td>
+                        <!-- <td  style="vertical-align:top; word-wrap: break-word;"> <center>
+                        <apex:outputText value="{!c.strLeadScore}"/>     </center>                            
+                        </td> -->
+                   </tr>       
+                </apex:repeat>              
+            </table> 
+            <br/>
+            <script type="text/javascript">
+               $(document).ready(function() {
+                     $.each($('input'),function(i,val){
+                        if($(this).attr("type")== "radio") {
+                            var valueOfRadio =$(this).val();
+                            if(valueOfRadio == '{!primaryContactId}'){
+                                $(this).attr('checked', true);
+                            }
+                        }
+                    });
+               });
+            </script>  
+            </apex:outputpanel>
+            
+            <apex:outputpanel style="margin-left:30px;" rendered="{!if(listContactWrapper.size == 0 && oppObj.AccountId != null,true,false)}">
+                <span>Account don't have any contact. Please create contact before creating the opportunity : 
+                <a style="margin-left:3px;" href="/003/e?RecordType=01280000000UIyQ&retUrl={!oppObj.AccountId}&accid={!oppObj.AccountId}" 
+                        target="_blank">Please Click to create Contact<br/></a>
+                </span>
+            </apex:outputpanel>
+            
+            <div style="margin-left:30px; margin-top:10px;">
+                <apex:commandButton value="Create Opportunity"
+                            onclick="createOpportunityJS(); return false;"
+                            rendered="{!!isForCancel}"/>
+                        <apex:commandButton value="Cancel Opportunity"
+                            rendered="{!isForCancel}" action="{!cancelOppty}"/>&nbsp;
+                <apex:commandButton action="{!cancel}" value="Cancel" id="btnCancel" />
+            </div>   
+         <br/>      
+         </apex:outputPanel>
+         <script>
+            $("[id$=AccountName]").attr('readonly', true);
+            $("[id$=AccountName]").addClass("disableInput");
+        </script> 
+    </apex:pageBlock></div>
+    </apex:form>
+</apex:page>

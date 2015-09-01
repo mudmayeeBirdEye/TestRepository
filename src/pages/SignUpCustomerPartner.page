@@ -1,0 +1,33 @@
+<apex:page standardController="Opportunity" showheader="false" sidebar="false" cache="false">
+    <style>
+    	.message .messageText a {
+			margin: 0 0px;
+			color: #333;
+			font-size:14px;
+		}
+    </style>
+    <div style="height:500px;500px;background:lightgray;">
+        <div id="msgPanel" class="message infoM3" style="display:none;">
+        <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;"><tbody><tr valign="top">
+        <td><img alt="INFO" class="msgIcon" src="/s.gif" title="INFO"/></td><td class="messageCell">
+        <div id="j_id0:j_id4:j_id10:j_id11:j_id12:0:j_id13:j_id14:j_id16" class="messageText">
+        <span id="j_id0:j_id4:j_id10:j_id11:j_id12:0:j_id13:j_id14:j_id17"><h4></h4></span>
+        Please contact the Reseller team (<a href="mailto:resellers@ringcentral.com">resellers@ringcentral.com</a>) to enable your SignUp Link. 
+        <br/>
+        </div></td></tr><tr><td></td><td></td></tr></tbody></table></div>
+    </div> 
+     <script>
+        var urlStr = '{!$User.Account_SignUpLink__c}'; 
+        //alert(urlStr);
+        if(urlStr != '') { 
+            if(urlStr.indexOf('http') != -1) { 
+                window.location.href = urlStr + '&OPPID={!Opportunity.id}';
+            } else { 
+                urlStr = 'http://'+ urlStr; 
+                window.location.href = urlStr + '&OPPID={!Opportunity.id}';
+            } 
+        } else {
+            document.getElementById('msgPanel').style.display="block";
+        }
+    </script>
+</apex:page>

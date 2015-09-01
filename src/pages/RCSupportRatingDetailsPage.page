@@ -1,0 +1,39 @@
+<apex:page standardController="RC_Article_Rating__c">
+    <apex:sectionHeader title="{!$ObjectType.RC_Article_Rating__c.label}" subtitle="{!RC_Article_Rating__c.name}"/>
+    <apex:pageBlock title="{!$ObjectType.RC_Article_Rating__c.label} Detail">
+        <apex:pageBlockButtons >
+        <apex:form >
+            <apex:commandButton action="{!edit}" value="Edit"/>
+            <apex:commandButton action="{!delete}" value="Delete"/>
+            <apex:commandButton action="{!URLFOR($Action.RC_Article_Rating__c.Clone,RC_Article_Rating__c.id)}" value="Clone"/>
+        </apex:form>
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection showHeader="false" columns="2">
+            <apex:outputField value="{!RC_Article_Rating__c.Name}"/>
+             <apex:outputField value="{!RC_Article_Rating__c.RCArticle_Title__c}"/>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="RC Article Rating Owner"/>
+                <apex:outputPanel >
+                    <apex:outputField value="{!RC_Article_Rating__c.OwnerId}"/>&nbsp;
+                    <apex:outputLink value="{!URLFOR($Action.RC_Article_Rating__c.ChangeOwner,RC_Article_Rating__c.id)}">[Change]</apex:outputLink>
+                </apex:outputPanel>
+            </apex:pageBlockSectionItem>
+            <apex:outputField value="{!RC_Article_Rating__c.Article_Id__c}"/>
+            <apex:pageBlockSectionItem />
+            <apex:pageBlockSectionItem />
+            <apex:pageBlockSectionItem />
+        </apex:pageBlockSection>
+        <apex:pageBlockSection showHeader="true" title="Article Rating Statistics" columns="2">
+            <apex:outputField value="{!RC_Article_Rating__c.Article_Rating_Count__c}"/>
+            <apex:outputField value="{!RC_Article_Rating__c.RC_Average_Rating__c}"/>
+            <apex:outputField value="{!RC_Article_Rating__c.of_User_Rate_This_Article__c}"/>
+            <apex:pageBlockSectionItem />
+        </apex:pageBlockSection>
+        <apex:pageBlockSection showHeader="false" columns="2">
+            <apex:outputField value="{!RC_Article_Rating__c.CreatedById}"/>
+            <apex:outputField value="{!RC_Article_Rating__c.LastModifiedById}"/>
+        </apex:pageBlockSection>
+       
+    </apex:pageBlock>
+    <apex:relatedList list="RC_User_Article_Ratings__r"/>
+</apex:page>

@@ -1,0 +1,21 @@
+<apex:page showHeader="false" title="{!$Label.site.error2}" action="http://ringcentral.com">  
+  <apex:pageBlock mode="maindetail">
+            <apex:pageMessage escape="false" strength="3" severity="INFO" summary="Invalid URL" >
+                            </apex:pageMessage>
+          </apex:pageBlock>       
+ <table cellspacing="10">
+     <tbody>
+          <tr>
+            <td>
+              
+            </td>
+           </tr>
+            <tr>
+             <td>
+                
+             <br/><br/>
+            </td>
+             </tr>
+          </tbody>
+    </table>
+</apex:page>

@@ -1,0 +1,51 @@
+<apex:page sidebar="false" title="Getting Started with Cloud Extend">
+    <apex:iframe id="ae_pb_syncframe" scrolling="true" frameborder="false" width="100%" height="200" src="https://www.activeendpoints.com/cesf/help" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            jQuery.noConflict();
+            jQuery(document).ready(function() {
+                // remove extra padding that salesforce introduces
+                jQuery("td.noSidebarCell").css("padding", "0");
+                jQuery("table.outerNoSidebar").css("padding-bottom", "0");
+                
+                // record the initial window height so we don't resize unless it actually changes (some iPad browsers get it wrong)
+                var currentHeight = jQuery(window).height();
+
+                //
+                // Resize handler
+                //
+                function _ce4sf_resize_ae_pb_designerframe() {
+                    var h = jQuery(window).height();
+                    // find SFDF footer element and get its height
+                    var footerHeight = jQuery("div.bPageFooter").outerHeight(true);
+                    // guess if not available
+                    if (!footerHeight  || footerHeight  < 40) {
+                        footerHeight = 40;
+                    }
+                    var iframeT = jQuery("#ae_pb_syncframe").offset().top;
+                    var iframeB = h-footerHeight;
+                    var iframeH = Math.max(iframeB-iframeT, 200);
+                                        
+                    //if (console.log) {
+                    //  console.log("Apex-resize win=" + h + " footerH=" + footerHeight +  ", ifTop=" + iframeT + ", ifBot=" + iframeB + " H=" + iframeH);
+                    //}
+                    
+                    // resize iframe
+                    jQuery("#ae_pb_syncframe").height(iframeH);
+                        
+                } // end _ce4sf_resize_ae_pb_designerframe
+                
+                // attach to window resize events
+                jQuery(window).resize(function() {
+                   if(currentHeight != jQuery(window).height()) {
+                       _ce4sf_resize_ae_pb_designerframe();
+                       currentHeight = jQuery(window).height();
+                   }
+                }) ; 
+                
+                // do the initial resize.
+                _ce4sf_resize_ae_pb_designerframe();
+                                   
+               }); // end documentReady.
+             </script>        
+</apex:page>

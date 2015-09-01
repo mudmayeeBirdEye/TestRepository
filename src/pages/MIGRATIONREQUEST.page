@@ -1,0 +1,85 @@
+<apex:page sidebar="false" showHeader="false">
+    <apex:pageMessages ></apex:pageMessages>
+    <style>
+      h1{
+        display:block;
+        }
+  </style>
+    
+    <title>MIGRATIONREQUEST</title>
+       <html xmlns="http://www.w3.org/1999/xhtml">
+           <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                <title></title>
+             
+       <apex:outputPanel rendered="{!$CurrentPage.parameters.status=='success'}">     
+               <apex:stylesheet value="{!URLFOR($Resource.AmarosaNew,'Amarosa/successmessagecss.css')}"/>
+       </apex:outputPanel>      
+        <apex:outputPanel rendered="{!$CurrentPage.parameters.status!='success'}">   
+              <apex:stylesheet value="{!URLFOR($Resource.AmarosaNew,'Amarosa/existingrequestcss.css')}"/>
+        </apex:outputPanel>     
+           </head>
+              <body>
+           <apex:outputPanel rendered="{!$CurrentPage.parameters.status=='success'}">
+      
+              <div id="wrapper">
+<div id="logo"><a href="http://ringcentral.com"><img src="http://marketo.ringcentral.com/rs/ringcentral/images/rclogo-medium.png" border="0" alt="RingCentral" title="RingCentral" width="242" height="37" /></a></div>
+<div class="clear"></div>
+    <div id="header"><h1>RingCentral’s<br />Upgraded Platform</h1></div>
+  <p>Thank you for your request to upgrade your account to RingCentral’s newest platform.<br/>
+     We will review your account and notify you when you account has been upgraded.</p>
+ 
+<!--<p>We'll notify you when we have switched your account..</p>-->
+
+<p>In the meantime, you can find out more about the our new platform by checking out the following:</p> 
+<ul class="ulClass">
+    <!--<li style="padding-left:3px;color:#666666;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:200;"><a href="http://www.ringcentral.com/interactiveguide/rc2012.html#phonesys_home.png">Interactive Demo</a></li>
+    <li style="padding-left:3px;color:#666666;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:200;"><a href="http://success.ringcentral.com/RCSupportHome2013">Support Page</a></li>
+    <li style="padding-left:3px;color:#666666;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:200;"><a href="http://www.youtube.com/watch?v=4pmJBZMJjH0&feature=youtu.be">Interface Overview</a></li>-->
+    <li style="padding-left:3px;color:#666666;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:200;"><a href="http://success.ringcentral.com">Support Page</a></li>
+    <li style="padding-left:3px;color:#666666;font-family: 'Lato',Helvetica,Arial,sans-serif;font-size:16px;font-weight:200;"><a href="http://www.youtube.com/watch?v=TZbCF7-Ye2w">Interface Overview</a></li>
+</ul>
+<p><br />Thank You, <br />
+The RingCentral Team</p>
+</div>
+<div class="clear"></div>
+<div id="copyR">
+<div class="copyright-f"><p>© 1999-2012 RingCentral, Inc. All rights reserved.</p></div>
+</div>
+     
+    </apex:outputPanel>
+     <apex:outputPanel rendered="{!$CurrentPage.parameters.status!='success'}"> 
+           <div id="wrapper">
+                    <div id="logo">
+                        <a href="http://ringcentral.com"><img src="http://marketo.ringcentral.com/rs/ringcentral/images/rc-logo-phone-system-reimagined-trans.png" border="0" alt="RingCentral" title="RingCentral" width="251" height="23" /></a>
+                    </div>
+                    <div class="clear"></div>
+                    <p>
+                        <apex:outputPanel rendered="{!$CurrentPage.parameters.status=='new'}">We have previously received your request to upgrade your RingCentral account
+                            to our new platform.
+                            <br />
+                            <br />
+                            <br />Thank you.
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!$CurrentPage.parameters.status=='closed'}">Your system has already been upgraded to the latest RingCentral Version.
+                            If you have further questions please visit our support site at
+                            <a calss='linkStyle'
+                            href='http://success.ringcentral.com/RCSupportHome2013?pageid=home'>success.ringcentral.com.</a>
+                            <br />
+                            <br />
+                            <br />Thank you.
+                         </apex:outputPanel>
+                        <apex:outputPanel rendered="{!$CurrentPage.parameters.status=='NotFound'}">Your Account is not sync with our system. Please contact support for more question.
+                            <br />
+                            <br />Thank you.
+                      </apex:outputPanel>
+                    </p>
+                    <div id="copyright-f">
+                        <p style="text-align:left;padding-left:0px;padding-top:10px;">© 1999-2012 RingCentral, Inc. All rights reserved.</p>
+                    </div>
+               </div>
+    </apex:outputPanel>
+    </body>
+    </html>
+    
+</apex:page>

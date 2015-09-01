@@ -1,0 +1,145 @@
+<apex:page Controller="ExceptionNotificationHistory" readOnly="false" id="enh" showHeader="true" sidebar="false">
+<style>
+.pageDescription1 {
+font-size: 1.8em;
+font-weight: normal;
+line-height: 1.1em;
+}
+.pageType1 {
+font-size: .9em;
+font-weight: bold;
+color: #4A4A56;
+padding-left: 1px;
+}
+
+.btn1 {
+padding: 2px 3px;
+padding-top: 2px;
+padding-right: 3px;
+padding-bottom: 2px;
+padding-left: 3px;
+}
+
+.pbTitle1{
+font-size: 1.3em;
+}
+
+
+</style>
+<script type="text/javascript">
+
+  function checkAll(cb)
+    {
+    var inputElem = document.getElementsByTagName("input");
+    for(var i=0; i<inputElem.length; i++)
+    {
+        if(inputElem[i].id.indexOf("checkedone")!=-1)
+        inputElem[i].checked = cb.checked;
+    }
+}   
+    
+    
+    
+</script>
+
+<div class="content">
+<!-- <img src="https://na6.salesforce.com/s.gif" alt="Exception And Notification History" class="pageTitleIcon" title="Exception And Notification History"/> -->
+<img src="{!$Label.Organization_Instance}s.gif" alt="Exception And Notification History" class="pageTitleIcon" title="Exception And Notification History"/>
+<h1 class="pageType1">Exception And Notification History
+<span class="titleSeparatingColon">:</span></h1><br/>
+<h2 class="pageDescription1"> Home</h2>
+
+
+
+<div class="blank">&nbsp;</div>
+</div>
+
+<apex:pageMessages />
+<apex:pageMessage summary="Select All First " severity="WARNING" rendered="{!alldel}"/>
+
+ <apex:form title="Exception Notification History" id="theform">
+ <apex:pageMessages />
+<apex:pageMessage summary="Select All First " severity="WARNING" rendered="{!alldel}"/>
+ <apex:outputLabel value="View :" style="text-align:left;font-weight:bold;padding-right:.69em;"/>
+ <apex:selectList value="{!recordTypename}" size="1"  title="Select Record Type" >
+    <apex:selectOptions value="{!recordType}" />
+<apex:actionsupport event="onchange" action="{!go}" reRender="resultsBlock"/>
+ </apex:selectList>
+  <!--<apex:commandButton value=" Go! " action="{!go}" rerender="resultsBlock" styleClass="bt1"/>-->
+  <div class="blank">&nbsp;</div>
+
+ <apex:pageBlock >
+ <h3 class="pbTitle1">Exception And Notification History</h3>
+ 
+   <apex:pageBlockButtons location="top" >
+          <apex:commandButton value="Mass Delete" action="{!del}" reRender="resultsBlock"/>
+    </apex:pageBlockButtons>
+
+ <apex:pageBlockSection id="resultsBlock" columns="1" >
+
+    
+   <!-- <apex:pageBlockTable value="{!enh}" var="e">
+       
+     </apex:pageBlockTable>  -->    
+     <apex:pageBlockTable value="{!enh}" var="e"  style="width: 1000px;" id="pbt">
+               
+           <apex:column width="20px">
+            <apex:facet name="header"> 
+            <apex:inputCheckbox onclick="checkAll(this)">
+            <apex:actionSupport event="onclick" onsubmit="checkAll(this)"  action="{!AllDeletecheck}"/>
+            </apex:inputCheckbox>
+            </apex:facet>
+            <apex:inputCheckbox id="checkedone" onclick="alert(this.value);"  disabled="true" >
+           <apex:actionSupport event="onclick" action="{!}"/>
+           
+            </apex:inputCheckbox>
+            </apex:column>
+            
+         
+                 
+                 <apex:column headerValue="Action" width="50px">
+                 <apex:outputLink value="/{!e.id}/e" target="_blank" style="text-decoration: none;color: blue;" >Edit</apex:outputLink>
+                 |&#160;
+                 <apex:outputLink value="/setup/own/deleteredirect.jsp?retURL=/apex/ExceptionNotificationHistory&delID={!e.id}&_CONFIRMATIONTOKEN=568YJUOs6492ax_T7MscKf5O55sB9DVBd_Rm.XTLaequ70o2PmBF1kixmdBK1bLbEaX_wZxVQWvj.79O5ABElqv0CU8jhwy7BjbGQm0i_5easu6j6Pxv2naX3n.bqtDyfUHWoTzLvJFy7YnzPtFowCKTYEU%3D" style="text-decoration: none;color: blue;">Del</apex:outputLink>
+                  </apex:column>
+                  <apex:column headerValue="History Id" >
+                  <apex:outputLink value="/{!e.id}" target="_blank">{!e.Name}</apex:outputLink>
+                  </apex:column>
+                  <apex:column value="{!e.RecordType.Name}" headerValue="Record Type"/> 
+                  <apex:column value="{!e.Object_Type__c}" headerValue="Object Type"/> 
+                  <apex:column value="{!e.isEmailSent__c }" headerValue="Email Sent" rendered="{!IF(recordTypename == 'Email Notification' , true, false)}"/> 
+                  <apex:column value="{!e.File_Associated__c }" headerValue="File Associated" rendered="{!IF(recordTypename != 'Email Notification' , true, false)}"/>
+                 
+     </apex:pageBlockTable>
+
+
+<apex:outputPanel layout="block"  style="width:700px;text-align: center;" >
+Total Records Found: <apex:outputText rendered="{!IF(Con.resultSize==10000,true,false)}">10000 +</apex:outputText>
+<apex:outputText rendered="{!IF(Con.resultSize < 10000,true,false)}">{!Con.resultSize}</apex:outputText>
+<apex:image url="/img/search_prevarrow_disabled.gif"
+styleClass="prevArrow" rendered="{!NOT(Con.HasPrevious)}" />
+<apex:image url="/img/search_prevarrow.gif" title="Previous Page"
+styleClass="prevArrow" rendered="{!Con.HasPrevious}" />
+
+<apex:commandLink action="{!Previous}" title="Previous Page"
+value="Previous Page" rendered="{!Con.HasPrevious}"
+reRender="resultsBlock" status="status" />
+
+&nbsp;({!IF(Con.PageNumber == 1,1,((Con.PageNumber -1) * Con.PageSize)+1)}-{!IF(Con.resultSize < Con.PageSize,Con.resultSize,Con.PageNumber * Con.pageSize)})&nbsp;
+<apex:outputPanel styleClass="pShowLess noLink" style="color:grey"
+rendered="{!NOT(Con.HasNext)}">Next Page</apex:outputPanel>
+<apex:commandLink title="Next Page" value="Next Page"
+rendered="{!Con.HasNext}" action="{!next}"
+reRender="resultsBlock" status="status" />&nbsp;
+<apex:image url="/img/search_nextarrow.gif" title="Next Page"
+styleClass="nextArrow" rendered="{!Con.HasNext}" />
+<apex:image url="/img/search_nextarrow_disabled.gif"
+rendered="{!NOT(Con.HasNext)}" />
+</apex:outputPanel>
+
+
+ </apex:pageBlockSection>
+ </apex:pageBlock>
+     
+ </apex:form> 
+</apex:page>

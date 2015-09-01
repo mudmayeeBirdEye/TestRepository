@@ -1,0 +1,116 @@
+<apex:page id="salescsat" controller="Survey" standardStylesheets="false" showHeader="false" title="RingCentral Sales Customer Satisfaction" cache="false">
+<apex:includeScript value="{!$Resource.jquery172}"/>
+<style>
+    p {color:#798496;font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:11px; font-style:normal; line-height:20px;}
+.content{
+	border: 1px solid #000; 
+	width: 740px;
+	padding: 10px;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+}
+#offer {
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width:30em;
+    height:18em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    border-radius: 30px;
+    -moz-border-radius: 30px;
+    display:none;
+    -moz-box-shadow: 0 0 15px #999999 inset;
+    box-shadow: 0 0 15px #999999 inset;
+    background: none repeat scroll 0 0 #DEDEDE;
+    border: 3px solid #DEDEDE;
+}
+a,span{
+	border: 0 none;
+    font: inherit;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    color: #E98514;
+}
+h3{
+	color: #7C7C7C;
+    font-size: 15px;
+    line-height: 21px;
+    padding-bottom: 22px;
+    padding-left: 21px;
+    padding-right: 35px;
+    width:300px;
+}  
+
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.Style_Resources, 'default2.style.css')}">
+<center>
+<table width="80">
+<tr>
+<td></td><td></td>
+<td align="left">
+    <div class="content">
+    <apex:image url="{!URLFOR($Resource.Style_Resources, 'images/logo.gif')}" /><br/><br/>
+    <apex:form id="myform" rendered="{!IsEmpty}">
+        Hello {!contactName}. Thank you for taking the time to fill out our simple survey and helping us learn how to best help you. <br/><br/>The questions below pertain to your sales experience and the Sales Agent that helped you with that process.<p/>
+         <p/>  
+        <b><font color="red">*</font>1. The Sales Agent was knowledgeable concerning RingCentral products and services.</b> <br/> 
+        <apex:selectRadio id="Q1" value="{!q1Value}" title="Agent Knowledge" border="0" layout="pageDirection">
+             <apex:selectOptions value="{!values}"/>
+        </apex:selectRadio> <p/>  
+        
+        <b><font color="red">*</font>2. The Sales Agent assisted me in selecting the right solution for my business needs.</b> <br/>
+        <apex:selectRadio value="{!q2Value}" title="Right Solution" layout="pageDirection">
+             <apex:selectOptions value="{!values}"/>
+        </apex:selectRadio> <p/>               
+        
+        <b><font color="red">*</font>3. What is your satisfaction level with the overall sales process?</b> <br/>
+        <apex:selectRadio value="{!q3Value}" title="Satisfaction Level" layout="pageDirection">
+             <apex:selectOptions value="{!values2}"/>
+        </apex:selectRadio> <p/>               
+        
+        <b>4. Comments/What could have we done to serve you better?</b> <br/>
+        <apex:inputTextarea value="{!comments}" title="Comments" rows="4" cols="100"/><p/>     
+		
+		<apex:outputText value="Did you know you can create Support cases using the Web? Checkout "/>
+			<a  href ="http://success.ringcentral.com/RCContactSupp" target="_blank">success.ringcentral.com</a> 
+		<apex:outputText value=" today!!" /><br/><br/>
+		
+        <apex:commandButton action="{!save}" value="Submit Your Answers"/>    
+            
+            
+        <p/>
+         
+    </apex:form>  
+    <apex:outputText rendered="{!Answered}"><font color="red">Please answer all the required questions.</font></apex:outputText>  
+    <p/><apex:outputText rendered="{!IsFilled}">Thank you for filling out our survey.
+       <div id="offer">
+         <script>
+ 			if ($("#offer").is(":hidden")) {
+					$("#offer").slideDown(1000);
+				} else {
+					$("#offer").hide();
+				}
+		</script>
+	      	<h3>Do you know anyone who might benefit from RingCentral?
+				You can <span>earn up to $300</span> for each business you refer! 
+				<a href="http://www.ringcentral.com/buylove/buylove.html?cid=referral&bmid=buylove&pid=6523&aid=11902&rep={!repEmail}">Get started</a>
+				<apex:image url="{!URLFOR($Resource.rcphones)}" />
+			</h3>	
+		</div> 
+    </apex:outputText>  
+    <apex:outputText rendered="{!alreadyFilled}">
+		You already filled this survey.
+	</apex:outputText>   
+
+    </div>
+    
+    </td>
+    </tr>
+    </table>
+   </center> 
+</apex:stylesheet>
+</apex:page>

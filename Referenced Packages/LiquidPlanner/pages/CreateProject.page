@@ -1,0 +1,365 @@
+<apex:page docType="html-5.0" controller="LiquidPlanner.LiquidPlannerProjectCreateController" action="{!loadCreateProject}" >
+    <script src="{!URLFOR($Resource.jQueryFiles, 'js/jquery-1.4.4.min.js')}" 
+            type="text/javascript" 
+            charset="utf-8"></script>
+    <script src="{!URLFOR($Resource.jQueryFiles, 'js/jquery-ui-1.8.7.custom.min.js')}" 
+            type="text/javascript" 
+            charset="utf-8"></script>
+    <script src="{!URLFOR($Resource.jQueryFiles, 'js/jquery.validate-1.6.min.js')}" 
+            type="text/javascript" 
+            charset="utf-8"></script>
+    <link rel="stylesheet" 
+          href="{!URLFOR($Resource.jQueryFiles, 'css/jquery-ui-1.8.7.custom.css')}" 
+          type="text/css" 
+          charset="utf-8" />
+
+   <style type="text/css">
+    .milestoneName {
+        width:258px;
+        height:27px;
+    }    
+    .milestoneDate {
+        width:130px;
+        height:27px;
+    }
+    div.centered {
+        display:block;
+
+        /*set the div in the center of the screen*/
+        position:absolute;
+        top:50%;
+        left:35%;
+        width:350px;
+    }
+    .inner_table td {
+        vertical-align:middle;
+    }
+    .right {
+        text-align:right;
+        padding-right: .5em;
+    }
+    .error {
+      color:red
+    }
+    .button{
+      background: none !important;
+      background-color:#1d7fdc !important;
+      background-image:url({!URLFOR($Resource.Images, 'ButtonBackground.png')}) !important;
+      color:white !important;
+      border-width:0px !important;
+      background-repeat:no-repeat !important;
+      height:30px;
+      width:120px;
+    }
+  </style>
+  <apex:messages />
+  <apex:form id="theForm">
+    <div class="centered">
+     <apex:actionStatus id="SaveStatus" Style="align:center">
+        <apex:facet name="start">
+            <img align="center" src="{!URLFOR($Resource.LiquidPlanner__Images, 'loading.gif')}"/>
+        </apex:facet>
+        <apex:facet name="stop"></apex:facet>
+     </apex:actionStatus>
+    </div>
+    <body onload="init()"/>
+    <apex:inputHidden id="messageText" value="{!MessageText}"/>
+    <apex:outputPanel rendered="{!!IsValidCredential}">
+      <table width="100%" class="inner_table" align="left" cellspacing="0">
+        <tr style="height:34px; background:#00ADD9">
+          <td style="Width:200px">
+            <h1 align="left" style="Padding:15px">Create Project</h1>
+          </td>
+          <td>
+             <img align="right" style="Padding:0px" src="{!URLFOR($Resource.Images, 'LiquidLogo.png')}"/>
+          </td>
+        </tr>
+      </table>
+      <table class="inner_table" align="left" cellspacing="0">
+        <tr>
+          <td colspan="3">
+            <center>
+              <br/>
+              <apex:outputText value="{!InvalidCredentialMessage}"/>
+            </center>
+          </td>
+        </tr>
+      </table>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!IsValidCredential}" id="find">
+      <table width="100%" class="inner_table" align="left" cellspacing="0">
+        <tr style="height:40px; background:#505759">
+          <td style="Width:200px">
+            <h1 align="left" style="color:White;Padding:15px">Create Project</h1>
+          </td>
+          <td>
+             <img align="right" style="Padding:0px" src="{!URLFOR($Resource.Images, 'LiquidLogo.png')}"/>
+          </td>
+        </tr>
+      </table>
+      <table class="inner_table" align="left" cellspacing="0">
+        <tr>
+          <td class="right">
+            <p>Workspace*</p>
+          </td>
+          <td colspan = "3">
+            <apex:selectList id="workspaceChoice" value="{!selectedWorkspaceId}" size="1">
+              <apex:selectOptions value="{!WorkspaceOptions}"/>
+              <apex:actionSupport event="onchange" reRender="memberChoice" action="{!loadAvailableMembers}"/>
+            </apex:selectList>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+             <p>Project Owner*</p>
+          </td>
+          <td colspan = "3">
+            <apex:selectList id="memberChoice" value="{!selectedMemberId}" size="1">
+              <apex:selectOptions value="{!MemberOptions}"/>
+            </apex:selectList>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <apex:outputlabel for="name">Name <span class="star">*</span></apex:outputlabel>
+          </td>
+          <td colspan = "3">
+              <apex:inputText id="name" value="{!NewProject.name}" style="width:220px;height:27px;horiz"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <p>Deadline Date</p>
+          </td>
+          <td colspan = "3">
+           <apex:inputText id="promiseByDate" value="{!NewProject.deadline_date}" style="width:122px;height:27px;" onclick="DatePicker.pickDate(false, this, false);" onfocus="DatePicker.pickDate(false, this, false);"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <p>Delay Until</p>
+          </td>
+          <td colspan = "3">
+           <apex:inputText id="delayUntilDate" value="{!NewProject.delay_until}" style="width:122px;height:27px;" onclick="DatePicker.pickDate(false, this, false);" onfocus="DatePicker.pickDate(false, this, false);"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <p>Maximum Effort</p>
+          </td>
+          <td colspan = "3">
+            <apex:inputText id="maxEffort" value="{!NewProject.max_effort}" style="width:122px;height:27px;"/>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top" class="right">
+            <p>Brief Description</p>
+          </td>
+          <td colspan = "3">
+            <apex:inputText value="{!NewProject.description}" style="width:380px;height:85px;resize:none"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan = "4">
+            <h1 align="left" style="color:Black;Padding:0px">Milestones</h1>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <p>Milestone Title</p>
+          </td>
+          <td align="left" style="width:220px">
+            <apex:inputText id="milestoneNameOne" value="{!ProjectMilestoneOne.name}" styleClass="milestoneName"/>
+          </td>
+          <td class="right" style="width:60px">
+            <p>Date Due</p>
+          </td>
+          <td align="left">
+            <apex:inputText id="milestoneDateOne" value="{! ProjectMilestoneOne.milestonedate}" styleClass="milestoneDate" onclick="DatePicker.pickDate(false, this, false);" onfocus="DatePicker.pickDate(false, this, false);"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <p>Milestone Title</p>
+          </td>
+          <td align="left" style="width:220px">
+            <apex:inputText id="milestoneNameTwo" value="{!ProjectMilestoneTwo.name}" styleClass="milestoneName"/>
+          </td>
+          <td class="right" style="width:60px">
+            <p>Date Due</p>
+          </td>
+          <td align="left">
+            <apex:inputText id="milestoneDateTwo" value="{! ProjectMilestoneTwo.milestonedate}" styleClass="milestoneDate" onclick="DatePicker.pickDate(false, this, false);" onfocus="DatePicker.pickDate(false, this, false);"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <p>Milestone Title</p>
+          </td>
+          <td align="left" style="width:220px">
+            <apex:inputText id="milestoneNameThree" value="{!ProjectMilestoneThree.name}" styleClass="milestoneName"/>
+          </td>
+          <td class="right" style="width:60px">
+            <p>Date Due</p>
+          </td>
+          <td align="left">
+            <apex:inputText id="milestoneDateThree" value="{! ProjectMilestoneThree.milestonedate}" styleClass="milestoneDate" onclick="DatePicker.pickDate(false, this, false);" onfocus="DatePicker.pickDate(false, this, false);"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <p>Milestone Title</p>
+          </td>
+          <td align="left" style="width:220px">
+            <apex:inputText id="milestoneNameFour" value="{!ProjectMilestoneFour.name}" styleClass="milestoneName"/>
+          </td>
+          <td class="right" style="width:60px">
+            <p>Date Due</p>
+          </td>
+          <td align="left">
+            <apex:inputText id="milestoneDateFour" value="{! ProjectMilestoneFour.milestonedate}" styleClass="milestoneDate" onclick="DatePicker.pickDate(false, this, false);" onfocus="DatePicker.pickDate(false, this, false);"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <p>Milestone Title</p>
+          </td>
+          <td align="left" style="width:220px">
+            <apex:inputText id="milestoneNameFive" value="{!ProjectMilestoneFive.name}" styleClass="milestoneName"/>
+          </td>
+          <td class="right" style="width:60px">
+            <p>Date Due</p>
+          </td>
+          <td align="left">
+            <apex:inputText id="milestoneDateFive" value="{! ProjectMilestoneFive.milestonedate}" styleClass="milestoneDate" onclick="DatePicker.pickDate(false, this, false);" onfocus="DatePicker.pickDate(false, this, false);"/>
+          </td>
+        </tr>
+        <tr>
+          <td/>
+          <td colspan="3">
+            <br/>
+            <apex:commandButton value="Create Project" action="{!createProject}" styleClass="button" />
+            <span> or </span>
+            <apex:commandButton styleClass="cancel button" value="Cancel" immediate="true" action="{!cancel}"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <hr/>
+            <a style="color:black;text-decoration: none">* Required to create project.</a>
+            <a style="color:gray;text-decoration: none">Copyright &#169; 2013 LiquidPlanner Inc. All rights reserved.</a>
+            <a style="color:#0087d9" href="https://www.liquidplanner.com/privacy/">Privacy Policy.</a>
+          </td>
+        </tr>
+      </table>
+    </apex:outputPanel>
+  </apex:form>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('[id$=theForm]').validate();
+      $('[id$=name]').rules("add",{
+          required: true
+      });
+      $('[id$=workspaceChoice]').rules("add",{
+          required: true
+      });
+      $('[id$=memberChoice]').rules("add",{
+          required: true
+      });
+      $('[id$=milestoneNameOne]').rules("add",{
+        required: function(element){
+            return $('input[id$=milestoneDateOne]').val().length > 0;
+        }
+      });
+      $('[id$=milestoneDateOne]').rules("add",{
+        required: function(element){
+            return $('input[id$=milestoneNameOne]').val().length > 0;
+        }
+      });
+      $('[id$=milestoneNameTwo]').rules("add",{
+        required: function(element){
+          return $('input[id$=milestoneDateTwo]').val().length > 0;
+        }
+      });
+      $('[id$=milestoneDateTwo]').rules("add",{
+        required: function(element){
+          return $('input[id$=milestoneNameTwo]').val().length > 0;
+        }
+      });
+      $('[id$=milestoneNameThree]').rules("add",{
+        required: function(element){
+          return $('input[id$=milestoneDateThree]').val().length > 0;
+        }
+      });
+      $('[id$=milestoneDateThree]').rules("add",{
+        required: function(element){
+          return $('input[id$=milestoneNameThree]').val().length > 0;
+        }
+      });
+      $('[id$=milestoneNameFour]').rules("add",{
+        required: function(element){
+          return $('input[id$=milestoneDateFour]').val().length > 0;
+        }
+      });
+      $('[id$=milestoneDateFour]').rules("add",{
+        required: function(element){
+          return $('input[id$=milestoneNameFour]').val().length > 0;
+        }
+      });
+      $('[id$=milestoneNameFive]').rules("add",{
+        required: function(element){
+          return $('input[id$=milestoneDateFive]').val().length > 0;
+        }
+      });
+      $('[id$=milestoneDateFive]').rules("add",{
+        required: function(element){
+          return $('input[id$=milestoneNameFive]').val().length > 0;
+        }
+      });
+    });    
+
+    function init(){
+      var message = $(jQuery('input[id$=messageText]')).val();
+      if(message != ''){
+          alert(message);
+      }    
+    }
+      
+   $(jQuery('input[id$=maxEffort]')).keyup(function(){
+        var fullText= jQuery('input[id$=maxEffort]').val().split(".");
+        fullText[0] = fullText[0].replace(/,/g,"").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        jQuery('input[id$=maxEffort]').val(fullText.join("."));
+    });
+    $(jQuery('input[id$=maxEffort]')).keypress(function (e){
+      var charCode = (e.which) ? e.which : e.keyCode;
+      var textValue =  jQuery('input[id$=maxEffort]').val();
+        
+      //allow input dot character if it doesn't existing in the string
+      if(charCode == 46){
+        if(textValue.indexOf(".")> -1){
+          return false;
+        }          
+        return true;
+      }
+      
+      var fullText= textValue.split(".");
+      fullText[0] = fullText[0].replace(/,/g,"");
+      if(fullText[0].length == 16){
+          if(charCode!= 8 && charCode != 39 && charCode != 37){
+              return false;
+          }
+      }
+      
+      if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 39 && charCode != 37) {
+          return false;
+      }      
+    });
+    $(jQuery('input[id$=maxEffort]')).blur(function(){
+        var number = jQuery('input[id$=maxEffort]').val().replace(/,/g,"");
+        var newnumber = new Number(number+'').toFixed(parseInt(2));
+        var fullText= newnumber.split(".");
+        fullText[0] = fullText[0].replace(/,/g,"").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        jQuery('input[id$=maxEffort]').val(fullText.join("."));
+    });
+  </script>
+</apex:page>

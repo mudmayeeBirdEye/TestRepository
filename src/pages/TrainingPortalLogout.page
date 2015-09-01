@@ -1,0 +1,16 @@
+<apex:page showHeader="false" sidebar="false">
+ <script> 
+      if('{!$CurrentPage.parameters.message}'==''){   
+        window.close(); 
+        if({!CONTAINS($User.Alias,'guest')}){
+           window.location='{!$Site.CurrentSiteUrl}';
+        }else{
+           window.location='{!$Site.CurrentSiteUrl}home/home.jsp';
+        }
+        
+   }     
+</script>
+{!$CurrentPage.parameters.message}
+
+
+</apex:page>

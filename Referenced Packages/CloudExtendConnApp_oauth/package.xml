@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CloudExtendConnApp_oauth</fullName>
+    <apiAccessLevel>Unrestricted</apiAccessLevel>
+    <modules>
+        <module>
+            <label>CloudExtendConnApp_oauth</label>
+            <moduleDependencies>
+                <moduleRef>
+                    <name>CloudExtendConnApp_oauth_c4s</name>
+                    <namespacePrefix>ce4sf20_001</namespacePrefix>
+                    <version>14.0</version>
+                </moduleRef>
+            </moduleDependencies>
+            <moduleType>connected</moduleType>
+            <name>CloudExtendConnApp_oauth</name>
+            <types>
+                <members>CloudExtendConnApp_oauth_devConfig</members>
+                <name>ConnectivityDevConfigMetadata</name>
+            </types>
+            <types>
+                <members>ce4sf20_001__CloudExtendConnApp_oauth</members>
+                <name>Module</name>
+            </types>
+            <version>14.0</version>
+        </module>
+    </modules>
+    <namespacePrefix>ce4sf20_001</namespacePrefix>
+    <version>29.0</version>
+</Package>

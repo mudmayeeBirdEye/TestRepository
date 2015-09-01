@@ -1,0 +1,9 @@
+<apex:page standardController="Intranet_Main_Tab__c" showHeader="false" sidebar="false" >
+ <apex:composition template="{!$Site.Template}">
+   <apex:define name="body">
+      <apex:form >
+          <apex:outputText escape="false" value="{!Intranet_Main_Tab__c.Content__c}"  />
+      </apex:form>
+     </apex:define>
+   </apex:composition>
+</apex:page>

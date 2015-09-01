@@ -1,0 +1,37 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" docType="html-5.0">
+<apex:composition template="RCSupportPortalHomeTemplate">
+     <apex:define name="content">
+        <c:RCSystemStatus Text="Check out these new features"/>
+         <div class="new-features">
+   <!--  <article class="feature fax">
+      <h4>RingCentral Fax</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo est eget diam condimentum faucibus. Pellentesque vulputate ante sed massa rhoncus eu vulputate magna ullamcorper. In vehicula adipiscing lacus eu mollis. Donec consequat neque ac justo adipiscing tincidunt ultricies justo convallis. Morbi sollicitudin odio in arcu</p>
+    </article>
+    <article class="feature sms">
+      <h4>RingCentral Fax</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo est eget diam condimentum faucibus. Pellentesque vulputate ante sed massa rhoncus eu vulputate magna ullamcorper. In vehicula adipiscing lacus eu mollis. Donec consequat neque ac justo adipiscing tincidunt ultricies justo convallis. Morbi sollicitudin odio in arcu</p>
+    </article>
+    <article class="feature video-call">
+      <h4>RingCentral Fax</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo est eget diam condimentum faucibus. Pellentesque vulputate ante sed massa rhoncus eu vulputate magna ullamcorper. In vehicula adipiscing lacus eu mollis. Donec consequat neque ac justo adipiscing tincidunt ultricies justo convallis. Morbi sollicitudin odio in arcu</p>
+    </article>
+    <article class="feature settings">
+      <h4>RingCentral Fax</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo est eget diam condimentum faucibus. Pellentesque vulputate ante sed massa rhoncus eu vulputate magna ullamcorper. In vehicula adipiscing lacus eu mollis. Donec consequat neque ac justo adipiscing tincidunt ultricies justo convallis. Morbi sollicitudin odio in arcu</p>
+    </article>-->
+    <h1 style='margin:30px auto;'>Coming Soon.</h1>
+    
+  </div>
+  <!--  <div class="social-media">
+    <ul>
+      <li><a href="#" class="fb" alt="Facebook" title="Facebook">&nbsp;</a></li>
+      <li><a href="#" class="tw" alt="Twitter" title="Twitter">&nbsp;</a></li>
+      <li><a href="#" class="gplus" alt="Google Plus" title="Google Plus">&nbsp;</a></li>
+      <li><a href="#" class="in" alt="In.Com" title="In.Com"></a>&nbsp;</li>
+      <li><a href="#" class="email" alt="Email Media" title="Email Media"></a>&nbsp;</li>
+    </ul>
+  </div> -->
+     
+     </apex:define>
+   </apex:composition>  
+</apex:page>

@@ -1,0 +1,71 @@
+<apex:page controller="EmployeeCustomLookupCtrl"  title="Search"  showHeader="false"  sideBar="false"  tabStyle="Employee__c"  id="pg">
+ <style>
+.pageTitleIcon {
+	background-image: url(/img/sprites/master.png);
+	background-position: 0 -1202px;
+	width: 32px;
+	height: 32px;
+}
+ </style>
+ 
+  <apex:form >
+  <apex:outputPanel id="page" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+       <apex:actionRegion >  
+       <div class="content"><img src="/s.gif" alt="" class="pageTitleIcon" title=""/><h1>Lookup</h1></div>
+          <apex:outputPanel id="top" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+            <apex:outputLabel value="Search" style="font-weight:Bold;padding-right:10px;" for="txtSearch"/>
+            <apex:inputText id="txtSearch" value="{!searchString}" />
+              <span style="padding-left:5px">
+              	<apex:commandButton id="btnGo" value="Go" action="{!Search}" rerender="searchResults">
+              	</apex:commandButton>
+              </span>
+          </apex:outputPanel>
+ 
+          <apex:outputPanel id="pnlSearchResults" style="margin:10px;height:350px;overflow-Y:auto;" layout="block">
+            <apex:pageBlock id="searchResults"> 
+              <apex:pageBlockTable value="{!results}" var="emp" id="tblResults">
+                 <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Name</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputLink value="javascript:top.window.opener.lookupPick2('{!FormTag}','{!TextBox}_lkid','{!TextBox}','{!emp.Id}','{!emp.Name}', false)" rendered="{!NOT(ISNULL(emp.Id))}">{!emp.First_Name__c}&#160;{!emp.Last_Name__c}</apex:outputLink>     
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Employee No.</apex:outputPanel>
+                  </apex:facet>
+                   {!emp.Name}     
+                </apex:column>
+				<apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Email</apex:outputPanel>
+                  </apex:facet>
+                       {!emp.Email__c}
+                </apex:column>
+				<apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Location</apex:outputPanel>
+                  </apex:facet>
+                       {!emp.Location__c}
+                </apex:column>	                
+				<apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Department</apex:outputPanel>
+                  </apex:facet>
+                       {!emp.Department__c}
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Manager</apex:outputPanel>
+                  </apex:facet>
+                       {!emp.Manager_Name__c}
+                </apex:column>		                
+                                
+              </apex:pageBlockTable>
+            </apex:pageBlock>
+          </apex:outputPanel>
+      </apex:actionRegion>
+    
+  </apex:outputPanel>
+  </apex:form>
+</apex:page>

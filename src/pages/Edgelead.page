@@ -1,0 +1,66 @@
+<apex:page standardController="NewEdgeLead__c" extensions="confirmationedgelead" sidebar="false" showHeader="false">
+ <apex:form >    
+<apex:image url="/servlet/servlet.FileDownload?file=01580000001Bwlx" dir="left"/>
+<br/><br/>
+ <apex:pageBlock >
+ <apex:pagemessages />
+<apex:actionRegion >
+              <apex:pageBlockSection title="Information" columns="1">
+
+                      
+   <apex:inputField value="{!NewEdgeLead__c.Company_Name__c}" style="width:200px"/>
+   <apex:inputField value="{!NewEdgeLead__c.Name__c}" style="width:200px"/>
+   <apex:inputField value="{!NewEdgeLead__c.E_mail__c}" style="width:200px"/>
+   <apex:inputField value="{!NewEdgeLead__c.Phone_No__c}" style="width:200px"/>
+
+   <apex:inputField value="{!NewEdgeLead__c.RC_Rep__c}" style="width:200px"/>
+   <apex:inputField value="{!NewEdgeLead__c.RC_Rep_Last_Name__c}" style="width:200px"/>
+   <apex:inputField required="true" value="{!NewEdgeLead__c.Type_of_lead__c}" style="width:206px"/>
+      </apex:pageBlockSection>
+       
+
+<apex:pageBlockSection title="Service Address" columns="1">     
+   <apex:inputField value="{!NewEdgeLead__c.Address_1__c}" style="width:200px"/>
+   <apex:inputField value="{!NewEdgeLead__c.Address_2__c}" style="width:200px"/>
+      <apex:inputField required="true" value="{!NewEdgeLead__c.State__c}" style="width:206px"/>
+   <apex:inputField value="{!NewEdgeLead__c.City__c}" style="width:200px"/>
+
+    
+   <apex:inputField value="{!NewEdgeLead__c.Contact_No__c}" style="width:200px"/> 
+    <apex:inputField value="{!NewEdgeLead__c.Zip__c}" style="width:200px"/> 
+</apex:pageBlockSection>    
+ 
+<apex:pageBlockSection title="Additional Information" columns="1"> 
+<apex:inputField value="{!NewEdgeLead__c.Users__c}" style="width:100px"/>
+
+ <apex:inputField value="{!NewEdgeLead__c.Customer_Type__c}" style="width:206px"/>
+<apex:inputField value="{!NewEdgeLead__c.Number_of_locations__c}" style="width:100px"/> 
+<apex:pageBlockSectionItem > 
+    <apex:outputLabel >Current price paid (USD)</apex:outputLabel>
+    <apex:inputField value="{!NewEdgeLead__c.Current_price_paid__c}" style="width:100px"/>
+</apex:pageBlockSectionItem>
+
+<apex:inputField value="{!NewEdgeLead__c.Current_provider__c}" style="width:200px"/>      
+    
+      <apex:pageBlockSectionItem > 
+             <apex:outputLabel >Contract Expiration Date (existing provider)</apex:outputLabel>
+             <apex:inputField value="{!NewEdgeLead__c.Contract_expiration_of_existing_provider__c}"  style="width:100px"/>
+        </apex:pageBlockSectionItem>
+      <apex:inputField style="width:400px;height:150px" value="{!NewEdgeLead__c.Comments_from_RC_personnel__c}"/> 
+ 
+        </apex:pageBlockSection>   
+               
+             </apex:actionRegion>       
+           </apex:pageBlock>
+           <table width="100%">
+           <tr>
+                 
+                 <td align="right" width="28%"><apex:commandButton action="{!save}" value="Submit"/>
+               <apex:commandButton action="{!cancel}" value="Cancel"/></td>
+                <td> </td>
+                </tr>
+               </table>
+        </apex:form>
+   
+                          
+  </apex:page>

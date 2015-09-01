@@ -1,0 +1,156 @@
+<apex:page controller="ChargebackCSVUpload">
+    <!-- <style>
+        .pbBody {
+            height:150x !important;
+        }
+    </style> -->
+    <style>
+        div.pbHeader { 
+            background: #7593d7 !important;
+        } 
+        .btn { 
+            color: #084B8A !important;
+            border: 1px solid #A5A6A5 !important;
+            padding: 6px !important;
+        }
+        .mainTitle {
+            color: white !important;
+        }
+        .bPageBlock.brandSecondaryBrd.apexDefaultPageBlock.secondaryPalette {
+            border-top:none !important;
+        }
+        .msgpanel {
+            background: white;
+            height: 25px;
+            vertical-align: middle;
+            padding-top: 10px;
+            border: 1px solid lightgray;
+            border-radius: 6px;
+            padding-left: 5px;
+            box-shadow: 0px 0px 5px 0px lightblue inset;
+            font-weight: bolder;
+        }
+    </style>
+    <apex:form >
+        <apex:pageBlock title="Chargeback CSV Upload" mode="detail" id="chargeBk">
+        <apex:PageMessages />
+        <div id="topDiv" style="height:150px">
+            <div id="div1" style="float:left;width: 50%;color:#015ba7 !important;"> 
+                <span style="font-weight:bold">Upload CSV File :</span> 
+                <apex:inputFile value="{!uploadDocBody}" styleclass="uniform" filename="{!uploadFileName}" fileSize="{!fileSize}" id="file" styleClass="btn"/>
+                
+            </div>
+            <div style="float:left;width:100%;padding-top:10px;">
+                <apex:commandButton action="{!uploadChargeBackCSV}" value="Upload CSV" id="theButton"/>
+                <apex:outputlink value="/servlet/servlet.FileDownload?file=01580000001DyUS" target="_blank" styleClass="btn" style="text-decoration:none;padding:7px !important;">Download Template</apex:outputlink> 
+            </div>
+            <!-- <div id="div2" style="text-align: left;">
+            </div> -->
+            <br/>
+            <div id="div3" style="clear:both;margin-top:60px;">
+                <apex:outputPanel rendered="{!isFileUploaded}"> 
+                    <apex:outputPanel rendered="{!if(caseRecordNumber != 0,true,false)}">
+                        <div class="msgpanel">
+                            {!caseRecordNumber} case records will be created with a 
+                            total of {!caseChargeBackRecordNumber} chargeback records.
+                        </div>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!!if(caseRecordNumber != 0,true,false)}">
+                        <div class="msgpanel">
+                            No record will get insert.
+                        </div>
+                    </apex:outputPanel>  
+                    <apex:commandButton action="{!creatRecordsByCSV}" rendered="{!accountMap != null && caseRecordNumber >0}" 
+                            value="Insert Records" id="theButton1" style="margin-top:10px;"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!isInsertSuccessfully}"> 
+                    <div class="msgpanel"> 
+                        Records created successfully. 
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </div>
+        </apex:PageBlock>
+    </apex:form>
+</apex:page>
+
+
+
+
+
+
+
+<!-- <apex:PageBlockTable value="{!wrCSVUploadObjList}" var="csvVar">
+                    <apex:column style="width:10%">
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">Account Name</font>
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.accountName}"></apex:outputText>
+                    </apex:column>
+                    <apex:column style="width:10%"> 
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">User ID</font> 
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.userId}"></apex:outputText>
+                    </apex:column>
+                    <apex:column style="width:5%"> 
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">SignUp Date</font>
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.signUpDate}"></apex:outputText>
+                    </apex:column>
+                    <apex:column style="width:5%">
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">Incoming Status</font>
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.incomingStatus}"></apex:outputText>
+                    </apex:column>
+                    <apex:column style="width:5%">
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">Current Status</font>
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.currentStatus}"></apex:outputText>
+                    </apex:column>
+                    <apex:column style="width:5%">
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">CB ID</font>
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.cbId}"></apex:outputText>
+                    </apex:column>
+                    <apex:column style="width:5%">
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">Transaction Id</font>
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.tranId}"></apex:outputText>
+                    </apex:column>
+                    <apex:column style="width:5%">
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">Transaction Date</font>
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.tranDate}"></apex:outputText>
+                    </apex:column>
+                    <apex:column style="width:5%">
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">Amount</font>
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.amount}"></apex:outputText>
+                    </apex:column>
+                    <apex:column style="width:5%">
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">Card Token</font>
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.cardToken}"></apex:outputText>
+                    </apex:column>
+                    <apex:column style="width:10%">
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">CB Reason</font>
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.cbReason}"></apex:outputText>
+                    </apex:column>
+                    <apex:column style="width:10%">
+                        <apex:facet name="header">
+                        <font style="font-size: 12px">Comment</font>
+                        </apex:facet>
+                        <apex:outputText value="{!csvVar.comment}"></apex:outputText>
+                    </apex:column>
+            </apex:PageBlockTable> -->

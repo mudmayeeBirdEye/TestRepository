@@ -1,0 +1,151 @@
+<apex:page controller="schedulerAdminConfiguration" showheader="false">
+	<style>
+		.tableContainer {
+		    height: auto;
+		    width: 95%;
+		    align: center;
+		    margin: 20px;
+		}
+		
+		#advisor {
+			color: Black;
+			width: 100%;
+		}
+		
+		#advisor td {
+		    background-color: #DDDEDF;
+		    vertical-align: top;
+		    color: black;
+		    border: 0px solid black;
+		    border-collapse: collapse;
+		    /*border-radius: 2px 2px 2px 2px;*/
+		    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);*/
+		    line-height: 18px;
+		    z-index: 1000;
+		    text-align: left;
+		    width: 0px;
+		    padding: 6px;
+		    font: Bold 12px Georgia;
+		    /*font-family: Georgia;
+		    font-size: 12px;*/
+		}
+		
+		.tableClass {
+			width: 850px;
+			font-family: Georgia;
+			font-size: 12px;
+			padding: 10px;
+		}
+		
+		.header {
+			font-size: 25px;
+			display: block;
+			font-family: Georgia;
+			margin-left: 500px;
+		}
+
+		.preRequiredLabel:after {
+			content: " | ";
+			color: red;
+		}
+</style>
+	<script>
+      /*call remove method from controller*/
+      function removeAdvisor(Id){
+           alert(Id);
+           removeAdvisor();
+
+      }
+   </script>
+	<apex:form >
+		<br />
+		<apex:commandLink value="Brand " action="{!brandLink}" style="margin-left: 40px;font-size: 15px; font-weight:bold">>></apex:commandLink>
+		<apex:commandLink value="Resource " action="{!resourceLink}" style="font-size: 15px; font-weight:bold">>></apex:commandLink>
+		<apex:actionFunction name="callAction" action="{!showTemplates}" />
+		<apex:outputpanel layout="block" styleclass="header">
+			<apex:image value="/servlet/servlet.ImageServer?id=015Q0000000Maft&oid=00DQ0000003Mh6u&lastMod=1369288826000"
+				height="45px" width="45px" />Scheduler Admin Configuration
+		</apex:outputpanel>
+		<table style="padding: 6px;width: 100%;">
+			<tr>
+				<td>
+					<apex:pageBlock rendered="{!isAdvisorData1}">
+						<apex:pageBlockSection columns="1">
+							<apex:pageBlockSectionItem >
+								<apex:PageBlockTable value="{!listAdvisor}" var="configure" id="theTable2" rowClasses="odd,even" styleClass="tableClass">
+									<apex:facet name="header">Advisor List</apex:facet>
+									<apex:column >
+										<apex:facet name="header">Action</apex:facet>
+										<apex:commandLink value="Remove" id="theCommandLinkDelete"
+														  onclick="if(!confirm('Are you sure to remove this advisor?')) return false;"
+														  action="{!removeAdvisor}">
+											<apex:param name="Name" value="{!configure.id}" />
+										</apex:commandLink>
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Advisor Id</apex:facet>
+										<apex:commandLink value="{!configure.Name}" id="toTimeSlotScreen" action="{!toTimeSlotScreen}">
+											<apex:param name="advisorId" value="{!configure.id}"/>
+										</apex:commandLink>
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Advisor Name</apex:facet>
+										<apex:outputText value="{!configure.Advisor_Name__r.Name}" />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Advisor Email</apex:facet>
+										<apex:outputText value="{!configure.Advisor_Name__r.Email}" />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Resource Pool Name</apex:facet>
+										<apex:outputText value="{!configure.Resource_Pool__r.Name}" />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Preferred Language</apex:facet>
+										<apex:outputText value="{!configure.Preferred_Language__c}" />
+									</apex:column>
+								</apex:PageBlockTable>
+							</apex:pageBlockSectionItem>
+						</apex:pageBlockSection>
+					</apex:pageBlock>
+				</td>
+			</tr>
+		</table>
+		<table class="tableContainer">
+			<tr>
+				<td>
+					<fieldset id="advisor">
+						<legend style="font-family: Georgia; font-size: 14px;">Configure Advisor</legend>
+						<apex:pageblock >
+							<apex:pageblocksection >
+								<apex:pageblocksectionItem >
+									<apex:outputpanel >
+										<apex:outputtext value="Select Resource Pool" styleclass="preRequiredLabel" />
+										<apex:inputfield value="{!objadvisor.Resource_Pool__c}" />
+									</apex:outputpanel>
+								</apex:pageblocksectionItem>
+								<apex:pageblocksectionItem >
+									<apex:outputpanel >
+										<apex:outputtext value="Select advisor" styleclass="preRequiredLabel" style="float: left;padding: 6px;"/>
+										<apex:inputfield value="{!objadvisor.Advisor_Name__c}" />						
+									</apex:outputpanel>
+								</apex:pageblocksectionItem>
+								<apex:pageblocksectionItem >
+									<apex:outputpanel >
+										<apex:outputtext value="Preffered Language" styleclass="preRequiredLabel" />
+										<apex:inputfield value="{!objadvisor.Preferred_Language__c}" />
+									</apex:outputpanel>
+								</apex:pageblocksectionItem>
+							</apex:pageblocksection>
+						</apex:pageblock>
+					</fieldset>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<apex:commandbutton value="Add Advisor" action="{!addAdvisor}" style="margin-left:50%;"/>
+				</td>
+			</tr>
+		</table>
+	</apex:form>
+</apex:page>

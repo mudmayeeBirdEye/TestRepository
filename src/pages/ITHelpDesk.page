@@ -1,0 +1,1438 @@
+<apex:page standardcontroller="Case" extensions="ITCasesSearchPortal" standardStylesheets="false" 
+		showheader="false" readonly="true" sidebar="false" docType="html-5.0" cache="false">
+    <apex:includeScript value="{!URLFOR($Resource.AssetSearch,'AssetSearch/jquery.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.AssetSearch,'AssetSearch/images/assetcss.css')}"/>
+    <!-- <link rel="stylesheet" href="{!URLFOR($Resource.HELPDESK_CSS, 'style.css')}"/> -->
+    <link rel="stylesheet" href="{!URLFOR($Resource.DataTables,'datatable/demo_table_jui.css')}"/>
+    <link rel="stylesheet" href="{!URLFOR($Resource.DataTables,'datatable/jquery-ui-1.7.2.custom.css')}"/>
+    <script src="{!URLFOR($Resource.DataTables,'datatable/jquery.dataTables.js')}" type="text/javascript"></script>
+    <script src="{!URLFOR($Resource.DataTables,'datatable/ColReorderWithResize.js')}" type="text/javascript"></script> 
+    <script src="{!URLFOR($Resource.DataTables,'datatable/FixedHeader.js')}" type="text/javascript"></script> 
+     <link href="{!URLFOR($Resource.RCSupportPortal, 'supportPortal/css/style.css')}" type="text/css" rel="stylesheet"  media="screen" /> 
+  <!-- <script type="text/javascript" src="path_to/jquery.js"></script>
+    <script type="text/javascript" src="path_to/jquery.simplePagination.js"></script>
+    <link type="text/css" rel="stylesheet" href="path_to/simplePagination.css"/> -->
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
+<title>Ring Central</title>
+<!-- <link href="css/style.css" type="text/css" rel="stylesheet" /> -->
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+<script>
+$(document).ready(function () {
+    $("#helpDesk").click(function () {
+        if($(".subNav").is(":hidden")==true){
+        	$(".subNav").show();
+        	$(this).addClass("active");
+        	$(".subNavs").hide();
+        	$("#external").removeClass("active");
+        	$(".subNaval").hide();     
+        	$("#global").removeClass("active");
+        } else {
+        	$(".subNav").hide();
+        	$(this).removeClass("active");
+        }
+    });
+});
+$(document).ready(function () {
+    $("#external").click(function () {
+        if($(".subNavs").is(":hidden")==true){
+        	$(".subNavs").show();
+        	$(this).addClass("active");
+        	$(".subNaval").hide();     
+        	$("#global").removeClass("active");
+        	$(".subNav").hide();
+        	$("#helpDesk").removeClass("active");     
+        }else{
+        	$(".subNavs").hide();
+        	$(this).removeClass("active");
+        }
+    });
+});
+
+$(document).ready(function () {
+    $("#global").click(function () {
+        if($(".subNaval").is(":hidden")==true){
+        	$(".subNaval").show();
+        	$(this).addClass("active"); 
+        	$(".subNav").hide();
+        	$("#helpDesk").removeClass("active");
+        	$(".subNavs").hide();
+        	$("#external").removeClass("active");    
+        }else{
+        	$(".subNaval").hide();
+        	$(this).removeClass("active");
+        }
+    });
+})
+
+</script>
+ </head>
+<style>
+	/* a:hover {
+		color: white;
+		text-decoration: underline;
+	} */
+	.csContainer {
+	    display:block;
+		/*width: 1030px !important;*/
+		width:60%;
+		min-width:950px; 
+		margin: 0px auto;
+		padding: 30px 0px;
+		font-family: "trebuchet ms";
+		color: #5d6067;
+		overflow: hidden;
+		float: center !important;
+		/*margin-top: 40px !important;*/
+	}
+
+  
+
+	#commentTable_wrapper{
+		width:100% !important;
+	}
+	#HistoryTable_wrapper{
+		width:100% !important;
+	}
+	.csContainer ul.subNaval{
+	    color: deepskyblue;
+	    padding-bottom:20px;
+	    border-bottom:1px solid #dddddd;
+	    overflow:hidden;
+	    background-color:#fbfbfb;
+	    background: -webkit-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ffffff));
+	    background: -moz-linear-gradient(top, #f6f6f6, #ffffff);
+	    background: -o-linear-gradient(top, #f6f6f6, #ffffff);
+	    background: -ms-linear-gradient(top, #f6f6f6, #ffffff);
+	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff');
+	}
+	.csContainer ul.subNaval li, .csContainer ul.subNaval li:hover{
+	    color:#0073ae;
+	    font-size:14px;
+	    border-bottom:none;
+	    padding:0px;
+	    margin:15px 0px 0px 55px;
+	}
+	.csContainer ul.subNaval li:hover{
+	    text-decoration:underline;
+	    background:none;
+	    filter:none;
+	    }
+	
+	.csContainer ul.subNavs{
+	    color: deepskyblue;
+	    padding-bottom:20px;
+	    border-bottom:1px solid #dddddd;
+	    overflow:hidden;
+	    background-color:#fbfbfb;
+	    background: -webkit-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ffffff));
+	    background: -moz-linear-gradient(top, #f6f6f6, #ffffff);
+	    background: -o-linear-gradient(top, #f6f6f6, #ffffff);
+	    background: -ms-linear-gradient(top, #f6f6f6, #ffffff);
+	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff');
+	}
+	.csContainer ul.subNavs li, .csContainer ul.subNavs li:hover{
+	    color:#0073ae;
+	    font-size:14px;
+	    border-bottom:none;
+	    padding:0px;
+	    margin:15px 0px 0px 55px;
+	}
+	.csContainer ul.subNavs li:hover{
+	    text-decoration:underline;
+	    background:none;
+	    filter:none;
+	    }
+	
+	 .csContainer .rightCSS{
+	    padding: 1px; !important;
+	    width: 47%; !important;
+	    float:right; !important;
+	    border:1px dotted #292828; !important;
+	    text-align: left; !important;
+	    border-radius: 10px; !important;
+	    -webkit-border-radius: 10px; !important;
+	    -moz-border-radius: 10px; !important;
+	    margin-top: 10px; !important;
+	   	margin-right: 21px; !important;
+	    
+	    
+	 }
+	 .csContainer .leftCSS{
+	    float:left; !important;
+	   	border:1px dotted #292828; !important;
+	    width:46%;;!important;
+	    border-radius: 10px; !important;
+	    -moz-border-radius: 10px; !important;
+	    -webkit-border-radius: 10px; !important;
+	    text-align: left; !important;
+	    padding: 1px; !important;
+	    margin-top: 10px; !important;
+	    margin-left: 4px; !important;
+	    }
+	    .csContainer .leftCSS td{
+	     text-align: left; !important;
+	 
+	    }
+	    .csContainer .leftCSS th{
+	    text-align: initial; !important;
+	    }
+	   
+	    .csContainer .rightCSS td{
+	   /*  text-align: left; !important; */
+	
+	    }
+		.csContainer .rightCSS th{
+	 	text-align: right; !important;
+	}
+	.csContainer a.blue {
+	    font-size: 14px; !important;
+	    color: deepskyblue; !important;
+	    text-decoration: none; !important;
+	    border-bottom: 1px dotted rgb(3, 126, 192); !important;
+	}
+	.csContainer.color{
+	    background-color: white;
+	}
+	tr.even {
+	    background-color:rgb(244, 244, 246);
+	}
+	tr.odd {
+	    background-color: #FFFFFF;
+	}
+	.csContainer .searchContainer{
+	    width:99%;
+	    float:left;
+	    border:1px solid #e6e6e6;
+	    border-radius:10px;
+	    -webkit-border-radius:10px;
+	    -moz-border-radius:10px;
+	    padding-top:20px;
+	    margin-top:20px;
+	}
+	.csContainer ul.helpDeskLinks{
+	    margin:0px;
+	    padding:0px;
+	    padding-bottom:25px;
+	    float:left;
+	    width:100%;
+	}
+	.csContainer. color{
+	background-color: white;
+	}
+	.csContainer ul.helpDeskLinks li{
+	    margin:0px;
+	    padding:0px;
+	    float:left;
+	    margin-right:55px;
+	    list-style-type:none;
+	    height:22px;
+	    line-height:22px;
+	}
+	.csContainer ul.helpDeskLinks li.last{
+	    margin-right:0px;
+	}
+	.csContainer ul.helpDeskLinks li a{
+	    font-size:14px;
+	    color:#037ec0;
+	    text-decoration:none;
+	    border-bottom:1px dotted #037ec0;
+	}
+	.csContainer ul.helpDeskLinks li a:hover{
+	    border-bottom:none;
+	}
+	ul.helpDeskLinks li.newHelpDesk, ul.helpDeskLinks li.newHire, ul.helpDeskLinks li.termination, ul.helpDeskLinks li.purchaseTicket{
+	    background:no-repeat url(images/sprite-icons.png) left top;
+	    padding-left:30px;
+	}
+	ul.helpDeskLinks li.newHelpDesk{
+	    background-position:0px 3px;
+	    padding-left:25px;
+	}
+	ul.helpDeskLinks li.newHire{
+	    background-position:0px -32px;
+	}
+	ul.helpDeskLinks li.termination{
+	    background-position:0px -74px;
+	}
+	ul.helpDeskLinks li.purchaseTicket{
+	    background-position:0px -108px;
+	}
+	
+	.csContainer .rightContent{
+	    float:left;
+	    width: 99%;
+	    margin-left: 5px;
+	}
+	.csContainer .orangeTxt{ 
+	    color:#f4971d;
+	    font-size:12px;
+	}
+	.csContainer h2{
+	    margin:0px;
+	    padding:0px;
+	    font-size:42px;
+	    font-weight:normal;
+	}
+	.leftContent{
+	    float:left;
+	}
+	.csContainer .searchBox{
+	    width: 80%;
+	    border-radius:5px;
+	    height:30px;
+	    float:left;
+	    border:1px solid #f6f6f6;
+	    box-shadow: inset 0px 1px 2px #bababa;
+	    -webkit-box-shadow: inset 0px 1px 2px #bababa;
+	    -moz-box-shadow: inset 0px 1px 2px #bababa;
+	    background:no-repeat url(images/sprite-icons.png) 8px -195px;
+	    margin-right:10px;
+	}
+	.csContainer .redBullet, .csContainer .greenBullet{
+	    float:left;
+	    background:no-repeat url(images/sprite-icons.png) 0px -147px;
+	    padding-left:20px;
+	    
+	}
+	.csContainer .searchBox input{
+	    border:1px solid #fff;
+	    background:#fff;
+	    margin:5px 0px 0px 30px;
+	    outline:none;
+	    width:90%;
+	}
+	.csContainer .searchBtn {
+	    float: left;
+	    border-radius: 5px;
+	    background-color: #f9f9fa;
+	    color: #5d6067;
+	    font-size: 13px;
+	    font-weight: normal;
+	    border: 0px;
+	    padding: 5px 45px;
+	    cursor: pointer;
+	    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f4f4f7));
+	    background: -moz-linear-gradient(top, #ffffff, #f4f4f7);
+	    background: -o-linear-gradient(top, #ffffff, #f4f4f7);
+	    background: -ms-linear-gradient(top, #ffffff, #f4f4f7);
+	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f7');
+	    outline: none;
+	    box-shadow: 0px 1px 2px #a0a0a0;
+	    -webkit-box-shadow: 0px 1px 2px #a0a0a0;
+	    -moz-box-shadow: 0px 1px 2px #a0a0a0;
+	    text-decoration:none;
+	    border:1px solid #f4f4f4;
+	    border:1px solid #e9e9e9\9;
+	    height:18px;
+	}
+	.csContainer .searchBtn:hover {
+	    background-color: #cc6a0b;
+	    background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f7), to(#ffffff));
+	    background: -moz-linear-gradient(top, #f4f4f7, #ffffff);
+	    background: -o-linear-gradient(top, #f4f4f7, #ffffff);
+	    background: -ms-linear-gradient(top, #f4f4f7, #ffffff);
+	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f7', endColorstr='#ffffff');
+	    text-decoration:none;
+	    } 
+	    .csContainer a.blueLink:hover{
+	    border-bottom:none;
+	}
+	 .csContainer .searchTable{
+	    float:left;
+	    width:100%;
+	    margin-top:40px;
+	    background:repeat-y url(images/border-repeat.png) 0px 0px;
+	    padding-bottom:20px;
+	}
+	    .csContainer .dropdownBg{
+	    border-radius: 5px;
+	    background-color: #f9f9fa;
+	    color: #5d6067;
+	    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f4f4f7));
+	    background: -moz-linear-gradient(top, #ffffff, #f4f4f7);
+	    background: -o-linear-gradient(top, #ffffff, #f4f4f7);
+	    background: -ms-linear-gradient(top, #ffffff, #f4f4f7);
+	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f7');
+	    outline: none;
+	    box-shadow: 0px 1px 2px #a0a0a0;
+	    -webkit-box-shadow: 0px 1px 2px #a0a0a0;
+	    -moz-box-shadow: 0px 1px 2px #a0a0a0;
+	    text-decoration:none;
+	    border:1px solid #f4f4f4;
+	    border:1px solid #e9e9e9\9;
+	    float:left;
+	    margin-top:-5px;
+	    padding:3px;
+	} 
+	.csContainer .dropdownBg select{
+	    background:transparent;
+	    border:none;
+	    outline:none;
+	    min-width:50px;
+	}
+	.csContainer ul.pagination{
+	    float:right;
+	    color:#000;
+	    margin:0px;
+	    padding:0px;
+	}
+	.csContainer ul.pagination li{
+	    float:left;
+	    margin:0px;
+	    padding:0px;
+	    list-style-type:none;
+	    font-size:13px;
+	    padding:3px 10px;
+	    cursor:pointer;
+	    border:1px solid #fff;
+	    margin-right:2px;
+	}
+	.csContainer ul.pagination li:hover, .csContainer ul.pagination li.active{
+	    background-color:#f1eeee;
+	    border-radius:2px;
+	    border:1px solid #e3e1e1;
+	    color:#969696;
+	}  
+	.csContainer .leftNav{
+	   	width:220px;
+	    float:left;
+	    border:1px solid #e6e6e6;
+	    border-radius:10px;
+	    -webkit-border-radius:10px;
+	    -moz-border-radius:10px;
+	    padding:10px 0px;
+	    margin-right:10px;
+	}
+	.csContainer .leftNav ul{
+	    margin:0px;
+	    padding:0px;
+	    width:100%;
+	}
+	.csContainer .leftNav ul li{
+	    margin:0px;
+	    padding:0px;
+	    list-style-type:none;
+	    color:#797979;
+	    font-size:14px;
+	    padding:10px;
+	    border-bottom:1px solid #f0f0f0;
+	    margin:0px 25px;
+	    cursor:pointer;
+	    position:relative;
+	}
+	.csContainer .leftNav ul li.last{
+	    border-bottom:none;
+	}
+	.csContainer .leftNav ul li:hover, .csContainer .leftNav ul li.active{
+	    background-color:#037ec0;
+	    margin:0px;
+	    color:#fff;
+	    padding:10px 35px;
+	    background: -webkit-gradient(linear, left top, left bottom, from(#0091c3), to(#066cbb));
+	    background: -moz-linear-gradient(top, #0091c3, #066cbb);
+	    background: -o-linear-gradient(top, #0091c3, #066cbb);
+	    background: -ms-linear-gradient(top, #0091c3, #066cbb);
+	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0091c3', endColorstr='#066cbb');
+	}
+	
+	.csContainer .leftNav ul li.active:after {
+	    width: 0;
+	    height: 0;
+	    border-left: 7px solid transparent;
+	    border-right: 7px solid transparent;
+	    border-top: 7px solid #0769bb;
+	    position: absolute;
+	    left: 55px;
+	    top: 37px;
+	    top: 36px\9;
+	    content:'';
+	}
+	.csContainer ul.subNav{
+	    color: deepskyblue;
+	    padding-bottom:20px;
+	    border-bottom:1px solid #dddddd;
+	    overflow:hidden;
+	    background-color:#fbfbfb;
+	    background: -webkit-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ffffff));
+	    background: -moz-linear-gradient(top, #f6f6f6, #ffffff);
+	    background: -o-linear-gradient(top, #f6f6f6, #ffffff);
+	    background: -ms-linear-gradient(top, #f6f6f6, #ffffff);
+	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff');
+	}
+	.csContainer ul.subNav li, .csContainer ul.subNav li:hover{
+	    color:#0073ae;
+	    font-size:12px;
+	    border-bottom:none;
+	    padding:0px;
+	    margin:15px 0px 0px 55px;
+	}
+	.csContainer ul.subNavs li, .csContainer ul.subNavs li:hover{
+	    color:#0073ae;
+	    font-size:14px;
+	    border-bottom:none;
+	    padding:0px;
+	    margin:15px 0px 0px 55px;
+	}
+	.csContainer ul.subNaval li, .csContainer ul.subNaval li:hover{
+		color:#0073ae;
+	    font-size:14px;
+	    border-bottom:none;
+	    padding:0px;
+	    margin:15px 0px 0px 55px;
+	}
+	.csContainer ul.subNavs li:hover{
+	    text-decoration:underline;
+	    background:none;
+	    filter:none;
+	    }
+	.csContainer ul.subNav li:hover{
+	    text-decoration:underline;
+	    background:none;
+	    filter:none;
+	    }
+	   .csContainer ul.subNaval li:hover{
+	    text-decoration:underline;
+	    background:none;
+	    filter:none;
+	   } 
+	.csContainer .searchTable ul.head, .csContainer .searchTable ul.row{
+	    margin:0px;
+	    padding:0px;
+	    width:100%;
+	    float:left;
+	    border-bottom:2px solid #ebebed;
+	}
+	.csContainer .searchTable ul.head li, .csContainer .searchTable ul.row li{
+	    margin:0px;
+	    padding:0px;
+	    list-style-type:none;
+	    color:#898a8c;
+	    font-size:11px;
+	    width:80px;
+	    float:left;
+	    padding:10px 16px;
+	    border-right:2px solid #ebebed;
+	}
+	.csContainer .searchTable ul.head li.last, .csContainer .searchTable ul.row li.last{
+	    border-right:none;
+	    width:45px;
+	}
+	.csContainer .searchTable ul.head li.subject, .csContainer .searchTable ul.row li.subject{
+	    width:120px;
+	}
+	.csContainer .searchTable ul.head li.date, .csContainer .searchTable ul.row li.date{
+	    width:90px;
+	}
+	.csContainer .searchTable ul.row{
+	    border-bottom:none;
+	}
+	.csContainer .searchTable ul.row li{
+	    color:#26272a;
+	}
+	.arrowBreadcrumb{
+	    background:no-repeat url(../images/sprite-icons.png) 0px -235px;
+	    width:6px; 
+	    height:15px;
+	    display:inline-block;
+	    margin:0px 5px;
+	}
+	.csContainer .ticketContentLeft{
+	    float:left;
+	    margin:20px 50px 0px 0px;
+	    width:410px;
+	}
+	.csContainer  .table{
+	    float:left;
+	    width:100%;
+	    margin:0px;
+	    padding:0px;
+	    color:#797979;
+	}
+	.csContainer  ul.table li{
+	    float:left;
+	    width:47%;
+	    margin:0px;
+	    padding:5px 3% 5px 0px;
+	    list-style-type:none;
+	    font-size:14px;
+	}
+	.csContainer .description{
+	    color:#26272a; !important;
+	    font-size:18px; !important;
+	    margin-top:25px; !important;
+	    float:left; !important;
+	    width:50%;!important;
+	    text-align: justify; !important;
+	}
+	.csContainer .description .head{
+	    float:left;  !important;
+	    width:50%;  !important;
+	    font-size:25px;  !important;
+	}
+	.csContainer .description .small{
+	    color:#797979;  !important;
+	    font-size:14px;  !important;
+	    line-height:20px;  !important;
+	    width: 50%;
+	}
+	.csContainer .redIcon{
+	    background:no-repeat url(../images/sprite-icons.png) 0px -151px;
+	    display:inline-block;
+	    width:11px;
+	    height:11px;
+	    margin-left:5px;
+	}
+	.csContainer .ticketContentRight{
+	    float: right;
+	    margin-top: 20px;
+	    width: 235px;
+	}
+	.csContainer ul.table.font12 li {
+	    font-size:10px;
+	}
+	.csContainer ul.table li {
+	    float: left;
+	    width: 47%;
+	    margin: 0px;
+	    padding: 5px 3% 5px 0px;
+	    list-style-type: none;
+	    font-size: 10px;
+	}
+	.csContainer ul.table {
+	    color: rgb(121, 121, 121);
+	}
+	.csContainer .ticketContentLeft{
+	    float:left;
+	    margin:20px 50px 0px 0px;
+	    width:235px;
+	}
+	.dataTables_empty{
+	    color:red;
+	}
+	.csContainer .description.small{
+	    color:#797979;
+	    font-size:14px;
+	    line-height:20px;
+	}
+	.csContainer .description{
+	    /* float:left;
+	    width:100%;
+	    color:#26272a;
+	    font-size:18px;
+	    margin-top:30px;
+	    font-family: serif; */
+	    float:left; !important;
+	   	border:1px dotted #292828; !important;
+	    width:96%;;!important;
+	    border-radius: 10px; !important;
+	    -moz-border-radius: 10px; !important;
+	    -webkit-border-radius: 10px; !important;
+	    text-align: left; !important;
+	    padding: 1px; !important;
+	    margin-top: 10px; !important;
+	    margin-left: 4px; !important;
+	}
+	.csHeader{
+	    width:100%;
+	    color: #fff;
+	    font-family: 'Lato', Helvetica, Arial, sans-serif;
+	    border-bottom:1px solid #e3e3e3;
+	    box-shadow:0px 1px 1px #f5f5f5;
+	    -webkit-box-shadow:0px 1px 1px #f5f5f5;
+	    -moz-box-shadow:0px 1px 1px #f5f5f5;
+	}
+	.csHeader .topBar{
+	 	 width:100%; 
+	    float:left;
+	    background-color: #4b4c4e;
+	    background: -webkit-gradient(linear, left top, left bottom, from(#636467), to(#363739));
+	    background: -moz-linear-gradient(top, #636467, #363739);
+	    background: -o-linear-gradient(top, #636467, #363739);
+	    background: -ms-linear-gradient(top, #636467, #363739);
+	    border-bottom:1px solid #bfbfbf;
+	    height:45px;
+	}
+	.csHeader .centerhead{
+	    width:1030px;
+	    margin:0px auto;
+	}
+	.csHeader .center{
+	    width:1030px;
+	    margin:0px auto;
+	}
+	.csHeader ul.nav{
+	    margin:0px;
+	    padding:0px;
+	    margin-top:15px;
+	    position:relative;
+	    zoom:1;
+	}
+	.csHeader ul.nav li{
+	    margin:0px;
+	    padding:0px;
+	    color: #fff;
+	    text-transform: uppercase;
+	    position: relative;
+	    font-weight: 400;
+	    font-size: 11px;
+	    list-style-type:none;
+	    float:left;
+	    margin-right:25px;
+	    cursor:pointer;
+	    height:30px;
+	}
+	.csHeader ul.nav li.arrow{
+	    padding-right:17px;
+	    background:no-repeat url(../images/sprite-icons.png) right -341px;
+	}
+	
+	.csHeader ul.nav li a, .csHeader ul.nav li a:hover{
+	    color:#fff;
+	    text-decoration:none;
+	}
+	.csHeader ul.nav li ul.subnav{
+	    position:absolute;
+	    float:left;
+	    background-color:#737374;
+	    left:0px;
+	    top:30px;
+	    text-align:left;
+	    margin:0px;
+	    padding:0px;
+	    width:150px;
+	    /* display:none; */
+	}
+	.csHeader ul.nav li ul.subnav li{
+	    margin:0px;
+	    padding:0px;
+	    clear:both;
+	    width:100%;
+	    height:auto;
+	}
+	.csHeader ul.nav li ul.subnav li a{
+	    margin:0px;
+	    padding:0px;
+	    padding:10px;
+	    width:130px;
+	    float:left;
+	    text-decoration:none;
+	}
+	.csHeader ul.nav li ul.subnav li a:hover{
+	    background-color:#686869;
+	    text-decoration:none;
+	}
+	.csHeader ul.nav li.arrow:hover ul.subnav{
+	    display:block;
+	    z-index:999;
+	    zIndex:999;
+	}
+	.csHeader .header{
+	    padding:25px 0px 20px;
+	    
+	}
+	.csHeader .header img{
+	    float:left;
+	}
+	.csHeader .header .headTxt{
+	    float:left; !important;
+	    color:#5f6064; !important;
+	    font-size:24px; !important;
+	    margin-left:10px; !important;
+	    font-weight:300; !important;
+	}
+	.csHeader .header .right{
+	    float:right; !important;
+	}
+	.csHeader .header. headerleft{
+	    float:left; !important;
+	}
+	.csHeader .header .phone{
+	    color:#b8bac0;
+	    font-size:16px;
+	    padding-left:15px;
+	    float:left;
+	    background:no-repeat url(../images/sprite-icons.png) 0px -307px;
+	}
+	.csHeader .header .searchIcon{
+	  	width:18px;
+	    height:18px;
+	    float:left;
+	    background:no-repeat url(../images/sprite-icons.png) 0px -201px;
+	    text-decoration:none;
+	    /* margin-left: -213px; */
+	    margin-left: -35px;
+	}
+	.ui-state-default, .ui-widget-content .ui-state-default {
+	    background : none !important;
+	}
+
+	.wrapped {
+		white-space: pre;
+		white-space: pre-wrap;
+		white-space: pre-line;
+     	white-space: -pre-wrap;
+     	white-space: -o-pre-wrap;
+     	white-space: -moz-pre-wrap;
+     	white-space: -hp-pre-wrap;
+     	word-wrap: break-word;
+    	width: 92%;
+     	font-family: serif;
+    	margin-left: 10px;
+	}
+	.dataTables_wrapper{
+ 		width: 100%;
+ 	}
+	.loader-static { position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 1000; *position: absolute; *top: expression(parseInt(document.documentElement.scrollTop, 0) + 'px'); text-align: center; }
+    .loader-static .loader-fix { content: ""; width: 0; height: 100%; display: inline-block; *display: inline; *zoom: 1; vertical-align: middle; }
+    .loader-static .loader-static-panel { border: 1px solid #aecbda; position: relative; -webkit-border-radius: 6px; -moz-border-radius: 6px; -ms-border-radius: 6px; -o-border-radius: 6px; border-radius: 6px; background-color: rgba(255, 255, 255, 0.8); background-color: transparent\9; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bbffffff, endColorstr=#bbffffff); text-align: center; padding: 20px; display: inline-block; *display: inline; *zoom: 1; vertical-align: middle; }
+    .loader-static .loader-static-panel img { width: 32px; height: 32px; }
+    .loader-static .loader-static-panel div { margin-top: 10px; color: #063f60; }
+    .overlayNew{
+        z-index: 99;
+        zIndex:99;
+        border: none;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+        background-color: rgb(0, 0, 0);
+        opacity: 0.6;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+        /* IE 5-7 */
+        filter: alpha(opacity=60);
+        /* Netscape */
+        -moz-opacity: 0.6;
+        /* Safari 1.x */
+        -khtml-opacity: 0.6;
+        /*cursor: wait;*/
+        position: fixed;
+        display:none; 
+     } 
+     .btncls {
+        color: #084B8A !important;
+        border: 1px solid #A5A6A5 !important;
+        padding: 9px !important;
+    }
+    .msgPanel {
+        width:70%;margin-top: 10px;margin-bottom:5px;background-color: #ffc; font-family:TRebuchet MS;font-weight: bold;border: 1px solid #39f;-moz-border-radius:9px 9px 9px 9px;border-radius: 4px;vertical-align:middle;
+            }
+    .msgPanelTop {
+       	width:70%;background-color: #ffc; font-family:TRebuchet MS;font-weight: bold;
+    	border: 1px solid #39f;-moz-border-radius:9px 9px 9px 9px;
+   		border-radius: 4px;vertical-align:middle;
+ 		margin:0px auto; margin-top:10px;
+		text-align:center;
+            }    
+	.casetop{
+       	font-size: large;
+    }
+               
+  .casecomment{
+      	height: 100%;
+       	float:left; !important;
+	   	border:1px dotted #292828; !important;
+	   	width:97%;;!important;
+	    border-radius: 10px; !important;
+	    -moz-border-radius: 10px; !important;
+	   	 -webkit-border-radius: 10px; !important;
+	    text-align: left; !important;
+	    padding: 1px; !important;
+	    margin-top: 10px; !important;
+	    margin-left: 4px; !important;
+	    font-size: medium;
+     }
+	.casecomment .Head{
+     	font-weight:bold; 
+     	font-family: Trebuchet Ms;
+     	margin-left: 2px;
+     	font-size: larger;
+		color: black;
+
+     }
+    </style>
+
+<apex:form id="formMain">
+    <apex:outputPanel id="mainPanelTop">
+        <apex:OutPutPanel rendered="{!!toShowMailPanel}">
+            <table Class="msgPanelTop">
+                <tr>
+                    <td style="vertical-align:middle;width:30px;text-align:center;">
+                        <apex:image value="{!$Resource.WarningRed}" width="30px" height="25px" style="padding:5px" />
+                    </td>
+                    <td style="vertical-align:middle;padding-bottom: 5px;padding-top: 5px;text-align: left;">
+                        <apex:outputText style="padding:5px;" escape="false" value="Permission Denied"></apex:outputText>
+                    </td>
+                </tr>
+            </table>
+        </apex:OutPutPanel>
+        <apex:outputPanel rendered="{!toShowMailPanel}">
+            <body>
+                <div class="csContainer">
+                    <div class="rightContent">
+	                    <apex:outputpanel id="mainPanel">
+	                    	<div>
+	                            <div class="rightContent">
+	                                <apex:outputPanel id="msgPanel" rendered="{!toShowErrorMsg}">
+	                                    <table Class="msgPanel">
+	                                        <tr>
+	                                            <td style="vertical-align:middle;width:30px;text-align:center;">
+	                                                <apex:image value="{!$Resource.WarningRed}" width="30px" height="25px" style="padding:5px" />
+	                                            </td>
+	                                            <td style="vertical-align:middle;padding-bottom: 5px;padding-top: 5px;text-align: left;">
+	                                                <apex:outputText style="padding:5px;" escape="false" value="{!errorMsg}"></apex:outputText>
+	                                            </td>
+	                                        </tr>
+	                                    </table>
+	                                </apex:outputPanel>
+	                                <apex:outputPanel id="header" rendered="{!!toShowCaseDetail}">
+	                                    <span class="orangeTxt">HELPDESK</span>
+	                                    <h2>Case search</h2>
+	                                </apex:outputPanel>
+	
+	                                <apex:outputPanel id="headers" rendered="{!toShowCaseDetail}">
+	                                    <div class="rightContent">
+	                                        <span class="orangeTxt"> 
+									        	<apex:Commandlink action="{!backToSearch1}" status="status" value="SEARCH" style="color: #f4971d;" rerender="mainPanelTop,mainPanel">
+									        	</apex:Commandlink>
+									        	<span class="arrowBreadcrumb" style="background-image: url('{!URLFor($Resource.HELPDESK_CSS,'html/images/sprite-icons.png')}'); 
+									        			font-style:bold">
+									        		<pre style="font-family:trebuchet ms;padding-left:10px;font-size: larger;">Case Details</pre> 
+									        	</span>
+	                                        </span>
+	                                        <br/>
+	                                        <br/>
+	                                        <br/>
+	                                        <div class="casetop">
+	                                            <apex:outputtext style="font-weight:bold;font-size: larger;" value="Case&nbsp;#:&nbsp; {!if(wrCaseDetailObj.CaseNumber != null,wrCaseDetailObj.CaseNumber,'&nbsp;')}" escape="false"></apex:outputtext>
+	                                            <apex:outputtext style="font-weight:bold;font-size: larger;" value="&nbsp;-&nbsp;Subject:&nbsp;{!if(wrCaseDetailObj.Subject != null,wrCaseDetailObj.Subject,'&nbsp;')}" escape="false"></apex:outputtext>
+	
+	                                        </div>
+	                                    </div>
+	                                </apex:outputPanel>
+	
+	                                <apex:outputpanel id="Searchbox">
+										<div>
+											<div class="searchContainer" style="padding-left:10px;padding-bottom:10px;"> 
+												<ul class="helpDeskLinks">
+													<li class="newHelpDesk" style="background-image: url('{!URLFor($Resource.HELPDESK_CSS,'html/images/sprite-icons.png')}');"> <a href="mailto:helpdesk@ringcentral.com">New Helpdesk Ticket</a>
+													</li>
+													<li class="newHire" style="background-image: url('{!URLFor($Resource.HELPDESK_CSS,'html/images/sprite-icons.png')}');"><a href="http://wiki.ringcentral.com/display/RCN/New+Hire+Request+Form" target="_blank">New Hire</a>
+													</li>
+													<li class="termination" style="background-image: url('{!URLFor($Resource.HELPDESK_CSS,'html/images/sprite-icons.png')}');"><a href="http://wiki.ringcentral.com/display/RCN/Open+A+Termination+Ticket" target="_blank">Termination</a>
+													</li>
+													<li class="purchaseTicket last" style="background-image: url('{!URLFor($Resource.HELPDESK_CSS,'html/images/sprite-icons.png')}');"><a href="mailto:helpdesk@ringcentral.com">Purchase Ticket</a>
+													</li>
+												</ul>
+	
+												<div class="searchBox" style="background-image: url('{!URLFor($Resource.HELPDESK_CSS,'html/images/sprite-icons.png')}');">
+													<apex:inputText id="searchText" value="{!searchText}" />
+												</div>
+												<apex:commandButton title="Only IT support cases will be searched" value="Search" action="{!Search}" rerender="results,result,mainPanel,msgPanel" status="status" styleClass="searchBtn" style="text-align: center;vertical-align: middle;padding-top: 14px;padding-top: 4px;height: 30px;padding-left: 40px;"></apex:commandButton>
+											</div>
+	                                        <br></br> 
+											<div class="rightContent">
+												<apex:outputpanel id="searchPanel" rendered="{!!toShowCaseDetail}">
+													<apex:outputpanel id="results">
+														<apex:variable value="{!-1}" var="count" />
+														<script>
+															$(document).ready(function () {
+																var oTable = $('#searchTable').dataTable({
+																	"bStateSave": false,
+																	"bScrollCollapse": false,
+																	"bProcessing": false,
+																	"bPaginate": false,
+																	"bJQueryUI": true,
+																	"bSort": false,
+																	"bFilter": false,
+																	"oLanguage": {
+																		"sEmptyTable": "No case record to show. Only IT Help Desk Cases are Supported"
+																	},
+																	"bInfo": false
+																});
+															});
+														</script>
+														<br/>
+														<div>
+															<p><b>Current Search Results</b>
+															</p>
+														</div>
+														<table cellspacing="0" cellpadding="2" border="0" id='searchTable' width='100%' class='display'>
+															<thead class="color">
+																<tr>
+																	<th style='width:5%'>Case Number</th>
+																	<th style='width:5%'>Contact Name</th>
+																	<th style='width:5%'>Case Owner</th>
+																	<th style='width:5%'>Date/Time Opened</th>
+																	<th style='width:200px !important;'>Subject</th>
+																	<th style='width:5%'>Status</th>
+																	<th style='width:5%'>Closed Date</th>
+																	<th style='width:5%'>Priority</th>
+																</tr>
+															</thead>
+															<tbody>
+																<apex:repeat value="{!listWrCaseByText}" var="objcase">
+																	<apex:variable value="{!count+1}" var="count" />
+																	<tr class="{!IF(MOD(count,2)==0,'evenRow','oddRow')} x-grid3-row">
+																		<td>
+																			<span style='background: no-repeat url("{!URLFor($Resource.HELPDESK_CSS,"html/images/sprite-icons.png")}") {!if(objcase.TimeSinceCaseOpened == "Red","0px -147px","")}{!if(objcase.TimeSinceCaseOpened == "Green","0px -175px","")}{!if(objcase.TimeSinceCaseOpened == "Yellow","0px -270px","")};float: left;padding-left: 20px;'>
+														<apex:Commandlink style=" color: deepskyblue;" action="{!showCaseDetail}" status="status" title="{!objcase.TimeSinceCaseOpened}" rerender="mainPanel" value="{!objcase.CaseNumber}">
+															<apex:param name="caseId" value="{!objcase.Id}" assignTo="{!caseIdDetail}"/>
+														</apex:Commandlink>
+														</span>
+																		</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.contactname}" />
+																		</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.caseownernmame}" />
+																		</td>
+																		<td>{!objcase.CreatedDate}</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.Subject}" />
+																		</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.Status}" />
+																		</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.ClosedDate}" />
+																		</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.Priority}" />
+																		</td>
+																	</tr>
+																</apex:repeat>
+															</tbody>
+														</table>
+													</apex:outputpanel>
+													<apex:outputPanel id="result">
+														<br></br>
+														<div>
+															<p><b>Recent Search Results</b>
+															</p>
+														</div>
+														<apex:variable value="{!-1}" var="count" />
+				
+														<script>
+															$(document).ready(function () {
+																var oTable = $('#example').dataTable({
+																	/*"sDom": 'R<"H"lfr>t<"F"ip>',*/
+																	"bStateSave": true,
+																	/*"sScrollY": "700px",*/
+																	"bScrollCollapse": true,
+																	"sPaginationType": "full_numbers",
+																	"oLanguage": {
+																		"sSearch": "Apply Search Result filter _INPUT_",
+																		"sInfo": "Got a total of _TOTAL_ Case(s) to show (_START_ to _END_)",
+																		"sEmptyTable": "No recent searched case(s) record to show",
+																		"sInfoEmpty": "No Case to show",
+																		"sLoadingRecords": "Please wait - loading...",
+																		"sLengthMenu": 'Display <select>' +
+																			'<option value="10">10</option>' +
+																			'<option value="20">20</option>' +
+																			'<option value="30">30</option>' +
+																			'<option value="40">40</option>' +
+																			'<option value="50">50</option>' +
+																			'<option value="100">100</option>' +
+																			'<option value="-1">All</option>' +
+																			'</select> Case(s)'
+																	},
+				
+																	"bProcessing": true,
+																	/*"bPaginate": false,*/
+																	"bJQueryUI": true
+																	/* "aoColumnDefs": [{ "sWidth": "10%", "aTargets": [ -1 ] }]*/
+																});
+																/* new FixedHeader(oTable);*/
+																$("tr.odd").live("hover", function () {
+																	$(this).find('.sorting_1').removeClass('sorting_1');
+																});
+																$("tr.even").live("hover", function () {
+																	console.log('call' + $(this));
+																	$(this).find('.sorting_1').removeClass('sorting_1');
+																});
+															});
+														</script>
+														<table cellspacing="0" cellpadding="2" border="0" id='example' width='100%' class='display'>
+															<thead>
+																<tr>
+																	<!-- <th style='width:5%'>Time Left</th> -->
+																	<th style='width:5%'>Case Number</th>
+																	<th style='width:5%'>Contact Name</th>
+																	<th style='width:5%'>Case Owner</th>
+																	<th style='width:5%'>Date/Time Opened</th>
+																	<th style='width:200px !important;'>Subject</th>
+																	<th style='width:5%'>Status</th>
+																	<th style='width:5%'>Closed Date</th>
+																	<th style='width:5%'>Priority</th>
+																</tr>
+															</thead>
+															<tbody>
+				
+																<apex:repeat value="{!listWrCaseFromCookie}" var="objcase">
+																	<apex:variable value="{!count+1}" var="count" />
+																	<tr class="{!IF(MOD(count,2)==0,'evenRow','oddRow')} x-grid3-row">
+											  
+																		<td>
+																			<!-- <a href="/apex/ITHelpDeskDetail?id={!objcase.id}">{!objcase.CaseNumber}</a> -->
+																			<span style='background: no-repeat url("{!URLFor($Resource.HELPDESK_CSS,"html/images/sprite-icons.png")}") {!if(objcase.TimeSinceCaseOpened == "Green","0px -175px","")}{!if(objcase.TimeSinceCaseOpened == "Red","0px -147px","")}{!if(objcase.TimeSinceCaseOpened == "Yellow","0px -270px","")};float: left;padding-left: 20px;'>
+													   <apex:Commandlink style="color: deepskyblue;" styleclass="blueLink" action="{!showCaseDetail}" status="status" rerender="mainPanel" value="{!objcase.CaseNumber}">
+														   <apex:param name="caseId" value="{!objcase.Id}" assignTo="{!caseIdDetail}"/>
+													   </apex:Commandlink>
+												   </span>
+																		</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.contactname}" />
+																		</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.caseownernmame}" />
+																		</td>
+																		<td>{!objcase.CreatedDate}</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.Subject}" />
+																		</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.Status}" />
+																		</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.ClosedDate}" />
+																		</td>
+																		<td>
+																			<apex:outputtext value="{!objcase.Priority}" />
+																		</td>
+																	</tr>
+																</apex:repeat>
+															</tbody>
+														</table>
+													</apex:outputPanel>
+												</apex:outputpanel>
+											</div>
+	                                    </div>
+	                                    
+	                                </apex:outputpanel>
+	                                <br/>
+	                            </div>
+                                <apex:outputPanel id="detailPanel" rendered="{!toShowCaseDetail}">
+	                                <div class="leftCSS" style="margin-top: 5%;">
+	                                    <table style="width:100%;">
+	                                        <tr style="width:50%">
+	                                            <th style="height:20px;">Requestor &nbsp;&nbsp;</th>
+	                                            <td style="width:50%">
+	                                                <apex:outputtext value="{!if(wrCaseDetailObj.contactname != null,wrCaseDetailObj.contactname,'&nbsp;')}" escape="false"></apex:outputtext>
+	                                            </td>
+	                                        </tr>
+	
+												<tr  style="width:50%">
+                                    		   <th style="height:20px;">Shelf Life &nbsp;&nbsp;</th>
+                                 			   <td style='background: no-repeat url("{!URLFor($Resource.HELPDESK_CSS,"html/images/sprite-icons.png")}") {!if(wrCaseDetailObj.TimeSinceCaseOpened == "Red","0px -146px","")}{!if(wrCaseDetailObj.TimeSinceCaseOpened == "Green","0px -172px","")}{!if(wrCaseDetailObj.TimeSinceCaseOpened == "Yellow","0px -267px","")};width:50%'>
+                                       			   &nbsp;&nbsp;&nbsp;&nbsp;
+                                 				   <apex:outputtext title="{!wrCaseDetailObj.TimeSinceCaseOpened}" value="{!if(wrCaseDetailObj.TimeSinceCaseOpened == "Red",">9 Days","")}{!if(wrCaseDetailObj.TimeSinceCaseOpened == "Green","<7 Days","")}
+                                 				   {!if(wrCaseDetailObj.TimeSinceCaseOpened == "Yellow","7-9 Days","")}" escape="false"></apex:outputtext>
+                                 			   </td>
+                                  			</tr>
+	
+	                                       
+	
+	                                        <tr style="width:100%">
+	                                            <th style="height:40px;">Subject &nbsp;&nbsp;</th>
+	                                            <td style="width:50%;height:40px;">
+	                                                <apex:outputtext value="{!if(wrCaseDetailObj.Subject != null,wrCaseDetailObj.Subject,'&nbsp;')}" escape="false"></apex:outputtext>
+	                                            </td>
+	                                        </tr>
+	
+	                                        <tr style="width:100%">
+	                                            <th style="height:20px;">Created Date &nbsp;&nbsp;</th>
+	                                            <td style="width:50%">
+	                                                <apex:outputtext value="{!if(strFormatDate != null,strFormatDate,'&nbsp;')}" escape="false"></apex:outputtext>
+	                                            </td>
+	
+	                                        </tr>
+	                                    </table>
+	                                </div>
+	
+	                                <div class="rightCSS" style="margin-top: 5%;height: 110px;">
+	                                    <table>
+	                                        <tr style="width:50%">
+	                                            <th style="height:20px;">Case Owner &nbsp;&nbsp;</th>
+	                                            <td style="width:50%">
+	                                                <apex:outputtext value="{!if(wrCaseDetailObj.caseownernmame != null,wrCaseDetailObj.caseownernmame,'&nbsp;')}" escape="false"></apex:outputtext>
+	                                            </td>
+	                                        </tr>
+	                           
+	                                        <tr style="width:50%">
+	                                            <th style="height:20px;">Case Status &nbsp;&nbsp;</th>
+	                                            <td style="width:50%">
+	                                                <apex:outputtext value="{!if(wrCaseDetailObj.Status != null,wrCaseDetailObj.Status,'&nbsp;')}" escape="false"></apex:outputtext>
+	                                            </td>
+	                                        </tr>
+	
+	                                        <tr style="width:50%">
+	                                            <th style="height:20px;">Case Number &nbsp;&nbsp;</th>
+	                                            <td style="width:50%">
+	                                                <apex:outputtext value="{!if(wrCaseDetailObj.CaseNumber != null,wrCaseDetailObj.CaseNumber,'&nbsp;')}" escape="false"></apex:outputtext>
+	                                            </td>
+	                                        </tr>
+	
+	                                        <tr style="width:50%">
+	                                            <th style="height:20px;">Closed Date &nbsp;&nbsp;</th>
+	
+	                                            <td style="width:50%">
+	                                                <apex:outputtext value="{!if(strClosedDate != null,strClosedDate,'&nbsp;')}" escape="false"></apex:outputtext>
+	                                            </td>
+	
+	                                        </tr>
+	
+	                                    </table>
+	                                </div>
+	
+	
+	                                
+	
+	
+	                                <div class="description" style="margin-bottom: 3%;padding-left:5px;padding-top:5px;">
+	                                    <span class="head" style="font-weight:bold; font-family: Trebuchet Ms; margin-left: 2px;">Description</span>
+	                                    <br/>
+	                                    <br/>
+	                                    <apex:outputText escape="false">
+	                                        <pre class='wrapped' style="margin:16px; margin-left: 2px;">{!wrCaseDetailObj.description}&nbsp;</pre>
+	                                    </apex:outputText>
+	                                    
+	                                </div>
+	                         
+	                                <div class="casecomment" style="margin-bottom:3%; width: 96%;">
+	                                    <apex:outputpanel id="searchPanels" rendered="{!toShowCaseDetail}">
+	                                        <apex:outputpanel id="resultss">
+	                                            <apex:variable value="{!-1}" var="counts" />
+	                                            <script>
+	                                                $(document).ready(function () {
+	                                                    var oTable = $('#commentTable').dataTable({
+	                                                        "bStateSave": false,
+	                                                        "bScrollCollapse": false,
+	                                                        "bProcessing": false,
+	                                                        "bPaginate": false,
+	                                                        "bJQueryUI": true,
+	                                                        "bSort": false,
+	                                                        "bFilter": false,
+	                                                        "oLanguage": {
+	                                                            "sEmptyTable": "No Case comment to show."
+	                                                        },
+	                                                        "bInfo": false
+	                                                    });
+	                                                });
+	                                            </script>
+	                                            <br/>
+	                                            <div style="font-size: large;color: black;padding-left:5px; margin-top: -15px;">
+	                                                <p><b>Case Comment</b>
+	                                                </p>
+	                                            </div>
+	                                            <table cellspacing="0" cellpadding="2" border="0" id='commentTable' margin-bottom='3%' class='display'>
+	                                                <thead class="color">
+	                                                    <tr>
+	                                                        <th style="width:30%; font-weight:bold;">Comment</th>
+	                                                        <th style="width:20%; font-weight:bold;">Opened By</th>
+	                                                        <th style="width:20%; font-weight:bold;">Time/Date Opened</th>
+	                                                    </tr>
+	                                                </thead>
+	                                                <tbody>
+	                                                    <apex:variable value="{!1}" var="rowNum" />
+	                                                    <apex:repeat value="{!commentWrapperList}" var="commentWRObj">
+	                                                        <tr class="{!IF(MOD(rowNum,2)==0,'evenRow','oddRow')} x-grid3-row">
+	                                                            <td>
+	                                                                <apex:outputtext value="{!commentWRObj.commentBody} " />
+	                                                            </td>
+	                                                            <td>
+	                                                                <apex:outputtext value="{!commentWRObj.openedBy}" />
+	                                                            </td>
+	                                                            <td>
+	                                                                <apex:outputtext value="{!commentWRObj.openeddateformat}" />
+	                                                            </td>
+	                                                        </tr>
+	                                                    </apex:repeat>
+	                                                </tbody>
+	                                            </table>
+	                                        </apex:outputpanel>
+	                                    </apex:outputpanel>
+	                                </div>
+	
+	                                <div class="casecomment" style="margin-bottom:3%; ">
+	                                    <apex:outputpanel id="history" rendered="{!toShowCaseDetail}">
+	                                        <apex:outputpanel id="histories">
+	                                            <apex:variable value="{!-1}" var="counts" />
+	                                            <script>
+	                                                $(document).ready(function () {
+	                                                    var oTable = $('#HistoryTable').dataTable({
+	                                                        "bStateSave": false,
+	                                                        "bScrollCollapse": false,
+	                                                        "bProcessing": false,
+	                                                        "bPaginate": false,
+	                                                        "bJQueryUI": true,
+	                                                        "bSort": false,
+	                                                        "bFilter": false,
+	                                                        "oLanguage": {
+	                                                            "sEmptyTable": "No Case history to show."
+	                                                        },
+	                                                        "bInfo": false
+	                                                    });
+	                                                });
+	                                            </script>
+	                                            <br/>
+	                                            <div style="font-size: large;color: black;padding-left:5px; margin-top: -15px;">
+	                                                <p><b>Case History</b>
+	                                                </p>
+	                                            </div>
+	                                            <table cellspacing="0" cellpadding="2" border="0" id='HistoryTable' margin-bottom='3%' width='96%;' class='display'>
+	                                                <thead class="color">
+	                                                    <tr>
+	                                                        <th style="width:30%; font-weight:bold;">Changed Date</th>
+	                                                        <th style="width:20%; font-weight:bold;">Changed By</th>
+	                                                        <th style="width:60%;  font-weight:bold;">Action</th>
+	                                                    </tr>
+	                                                </thead>
+	                                                <tbody>
+	                                                    <apex:variable value="{!1}" var="rowNum" />
+	                                                    <apex:repeat value="{!strDateSet}" var="caseHistoryObjWr">
+	                                                        <apex:variable value="{!0}" var="Count" />
+	                                                        <apex:repeat value="{!mapHistoryInfo[caseHistoryObjWr]}" var="mapKey">
+	                                                            <apex:variable value="{!0}" var="CountCode" />
+	                                                            <tr class="{!IF(MOD(rowNum,2)==0,'evenRow','oddRow')} x-grid3-row">
+	                                                                <td>
+	                                                                    <apex:outputText rendered="{!Count==0}" value="{!mapDateConversion[caseHistoryObjWr]}"></apex:outputText>
+	                                                                    <apex:variable value="{!Count+1}" var="Count" />
+	                                                                </td>
+	                                                                <td>{!mapKey.changedByName}</td>
+	                                                                <td>
+	                                                                    <apex:outputtext value="{!mapKey.action}" escape="false"></apex:outputtext>
+	                                                                </td>
+	                                                            </tr>
+	                                                        </apex:repeat>
+	                                                        <apex:variable var="rowNum" value="{!rowNum + 1}" />
+	                                                    </apex:repeat>
+	                                                </tbody>
+	                                            </table>
+	                                        </apex:outputpanel>
+	                                    </apex:outputpanel>
+	                                </div>
+	                                
+	                            </apex:outputPanel>
+	                        </div>
+	                        </apex:outputpanel>
+	                    </div>
+	                    <apex:actionStatus id="status" onStart="showOverlay();" onstop="hideOverlay();" />
+	                    <div id="overlayNew" class="overlayNew" style="text-align:center;padding-top:190px;"></div>
+	                    <div class="loader-static" id="contentIndex" style="z-index:9999;zIndex:9999;display:none;">
+	                    <div class="loader-static-panel">
+	                        <div style='margin-top:0px;font-weight:bold;'>Please wait...</div>
+	                    </div>
+	                    <div class="loader-fix"></div>
+                	</div>
+                	<script>
+	                    var isCookieEnabled = navigator.cookieEnabled;
+	                     //alert(isCookieEnabled);
+	                    if (isCookieEnabled == false) {
+	                        alert('Cookie is not enabled on your browser. Please enable the cookie for recent searched case functionality.');
+	                    }
+	
+	                    function showOverlay() {
+	                        var o = document.getElementById('overlayNew');
+	                        o.style.display = 'block';
+	                        var oVar = document.getElementById('contentIndex');
+	                        oVar.style.display = 'block';
+	
+	                    }
+	
+	                    function hideOverlay() {
+	                        var o = document.getElementById('overlayNew');
+	                        o.style.display = 'none';
+	                        var oVar = document.getElementById('contentIndex');
+	                        oVar.style.display = 'none';
+	                    }
+                	</script>
+                </div>
+            </body>
+        </apex:outputPanel>
+    </apex:outputPanel>
+</apex:form>
+   
+</apex:page>
+ <!-- <div class="csHeader" style="float:center;">
+    <div class="topBar" style="min-width:1030px;">
+        <div class="centerhead" style="float:center;">  /resource/1386056387000/HELPDESK_CSS/html/images/sprite-icons.png
+            <ul class="nav">
+                <li class="arrow" style="background-image: url('{!URLFor($Resource.HELPDESK_CSS,'html/images/sprite-icons.png')}');"><a href="http://wiki.ringcentral.com/display/RCN/Departments">Departaments</a>
+                    <ul class="subnav">
+                        <li class=""><a href="http://wiki.ringcentral.com/display/RCN/Departments"><span>Departments</span></a></li>
+                    </ul>
+                    <ul class="subnav">
+                        <li class=""><a href="http://wiki.ringcentral.com/display/RCN/Business+Services"><span>Business Services</span></a></li>
+                        <li><a href="http://wiki.ringcentral.com/display/RCN/Customer+Care"><span>Customer Care</span></a></li>
+                        <li><a href="http://wiki.ringcentral.com/display/RCN/Engineering"><span>Engineering</span></a></li>
+                        <li><a href="http://wiki.ringcentral.com/display/RCN/Finance"><span>Finance</span></a></li>
+                        <li><a href="http://wiki.ringcentral.com/display/RCN/Human+Resources"><span>Human Resources</span></a></li>
+                        <li><a href="http://wiki.ringcentral.com/display/RCN/Information+Technology"><span>Information Technology</span></a></li>
+                        <li class="active"><a href="http://wiki.ringcentral.com/display/RCN/Legal"><span>Legal</span></a></li>
+                        <li><a href="http://wiki.ringcentral.com/display/RCN/Marketing"><span>Marketing</span></a></li>
+                        <li><a href="http://wiki.ringcentral.com/display/RCN/Operations"><span>Operations</span></a></li>
+                        <li><a href="http://wiki.ringcentral.com/display/RCN/Sales"><span>Sales</span></a></li>
+                        <li><a href="http://wiki.ringcentral.com/display/RCN/Training"><span>Training</span></a></li>
+                    </ul>
+                </li>
+                <li><a href="http://wiki.ringcentral.com/display/RCN/Company+Events">Company Events</a></li>
+                <li><a href="http://wiki.ringcentral.com/display/RCN/Tools">Tools</a></li>
+                <li><a href="http://wiki.ringcentral.com/display/RCN/Employee+Search">Employee Search</a></li>
+                <li><a href="http://wiki.ringcentral.com/display/RCN/PR+Calendar">PR Calender</a></li>
+                <li><a href="http://wiki.ringcentral.com/display/RCN/Policies">Policies</a></li>   
+            </ul>   
+        </div>
+    </div>
+     </div> 
+     <div class="csHeader">
+     <div class="center header">
+  <div class="headerleft" style="float:left;margin-top: 10px;width:1030px;">
+        <img  src="{!URLFor($Resource.HELPDESK_CSS,'html/images/logo-ring-central-it.png')}"/>
+        <span class="headTxt" >employee central</span>
+        <ul class="right" style="float:right;">
+        	<li class="phone" style="background-image: url('{!URLFor($Resource.HELPDESK_CSS,'html/images/sprite-icons.png')}');margin-right: 51px;">+1 (877) HELP-004 or (877) 4356-004</li>
+        	<li><a href="/apex/ITHelpDesk"> <span class="searchIcon" style="background-image: url('{!URLFor($Resource.HELPDESK_CSS,'html/images/sprite-icons.png')}');">
+            </span></a></li>
+    	</ul>
+    </div>
+    
+    </div>
+  </div> -->
+  
+  
+  <!--   <div class="leftNav">
+        <ul>
+            <li><a href=" http://wiki.ringcentral.com/display/RCN/EmployeeCentral#HomeFAQs">FAQ</a></li>
+            <li id="helpDesk">Helpdesk</li>
+            <ul class="subNav" style="display:none;">
+                <li><a href="mailto:helpdesk@ringcentral.com">New Helpdesk Ticket</a></li>
+                <li><a href="http://wiki.ringcentral.com/display/RCN/New+Hire+Request+Form">New Hire Ticket</a></li>
+                <li><a href="http://wiki.ringcentral.com/display/RCN/Open+A+Termination+Ticket">Termination Ticket</a></li>
+                <li><a href="mailto:helpdesk@ringcentral.com">Purchase Ticket </a></li>
+            </ul>
+            <li><a href="http://wiki.ringcentral.com/display/RCN/Knowledge+Base">Knowledge Base</a></li>
+            <li id="external">External links</li>
+            <ul class="subNavs" style="display:none;">
+				 <li><a href="https://ringcentral.okta.com/" style="  font-size: smaller;">Okta (Single Sign-On)</a></li>
+                <li><a href="https://connect.emailsrvr.com/owa/auth/logon.aspx?replaceCurrent=1&url=https%3a%2f%2fconnect.emailsrvr.com%2fowa%2f" style="font-size: smaller;">Outlook Web Access</a></li>
+                <li><a href="https://app.box.com/login/" style=" font-size: smaller;">Box </a></li>
+                <li><a href="https://webvpn.ringcentral.com/cgi-bin/welcome" style=" font-size: smaller;">VPN </a></li>
+                <li><a href="https://login.salesforce.com/" style=" font-size: smaller;">Salesforce </a></li>
+                <li><a href="http://pss.rcoffice.ringcentral.com/showLogin.cc" style="font-size: smaller;">Password Self Service </a></li>
+                <li><a href="https://im.ciscowebex.com/webim/login.htm" style="  font-size: smaller;">WebEx Web IM </a></li>
+            </ul>
+            <li id="global">The Global IT Team</li>  
+            <ul class="subNaval" style="display:none;">
+				<li><a href="http://wiki.ringcentral.com/display/RCN/IT+Workschedule" style="  font-size: smaller;">IT Workschedule </a></li>
+               	<li><a href="http://wiki.ringcentral.com/display/RCN/United+States+IT+Team" style="  font-size: smaller;">United States IT Team </a></li>
+                <li><a href="http://wiki.ringcentral.com/display/RCN/Manila+IT+Team" style=" font-size: smaller;">Manila IT Team</a></li>
+                <li><a href="http://wiki.ringcentral.com/display/RCN/St.+Petersburg+IT+Team" style=" font-size: smaller;">St. Petersburg IT Team </a></li>
+               	<li><a href="http://wiki.ringcentral.com/display/RCN/Odessa+IT+Team" style="font-size: smaller;">Odessa IT Team </a></li>
+               	<li><a href="http://wiki.ringcentral.com/display/RCN/Xiamen+IT+Team" style="font-size: smaller;">Xiamen IT Team </a></li>
+                <li><a href="http://wiki.ringcentral.com/display/RCN/List+of+RingCentral+Office+Addresses" style="font-size: smaller;">Office Addresses</a></li>
+            </ul>
+        </ul>
+    </div> -->

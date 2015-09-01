@@ -1,0 +1,280 @@
+<apex:page controller="RCSupportController" showHeader="false" cache="true" expires="{!cacheMaxAge}">
+ 
+ <style>
+a.trainingVideoLink {font-size:10pt; text-decoration:underline; } 
+a.trainingVideoLink:link    { color:blue; text-decoration:underline; }
+a.trainingVideoLink:visited { color:purple; text-decoration:underline; }
+
+</style>
+
+<!-- <apex:variable var="currentKeywordVar" value="{!currentKeyword}" />
+    <apex:variable var="keywordParameterNameVar" value="{!keywordParameterName}" />
+    <apex:variable var="currentCategoryVar" value="{!currentCategory}" />
+    <apex:variable var="currentArticleTypeVar" value="{!currentArticleType}" />
+    <apex:variable var="categoryParameterNameVar" value="{!categoryParameterName}" />
+    <apex:variable var="articleTypeParameterNameVar" value="{!articleTypeParameterName}" />
+    <apex:variable var="searchUrlVar" value="{!searchUrl}" />
+    <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+    <apex:variable var="brandFilterVar" value="{!BrandFilter}" />      
+-->     
+    <apex:composition template="{!$Site.Template}">
+    <apex:define name="search">  
+       
+      
+      <apex:outputPanel layout="block">
+       <span  style="margin-left:5%">
+           <a href="javascript:history.back()" style="color: #015BA7;">« Go Back </a>
+          </span>
+            <div class="tabs">
+                <div class="tabs_left"></div>
+                <div class="tabs_center">
+                    <ul class="tab_area">
+                        <li class="tab current">
+                            <div class="tab_left"></div>
+                            <p>Guides</p>
+                            <div class="tab_right"></div>
+                        </li>
+                        <li class="tab">
+                            <div class="tab_left"></div>
+                            <p>Videos</p>
+                            <div class="tab_right"></div>
+                        </li>
+                    </ul>
+                    <div class="cb"></div>
+                    <div class="tab_content">
+                        <div class="box_tab visible"><BR/>
+                            <div class="info_line guide">
+                                <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Userguide</h2><BR/><BR/>
+                            <!--<p class="subheader">Suggested Items</p>-->
+                                    <p class="il_header">Product Guides</p>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/guides/officeuserguide.pdf">Office Quick Start Guide</A><BR/>
+                                <BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                          
+                                    <A target="_blank" class="trainingVideoLink" HREF="http://info.ringcentral.com/guides/userguide.pdf">Professional User Guide</A><BR/>
+                                <BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/images/RingCentralFax_QuickStartGuide.pdf">Fax Quick Start Guide</A>
+                            </div>
+                        </div>
+                        <div class="box_tab"><BR/>
+                            <div class="info_line video">
+                                <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Videos</h2>
+                                <!-- Modified at August 17, 2011 -->
+                                <BR/>
+                                <table width="100%" cellspacing="5">
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th colspan="2">Top Rated: General</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/ZD4ykY6JIWI" >Sending Fax via E-mail</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/R7A9OrSIYag" >Downloading Voice or Fax Messages to Your PC</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th colspan="2">Blackberry Application</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/ov5E42yzMo0" >Installation Walkthrough</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/gUzLLx1KAQ0" >Application Overview</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/nVRd8S6bjRI" >RingOut Feature</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/xYFrizrL8nA" >Configuring RingOut Settings</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/bZmjhnGaBeI" >Caller ID Settings</a></td>
+                                                            <td width="50%">&nbsp;</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead >
+                                                        <tr><th colspan="2">Android Application</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/Wi_hwYkyJ40" >Installation Walkthrough</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/c4Xp32wi4Zg" >Application Overview</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/MTR4TmdTlDk" >RingOut Feature</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/zNeDKhBqoFg" >Settings Configuration</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">
+                                                <table>
+                                                    <thead>
+                                                        <tr><th colspan="2">iPhone Application</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/k_4HmjKhpVM" >Installation Walkthrough</a></td>
+                                                            <td width="50%">&nbsp;</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th colspan="2">Call Controller for Windows</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/d-ovlO8C2wg" >Sending Fax</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/A2DJQOYiIMM" >Signing Faxes</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/B_JzTNjWs8s" >Editing Fax Cover Page</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/tzjiHMewbXU" >Adding a document to a fax from Microsoft Applications</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th colspan="2">Call Controller for MAC</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/4Hcc_uHXkf0" >Downloading Call Controller</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/HxJR-LK9ltE" >Sending Fax</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th colspan="2">Call Management</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/0L9HDHAwbPE" >Sending Inbound Calls Straight to your Mobile</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/_GHfBD5THNc" >Blocking Unwanted Calls</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/IxxrGZtGDco" >Creating a New Custom Answering Rule</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/xJnAgC0CdM4" >Creating An After Hour Answering Rule</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        
+                                        
+                                    </table>
+                            <!--<p class="subheader">Suggested Items</p>-->
+                                    <!-- 
+                                    <BR/><BR/><BR/><p class="il_header">All Videos</p>
+                                    <TABLE width="100%">
+                                        <TR>
+                                            <TD width="11%">&nbsp;&nbsp;&nbsp;</TD>
+                                            <TD width="89%">
+                                                <TABLE width="100%" cellspacing="6">
+                                                    <TR>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink"  HREF="http://www.ringcentral.com/support/training.html">Answering Rules Overivew - The Basics</A></TD>
+                                                        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=contacts">Viewing contacts</A></TD>
+                                                    </TR>
+                                                    <TR>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=advanced">Answering Rules Overivew - Advanced</A></TD>
+                                                        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=fax">Sending and receiving faxes</A></TD>
+                                                    </TR>
+                                                    <TR>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=config">Configuring Answering Rules</A></TD>
+                                                        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=message_notification">Getting message notifications</A></TD>
+                                                    </TR>
+                                                    <TR>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=greetings">Setting up greetings</A></TD>
+                                                        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=ringme">Using Ringme</A></TD>
+                                                    </TR>
+                                                    <TR>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=call_logs">Using the Call Log</A></TD>
+                                                        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=ringout">Using Ringout</A></TD>
+                                                    </TR>
+                                                </TABLE>                                                        
+                                            </TD>
+                                        </TR>
+                                    </TABLE>
+                                 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabs_right"></div>
+            </div>
+            <script>
+            (function($) {
+            $(function() {
+            
+                $('ul.tab_area').delegate('li:not(.current)', 'click', function() {
+                    $(this).addClass('current').siblings().removeClass('current')
+                        .parents('div.tabs_center').find('div.box_tab').hide().eq($(this).index()).fadeIn(0);
+                })
+            
+            })
+            })(jQuery)
+            </script>
+            
+      </apex:outputPanel>
+
+    </apex:define>
+    </apex:composition>
+      
+</apex:page>

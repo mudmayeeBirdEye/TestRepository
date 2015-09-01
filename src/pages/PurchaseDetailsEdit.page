@@ -1,0 +1,105 @@
+<apex:page standardController="IT_Purchase_Order__c" tabStyle="IT_Purchase_Order__c" extensions="PurchaseOrderExt">
+<script type="text/javascript"> 
+  function openLookup(baseURL, width, modified, searchParam){
+    var originalbaseURL = baseURL;
+    var originalwidth = width;
+    var originalmodified = modified;
+    var originalsearchParam = searchParam;
+    var lookupType = baseURL.substr(baseURL.length-3, 3);
+    
+    if (modified == '1') baseURL = baseURL + searchParam;
+    var isCustomLookup = false;
+     // Following "aoH" is the lookup type for Employee object so change this as per your standard or custom object
+    if(lookupType == "a0H"){
+      var urlArr = baseURL.split("&");
+      var txtId = '';
+      if(urlArr.length > 2) {
+        urlArr = urlArr[1].split('=');
+        txtId = urlArr[1];
+      }
+       // Following is the url of Custom Lookup page. You need to change that accordingly
+      baseURL = "/apex/CustomEmployeeLookup?txt=" + txtId;
+       // Following is the id of apex:form control "myForm". You need to change that accordingly
+      baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.myForm}");
+      if (modified == '1') {
+        baseURL = baseURL + "&lksearch=" + searchParam;
+      }
+       // Following is the ID of inputField that is the lookup to be customized as custom lookup
+      if( txtId.indexOf('eu') > -1 ){
+        isCustomLookup = true;
+       }
+      if( txtId.indexOf('au') > -1 ){
+        isCustomLookup = true;
+       }
+      if( txtId.indexOf('ru') > -1 ){
+        isCustomLookup = true;
+      } 
+    }
+    if(isCustomLookup == true){
+      openPopup(baseURL, "lookup", 350, 480, "width=900,height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+    } else {
+      if (modified == '1') originalbaseURL = originalbaseURL + originalsearchParam;
+      openPopup(originalbaseURL, "lookup", 350, 480, "width="+originalwidth+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+    } 
+  }
+</script>
+<apex:pageMessages id="msg" escape="false"/>
+<apex:sectionHeader title="IT Purchase Order Edit"  subtitle="{!IT_Purchase_Order__c.Name}" rendered="{!IF(IT_Purchase_Order__c.id == NULL , false, true)}"/>
+<apex:sectionHeader title="IT Purchase Order Edit"  subtitle="New IT Purchase Order" rendered="{!IF(IT_Purchase_Order__c.id == NULL , true, false)}"/>
+
+<apex:form id="myForm" >
+
+          <apex:pageBlock mode="Edit">    
+                <apex:pageBlockSection title="IT Purchase Order Detail" columns="2">
+                       <apex:inputField value="{!IT_Purchase_Order__c.name}" rendered="{!IF((IT_Purchase_Order__c.id != NULL && ($CurrentPage.parameters.clone == null || $CurrentPage.parameters.clone == '') ), true, false)}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Status__c}" required="true"/>                       
+                       <apex:inputField value="{!IT_Purchase_Order__c.PO_Number__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Purchase_Date__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Request_Date__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Vendor__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Case__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Amount__c}"/>
+                        <apex:inputField value="{!IT_Purchase_Order__c.Category__c}" required="true"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Description__c}" style="width:230px;"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Purchase_Justification__c}" style="width:150px;"/>
+                       <apex:outputField value="{!IT_Purchase_Order__c.OwnerId}" rendered="{!IF(IT_Purchase_Order__c.id != NULL , true, false)}"/>
+                  </apex:pageBlockSection>     
+                 
+                  <apex:pageBlockSection title="End User Details" columns="2">
+                        <apex:inputField value="{!IT_Purchase_Order__c.End_User_Contact__c}" id="eu" required="true"/>
+                        <apex:inputField value="{!IT_Purchase_Order__c.Approved_by_Contact__c}" id="au"/>
+                        <apex:inputField value="{!IT_Purchase_Order__c.Location__c}"/> 
+                        <apex:inputField value="{!IT_Purchase_Order__c.Requester_Contact__c}" id="ru"/>
+                        <apex:inputField value="{!IT_Purchase_Order__c.Department__c}"/>         
+                  </apex:pageBlockSection>   
+                   <apex:pageBlockSection title="Tracking Details" columns="2">
+                        <apex:inputField value="{!IT_Purchase_Order__c.Delivery_Date__c}"/>
+                        <apex:inputField value="{!IT_Purchase_Order__c.Tracking_URL__c}"/>
+                        <apex:inputField value="{!IT_Purchase_Order__c.Tracking_Code__c}"/>
+                   </apex:pageBlockSection>      
+                 
+                 <!--  <apex:inputField value="{!IT_Purchase_Order__c.Requester_Name__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Requester_Email__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Request_Subject__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.LastModifiedDate}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.LastModifiedById}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.LastActivityDate}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.IsDeleted}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.End_User_Name__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.End_User_Manager_Name__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.End_User_Manager_Email__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.End_User_Email__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.CurrencyIsoCode}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.CreatedDate}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.CreatedById}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Completion_Date__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Approver_Name__c}"/>
+                       <apex:inputField value="{!IT_Purchase_Order__c.Approver_Email__c}"/> -->
+            
+             <apex:pageBlockButtons >
+                    <apex:commandButton action="{!saveOrder}" id="saveButton" value="Save"/>
+                    <apex:commandButton action="{!cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>  
+         </apex:pageBlock>
+</apex:form>
+</apex:page>

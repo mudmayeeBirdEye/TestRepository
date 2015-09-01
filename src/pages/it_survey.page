@@ -1,0 +1,45 @@
+<apex:page controller="ITSurveyController" cache="false" showHeader="false">
+<style>
+   b {color:#798496;font-family: Arial; font-size:13px; font-style:normal; line-height:20px;}
+    .content{border: 1px solid #000; width: 655px; padding: 10px;font-size:12px; position:absolute; left:320px; background-color: #EDEFF4;}
+    
+     input[type="radio"] {
+            border:none !important;
+            //background: none !important;
+            background-color: transparent !important;
+        }
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.Style_Resources, 'default2.style.css')}"/>
+<div class='content'>
+<apex:pageMessages />
+  <!--   <apex:dynamicComponent componentValue="{!logo}"/><br/><br/>-->
+       <apex:outputText escape="false" rendered="{!errorflag }"><b>Invalid Survey</b></apex:outputText>
+       <apex:dynamicComponent componentValue="{!alradyFilled}" rendered="{!RespondFlag}"/>
+         <apex:dynamicComponent componentValue="{!ThanksMsg}"/> 
+    <apex:form id="theForm">
+        <apex:dynamicComponent componentValue="{!ITSurvey}" rendered="{!isEmpty}"/>
+    </apex:form>      
+</div>
+<script>
+var maximumLength = 2000;
+
+function checkLength(control, maximum) {
+    var length = control.value.length;
+    
+    if (length > maximum) {
+        alert('Please limit your message to ' + maximumLength
+        + ' characters. There are currently ' + length + '.');
+    return false;
+    }
+return true;
+}
+
+function validate(form) {
+    var controls = form.elements;
+    if (!checkLength(controls.textArea, maximumLength))
+    return false;
+
+return true;
+}
+</script>
+</apex:page>

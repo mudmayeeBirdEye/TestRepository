@@ -1,0 +1,440 @@
+<apex:page >
+  <link rel="stylesheet" type="text/css" href="https://cs12.salesforce.com/resource/1299913251000/javascript/Images/menu.css"></link>
+    <script src="https://cs12.salesforce.com/resource/1286257412000/jquery/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <script src="https://cs12.salesforce.com/resource/1286257412000/jquery/js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
+    <script src="https://cs12.salesforce.com/resource/1394701041000/rc_sales_link"></script>
+<script src="https://cs12.salesforce.com/support/api/33.0/interaction.js"></script>
+        <script type="text/javascript">
+        var r$ = jQuery.noConflict();
+//r$('.sdmenu').on('click', '#row3Image', headerClick);
+        console.log('in component');
+        function headerClick () {
+            console.log('header clicked');
+        }
+        var currYear = new Date().getFullYear();
+        var odR = 0;
+        var ttName;
+        var inFocus = 0;
+    
+        function showHideDiv(rCont, ttlName) {
+            if (odR == 0) {
+                odR = rCont;
+                ttName = ttlName;
+            }
+            if (document.getElementById("divR" + odR + "_sbchd") != null && odR != rCont) {
+                document.getElementById("divR" + odR + "_sbchd").style.display = "none";
+                document.getElementById("row" + odR + "Image").innerHTML = "<img src='https://na6.salesforce.com/resource/1299913251000/javascript/Images/collapsed.png' class='arrowLeftNavigation'/>" + ttName;
+                odR = rCont;
+                ttName = ttlName;
+            }
+            var curDiv = document.getElementById("divR" + rCont + "_sbchd");
+            curDiv.style.display = "block";
+            document.getElementById("row" + rCont + "Image").innerHTML = "<img src='https://na6.salesforce.com/resource/1299913251000/javascript/Images/expanded.png' class='arrowLeftNavigation' />" + ttlName;
+        }
+    
+        function closeCurrentDiv(rCont, ttlName) {
+           
+            document.getElementById("divR" + rCont + "_sbchd").style.display = "none";
+            document.getElementById("row" + rCont + "Image").innerHTML = "<img src='https://na6.salesforce.com/resource/1299913251000/javascript/Images/collapsed.png' class='arrowLeftNavigation' />" + ttlName;
+            var iframeArray = document.getElementsByTagName('iframe');
+            //r$('#row3Image').parent().parent().parent().parent().css('display', 'none');
+            // elem.parent().parent().parent().parent().css('display', 'none');
+            console.log(r$(window));
+            for(var i=0; i<iframeArray.length;i++){
+                if(iframeArray[i].src.indexOf("RCSalesLinkHomePageComponent") > -1){
+                    alert('Yesssss Found');
+                }
+            }
+            
+            //console.log($("body.sfdcBody").get(0).clientHeight);
+            window.parent.postMessage("name", "https://cs12.salesforce.com");
+            console.log('message posted');
+        }
+    
+        function w_opn(url, status) {
+            if (status == true) {
+                window.open(url, '_blank', 'left=20,top=20,width=900,height=600,toolbar=1,resizable=0,scrollbars=yes,status=yes');
+            } else {
+                location.href = url;
+            }
+        }
+    </script>    
+    
+    <div class="sdmenu">
+        <span id="row1Image" class="title" style="background: url(https://cs12.salesforce.com/resource/1299913251000/javascript/Images/toptitle.png) no-repeat scroll 0% 0% transparent; -moz-background-inline-policy: continuous; cursor: pointer;" onmouseover="showHideDiv('1','Smart Search')" onclick="closeCurrentDiv('1','Smart Search')">
+            <img src="https://cs12.salesforce.com/resource/1299913251000/javascript/Images/expanded.png" class="arrowLeftNavigation">Smart Search</img>
+            </span>
+            <div class="submenu" id="divR1_sbchd" style="display: block;">
+                <a href="#" onclick="w_opn('https://c.na6.visual.force.com/apex/LeadSearchExtension',false)">Smart  Search</a>
+            </div>
+            <span id="row2Image" class="title" style="background: url(https://cs12.salesforce.com/resource/1299913251000/javascript/Images/toptitle.png) no-repeat scroll 0% 0% transparent; -moz-background-inline-policy: continuous; cursor: pointer;" onmouseover="showHideDiv('2','Help')" onclick="closeCurrentDiv('2','Help')">
+                <img src="https://cs12.salesforce.com/resource/1299913251000/javascript/Images/expanded.png" class="arrowLeftNavigation">Help</img>
+                </span>
+                <div class="submenu" id="divR2_sbchd" style="display: block;">
+                    <a href="#" onclick="w_opn('http://helpdesk.rcoffice.ringcentral.com',true)">IT</a>
+                    <a href="#" onclick="w_opn('https://cs12.salesforce.com/sserv/login.jsp?orgId=00D80000000aRUX',true)">Business   Services</a>
+                </div>
+                <span id="row3Image" class="title" style="background: url(https://cs12.salesforce.com/resource/1299913251000/javascript/Images/toptitle.png) no-repeat scroll 0% 0% transparent; -moz-background-inline-policy: continuous; cursor: pointer;" onmouseover="showHideDiv('3','Tool')" onclick="closeCurrentDiv('3','Tool')">
+                    <img src="https://cs12.salesforce.com/resource/1299913251000/javascript/Images/expanded.png" class="arrowLeftNavigation">Tool</img>
+                    </span>
+                    <div class="submenu" id="divR3_sbchd" style="display: block;">
+                        <a href="#" onclick="w_opn('https://cs12.salesforce.com/00U/c?cType=1&amp;cal=ATT+Dispatch+MLA&amp;cal_lkid=00580000005STud&amp;cal_lkold=ATT+Dispatch+MLA&amp;cal_lspf=1&amp;cal_lspf=1&amp;md0='+currYear+'&amp;md1',false)">AT&amp;T  Dispatch MLA</a>
+                        <a href="#" onclick="w_opn('/00U/c?cType=1&amp;cal=RC+Dispatch+MLA&amp;cal_lkid=00580000005STxh&amp;cal_lkold=RC+Dispatch+MLA&amp;cal_lspf=1&amp;md0='+currYear+'&amp;md1',false)">RC Dispatch MLA</a>
+                        <a href="#" onclick="w_opn('/00U/c?cType=1&amp;cal=All+Dispatch+US&amp;cal_lkid=00580000005STxc&amp;cal_lkold=All+Dispatch+US&amp;cal_lspf=1&amp;md0='+currYear+'&amp;md1',false)">All Dispatch US</a>
+                        <a href="#" onclick="w_opn('/00U/c?cType=1&amp;cal=UK+Dispatch+Cal&amp;cal_lkid=00580000003eEhr&amp;cal_lkold=UK+Dispatch+Cal&amp;cal_lspf=1',false)">UK    Dispatch Cal &lt;10</a>
+                        <a href="#" onclick="w_opn('/00U/c?cType=1&amp;cal=UK+Dispatch+Cal&amp;cal_lkid=023800000020yHw&amp;cal_lkold=UK+Dispatch+Cal&amp;cal_lspf=1&amp;md0='+currYear+'&amp;md1',false)">UK Dispatch Cal +10</a>
+                        <a href="#" onclick="w_opn('https://cs12.salesforce.com/00U/c?cType=1&amp;cal=O%40H+Dispatcher&amp;cal_lkid=00580000003Sqjz&amp;cal_lkold=O%40H+Dispatcher&amp;cal_lspf=1&amp;md0='+currYear+'&amp;md1=3',false)">SIA    Dispatch Calendar</a>
+                        <a href="#" onclick="w_opn('https://cs12.salesforce.com/00U/c?cType=1&amp;cal=VAR+MRKT+Calendar&amp;cal_lkid=00580000004U98F&amp;cal_lkold=VAR+MRKT+Calendar&amp;cal_lspf=1&amp;md0='+currYear+'&amp;md1',false)">VAR    MRKT Calendar</a>
+                        <a href="#" onclick="w_opn('https://cs12.salesforce.com/00U/c?cType=1&amp;cal=Channel+Sales+Manager&amp;cal_lkid=00580000004HZzE&amp;cal_lkold=Channel+Sales+Manager&amp;cal_lspf=1&amp;md0='+currYear+'&amp;md1=1',false)">VAR  and NA Calendar</a>
+                        <a href="#" onclick="w_opn('https://cs12.salesforce.com/00U/c?cType=1&amp;cal=Outbound+Calendar&amp;cal_lkid=00580000004VEOa&amp;cal_lkold=Outbound+Calendar&amp;cal_lspf=1&amp;md0='+currYear+'&amp;md1=5',false)">Outbound Calendar</a>
+                        <a href="#" onclick=" w_opn('https://cs12.salesforce.com/00U/c?cType=1&amp;cal=Premium+Support&amp;cal_lkid=00580000003tD30&amp;cal_lkold=Premium+Support&amp;cal_lspf=1&amp;md0='+currYear+'&amp;md1=6',false)">Premium  Support</a>
+                        <a href="#" onclick="w_opn('https://cs12.salesforce.com/apex/edgelead',true)">NewEdge    Form</a>
+                        <a href="#" onclick="w_opn('https://cs12.salesforce.com/a0S/o',true)">Reseller   Request</a>
+                        <a href="#" onclick="w_opn('https://cs12.salesforce.com/sfc/#workspaces',true)">Workspaces</a>
+                        <a href="#" onclick="w_opn('http://ai.ringcentral.com:8088',true)">Admin    Tool</a>
+                        <link class="user" href="https://cs12.salesforce.com/resource/1286257412000/jquery/css/totd-theme/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css"></link>
+                            <style type="text/css">.RNTipLinkClass {    font-family: Arial, Lucida Grande, Helvetica;   font-weight: normal;    text-decoration: none;  color: #1468B6;}</style>
+                            <div id="sidebarComponent"></div>
+                                <a href="javaScript:void(0);" id="dialog_link" class="RNTipLinkClass">For   Your Information</a>
+                            </div>
+                    </div>
+                    <div style="display: none; z-index: 1000; outline-width: 0px; outline-style: initial; outline-color: initial; position: absolute;" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-dialog">
+                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on">
+                            <span class="ui-dialog-title" id="ui-dialog-title-dialog" unselectable="on"></span>
+                            <a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" unselectable="on">
+                                <span class="ui-icon ui-icon-closethick" unselectable="on">close</span>
+                            </a>
+                        </div>
+                        <div class="ui-resizable-handle ui-resizable-n" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-e" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-s" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-w" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se" style="z-index: 1001;" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-sw" style="z-index: 1002;" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-ne" style="z-index: 1003;" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-nw" style="z-index: 1004;" unselectable="on"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: none; z-index: 1000; outline: 0px; position: absolute;" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-dialog">
+                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on">
+                            <span class="ui-dialog-title" id="ui-dialog-title-dialog" unselectable="on"></span>
+                            <a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" unselectable="on">
+                                <span class="ui-icon ui-icon-closethick" unselectable="on">close</span>
+                            </a>
+                        </div>
+                        <div class="ui-resizable-handle ui-resizable-n" style="" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-e" style="" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-s" style="" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-w" style="" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se" style="z-index: 1001;" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-sw" style="z-index: 1002;" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-ne" style="z-index: 1003;" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-nw" style="z-index: 1004;" unselectable="on"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: none; z-index: 1000; outline: 0px; position: absolute;" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-dialog">
+                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on">
+                            <span class="ui-dialog-title" id="ui-dialog-title-dialog" unselectable="on"></span>
+                            <a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" unselectable="on">
+                                <span class="ui-icon ui-icon-closethick" unselectable="on">close</span>
+                            </a>
+                        </div>
+                        <div class="ui-resizable-handle ui-resizable-n" style="" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-e" style="" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-s" style="" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-w" style="" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se" style="z-index: 1001;" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-sw" style="z-index: 1002;" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-ne" style="z-index: 1003;" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-nw" style="z-index: 1004;" unselectable="on"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-dialog" style="display: none; z-index: 1000; outline: 0px; position: absolute;">
+                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on">
+                            <span class="ui-dialog-title" id="ui-dialog-title-dialog" unselectable="on"></span>
+                            <a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" unselectable="on">
+                                <span class="ui-icon ui-icon-closethick" unselectable="on">close</span>
+                            </a>
+                        </div>
+                        <div class="ui-resizable-handle ui-resizable-n" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-e" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-s" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-w" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se" unselectable="on" style="z-index: 1001;"></div>
+                        <div class="ui-resizable-handle ui-resizable-sw" unselectable="on" style="z-index: 1002;"></div>
+                        <div class="ui-resizable-handle ui-resizable-ne" unselectable="on" style="z-index: 1003;"></div>
+                        <div class="ui-resizable-handle ui-resizable-nw" unselectable="on" style="z-index: 1004;"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-labelledby="ui-dialog-title-dialog" role="dialog" tabindex="-1" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" style="display: none; z-index: 1000; outline: 0px none; position: absolute;">
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                            <span style="-moz-user-select: none;" unselectable="on" id="ui-dialog-title-dialog" class="ui-dialog-title">&nbsp;</span>
+                            <a style="-moz-user-select: none;" unselectable="on" role="button" class="ui-dialog-titlebar-close ui-corner-all" href="#">
+                                <span style="-moz-user-select: none;" unselectable="on" class="ui-icon ui-icon-closethick">close</span>
+                            </a>
+                        </div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-n"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-e"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-s"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-w"></div>
+                        <div unselectable="on" style="z-index: 1001; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se"></div>
+                        <div unselectable="on" style="z-index: 1002; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-sw"></div>
+                        <div unselectable="on" style="z-index: 1003; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-ne"></div>
+                        <div unselectable="on" style="z-index: 1004; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-nw"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-labelledby="ui-dialog-title-dialog" role="dialog" tabindex="-1" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" style="display: none; z-index: 1000; outline: 0px none; position: absolute;">
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                            <span style="-moz-user-select: none;" unselectable="on" id="ui-dialog-title-dialog" class="ui-dialog-title">&nbsp;</span>
+                            <a style="-moz-user-select: none;" unselectable="on" role="button" class="ui-dialog-titlebar-close ui-corner-all" href="#">
+                                <span style="-moz-user-select: none;" unselectable="on" class="ui-icon ui-icon-closethick">close</span>
+                            </a>
+                        </div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-n"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-e"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-s"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-w"></div>
+                        <div unselectable="on" style="z-index: 1001; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se"></div>
+                        <div unselectable="on" style="z-index: 1002; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-sw"></div>
+                        <div unselectable="on" style="z-index: 1003; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-ne"></div>
+                        <div unselectable="on" style="z-index: 1004; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-nw"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-labelledby="ui-dialog-title-dialog" role="dialog" tabindex="-1" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" style="display: none; z-index: 1000; outline: 0px none; position: absolute;">
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                            <span style="-moz-user-select: none;" unselectable="on" id="ui-dialog-title-dialog" class="ui-dialog-title">&nbsp;</span>
+                            <a style="-moz-user-select: none;" unselectable="on" role="button" class="ui-dialog-titlebar-close ui-corner-all" href="#">
+                                <span style="-moz-user-select: none;" unselectable="on" class="ui-icon ui-icon-closethick">close</span>
+                            </a>
+                        </div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-n"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-e"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-s"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-w"></div>
+                        <div unselectable="on" style="z-index: 1001; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se"></div>
+                        <div unselectable="on" style="z-index: 1002; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-sw"></div>
+                        <div unselectable="on" style="z-index: 1003; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-ne"></div>
+                        <div unselectable="on" style="z-index: 1004; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-nw"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-labelledby="ui-dialog-title-dialog" role="dialog" tabindex="-1" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" style="display: none; z-index: 1000; outline: 0px none; position: absolute;">
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                            <span style="-moz-user-select: none;" unselectable="on" id="ui-dialog-title-dialog" class="ui-dialog-title">&nbsp;</span>
+                            <a style="-moz-user-select: none;" unselectable="on" role="button" class="ui-dialog-titlebar-close ui-corner-all" href="#">
+                                <span style="-moz-user-select: none;" unselectable="on" class="ui-icon ui-icon-closethick">close</span>
+                            </a>
+                        </div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-n"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-e"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-s"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-w"></div>
+                        <div unselectable="on" style="z-index: 1001; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se"></div>
+                        <div unselectable="on" style="z-index: 1002; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-sw"></div>
+                        <div unselectable="on" style="z-index: 1003; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-ne"></div>
+                        <div unselectable="on" style="z-index: 1004; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-nw"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-labelledby="ui-dialog-title-dialog" role="dialog" tabindex="-1" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" style="display: none; z-index: 1000; outline: 0px none; position: absolute;">
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                            <span style="-moz-user-select: none;" unselectable="on" id="ui-dialog-title-dialog" class="ui-dialog-title">&nbsp;</span>
+                            <a style="-moz-user-select: none;" unselectable="on" role="button" class="ui-dialog-titlebar-close ui-corner-all" href="#">
+                                <span style="-moz-user-select: none;" unselectable="on" class="ui-icon ui-icon-closethick">close</span>
+                            </a>
+                        </div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-n"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-e"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-s"></div>
+                        <div style="-moz-user-select: none;" unselectable="on" class="ui-resizable-handle ui-resizable-w"></div>
+                        <div unselectable="on" style="z-index: 1001; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se"></div>
+                        <div unselectable="on" style="z-index: 1002; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-sw"></div>
+                        <div unselectable="on" style="z-index: 1003; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-ne"></div>
+                        <div unselectable="on" style="z-index: 1004; -moz-user-select: none;" class="ui-resizable-handle ui-resizable-nw"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button aria-disabled="false" role="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-dialog" style="display: none; z-index: 1000; outline: 0px; position: absolute;">
+                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on">
+                            <span class="ui-dialog-title" id="ui-dialog-title-dialog" unselectable="on">&nbsp;</span>
+                            <a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" unselectable="on">
+                                <span class="ui-icon ui-icon-closethick" unselectable="on">close</span>
+                            </a>
+                        </div>
+                        <div class="ui-resizable-handle ui-resizable-n" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-e" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-s" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-w" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se" unselectable="on" style="z-index: 1001;"></div>
+                        <div class="ui-resizable-handle ui-resizable-sw" unselectable="on" style="z-index: 1002;"></div>
+                        <div class="ui-resizable-handle ui-resizable-ne" unselectable="on" style="z-index: 1003;"></div>
+                        <div class="ui-resizable-handle ui-resizable-nw" unselectable="on" style="z-index: 1004;"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-dialog" style="display: none; z-index: 1000; outline: 0px; position: absolute;">
+                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on">
+                            <span class="ui-dialog-title" id="ui-dialog-title-dialog" unselectable="on">&nbsp;</span>
+                            <a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" unselectable="on">
+                                <span class="ui-icon ui-icon-closethick" unselectable="on">close</span>
+                            </a>
+                        </div>
+                        <div class="ui-resizable-handle ui-resizable-n" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-e" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-s" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-w" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se" unselectable="on" style="z-index: 1001;"></div>
+                        <div class="ui-resizable-handle ui-resizable-sw" unselectable="on" style="z-index: 1002;"></div>
+                        <div class="ui-resizable-handle ui-resizable-ne" unselectable="on" style="z-index: 1003;"></div>
+                        <div class="ui-resizable-handle ui-resizable-nw" unselectable="on" style="z-index: 1004;"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-dialog" style="display: none; z-index: 1000; outline: 0px; position: absolute;">
+                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on">
+                            <span class="ui-dialog-title" id="ui-dialog-title-dialog" unselectable="on">&nbsp;</span>
+                            <a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" unselectable="on">
+                                <span class="ui-icon ui-icon-closethick" unselectable="on">close</span>
+                            </a>
+                        </div>
+                        <div class="ui-resizable-handle ui-resizable-n" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-e" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-s" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-w" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se" unselectable="on" style="z-index: 1001;"></div>
+                        <div class="ui-resizable-handle ui-resizable-sw" unselectable="on" style="z-index: 1002;"></div>
+                        <div class="ui-resizable-handle ui-resizable-ne" unselectable="on" style="z-index: 1003;"></div>
+                        <div class="ui-resizable-handle ui-resizable-nw" unselectable="on" style="z-index: 1004;"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-dialog" style="display: none; z-index: 1000; outline: 0px; position: absolute;">
+                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on">
+                            <span class="ui-dialog-title" id="ui-dialog-title-dialog" unselectable="on">&nbsp;</span>
+                            <a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" unselectable="on">
+                                <span class="ui-icon ui-icon-closethick" unselectable="on">close</span>
+                            </a>
+                        </div>
+                        <div id="dialog" class="ui-dialog-content ui-widget-content" style=""></div>
+                        <div class="ui-resizable-handle ui-resizable-n" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-e" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-s" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-w" unselectable="on"></div>
+                        <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se" unselectable="on" style="z-index: 1001;"></div>
+                        <div class="ui-resizable-handle ui-resizable-sw" unselectable="on" style="z-index: 1002;"></div>
+                        <div class="ui-resizable-handle ui-resizable-ne" unselectable="on" style="z-index: 1003;"></div>
+                        <div class="ui-resizable-handle ui-resizable-nw" unselectable="on" style="z-index: 1004;"></div>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <div class="ui-dialog-buttonset">
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">I have read this</span>
+                                </button>
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                                    <span class="ui-button-text">Close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+</apex:page>

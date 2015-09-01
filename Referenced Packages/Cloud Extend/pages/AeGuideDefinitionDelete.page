@@ -1,0 +1,2 @@
+<apex:page standardController="ce4sf20_001__Guide_Definition__c" extensions="ce4sf20_001.AeGuideDefinitionControllerExt" action="{!deleteAndRedirect}">
+</apex:page>

@@ -1,0 +1,1 @@
+<apex:page standardController="Approval__c"  extensions="Approvaldefaults" action="{!actapprovalObject}"/>

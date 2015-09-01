@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Chat_Transcript_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Chat Transcript Id</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Chat_Transcript__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Link to the Chat Transcript record</description>
+        <externalId>false</externalId>
+        <formula>IF( OR(ISNULL(Chat_Transcript_Id__c),LEN(Chat_Transcript_Id__c) == 0),&quot;&quot;,  HYPERLINK(&apos;/&apos; + Chat_Transcript_Id__c , &apos;View&apos;,&apos;_self&apos;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Link to the Chat Transcript record</inlineHelpText>
+        <label>Chat Transcript</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+</CustomObject>

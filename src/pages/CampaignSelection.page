@@ -1,0 +1,207 @@
+<apex:page standardController="Opportunity"  extensions="CampaignSelectionController"  action="{!callDispatcher}" readonly="true">
+    <apex:stylesheet value="{!URLFOR($Resource.Upsell_Style)}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.RCBlockUI, 'blockUI/js/jquery.blockUI.js')}" />
+    
+    <script type="text/javascript"> 
+        function showOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'visible';
+         }
+        
+        function hideOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'hidden';
+         }
+         
+         $(function() {
+            $.blockUI({
+            message : '<div class="preloader"><img src="' + '{!URLFOR($Resource.loading)}' + '" /><div align="center" id="block-ui-msg"><span id="firstmsg">Please wait</span></div></div>',
+            css : {
+            padding : '0',
+            margin : '0',
+            width: '500px',
+            border: 'none',
+            height: '200px',
+            left: '32%',
+            top: '30%',
+            background: 'none'
+            }
+         });
+         $(window).load(function() { $.unblockUI(); });
+         }); 
+         
+    </script>
+    
+     <!-- <style type="text/css">
+        body .x-btn-pressed, body .x-btn-click, body .x-btn-menu-active, body button:active, body .btn:active, body .btnPressed, body .btnCancel:active, body .menuButton .menuButtonButton:active {
+            background-position: left bottom !important;
+            border-color: #585858 #585858 #939393 !important;
+        }
+        body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+            background: none !important;
+        }
+        body button:hover, body .btn:hover, body .btnCancel:hover, body .menuButton .menuButtonButton:hover{
+            background-position: left bottom !important;
+        }
+        .b1 {color:Red;}
+
+        .centerAlign TD {
+             vertical-align:middle !important;
+             height:100% !important;
+        }
+   
+        #overlay {
+            background: no-repeat scroll top center gray;
+            border: 0px solid #000000;
+            bottom: 0;
+            left: 0;
+            opacity: 0.75;
+            position: absolute;
+            top: 0;
+            visibility: hidden;
+            width: 100%;
+            z-index: 1000;
+        }
+   
+        .columnAlign{
+            width:255px !important;
+            float:right !important;
+        }
+        .selectListWidth{
+            width:250px !important;
+        }
+        .headerClassDiv {
+            background: url('/img/alohaSkin/grid_headerbg.gif') repeat-x scroll 0 bottom #FFFFFF !important;
+            border-width: 0 0 1px 1px !important;
+            color: #000000 !important;
+            font-size: 0.9em !important;
+            font-weight: bold !important;
+            padding: 5px 2px 4px 5px !important;
+            width:313px !important;
+            float:left !important;
+            text-align:center !important;
+        }
+       
+       /* .bPageBlock .detailList .dataCol {
+            width: auto;
+        } */
+    
+        .bPageBlock .detailList .dataCol {
+            width: auto;
+            vertical-align: middle !important;
+        }
+    
+        .bPageBlock .detailList th, .bPageBlock .detailList .centerAlign TD {
+            vertical-align: middle !important;
+        }
+    
+        .searchBox{
+            background-image:url('/img/func_icons/util/search16.png') !important;
+            background-repeat:no-repeat !important;
+            padding-left:20px !important;
+            /* style="width:250px;" */
+        } 
+        .panelGroupTd TD{
+            vertical-align:middle !important;
+        }
+   </style>-->
+    
+    
+    <apex:pageMessages escape="false" id="error" rendered="{!!showsearchform}" /> 
+   <apex:form id="formcampaign" rendered="{!showsearchform}">
+      <div id="overlay" style="text-align:center;padding-top:190px;">
+       <apex:image value="{!$Resource.loading}" ></apex:image>
+      </div>   
+     
+       <apex:PageBlock title="{!$Label.Campaign_Selection_Page}">
+                <apex:PageBlockSection >
+                    <apex:pageBlockSectionItem >
+                        <apex:panelGrid columns="1" border="0" id="pnlGrid1">
+                               <apex:panelGroup >
+                                   <apex:OutputLabel style="font-weight:Bold;" value="{!$Label.Sell_Type}" for="selltypelst"></apex:OutputLabel>&nbsp;
+                                   <apex:selectList value="{!SellType}" multiselect="false" size="1" id="selltypelst">
+                                        <apex:selectOptions value="{!SellTypeItems}"/>
+                                        <apex:actionSupport event="onchange" reRender="CampaignLst" action="{!callCampaignList}" status="ajaxStatus" />
+                                        <apex:actionStatus id="ajaxStatus" onStart="showOverlay();" onstop="hideOverlay();"/>
+                                   </apex:selectList>   
+                               </apex:panelGroup>
+                        </apex:panelGrid>
+                    </apex:pageBlockSectionItem>
+               </apex:PageBlockSection>
+            
+               <apex:PageBlockSection >
+                <apex:PageBlockSectionItem >
+                       <apex:panelGrid columns="1" border="0" id="pnlGrid2" style="text-align:left">
+                             <apex:panelGroup >
+                                 <apex:InputText value="{!inputtxtsearch}" id="inputtxtsearch" styleclass="searchBox" style="width:232px;" />&nbsp;
+                                   <apex:Outputlabel value="Go!" styleClass="btn" >
+                                     <apex:actionSupport event="onclick" reRender="CampaignLst"  action="{!callCampaignList}" status="ajaxStatus1"  />
+                                     <apex:actionStatus id="ajaxStatus1" onStart="showOverlay();" onstop="hideOverlay();"/>
+                                   </apex:Outputlabel>
+                             </apex:panelGroup>
+                             <br/>
+                             <apex:panelGroup >
+                                   <apex:selectList value="{!SelectedPmrCamp}" multiselect="true" id="CampaignLst" style="height:300px;width:290px"  >
+                                       <apex:selectOptions value="{!CampaignList}"/>
+                                   </apex:selectList>
+                             </apex:panelGroup>
+                        </apex:panelGrid>
+                       
+                       <apex:panelGrid columns="1" id="abcd5" border="0" style="margin-left:50px" >
+                            <apex:panelGroup id="pnlgrp1" >                    
+                                  <apex:image value="/s.gif" title="Add" alt="Add"  styleClass="rightArrowIcon"    >   
+                                      <apex:actionSupport event="onclick" reRender="toAdd,showerrormsgpanel"  action="{!callsetToPrimaryCampaign}" status="ajaxStatus2"  />
+                                      <apex:actionStatus id="ajaxStatus2" onStart="showOverlay();" onstop="hideOverlay();"/>
+                                  </apex:image>
+                                  <br/>
+                                  <apex:image value="/s.gif" title="Remove" alt="Remove"  styleClass="leftArrowIcon" style="margin-top: 5px;" >  
+                                      <apex:actionSupport event="onclick" reRender="toAdd"  action="{!removePrimaryCampaign}" status="ajaxStatus3" />
+                                      <apex:actionStatus id="ajaxStatus3" onStart="showOverlay();" onstop="hideOverlay();"/>
+                                  </apex:image>
+                              </apex:panelGroup>
+                       </apex:panelGrid>
+                </apex:PageBlockSectionItem>
+                 
+                 <apex:PageBlockSectionItem >
+                    <apex:panelGrid columns="1" id="abcd3"  border="0" >
+                            <apex:panelGroup >
+                                <apex:outputPanel id="showerrormsgpanel">
+                                  <apex:pagemessages />
+                                   <apex:dataTable value="{!tempList}" var="a" id="theTable1" styleClass="centerAlign" style="width:320px;background-color: #FFFF99; font-family:TRebuchet MS;font-weight: bold;border:2.5px solid #32588E;-moz-border-radius:9px 9px 9px 9px;border-radius:9px 9px 9px 9px;vertical-align:middle;"  rendered="{!toShowErrorMsg}">
+                                      <apex:column id="thecolumn1" style="vertical-align:middle;width:15%;text-align:center;height:85px;">
+                                         <apex:image value="{!$Resource.WarningRed}"  width="48" height="40" style="padding:5px"  />  
+                                      </apex:column>
+                                      <apex:column id="thecolumn2" style="vertical-align:middle;">
+                                          <apex:outputText escape="false" value="{!errorMsg}">
+                                          </apex:outputText>
+                                      </apex:column>
+                                   </apex:dataTable>
+                                </apex:outputPanel>
+                            </apex:panelGroup>
+                            <apex:panelGroup >
+                               <table>
+                                 <tr>
+                                   <td class="headerClassDiv">
+                                     <apex:outputLabel style="text-align:center;background:none;"  value="{!$Label.Primary_Campaign}" />
+                                   </td>
+                                 </tr>
+                                 <tr>
+                                   <td>
+                                      <apex:InputText id="toAdd"  style="font-weight:bolder;width:316px;background-color:white;height:30px"   value="{!txtprimarycampaign}" disabled="true"  />
+                                   </td>
+                                 </tr>
+                                </table> 
+                            </apex:panelGroup>
+                    </apex:panelGrid>
+                 </apex:PageBlockSectionItem>
+                </apex:PageBlockSection>
+           
+                <apex:pageBlockButtons location="bottom">
+                     <apex:commandButton action="{!createOpportunity}" value="{!$Label.Create_Opportunity}" reRender="showerrormsgpanel" id="btnCrtOpp" status="Ajaxstatus4"/>
+                             <apex:actionStatus id="Ajaxstatus4" onStart="showOverlay();" onstop="hideOverlay();"/>
+                     <apex:commandButton action="{!Cancel}" value="Cancel" id="btnCancel"/>
+                </apex:pageBlockButtons>
+        </apex:PageBlock>
+    </apex:form>
+</apex:page>

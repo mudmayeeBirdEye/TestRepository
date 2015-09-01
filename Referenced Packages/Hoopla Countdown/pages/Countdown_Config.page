@@ -1,0 +1,4 @@
+<apex:page >
+  <h1>Countdown Configuration Page</h1>
+  <p>Welcome to Hoopla's Countdown Application.</p>
+</apex:page>

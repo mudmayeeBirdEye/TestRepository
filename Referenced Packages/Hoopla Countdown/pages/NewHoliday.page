@@ -1,0 +1,47 @@
+<apex:page standardController="primest__Countdown_Holiday__c"  extensions="primest.ExclusionCtrl" tabStyle="Countdown__tab">
+  <apex:includeScript value="{!URLFOR($Resource.primest__Countdown, '/js/jquery.js')}"/>
+  <script type="text/javascript">
+    jQuery.noConflict();
+    jQuery(document).ready(function() {
+      jQuery('.apexp').addClass('summary').find('.pbBody .pbSubheader').hide();
+      $btns = jQuery('.pbHeader .pbButton input.btn').remove();
+      jQuery('.pbBody').append($btns);
+      console.log($btns);
+    });
+  </script>
+
+  <apex:stylesheet value="{!URLFOR($Resource.primest__Countdown, '/css/countdown-config.css')}"/>
+
+  <style type="text/css">
+    .apexp .pbHeader .pbTitle .mainTitle {
+      margin-bottom: 5px;
+    }
+    .apexp .bPageBlock input.btn {
+      display: inline;
+      margin-right: 15px;
+    }
+  </style>
+  <apex:image url="{!URLFOR($Resource.primest__Countdown, '/img/hoopla_header.gif')}" />
+
+  <apex:form >
+  <div class="box">
+    <div class="body">
+      <apex:pageBlock title="NEW EXCLUSION">
+      <apex:pageMessages />
+      <apex:pageBlockButtons location="top">
+      <apex:commandButton value="Save" action="{!save}"/>
+      <apex:commandButton value="Cancel" action="{!cancel}"/>
+      <apex:commandButton value="Delete" action="{!delete}"/>
+      </apex:pageBlockButtons>
+
+      <apex:pageBlockSection title="Exclusion Detail" columns="1">
+      <apex:inputField value="{!primest__Countdown_Holiday__c.Name}"/>
+      <apex:inputField value="{!primest__Countdown_Holiday__c.primest__Date__c}"/>
+      <!-- c:jQueryPickDate pickDateLabel="Date:" pickDateField="selectDate" value="{!primest__Countdown_Holiday__c.primest__Date__c}" / --> 
+      </apex:pageBlockSection>
+      </apex:pageBlock> 
+    </div>
+    <div class="footer"></div>
+  </div>
+  </apex:form>
+</apex:page>

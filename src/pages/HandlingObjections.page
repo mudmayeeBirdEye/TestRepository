@@ -1,0 +1,16 @@
+<apex:page standardController="Handling_Objection__c" extensions="RCHandlingExt" tabStyle="Handling_Objection__c">
+    <apex:pageBlock title="Objections">
+        <apex:pageBlockSection >
+            <apex:outputfield value="{!RCHandlingObjections.Name}"/>
+            <apex:outputfield value="{!RCHandlingObjections.Resource_URL__c}"/>
+        </apex:pageBlockSection>    
+        <apex:pageBlockSection >
+            <apex:outputField value="{!RCHandlingObjections.Question_1__c}" />
+            <apex:outputField value="{!RCHandlingObjections.Answer_1__c}"/>
+             <apex:outputField value="{!RCHandlingObjections.Question_2__c}"/>
+            <apex:outputField value="{!RCHandlingObjections.Answer_2__c}"/>
+            <apex:outputField value="{!RCHandlingObjections.Question_3__c}"/>
+            <apex:outputField value="{!RCHandlingObjections.Answer_3__c}"/>
+        </apex:pageBlockSection> 
+    </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,11 @@
+<apex:page sidebar="true" id="thepage">
+<!-- controller="TerritoryChangeController"
+<apex:includeScript value="{!URLFOR($Resource.jquery, '/js/jquery-1.4.2.min.js')}" />
+
+ <apex:sectionHeader title="Team Changes" subtitle="Step 4 of 4" />
+  <apex:form id="theForm">
+ <apex:pageMessages escape="false" id="mymessages" ></apex:pageMessages>
+       <apex:commandLink value="Go back to Step 1" action="{!step4}"  id="step3" />
+ </apex:form>-->
+
+</apex:page>

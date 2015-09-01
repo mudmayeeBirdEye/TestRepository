@@ -1,0 +1,102 @@
+<apex:page Controller="TabVisibilityCtrl" id="thePage" showheader="false" sidebar="false">
+
+<script type="text/javascript" src="/js/functions.js"> var __sfdcSessionId = '{!GETSESSIONID()}';</script> 
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.RCBlockUI, 'blockUI/js/jquery.blockUI.js')}" />
+<script src="/soap/ajax/25.0/connection.js"></script> 
+<script>
+
+function getSelectedProfiles(Id){
+    $.blockUI({ message: '<h1><img src="/img/loading.gif" /> Please Wait...</h1>' });
+    sforce.connection.sessionId = "{!$Api.Session_ID}";
+    result = sforce.connection.query("Select Tab_Visibilty_Setting__c from Intranet_Main_Tab__c where Id ='"+Id+"'");
+    records = result.getArray("records");
+    for (var i=0; i< records.length; i++) {
+      var record = records[i];
+      setSelectedProfile(record.Tab_Visibilty_Setting__c);
+  }
+  $.unblockUI();
+}
+
+function setSelectedProfile(str) {
+      $("input[type]").attr('checked','');
+        var s = str;
+        try {
+           if(s != null ){
+                var n = s.split(',');
+                checkedProfiles(n); 
+           } 
+       } catch(e){
+           alert(e);
+    }
+}
+
+function checkedProfiles(n){
+     for(var i = 0 ; i< n.length; i++) {
+      if( n[i] != ''){
+        $("input[title="+n[i]+"]").attr('checked','checked');
+      }
+     }
+ }
+
+</script>
+
+<style>
+    .selected { color: red; }
+</style>
+
+<apex:form id="theForm">
+<apex:pageMessages id="pgMsg"/>
+<apex:pageBlock id="thrBlk" title="Permission Set">
+<!--<apex:pageMessage summary="No Records For Display.." severity="warning" strength="3" rendered="{!IF( tabs.size > 0, false, true )}"/>   
+<apex:panelGrid columns="2" id="thePg" width="100%" rendered="{!IF( tabs.size > 0, true, false )}">
+       
+        <apex:panelGroup >
+            <apex:outputLabel ><h1>TAB</h1></apex:outputLabel><br/>
+            <apex:selectList size="5" style="height:350px;width:350px;"  value="{!tabId}" id="tabList" onclick="getSelectedProfiles(this.value)">
+                   <apex:selectOptions value="{!tabs}"  />
+            </apex:selectList>
+        </apex:panelGroup>
+      <apex:outputPanel id="thePanel" >
+        
+        <apex:outputLabel ><h1>PROFILES</h1></apex:outputLabel><br/>
+        <!-- <b>Select ALL</b> : <apex:inputCheckbox id="selAll" onchange="sel_all()" value="{!sel}"/><br/>-->
+       <!-- <div style="height:350px;overflow:scroll;">
+           <!--  <apex:selectCheckboxes value="{!profileIds}"   layout="pageDirection" id="theProfiles" >
+                   <apex:selectOptions value="{!Profiles}"/>
+            </apex:selectCheckboxes> -->
+            <!--<apex:pageBlockTable value="{!ProfileName}" var="pro" id="theTable">
+                <apex:column id="chkb">
+                <apex:facet name="header" ><apex:inputCheckbox id="selAll" onchange="sel_all()" value="{!sel}"/></apex:facet>
+                    <apex:inputCheckbox value="{!pro.isChecked}" title="{!pro.pro.id}"/>
+                </apex:column>
+                <apex:column >
+                <apex:facet name="header">Profile Name</apex:facet>
+                    {!pro.pro.Name}
+                </apex:column>
+            </apex:pageBlockTable>   
+        </div>
+       
+     </apex:outputPanel>  
+</apex:panelGrid>
+
+<apex:pageBlockButtons >
+<apex:commandButton action="{!SetVisibility}" value="Set Visibilty" rendered="{!IF( tabs.size > 0, true, false )}" reRender="pgMsg"/>
+<apex:commandButton value="Close" onclick="window.close();"/>
+</apex:pageBlockButtons>-->
+</apex:pageBlock>
+
+</apex:form>
+
+<script>
+    function sel_all(){
+       var a = document.getElementById('thePage:theForm:thrBlk:theTable:selAll');
+       if(a.checked == true){
+         $("input[type]").attr('checked','checked');
+       } else {
+         $("input[type]").attr('checked','');
+       }  
+    }
+</script>
+
+</apex:page>

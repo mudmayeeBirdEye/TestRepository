@@ -1,0 +1,50 @@
+<apex:page cache="true" standardController="LP__Chat_transcript__c" extensions="LP.ChatTranscript"  action="{!initLogin}" >
+    <apex:form id="myform">
+    
+        
+    <apex:sectionHeader title="Chat Transcript" subtitle="Authentication"/>
+     
+    <div  style="padding-left:5px">
+        The chat transcript is not stored into your SalesForce account.<br/>
+        To view it you must first log in to LivePerson system.
+    </div>
+    <br/>
+    
+    <apex:pageBlock rendered="{!hasError == false}" mode="Edit" title="Authentication">
+    
+    <apex:PageBlockButtons location="bottom">
+        <apex:CommandButton value="Log in" action="{!Login}"/>
+        <input type="button" class="btn" value="Cancel"  onclick="history.go(-1);"/>
+    </apex:PageBlockButtons>
+    
+    <apex:PageBlockSection TITLE="User Credentials" columns="1">
+        
+        <apex:PageBlockSectionItem >
+            <apex:outputLabel value="Server Domain"/>
+            <apex:inputField value="{!curConfig.LP__serverDomain__c}"/>
+        </apex:PageBlockSectionItem>
+        
+        <apex:PageBlockSectionItem >
+            <apex:outputLabel value="Site id"/>
+            <apex:inputField value="{!curConfig.LP__siteId__c}"/>
+        </apex:PageBlockSectionItem>        
+        
+
+        <apex:PageBlockSectionItem >
+            <apex:outputLabel value="Username"/>
+            <apex:inputField required="false" value="{!curConfig.LP__userName__c}"/>
+        </apex:PageBlockSectionItem>        
+        
+        
+        <apex:PageBlockSectionItem >
+            <apex:outputLabel value="Password"/>
+            <apex:inputSecret required="false" value="{!curConfig.LP__password__c}"/>
+            
+        </apex:PageBlockSectionItem>
+        
+    </apex:PageBlockSection>
+    </apex:pageBlock>
+    
+
+    </apex:form>
+</apex:page>

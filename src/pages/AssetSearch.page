@@ -1,0 +1,543 @@
+<apex:page standardController="Asset__c" id="mainpage"
+    recordSetVar="objRecord" extensions="AssetSearchExtension"
+    standardStylesheets="false" sidebar="false" readOnly="true">
+    <apex:includeScript value="{!URLFOR($Resource.AssetSearch,'AssetSearch/jquery.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.AssetSearch,'AssetSearch/images/assetcss.css')}" />
+    <link rel="stylesheet"
+        href="{!URLFOR($Resource.DataTables,'datatable/demo_table_jui.css')}" />
+    <!--<link rel="stylesheet" href="{!URLFOR($Resource.DataTables,'datatable/demo_page.css')}"/>-->
+    <link rel="stylesheet"
+        href="{!URLFOR($Resource.DataTables,'datatable/jquery-ui-1.7.2.custom.css')}" />
+    <script
+        src="{!URLFOR($Resource.DataTables,'datatable/jquery.dataTables.js')}"
+        type="text/javascript"></script>
+    <script
+        src="{!URLFOR($Resource.DataTables,'datatable/ColReorderWithResize.js')}"
+        type="text/javascript"></script>
+    <script
+        src="{!URLFOR($Resource.DataTables,'datatable/FixedHeader.js')}"
+        type="text/javascript"></script>
+    <!-- <link rel="stylesheet"
+        href="https://na6.salesforce.com/EXT/ext-3.2.2/resources/css/ext-all-notheme.css" /> -->
+    <link rel="stylesheet"
+        href="{!$Label.Organization_Instance}EXT/ext-3.2.2/resources/css/ext-all-notheme.css" />
+    <!-- <link rel="stylesheet"
+        href="https://na6.salesforce.com/sCSS/25.0/sprites/1343243289000/Theme3/default/ExtCSS-SFDC.css" /> -->
+    <link rel="stylesheet"
+        href="{!$Label.Organization_Instance}sCSS/25.0/sprites/1343243289000/Theme3/default/ExtCSS-SFDC.css" />
+    <style>
+th {
+    cursor: pointer;
+}
+
+.oddRow td {
+    padding-bottom: 5px;
+    vertical-align: top;
+    -moz-user-select: text !important;
+    font-family: 'Arial', 'Helvetica', sans-serif !important;
+    font-size: 100% !important;
+    line-height: normal !important;
+}
+
+.evenRow td {
+    padding-bottom: 5px;
+    vertical-align: top;
+    -moz-user-select: text !important;
+    font-family: 'Arial', 'Helvetica', sans-serif !important;
+    font-size: 100% !important;
+    line-height: normal !important;
+}
+
+#tabs li {
+    display: inline;
+    margin-left: 1.3em;
+    padding-left: 0;
+}
+
+.dataTables_info {
+    padding-top: 0;
+}
+
+.dataTables_paginate {
+    padding-top: 0;
+}
+
+.css_right {
+    float: right;
+}
+
+#example_wrapper .fg-toolbar {
+    font-size: 0.8em
+}
+
+#theme_links span {
+    float: left;
+    padding: 2px 10px;
+}
+
+#example_wrapper {
+    -webkit-box-shadow: 2px 2px 6px #666;
+    box-shadow: 2px 2px 6px #666;
+    border-radius: 5px;
+}
+
+#example tbody {
+    border-left: 1px solid #AAA;
+    border-right: 1px solid #AAA;
+}
+
+#example thead th:first-child {
+    border-left: 1px solid #AAA;
+}
+
+#example thead th:last-child {
+    border-right: 1px solid #AAA;
+}
+
+#example1 tbody {
+    border-left: 1px solid #AAA;
+    border-right: 1px solid #AAA;
+}
+
+#example1 thead th:first-child {
+    border-left: 1px solid #AAA;
+}
+
+#example1 thead th:last-child {
+    border-right: 1px solid #AAA;
+}
+
+#tabs_wrapper {
+    width: 100%
+}
+
+.odd {
+    background-color: white !important;
+}
+
+.even {
+    background-color: white !important;
+}
+
+tr.odd:hover {
+    background: #E1F2F9 !important;
+}
+
+tr.even:hover {
+    background: #E1F2F9 !important;
+}
+
+tr.even td.sorting_1 {
+    background-color: #fff;
+}
+
+tr.odd td.sorting_1 {
+    background-color: #FFF;
+}
+
+#advSearch {
+    margin-left: -15px !important;
+}
+/*.#tabs li.newactive a {
+            -moz-border-radius-topleft: 7px;
+            -moz-border-radius-topright: 7px;
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+            -moz-box-shadow: 3px 0 5px -3px #999,-3px 0 5px -3px #999;
+            -webkit-box-shadow: 3px 0 5px -3px #999,-3px 0 5px -3px #999;
+            box-shadow: 3px 0 5px -3px #999,-3px 0 5px -3px #999;
+            background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.50),rgba(255, 255, 255, 0) 12px);
+            background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.50),rgba(255, 255, 255, 0) 12px);
+            background-image: -ms-linear-gradient(rgba(255, 255, 255, 0.50),rgba(255, 255, 255, 0) 12px);
+        }*/
+#tabs li.active a { //
+    background-color: #C4D1E1 !important;
+    background-color: #B6D0E7 !important; //
+    background: none !important;
+}
+
+#tabs li a {
+    border: 1px solid #7b7b7b;
+    padding: 4px 6px;
+    text-decoration: none;
+    background-image: none;
+}
+</style>
+    <apex:form id="form1">
+        <script type="text/javascript">
+            /* <![CDATA[ */
+            $(document).ready(function() {
+                $("#tabs li").click(function() {
+                    $("#tabs li").removeClass('active');
+                    $(this).addClass("active");
+                    $(".tab_content").hide();
+                    var selected_tab = $(this).find("a").attr("href");
+                    $(selected_tab).fadeIn();
+                    return false;
+                });
+                });
+            /* ]]> */
+        </script>
+        <body>
+            <apex:outputPanel id="mainBlock">
+                <div id="tabs_wrapper">
+                    <div id="tabs_container">
+                        <ul id="tabs">
+                            <li class="active"><a id="advSearch" href="#tab2">Advanced Search</a></li>
+                            <li style="margin-left: 5px !important;"><a href="#tab1">Quick Search</a></li>
+                        </ul>
+                    </div>
+                    <div id="tabs_content_container">
+                        <div id="tab1" class="tab_content" style="display: none;">
+                            <apex:outputPanel id="globalsearch">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0"
+                                    class="table">
+                                    <tr>
+                                        <td
+                                            style="background: #E9E9E9; text-align: Center; width: 13%">Quick
+                                            Search</td>
+                                        <td><apex:inputtext label="All Fields"
+                                                value="{!allFieldSearchVal}"
+                                                style="margin-right: 90px;;width:300px" /> <apex:commandButton value="Search" styleClass="btn" style="padding-left: 15px;"
+                                                action="{!globalSearch}" reRender="result" status="status2" />
+                                            <apex:commandButton value="Clear" styleClass="btn"
+                                                action="{!ClearAsset}" style="padding-left: 20px;"
+                                                reRender="globalsearch,result" status="status2" />&nbsp; <!--<apex:commandButton value="Search"  styleClass="btn" onclick="searchGlobal();return false;"/>-->
+                                        </td>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                            <apex:outputPanel id="result">
+                                <apex:variable value="{!-1}" var="count" />
+                                <apex:pageMessages ></apex:pageMessages>
+                                <apex:outputpanel rendered="{!lstAsset.size>0}">
+                                    <script>
+                                    $(document).ready(function() {
+                                        var oTable = $('#example').dataTable({
+                                            /*"sDom": 'R<"H"lfr>t<"F"ip>',*/
+                                            "bStateSave": true,
+                                            /*"sScrollY": "700px",*/
+                                            "bScrollCollapse": true,
+                                            "sPaginationType": "full_numbers",
+                                            "oLanguage": {
+                                            "sSearch": "Apply Search Result filter _INPUT_",
+                                            "sInfo": "Got a total of _TOTAL_ Asset(s) to show (_START_ to _END_)",
+                                            "sInfoEmpty": "No Asset to show",
+                                            "sLoadingRecords": "Please wait - loading...",
+                                            "sLengthMenu": 'Display <select>'+
+                                            '<option value="10">10</option>'+
+                                            '<option value="20">20</option>'+
+                                            '<option value="30">30</option>'+
+                                            '<option value="40">40</option>'+
+                                            '<option value="50">50</option>'+
+                                            '<option value="100">100</option>'+
+                                            '<option value="-1">All</option>'+
+                                            '</select> Asset(s)'
+                                        },
+                                        "bProcessing": true,
+                                        /*"bPaginate": false,*/
+                                        "bJQueryUI": true,
+                                        /* "aoColumnDefs": [{ "sWidth": "10%", "aTargets": [ -1 ] }]*/
+                                        });
+                                        /* new FixedHeader(oTable);*/
+                                        $("tr.odd").live("hover",function(){
+                                            $(this).find('.sorting_1').removeClass('sorting_1');
+                                        });        
+                                        $("tr.even").live("hover",function(){console.log('call'+$(this));
+                                            $(this).find('.sorting_1').removeClass('sorting_1');
+                                        });  
+                                    } );
+                                </script>
+                                    <table cellspacing="0" cellpadding="2" border="0" id='example'
+                                        width='100%' class='display'>
+                                        <thead>
+                                            <tr>
+                                                <th style='width: 5%'>Asset No</th>
+                                                <th style='width: 15%'>Location</th>
+                                                <!--<th>Last Name</th> -->
+                                                <th style='width: 15%'>Department</th>
+                                                <th style='width: 10%'>Model</th>
+                                                <th style='width: 8%'>Serial No</th>
+                                                <th style='width: 15%'>Network Name</th>
+                                                <th style='width: 32%'>Assign To</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <apex:repeat value="{!lstAsset}" var="objAsset">
+                                                <apex:variable value="{!count+1}" var="count" />
+                                                <tr
+                                                    class="{!IF(MOD(count,2)==0,'evenRow','oddRow')} x-grid3-row">
+                                                    <td><a href="/{!objAsset}" target='_blank'>{!objAsset.Name}</a>
+                                                        <!-- <c:hovercomponent displayname="{!objAsset.Name}" recordId="{!objAsset.id}" target="_blank"/> -->
+                                                    </td>
+                                                    <td><apex:outputField value="{!objAsset.Location__c}" />
+                                                    </td>
+                                                    <td><apex:outputField value="{!objAsset.Department__c}" /></td>
+                                                    <td><apex:outputField value="{!objAsset.Model__c}" />
+                                                    </td>
+                                                    <td><apex:outputField value="{!objAsset.Serial_Number__c}" /></td>
+                                                    <td><apex:outputField value="{!objAsset.Network_Name__c}" /></td>
+                                                    <td><apex:variable value="{!0}" var="count1" /> <apex:repeat value="{!objAsset.Employees__r}" var="objEmployee">
+                                                            <apex:outputText rendered="{!count1>0}">,</apex:outputText>
+                                                            <a href='/{!objEmployee.id}' target='_blank'><b>{!objEmployee.Employe_Name__c}</b>
+                                                            </a>
+                                                            <!-- <c:hovercomponent displayname="{!objEmployee.Employe_Name__c}" recordId="{!objEmployee.id}" format="true" />-->
+                                                            <apex:variable value="{!1}" var="count1" />
+                                                        </apex:repeat>
+                                                    </td>
+                                                </tr>
+                                            </apex:repeat>
+                                        </tbody>
+                                    </table>
+                                </apex:outputpanel>
+                            </apex:outputPanel>
+                        </div>
+                        <div id="tab2" class="tab_content" style="display: block">
+                            <apex:outputPanel id="globalsearch1">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0"
+                                    class="table">
+                                    <tr>
+                                        <td style="text-align: center"><apex:commandButton value="Search" styleClass="btn" style="padding-left: 15px;"
+                                                action="{!searchAsset}"
+                                                oncomplete="disableList();return false;" reRender="result1"
+                                                status="status2" /> <apex:commandButton value="Clear"
+                                                styleClass="btn" action="{!ClearAsset1}"
+                                                style="padding-left: 20px;"
+                                                oncomplete="disableList1();return false;"
+                                                reRender="result1,globalsearch1" status="status2" />&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8"><apex:outputPanel id="filterFields1">
+                                                <!-- {!objAsset.Sub_Asset_Type__c}-->
+                                                <apex:outputPanel >
+                                                    <div id="filterDiv" style="width: 100%; margin: auto;">
+                                                        <table width="100%" border="0" cellspacing="0"
+                                                            cellpadding="0"
+                                                            style="border-bottom: 1px solid #B0B0B0; border-right: 1px solid #B0B0B0;">
+                                                            <tr>
+                                                                <td class="title">RC Tag</td>
+                                                                <td class="titleOutput"><apex:inputField label="RC Tag" value="{!objAsset.Asset_Tag__c}" /></td>
+                                                                <td class="title">Location</td>
+                                                                <td class="titleOutput"><apex:inputField value="{!objAsset.Location__c}" /></td>
+                                                                <td class="title">Department</td>
+                                                                <td class="titleOutput"><apex:inputField label="Model" value="{!objAsset.Department__c}" /></td>
+                                                                <td class="title">Asset Type</td>
+                                                                <td class="titleOutput"><apex:selectList onchange="onAssetTypeChange(this.value); return false;"
+                                                                        size="1" multiselect="false"
+                                                                        value="{!objAsset.RecordTypeId}">
+                                                                        <apex:selectOptions value="{!recordTypeItems}"></apex:selectOptions>
+                                                                    </apex:selectList> <!--<apex:inputtext value="{!objAsset.Sub_Asset_Type__c}" id="theHiddenInput"/>-->
+                                                                </td>
+                                                            </tr>
+                                                            <!-- <apex:outputPanel id="selectList">-->
+                                                            <tr>
+                                                                <td class="title">Last Name</td>
+                                                                <td class="titleOutput"><apex:inputtext style="width:80pt" value="{!strEmployeeLastName}" /><br />
+                                                                    <apex:inputcheckbox value="{!isUnAssigned}"
+                                                                        style="margin:3px;" />Unassigned</td>
+                                                                <td class="title">Sub Asset Type</td>
+                                                                <td class="titleOutput"><apex:inputField id="subAsset" label="Sub Asset Type"
+                                                                        value="{!objAsset.Sub_Asset_Type__c}" />
+                                                                </td>
+                                                                <td class="title">Manufacturer</td>
+                                                                <td class="titleOutput"><apex:inputField id="Manufac" label="Manufacturer"
+                                                                        value="{!objAsset.Manufacturer__c}" /></td>
+                                                                <td class="title">Model</td>
+                                                                <td class="titleOutput"><apex:inputField id="Model"
+                                                                        label="Model" value="{!objAsset.Model__c}" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="title">Serial No.</td>
+                                                                <td class="titleOutput"><apex:inputField label="Model" value="{!objAsset.Serial_Number__c}" />
+                                                                </td>
+                                                                <td class="title">Network Name</td>
+                                                                <td class="titleOutput"><apex:inputtext disabled="{!!toEnableNetworkName}" label="Model"
+                                                                        value="{!objAsset.Network_Name__c}" /></td>
+                                                                <td class="title">Asset No.</td>
+                                                                <td class="titleOutput"><apex:selectList size="1"
+                                                                        label="Asset No" value="{!selectedOperator}">
+                                                                        <apex:selectOption itemValue="equal" itemLabel="="></apex:selectOption>
+                                                                        <apex:selectOption itemValue="notequal" itemLabel="!="></apex:selectOption>
+                                                                    </apex:selectList> <apex:inputText value="{!strAssetNumber}" />
+                                                                </td>
+                                                                <td class="title">Status &nbsp;</td>
+                                                                <td class="titleOutput"><apex:inputField label="Status" value="{!objAsset.Status__c}" />
+                                                                    &nbsp;</td>
+                                                                <!-- <td class="title">&nbsp;</td>
+                                                           <td class="titleOutput">&nbsp;</td> -->
+                                                            </tr>
+                                                            <!-- </apex:outputPanel>-->
+                                                            <!--<tr>
+                                                       <td class="title" colspan="8">
+                                                           <apex:commandButton value="Apply Filters" action="{!searchAsset}" oncomplete="disableList();return false;" styleClass="btn"  reRender="result1,filters1,filterFields1" status="status2"/>&nbsp;
+                                                       </td>
+                                                    </tr>-->
+                                                        </table>
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                            <apex:outputPanel id="result1">
+                                <apex:variable value="{!-1}" var="count" />
+                                <apex:pageMessages ></apex:pageMessages>
+                                <apex:outputpanel rendered="{!lstAsset1.size>0}">
+                                    <script>
+                                        $(document).ready(function() {
+                                            var oTable = $('#example1').dataTable({
+                                                         /*"sDom": 'R<"H"lfr>t<"F"ip>',*/
+                                                          "bStateSave": true,
+                                                         /*"sScrollY": "700px",*/
+                                                        "bScrollCollapse": true,
+                                                        "sPaginationType": "full_numbers",
+                                                        "oLanguage": {
+                                                            "sSearch": "Apply Search Result filter _INPUT_",
+                                                            "sInfo": "Got a total of _TOTAL_ Asset(s) to show (_START_ to _END_)",
+                                                            "sInfoEmpty": "No Asset to show",
+                                                            "sLoadingRecords": "Please wait - loading...",
+                                                            "sLengthMenu": 'Display <select>'+
+                                                                '<option value="10">10</option>'+
+                                                                '<option value="20">20</option>'+
+                                                                '<option value="30">30</option>'+
+                                                                '<option value="40">40</option>'+
+                                                                '<option value="50">50</option>'+
+                                                                '<option value="100">100</option>'+
+                                                                '<option value="-1">All</option>'+
+                                                            '</select> Asset(s)'
+                                                        },
+                                                        "bProcessing": true,
+                                                        /*"bPaginate": false,*/
+                                                        "bJQueryUI": true,
+                                                        /* "aoColumnDefs": [{ "sWidth": "10%", "aTargets": [ -1 ] }]*/
+                                                    });
+                                                    /* new FixedHeader(oTable);*/
+                                                    $("tr.odd").live("hover",function(){
+                                                        $(this).find('.sorting_1').removeClass('sorting_1');
+                                                   });        
+                                                    $("tr.even").live("hover",function(){console.log('call'+$(this));
+                                                        $(this).find('.sorting_1').removeClass('sorting_1');
+                                                   });  
+                                                } );
+                                            </script>
+                                    <table cellspacing="0" cellpadding="2" border="0" id='example1'
+                                        width='100%' class='display'>
+                                        <thead>
+                                            <tr>
+                                                <th style='width: 5%'>Asset No</th>
+                                                <th style='width: 15%'>Location</th>
+                                                <!--<th>Last Name</th> -->
+                                                <th style='width: 15%'>Department</th>
+                                                <th style='width: 10%'>Model</th>
+                                                <th style='width: 8%'>Serial No</th>
+                                                <th style='width: 15%'>Network Name</th>
+                                                <th style='width: 32%'>Assign To</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <apex:repeat value="{!lstAsset1}" var="objAsset">
+                                                <apex:variable value="{!count+1}" var="count" />
+                                                <tr
+                                                    class="{!IF(MOD(count,2)==0,'evenRow','oddRow')} x-grid3-row">
+                                                    <td><a href="/{!objAsset}" target='_blank'>{!objAsset.Name}</a>
+                                                        <!-- <c:hovercomponent displayname="{!objAsset.Name}" recordId="{!objAsset.id}" target="_blank"/> -->
+                                                    </td>
+                                                    <td><apex:outputField value="{!objAsset.Location__c}" />
+                                                    </td>
+                                                    <td><apex:outputField value="{!objAsset.Department__c}" /></td>
+                                                    <td><apex:outputField value="{!objAsset.Model__c}" />
+                                                    </td>
+                                                    <td><apex:outputField value="{!objAsset.Serial_Number__c}" /></td>
+                                                    <td><apex:outputField value="{!objAsset.Network_Name__c}" /></td>
+                                                    <td><apex:variable value="{!0}" var="count1" /> <apex:repeat value="{!objAsset.Employees__r}" var="objEmployee">
+                                                            <apex:outputText rendered="{!count1>0}">,</apex:outputText>
+                                                            <a href='/{!objEmployee.id}' target='_blank'><b>{!objEmployee.Employe_Name__c}</b>
+                                                            </a>
+                                                            <!-- <c:hovercomponent displayname="{!objEmployee.Employe_Name__c}" recordId="{!objEmployee.id}" format="true" />-->
+                                                            <apex:variable value="{!1}" var="count1" />
+                                                        </apex:repeat>
+                                                    </td>
+                                                </tr>
+                                            </apex:repeat>
+                                        </tbody>
+                                    </table>
+                                </apex:outputpanel>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </div>
+                <c:actionstatus ></c:actionstatus>
+            </apex:outputPanel>
+        </body>
+        <!-- <apex:actionFunction name="ClearMainBlock" action="{!ClearAsset}" reRender="result,mainBlock" status="status2"/>
+<apex:actionFunction name="SearchGlobal1" action="{!globalSearch}" oncomplete="disableList();return false;" reRender="result,filters,filterFields" status="status2"/>-->
+        <apex:actionFunction name="assetTypeChange1"
+            action="{!onOptionChange}" reRender="filterFields1"
+            oncomplete="disableList();return false;" status="status2" />
+        <script>
+  function toshowfilterDiv() {
+    $('#filterDiv').show();
+  }
+  
+  function tohidefilterDiv() {
+    $('#filterDiv').hide();
+  }
+  
+  function searchGlobal() {
+    SearchGlobal1();
+  }
+  
+  function setFilterField() {
+    var strval = document.getElementById('{!$Component.mainpage:form1:theCommandLink1}').title;
+    //alert(strval);
+     if(strval == 'Hide Filters') {
+        $('#filterDiv').hide();
+        document.getElementById('{!$Component.mainpage:form1:theCommandLink1}').title = 'Show Filters';
+        document.getElementById('{!$Component.mainpage:form1:theCommandLink1}').innerText = 'Show Filters';
+     } else if(strval == 'Show Filters') {
+        $('#filterDiv').show();
+        document.getElementById('{!$Component.mainpage:form1:theCommandLink1}').title = 'Hide Filters';
+        document.getElementById('{!$Component.mainpage:form1:theCommandLink1}').innerText = 'Hide Filters';
+     }
+  }
+  
+  document.getElementById('{!$Component.mainpage:form1:subAsset}').disabled = true;
+  var selectedValue = '';
+  function disableList() {
+    if(selectedValue == '') {
+        document.getElementById('{!$Component.mainpage:form1:subAsset}').value = '';
+        document.getElementById('{!$Component.mainpage:form1:Manufac}').value = '';
+        document.getElementById('{!$Component.mainpage:form1:Model}').value = '';
+        document.getElementById('{!$Component.mainpage:form1:subAsset}').disabled = true;
+        document.getElementById('{!$Component.mainpage:form1:Manufac}').disabled = true;
+        document.getElementById('{!$Component.mainpage:form1:Model}').disabled = true;
+        
+    } else {
+        document.getElementById('{!$Component.mainpage:form1:subAsset}').disabled = false;
+        //document.getElementById('{!$Component.mainpage:form1:subAsset}').value = '';
+        //document.getElementById('{!$Component.mainpage:form1:Manufac}').value = '';
+        //document.getElementById('{!$Component.mainpage:form1:Model}').value = '';
+    }
+  }
+  
+  function disableList1() {
+        selectedValue = '';
+        document.getElementById('{!$Component.mainpage:form1:subAsset}').value = '';
+        document.getElementById('{!$Component.mainpage:form1:Manufac}').value = '';
+        document.getElementById('{!$Component.mainpage:form1:Model}').value = '';
+        document.getElementById('{!$Component.mainpage:form1:subAsset}').disabled = true;
+        document.getElementById('{!$Component.mainpage:form1:Manufac}').disabled = true;
+        document.getElementById('{!$Component.mainpage:form1:Model}').disabled = true;
+  }
+  
+  
+  function onAssetTypeChange(assetId) {
+        selectedValue = assetId;
+        assetTypeChange1();
+  }
+  
+</script>
+
+    </apex:form>
+</apex:page>

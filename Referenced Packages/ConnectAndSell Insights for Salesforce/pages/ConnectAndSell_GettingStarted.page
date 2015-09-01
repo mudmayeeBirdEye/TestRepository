@@ -1,0 +1,12 @@
+<apex:page tabStyle="ConnectAndSell__tab" sidebar="true" >
+
+
+    <apex:iframe src="https://www.connectandsell.com/SFDC" 
+                 frameborder="false" 
+                 id="myiframe" 
+                 rendered="true" 
+                 height="750px" 
+                 width="100%"
+    />
+  
+</apex:page>

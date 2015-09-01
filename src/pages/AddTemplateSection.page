@@ -1,0 +1,188 @@
+<apex:page standardcontroller="TemplateSections__c" extensions="AddTemplateSectionCTRL" id="pg" showheader="false" sidebar="false">
+    <script src="{!URLFOR($Resource.ckeditor, 'ckeditor/ckeditor.js')}"></script>
+    <link rel="stylesheet" href="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery-ui.css')}" type="text/css" media="screen" />
+    <apex:includeScript value="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery-ui.min.js')}"/>
+        <style>
+        .display {
+            height:400px;border:1px solid gray;border-radius:5px;width:100%;margin-bottom:20px;background:bisque;
+        }
+        p {font-size:14px;}
+       
+        #overlayNew {
+            background: no-repeat scroll top center gray;
+            border: 0px solid #000000;
+            bottom: 0;
+            left: 0;
+            opacity: 0.75;
+            position: absolute;
+            top: 0;
+            display: none;
+            width: 100%;
+            z-index: 9999;
+            zIndex: 9999;
+            height:100%;
+        }
+        .ui-widget-overlay{
+            background: #aaaaaa !important;
+        }
+        .btnDiv {
+            /*width: 95%;*/
+            margin: auto;
+            border: 1px solid #A5A6A5;
+            /* min-height: 100px; */
+            margin-top: 5px;
+            //margin-bottom: 5px;
+            background: #FFF;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            /*behavior: url({!$Resource.BorderRadiusHTC});*/
+            box-shadow: 0px -48px 54px -20px #1797C0 inset;
+            -webkit-box-shadow: 0px -48px 54px -20px #1797C0 inset;
+            -moz-box-shadow: 0px -48px 54px -20px #1797C0 inset;
+            text-align: center;
+            /*padding:10px;*/
+            padding-top : 3px;
+            padding-bottom : 3px;
+            margin-bottom:10px;
+        }
+        select {
+            box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           /*width: 268px !important;*/
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+        }
+        .styled-select{
+           box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           width: 268px !important;
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+           /*height: 34px !important;*/
+           /*-webkit-appearance: none !important;*/
+        }
+        input:focus, select:focus, textarea:focus {
+            outline-size: none;
+            outline-style: none;
+            outline-color: none;
+            border-radius: 10px;
+            border: 1px solid gray;
+        }
+        .pbTitle {
+            display :none !important;
+        }
+    </style>
+     <body>
+        <apex:form id="frm">
+        
+        <script>
+            function showOverlay() {
+                var o = document.getElementById('overlayNew');
+                o.style.display = 'block';
+            }       
+            function hideOverlay() {
+                var o = document.getElementById('overlayNew');
+                o.style.display = 'none';                           
+            }   
+            function showDialog(){    
+                $("#dialog-modal").dialog({
+                    width: 740,
+                    height: 400                                 
+                 });                            
+            }                 
+        </script>
+        <div id="overlayNew" style="text-align:center;padding-top:20px;">
+            <div class='overLay' style="display:block;z-index:99999;zIndex:99999;"></div>
+            <div class="loader-static" style='z-index:100000;zIndex:100000;'>
+            <div class="loader-static-panel">
+            <div style='margin-top:400px;font-weight:bold;'>
+            <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+            <span class="waitingDescription" style="font-weight:bold; font-size:20px; position:absolute;z-index:10; color:white;">Please Wait...</span></div>
+            </div>
+            <div class="loader-fix"></div>
+            </div>
+        </div>
+        <apex:actionStatus id="Ajaxstatus" onStart="showOverlay();"  onstop="hideOverlay();"/>
+       
+        <apex:pageMessages /> 
+            <apex:pageBlock mode="maindetail" id="pb">
+                <apex:pageBlock title="Template Details" >
+                    <apex:pageBlockButtons location="top">
+                        <div class="btnDiv">
+                            <apex:commandButton value="Save Section" action="{!saveSection}" style="padding:10px;">
+                                <apex:actionStatus id="ajaxStatus1" onStart="showOverlay();" onstop="parent.location.reload();"/>
+                            </apex:commandButton>
+                            <apex:commandButton value="Cancel" style="padding:10px;" action="{!cancelRecord}"/>
+                        </div>
+                    </apex:pageBlockButtons> 
+                    <div style="width:99% !important;"> 
+                        <div>
+                            <b>Section Name:</b> <apex:inputField value="{!templateSectionObj.Name}"  styleClass="styled-select" />
+                            <b>Description:</b> <apex:inputField value="{!templateSectionObj.Description__c}"  styleClass="styled-select" />
+                        </div>
+                    </div>
+                </apex:pageBlock> 
+                <apex:pageBlock title="Select Fields">
+                    <apex:outputPanel id="fieldSelectPanel1">
+                        <!-- <div style="height:100px;border:1px solid gray;border-radius:5px;width:100%;margin-bottom:20px;"> --> 
+                        <div>                      
+                           <table>
+                                <tr>
+                                   <td>
+                                        <h1>Select Object: </h1>
+                                        <apex:selectList value="{!strSelectedObject}" size="1">
+                                            <apex:selectOptions value="{!objects}"/>
+                                            <apex:actionSupport event="onchange" rerender="fieldSelectPanel1" status="Ajaxstatus"/>
+                                        </apex:selectList>
+                                    </td>
+                                    <td>
+                                        <apex:selectList value="{!strQuoteField}" size="1" rendered="{!IF(strSelectedObject != NULL,true,false)}">                    
+                                            <apex:selectOptions value="{!objFieldAPIList[strSelectedObject]}"/>   
+                                            <apex:actionSupport event="onchange" rerender="fieldSelectPanel1" status="Ajaxstatus"/>                 
+                                        </apex:selectList>
+                                    </td>
+                                    <td>
+                                        <apex:outputPanel rendered="{!IF(strSelectedObject != NULL,true,false)}">
+                                            <input type="text" value="{!strQuoteField}" style="width:600px;height:20px;" /><BR/>
+                                            <apex:outputpanel rendered="{!IF(CONTAINS(strQuoteField, ' OR '), true, false)}" style="color:red !important;">Note*: Copy either {!strQuoteField}.</apex:outputpanel>
+                                        </apex:outputPanel>
+                                    </td>
+                                </tr> 
+                            </table>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlock>
+                <apex:pageBlock title="Header" id="pb1">
+                    <div class="display" >
+                        <!--<apex:inputTextarea value="{!strHeader}" id="editor1"/>-->
+                        <!--<textarea name="editor1" id="editor1" rows="10" cols="10"></textarea>-->
+                        <apex:inputtextarea id="editor1" value="{!strHeader}" richtext="false"/>
+                    </div>
+                </apex:pageBlock>
+            </apex:pageBlock>
+            <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'pg:frm:pb:pb1:editor1' );
+                /* CKEDITOR.replace( 'pg:frm:pb:pb2:editor2' );
+                CKEDITOR.replace( 'pg:frm:pb:pb3:editor3' );
+                CKEDITOR.replace( 'pg:frm:pb:pb4:editor4' ); */
+                CKEDITOR.config.height = 400;
+            </script>  
+        </apex:form> 
+    </body>    
+</apex:page>

@@ -1,0 +1,31 @@
+<apex:page standardController="VAR_Deal_Registration__c" extensions="ExtendDealRegistration">
+ 
+ <apex:form >
+ <apex:pageMessages ></apex:pageMessages>
+   <apex:outputPanel rendered="{!isRecordExist}">
+        <apex:pageBlock title="Requesting Expiration Extension " >
+                <apex:pageblockButtons location="bottom">
+                   <apex:commandButton value="Submit For Approval" action="{!submitForApproval}"/>
+                   <apex:commandButton action="{!URLFOR($Action.VAR_Deal_Registration__c.view,VAR_Deal_Registration__c.id)}" value="Cancel"></apex:commandButton> 
+                 </apex:pageblockButtons>
+               <apex:pageblockSection columns="1">
+                    <apex:outputField value="{!VAR_Deal_Registration__c.Name}"/>
+                    <apex:outputField value="{!VAR_Deal_Registration__c.ownerId}"/>
+                     <apex:outputField value="{!VAR_Deal_Registration__c.Description__c}"/>
+                    <apex:inputTextarea value="{!strComments}" label="Comments for Justification" rows="10" cols="70"/>
+                    
+               </apex:pageblockSection> 
+        </apex:pageBlock>
+   </apex:outputPanel>  
+    <apex:outputPanel rendered="{!!isRecordExist}">  
+       <apex:pageBlock title="Requesting Expiration Extension " >
+           <apex:pageblockButtons location="bottom">
+                 <apex:commandButton action="{!URLFOR($Action.VAR_Deal_Registration__c.view,VAR_Deal_Registration__c.id)}" value="Back"></apex:commandButton> 
+           </apex:pageblockButtons>
+       </apex:pageBlock>
+    </apex:outputPanel>  
+    
+ </apex:form>
+ 
+ 
+</apex:page>

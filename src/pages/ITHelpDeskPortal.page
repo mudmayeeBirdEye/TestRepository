@@ -1,0 +1,364 @@
+<apex:page standardcontroller="Case" extensions="ITHelpDeskPortal" standardStylesheets="true"
+        showheader="true" sidebar="false" docType="html-5.0" cache="false">
+   <apex:composition template="ITPortalTemplate1"> 
+    <apex:define name="content">
+    <!------------ IT Helpdesk Case Component ---------------->    
+    <div style="display:none;" id="CreateITCase" >
+        <center>
+            <c:HelpdeskTicket />
+        </center>
+    </div>
+    
+     <!---------- IT Helpdesk Purchase Case Component ----------->    
+    <div style="display:none;" id="CreateITPurchaseCase">
+        <center>
+            <c:PurchaseTicket />
+        </center>
+    </div>
+    <apex:form id="formMain" styleclass="form-new-case">
+    <apex:outputPanel id="mainPanelTop">
+        <apex:pageMessages />
+        <apex:outputPanel rendered="{!toShowMailPanel}">
+            <body style="background-color: #F5F5F5;">
+                <div class="csContainer">
+                    <div>
+                        <apex:outputpanel id="mainPanel">
+                            <div>
+                                <div>
+                                    <apex:outputPanel id="msgPanel" rendered="{!toShowErrorMsg}">
+                                        <table Class="msgPanel">
+                                            <tr>
+                                                <td style="vertical-align:middle;width:30px;text-align:center;">
+                                                    <apex:image value="{!$Resource.WarningRed}" width="30px" height="25px" style="padding:5px" />
+                                                </td>
+                                                <td style="vertical-align:middle;padding-bottom: 5px;padding-top: 5px;text-align: left;">
+                                                    <apex:outputText style="padding:5px;" escape="false" value="{!errorMsg}"></apex:outputText>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </apex:outputPanel>
+                                     
+                                    <apex:outputpanel id="Searchbox">
+                                        <div id="MainDIv" style="margin-top: -4%;">
+                                          <div class="content callout" style="padding-left: 5px;margin-top: 35px;text-align: center;">
+                                             <a href="javascript:void(0);" 
+                                                id="helpdeskticket"
+                                                class="cta">
+                                                <span style="background: url('{!URLFor($Resource.ITHelpdeskImages,'reithelpdeskicons/helpdesk.png')}')
+                                                    no-repeat 6px 6px;">
+                                                </span>
+                                                <h3>New Helpdesk Case</h3>
+                                              </a> 
+                                             <a href="javascript:void(0);" 
+                                                id="purchaseticket"
+                                                class="cta">
+                                                <span style="background: url('{!URLFor($Resource.ITHelpdeskImages,'reithelpdeskicons/purchase.png')}')
+                                                    no-repeat 6px 6px;">
+                                                </span>
+                                                <h3>
+                                                  Purchase Case
+                                                </h3>
+                                              </a>
+             <!---------------- showing "New Hire" and "Termination" only if the department of the employee is HR ------------------------->
+                                              <apex:outputpanel rendered="{!isUserHR}">
+                                                  <a href="http://wiki.ringcentral.com/display/RCN/New+Hire+Request+Form" target="_blank" class="cta">
+                                                   <span style="background: url('{!URLFor($Resource.ITHelpdeskImages,'reithelpdeskicons/new-hire.png')}')
+                                                        no-repeat 6px 6px;">
+                                                    </span>
+                                                    <h3>
+                                                      New Hire
+                                                    </h3>
+                                                  </a>
+                                                  <a href="http://wiki.ringcentral.com/display/RCN/Open+A+Termination+
+                                                  " target="_blank" 
+                                                    class="cta last" style="width: 160px;">
+                                                    <span style="background: url('{!URLFor($Resource.ITHelpdeskImages,'reithelpdeskicons/termination.png')}')
+                                                        no-repeat 6px 6px;">
+                                                    </span>
+                                                    <h3>
+                                                     Termination
+                                                    </h3>
+                                                  </a>
+                                              </apex:outputpanel>
+               <!--------- To search articles and Case by case number or subject  ------------->
+                                                <div id="SearchboxInnerDiv" style="margin: 0px auto;width: 100%;">
+                                                <apex:inputText id="searchText" styleclass="searchText" value="{!caseSearchText}" 
+                                                    title="Enter Keywords or Case Number to search for a Case" 
+                                                    style="width: 694px; border: 1px solid #d5d5d5 !important;margin-top: 3%;margin-left: 1px;"
+                                                     onkeypress="javascript:if(event.keyCode == '13'){searchCall(event);return false;}else return true;" />
+                                                <apex:commandButton id="caseSearch" title="Only IT support cases will be searched" 
+                                                    value="Search" action="{!searchCaseAndArticles}" 
+                                                    rerender="searchPanel" status="status" 
+                                                        styleClass="searchBtnCSS" style="margin-top: 3%;">
+                                                </apex:commandButton>
+                                            </div>
+                                            </div>
+                                            <div id="searchPanelDiv">
+                                                <apex:outputpanel id="searchPanel">
+                                                    <div id="article" class="right-container" style="margin-bottom: 3%;margin-top: 35px;
+                                                          background: #fff;min-width: 92%;border-radius: 5px;height:50%;margin-left: 7px;
+                                                          border: 1px solid #e9e9e9;padding: 20px 20px 4px 27px;">
+                                                        <aside>
+                                                            <div style="border-bottom: 1px solid;border-bottom-color: #E5E5E5;padding-bottom: 15px;"
+                                                            class="category-header">
+                                                                <h3 style="font-size: 23px;">My Cases</h3>
+                                                            </div> 
+                      <!------------ Block to display the Cases -------------------->
+                                                            <div id="resultsDiv">
+                                                                <apex:outputpanel id="results">
+                                                                    <apex:outputText rendered="{!NULLVALUE(listWrCaseByText.size, 0) == 0}">
+                                                                    <span style="color: red;font-size: 15px;"><br/> No Case Found </span> </apex:outputText>
+                                                                    <ul class="paginate" style="margin-top: 5px;margin-bottom: 5px;">
+                                                                        <apex:repeat value="{!listWrCaseByText}" var="objcase">
+                                                                                <li style="padding-top: 10px;padding-bottom: 10px;
+                                                                                    border-bottom: 1px solid;border-bottom-color: #E5E5E5;">
+                                                                                    <div style='width: 100%;'>
+                                                                                        <div>
+                                                                                            <apex:outputLink value="/{!objcase.id}" target="_blank" style="color: #005CA1;font-size: 19px;" >
+                                                                                                <b> {!if(objcase.Subject != NULL,objcase.Subject,objcase.CaseNumber)} </b>
+                                                                                            </apex:outputLink>
+                                                                                        </div>
+                                                                                        <div>Case Number: 
+                                                                                             {!objcase.CaseNumber}
+                                                                                             <span style="padding-left: 5px;">&bull;</span>
+                                                                                             Case Owner: 
+                                                                                             {!objcase.caseownernmame}
+                                                                                             <span style="padding-left: 5px;">&bull;</span>
+                                                                                             Status: 
+                                                                                             {!objcase.Status}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                        </apex:repeat>
+                                                                        
+                                                                    </ul>
+                                                                    <script>
+                                                                        $(function(){
+                                                                            if($('#article ul li').length > 10){
+                                                                                $('#article').pajinate({
+                                                                                    num_page_links_to_display : 3,
+                                                                                    items_per_page : 10,
+                                                                                    show_first_last: false
+                                                                                });
+                                                                            }
+                                                                            $(".category-header").click(function () {
+                                                                                if ($("#resultsDiv").is(":hidden") == true) {
+                                                                                    $(".category-header").removeClass('deactiveArrow');
+                                                                                    $("#resultsDiv").slideDown();
+                                                                                    $("#article .page_navigation").show();
+                                                                                    $(".category-header").css("border-bottom","1px solid #e9e9e9");
+                                                                                    
+                                                                                } else {
+                                                                                    $("#resultsDiv").slideUp();
+                                                                                    $(".category-header").addClass('deactiveArrow');
+                                                                                    $("#article .page_navigation").hide();
+                                                                                    $(".category-header").css("border-bottom","0px solid #e9e9e9");
+                                                                                }
+                                                                            });
+                                                                        });
+                                                                    </script>
+                                                                </apex:outputpanel>
+                                                            </div>
+                                                        </aside>
+                                                        <div class="page_navigation" style="padding-bottom: 5px;margin-top:15px;"></div>
+                                                    </div>
+                                                    
+                                                <!---------- Block to display Knowledge Articles --------------->     
+                                                     <div id="article1" class="right-container" style="margin-bottom: 3%;
+                                                          background: #fff;min-width: 92%;border-radius: 5px;height:50%;margin-left: 7px;
+                                                          border: 1px solid #e9e9e9;padding: 20px 20px 4px 27px;">
+                                                        <aside>
+                                                            <div style="border-bottom: 1px solid;border-bottom-color: #E5E5E5;padding-bottom: 15px;"
+                                                            class="knowledge-header">
+                                                                <h3 style="font-size: 23px;">Knowledge Article</h3>
+                                                            </div>
+                                         
+                                                            <div id="articleresultsDiv">
+                                                                <apex:outputpanel id="Articleresults">
+                                                                    <apex:outputText rendered="{!NULLVALUE(lstITArticle.size, 0) == 0}">
+                                                                    <span style="color: red;font-size: 15px;"><br/> No Article Found </span> </apex:outputText>
+                                                                    <script> 
+                                                                        $(document).ready(function(){
+                                                                          $(".articleLink").colorbox({iframe:true, width:"80%", height:"95%",fixed: true,
+                                                                           onOpen:function(){$('body').addClass('bodyHidden'); },
+                                                                           onClosed:function(){$('body').removeClass('bodyHidden');}
+                                                                          });
+                                                                        });
+                                                                    </script>
+                                                                    <ul class="paginate" style="margin-top: 5px;margin-bottom: 5px;">
+                                                                        <apex:repeat value="{!lstITArticle}" var="articleObj">
+                                                                                <li style="padding-top: 10px;padding-bottom: 10px;
+                                                                                    border-bottom: 1px solid;border-bottom-color: #E5E5E5;">
+                                                                                    <div style='width: 100%;'>
+                                                                                        <div>
+                                                                                        <a class="articleLink" style="color: #005CA1;font-size: 19px;font-weight: bold;" href="/helpdesk/knowledge/TOCArticleRendererPkb.apexp?id={!articleObj.strArticleId}&popup=true"  
+                                                                                            title='{!articleObj.strArticleTitle}'>{!articleObj.strArticleTitle}</a> 
+                                                                                       </div>
+                                                                                         <div>
+                                                                                             
+                                                                                              Last Updated On: 
+                                                                                              {!articleObj.strArticleModifiedDate}
+                                                                                              <span style="padding-left: 5px;"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                        </apex:repeat>
+                                                                    </ul>
+                                                                    <script>
+                                                                        $(function(){
+                                                                            if($('#article1 ul li').length > 10){
+                                                                                $('#article1').pajinate({
+                                                                                    num_page_links_to_display : 3,
+                                                                                    items_per_page : 10,
+                                                                                    show_first_last: false
+                                                                                });
+                                                                            }
+                                                                            $(".knowledge-header").click(function () {
+                                                                                if ($("#articleresultsDiv").is(":hidden") == true) {
+                                                                                    $(".knowledge-header").removeClass('deactiveArrowArticle');
+                                                                                    $("#articleresultsDiv").slideDown();
+                                                                                    $("#article1 .page_navigation").show();
+                                                                                    $(".knowledge-header").css("border-bottom","1px solid #e9e9e9");
+                                                                                    
+                                                                                } else {
+                                                                                    $("#articleresultsDiv").slideUp();
+                                                                                    $(".knowledge-header").addClass('deactiveArrowArticle');
+                                                                                    $("#article1 .page_navigation").hide();
+                                                                                    $(".knowledge-header").css("border-bottom","0px solid #e9e9e9");
+                                                                                }
+                                                                            });
+                                                                        });
+                                                                    </script>
+                                                                </apex:outputpanel>
+                                                            </div>
+                                                        </aside>
+                                                        <div class="page_navigation" style="padding-bottom: 5px;margin-top:15px;"></div>
+                                                    </div>
+                                                </apex:outputpanel>
+                                            </div>
+                                        </div>
+                                    </apex:outputpanel>
+                                    <br/>
+                                </div>
+                            </div>
+                        </apex:outputpanel>
+                    </div>
+                    <script> 
+                        $(document).ready(function(){
+                          $("#helpdeskticket").colorbox({inline:true, href:"#CreateITCase", width:"660px", height:"520px",fixed:true,
+                           onOpen:function(){
+                            $('body').addClass('bodyHidden');
+                            $('#CreateITCase').show(); 
+                           },
+                           onClosed:function(){
+                            $('body').removeClass('bodyHidden');
+                            $('#CreateITCase').hide();
+                            $('.inpSubject').val('');
+                            $('.inpDesc').val('');  
+                           }
+                          });
+                        });
+                        $(document).ready(function(){
+                          $("#purchaseticket").colorbox({inline:true, href:"#CreateITPurchaseCase", width:"660px", height:"545px",fixed:true,
+                           onOpen:function(){
+                            $('body').addClass('bodyHidden');
+                            $('#CreateITPurchaseCase').show(); 
+                           },
+                           onClosed:function(){
+                            $('body').removeClass('bodyHidden');
+                            $('#CreateITPurchaseCase').hide();
+                            $('.inpSubject').val('');
+                            $('.inpDesc').val(''); 
+                            $('.inpDate').val(''); 
+                            $('#datepicker').val(''); 
+                           }
+                          });
+                        });
+                     </script>
+                     <!--<apex:actionFunction action="{!addCaseComment}" status="status" name="addComment" reRender="detailPanel"></apex:actionFunction>-->  
+                     <apex:actionFunction action="{!searchCaseAndArticles}" rerender="searchPanel" status="status" name="searchCall"/>       
+                     <apex:actionStatus id="status" onStart="showOverlay();" onstop="hideOverlay();" />
+                     <apex:actionStatus id="status1" onStart="showOverlay1();" onstop="hideOverlay1();" />
+                     <div id="overlayNew" class="overlayNew" style="text-align:center;padding-top:190px;"></div>
+                     <div class="loader-static" id="contentIndex1" style="z-index:99999;zIndex:99999;display:none;
+                                background-color: black;opacity: 0.6;">
+                     <div class="loader-static-panel" >
+                        <div style='margin-top:0px;font-weight:bold;'>Please wait...</div>
+                     </div>
+                     <div class="loader-fix"></div>
+                     </div>
+                     
+                     <div class="loader-static" id="contentIndex" style="z-index:9999;zIndex:9999;display:none;">
+                     <div class="loader-static-panel" style="top:-30%">
+                        <div style='margin-top:0px;font-weight:bold;'>Please wait...</div>
+                     </div>
+                     <div class="loader-fix"></div>
+                     </div>
+                     
+                    <script src="{!URLFOR($Resource.RCSupportPortal, 'supportPortal/js/libs/jquery.colorbox.js')}"></script>
+                    <script>
+                        $("[id$=searchText]").live({
+                            focus: function() {
+                                if ($(this).val() == $(this).attr("title")) {
+                                    $(this).val("");
+                                    $(this).removeClass('searchTextStyle');
+                                    $(this).css("border","1px solid #d5d5d5");
+                                 }  
+                            },
+                            blur: function() {
+                            if ($(this).val() == "") {
+                                $(this).val($(this).attr("title"));
+                                $(this).addClass('searchTextStyle');
+                                $(this).css("border","1px solid #d5d5d5");
+                             }
+                            }
+                        });
+                    
+                        function setFocusOnLoad() {
+                            $("[id$=searchText]").blur();
+                            $("[id$=searchTextArticle]").blur();
+                        }
+                    </script>
+                    <script>
+                        var isCookieEnabled = navigator.cookieEnabled;
+                        if (isCookieEnabled == false) {
+                            alert('Cookie is not enabled on your browser. Please enable the cookie for recent searched case functionality.');
+                        }
+        
+                        function showOverlay() {
+                            var o = document.getElementById('overlayNew');
+                            o.style.display = 'block';
+                            var oVar = document.getElementById('contentIndex');
+                            oVar.style.display = 'block';
+        
+                        }
+        
+                        function hideOverlay() {
+                            var o = document.getElementById('overlayNew');
+                            o.style.display = 'none';
+                            var oVar = document.getElementById('contentIndex');
+                            oVar.style.display = 'none';
+                        }
+                        function showOverlay1() {
+                            var o = document.getElementById('overlayNew');
+                            o.style.display = 'block';
+                            var oVar = document.getElementById('contentIndex1');
+                            oVar.style.display = 'block';
+        
+                        }
+        
+                        function hideOverlay1() {
+                            var o = document.getElementById('overlayNew');
+                            o.style.display = 'none';
+                            var oVar = document.getElementById('contentIndex1');
+                            oVar.style.display = 'none';
+                        }
+                    </script>
+                   </div>
+            </body>
+       </apex:outputPanel>
+    </apex:outputPanel>
+    </apex:form>
+   </apex:define>
+  </apex:composition>
+</apex:page>

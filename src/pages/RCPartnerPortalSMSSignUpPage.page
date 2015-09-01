@@ -1,0 +1,83 @@
+<apex:page >
+
+<style>
+  .textCss{
+    clear: both;
+    color: #0D436A;
+    font-family: arial;
+    font-size: 17px;
+ }
+.headerText{
+    font-family: sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    margin-left: 192px;
+    color: #0D436A;
+}
+
+</style>
+<div style='padding:20px;'>
+   <div class='headerText'>SMS Sign-Up</div>
+
+<div class='textCss'><p><strong>SMS Sign-Up
+      Sign up below to receive important messages about promotions for resellers, feature and product changes.</strong></p>
+</div>
+Please choose the location of your mobile phone number:<br/>
+<input type="radio" name="loc" value="us"  onclick="showHideFrame(this.value);"/> US<br/>
+<input type="radio" name="loc" value="ca"  onclick="showHideFrame(this.value);" /> CANADA
+
+ <div style='clear:both;margin-left:192px;display :none;' id='us' > 
+  <div style="margin-top:5px; margin-left:-180px;"><b> NOTE: In Chrome browsers, click the shield icon in the upper right corner to allow JavaScript.</b> </div>    <br/>
+  <iframe src="https://trumpia.com/onlineSignup/embed_osp.php?user=RingCentralUS&dname=5ad303ca9a4c53337484762b0b03bbbe" 
+  frameborder="0" width="220" height="384" scrolling="no" style="border:#000000 solid 2px;margin-left:6px;" id="us_frm">
+  </iframe> 
+ </div>
+ 
+  <div style='clear:both;margin-left:192px;display:none;' id='ca' >
+   <div style="margin-top:5px; margin-left:-180px;"><b> NOTE: In Chrome browsers, click the shield icon in the upper right corner to allow JavaScript.</b> </div>    <br/>
+   <iframe src="https://trumpia.com/onlineSignup/embed_osp.php?user=ringcentralca&dname=578225c8db65e942ce02002fb3ac3edb" 
+   frameborder="0" width="220"  height="384" scrolling="no" style="border:#000000 solid 2px; margin-left:6px;" id="ca_frm">
+   </iframe>
+ </div> 
+ 
+  <div class='textCss'>
+   <p><strong>Note:</strong> If you would also like to receive outage or service degradation notifications, and have a minimum of one customer with RingCentral, not including your own business, then please send an email to <a href="mailto:resellers@ringcentral.com">resellers@ringcentral.com</a> after you have filled out this sign-up sheet.  Send the following information in your email:</p>
+   <p><strong>Subject Line:</strong> Alert Notifications</p>
+    <p> <strong>Body of email:</strong> include the email address that you registered in this form, as well as your partner ID.
+    </p>
+  </div>
+
+</div>
+ 
+<script>
+
+function showHideFrame( a ){
+
+   try {
+    if (a == 'us') {
+        document.getElementById('us').style.display = 'block';
+        document.getElementById('us_frm').style.display = 'block';
+        document.getElementById('ca').style.display = 'none';
+        document.getElementById('ca_frm').style.display = 'none';
+        
+    }
+    } catch (ex) {
+        alert(ex);
+    }
+    try{
+    if (a == 'ca') {
+        document.getElementById('ca').style.display = 'block';
+        document.getElementById('ca_frm').style.display = 'block';
+        document.getElementById('us').style.display = 'none';
+        document.getElementById('us_frm').style.display = 'none';
+       
+    }
+    } catch (ex){
+        alert(ex);
+    }
+}
+
+
+</script>
+
+</apex:page>

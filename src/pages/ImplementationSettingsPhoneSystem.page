@@ -1,0 +1,152 @@
+<!-------------------------------------------------------------------------------------------------
+* Project Name..........: Implementation                                                          *
+* File..................: ImplementationSettingsPhoneSystem.Page                                  *
+* Version...............: 1.0                                                                     *
+* Created by............: Simplion Technologies                                                   *
+* Created Date..........:                                                                         *
+* Last Modified by......: Simplion Technologies                                                   *
+* Last Modified Date....:                                                                         *
+* Description...........: This page contains Implementation checklist on Implementation layout.   *
+-------------------------------------------------------------------------------------------------->
+
+<apex:page StandardController="Implementation__c" extensions="ImplementationSettingsPhoneSystem">
+<style>
+    .outputText {
+        margin-left: 9%;
+        font-weight: bold;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    .table {
+        width: 100%;
+        display: table;
+    }
+    .table .row {
+        display: table-row;
+    }
+    .table .row .column {
+        display: table-cell; //
+    }
+    .heading {
+        font-size: 14px;
+        text-align: center;
+        background: #027C6F;
+        height: 20px;
+        display: table-caption !important;
+        color: white;
+        font-family: "Calibri", "sans-serif";
+        font-weight: bold;
+    }
+    .checkBoxStyle{
+        /*height: 12px;
+        width: 12px;*/
+    }
+    body{
+        font-size: 70%;
+    }
+</style>
+<apex:form id="mainForm">
+    <apex:inputHidden value="{!Implementation__c.Brand__c}" id="theHiddenInput"/>
+    <apex:pageBlock >
+          <apex:outputpanel id="opPanel" layout="none"> 
+              <div class="table">
+               <div class="row heading">Settings/Phone System</div>
+               <div class="row">
+                <div class="column">
+                    <div class="outputText" style="margin-left: 14% !important;">
+                        <apex:outputText value="Account Review" />
+                    </div>
+                    <apex:selectcheckboxes value="{!accountReviewsList}" layout="pageDirection" disabled="{!isDisabled}" id="CheckBoxes1" styleClass="checkBoxStyle" >
+                        <apex:selectOptions value="{!lstAccountReviewOptions}" />
+                    </apex:selectcheckboxes>
+                </div>
+        
+                <div class="column">
+                    <div class="outputText" style="margin-left: 7% !important;">
+                        <apex:outputText value="Company Numbers and Info" />
+                    </div>
+                    <apex:selectcheckboxes value="{!companyNumbersInfoList}" layout="pageDirection" disabled="{!isDisabled}" id="CheckBoxes2" styleClass="checkBoxStyle" >
+                        <apex:selectOptions value="{!companyNumbersInfoOptions}" />
+                    </apex:selectcheckboxes>
+                </div>
+        
+                <div class="column">
+                    <div class="outputText" style="margin-left: 7% !important;">
+                        <apex:outputText value="Users" />
+                    </div>
+                    <apex:selectcheckboxes value="{!usersList}" layout="pageDirection" disabled="{!isDisabled}" id="CheckBoxes3" styleClass="checkBoxStyle">
+                        <apex:selectOptions value="{!lstAUserOptions}" />
+                    </apex:selectcheckboxes>
+                </div>
+        
+                <div class="column">
+                    <div class="outputText" style="margin-left: 10% !important;">
+                        <apex:outputText value="Phones & Devices" />
+                    </div>
+                    <apex:selectcheckboxes value="{!phonesDevicesList}" layout="pageDirection" disabled="{!isDisabled}" id="CheckBoxes4" styleClass="checkBoxStyle" >
+                        <apex:selectOptions value="{!phonesDevicesOptions}" />
+                    </apex:selectcheckboxes>
+                    <!--  Appointment section would be used after releasing of Implementation scheduler. -->
+                    <div class="outputText" style="margin-left: 10% !important; margin-top: 17px;">
+                        <apex:outputText value="Appointments"/>
+                    </div>
+                    <apex:inputCheckBox id="chk6" style="margin-left: 10% !important; margin-top: 10px!important; margin: 5px 7px;" value="{!objImplementation.Welcome_Call_Completed__c}" disabled="{!isDisabled}" rendered="{!displayTelusValue}" />
+                    <apex:outputText value="Welcome Call Completed"  rendered="{!displayTelusValue}"/> <br/>
+                    <apex:inputCheckbox id="chk1" style="margin-left: 10% !important;  margin: 5px 7px; " value="{!objImplementation.First_Call_Completed__c}" disabled="{!isDisabled}"/> 
+                    <apex:outputText value="First Call Completed"/> <br/>
+                    <apex:inputCheckBox id="chk2" style="margin-left: 10% !important; margin: 5px 7px;" value="{!objImplementation.Second_Call_Completed__c}" disabled="{!isDisabled}" /> 
+                    <apex:outputText value="Second Call Completed"/> <br/>
+                    <apex:inputCheckBox id="chk3" style="margin-left: 10% !important; margin: 5px 7px;;" value="{!objImplementation.Third_Call_Completed__c}" disabled="{!isDisabled}" /> 
+                    <apex:outputText value="Third Call Completed"/> <br/>
+                    <apex:inputCheckBox id="chk4" style="margin-left: 10% !important; margin: 5px 7px;;" value="{!objImplementation.Fourth_Call_Completed__c}" disabled="{!isDisabled}" /> 
+                    <apex:outputText value="Fourth Call Completed"/> <br/>
+                    <apex:inputCheckBox id="chk5" style="margin-left: 10% !important; margin: 5px 7px;;" value="{!objImplementation.Final_Call_Completed__c}" disabled="{!isDisabled}" /> 
+                    <apex:outputText value="Final Call Completed"/> <br/>
+                    
+                    <apex:inputCheckBox id="noShow" style="margin-left: 10% !important; margin: 5px 7px;;" value="{!objImplementation.No_Show__c}" disabled="{!isDisabled}" /> 
+                    <apex:outputText value="No Show"/>
+                </div>
+                
+                <div class="column">
+                    <div class="outputText" style="margin-left: 13% !important;">
+                        <apex:outputText value="Group" />
+                    </div>
+                    <apex:selectcheckboxes value="{!groupsList}" layout="pageDirection" disabled="{!isDisabled}" id="CheckBoxes5" styleClass="checkBoxStyle" >
+                        <apex:selectOptions value="{!groupsOptions}" />
+                    </apex:selectcheckboxes></div>
+                <div class="column">
+                    <div class="outputText" style="margin-left: 14% !important;">
+                        <apex:outputText value="Tools" />
+                    </div>
+                    <apex:selectcheckboxes value="{!toolsInfoList}" layout="pageDirection" disabled="{!isDisabled}" id="CheckBoxes6" styleClass="checkBoxStyle">
+                        <apex:selectOptions value="{!toolsOptions}" />
+                    </apex:selectcheckboxes>
+                </div>
+               </div>
+              </div>
+              
+              <!-- Added and modified on 12th June 2015 to make read only of implementation Checklists only for sales profile -->              
+               <apex:outputPanel rendered="{!isDisabled}" >                    
+                  <div id="EditButton" >
+                    <apex:outputPanel rendered="{!DisplayEditBtn}" >
+                      <input type="button" value="Edit" onClick="EnableEdit();" />              
+                    </apex:outputPanel>       
+                  </div> 
+              </apex:outputPanel>
+              <apex:outputPanel rendered="{!Not(isDisabled)}"  >                    
+                  <div id="SaveButton" >                  
+                      <apex:commandButton value="Save" action="{!saveImplementation}"   oncomplete="window.top.location='/{!objImplementation.Id}';"/>                                              
+                  </div>                  
+              </apex:outputPanel>
+              <apex:actionFunction name="setEditable" action="{!saveImplementation}" reRender="chk1,chk2,chk3,opPanel">
+                      <apex:param name="editable" value="editable" assignTo="{!strEdit}" />
+              </apex:actionFunction>    
+          </apex:outputpanel>
+    </apex:pageBlock>       
+</apex:form>
+<script>
+    function EnableEdit() {     
+        setEditable('editable');
+    }        
+</script> 
+</apex:page>

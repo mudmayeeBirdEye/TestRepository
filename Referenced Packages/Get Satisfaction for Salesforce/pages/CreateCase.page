@@ -1,0 +1,15 @@
+<apex:page standardController="Case" extensions="GETSAT_TOPIC.CreateCaseController">
+   <apex:form >
+   <apex:pageMessages showDetail="true"/>
+   <!---<apex:commandButton action="{!URLFOR($Action.Case.Tab, $ObjectType.Case)}" value="{!$Label.Ok}" style="margin-left:50px;"/> --->
+ <apex:commandButton action="{!doSave}" id="id2" style="visibility:hidden;"/>
+
+   <script type="text/JavaScript" language="Javascript">
+        window.onload = function() { setFocus();}
+        function setFocus(){
+            document.getElementById('j_id0:j_id1:id2').focus();
+            document.getElementById('j_id0:j_id1:id2').click();
+        }
+  </script>
+  </apex:form>
+</apex:page>

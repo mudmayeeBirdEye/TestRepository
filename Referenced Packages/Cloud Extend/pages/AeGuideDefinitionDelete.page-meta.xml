@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>27.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Page that is rendered when a Guide Definition is to be deleted. When this page is visited, it will delete the current Guide Definition instance and all associated Guide Executions and Guide Milestones.</description>
+    <label>AeGuideDefinitionDelete</label>
+</ApexPage>

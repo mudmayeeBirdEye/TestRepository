@@ -1,0 +1,264 @@
+<apex:page cache="true" controller="LP.Mapping" action="{!init}" setup="true">
+
+    <apex:stylesheet value="{!$Resource.LP__LivePerson_CSS}" /> 
+    <apex:form id="myform" style="display:none">
+      <apex:commandButton id="clickToMapField"  action="{!addRow}" style="display:none" />
+      <apex:commandButton id="clickToRemoveField" action="{!removeRow}" style="display:none"/>
+      <apex:inputCheckbox value="{!useAssignmentDefault}" id="useDefaultAssignment" style="display:none"/>
+   
+    
+   
+    <script language="javascript">
+    window.onload = function init()
+    {
+     if({!MYcurrentObject == 'Lead'} || {!MYcurrentObject == 'Case'})
+     {
+	     endisableCmp ({!useAssignment});
+	     
+	     if({!useAssignmentDefault})
+	     	document.getElementById('AssignmentOptions1').checked = 'checked'; 	
+	     else
+	     	document.getElementById('AssignmentOptions2').checked = 'checked'; 
+     }
+
+     document.getElementById("{!$Component.myform}").style.display = "";	
+     
+    }
+    
+    function endisableCmp(checked)
+    {
+		
+		var list = document.getElementById('settingTable').getElementsByTagName("input");
+		for(var i=1; i< list.length; i++)
+			list[i].disabled = !checked;
+		document.getElementById('settingTable').getElementsByTagName("select")[0].disabled = !checked;
+		
+			
+    } 
+    function setDefaultAssignment(b)
+    {
+       var c = document.getElementById("{!$Component.myform.useDefaultAssignment}");
+       c.checked = b;
+    }
+    </script>
+    
+    
+    <apex:sectionHeader title="{!MYcurrentObject} - LivePerson Mapping Edit" help="/apex/mapping_help"/>
+    
+    
+    
+    <apex:image value="{!$Resource.LP__LivePerson_Logo}" />
+          <br/><br/>
+		
+		<apex:outputPanel rendered="{!AND( NOT(MYcurrentObject == 'Lead'), NOT(MYcurrentObject == 'Case'))}">
+	        <div class="Description">
+			    Define mapping between SalesForce.com and LivePerson fields.
+			    Select each SalesForce.com field you want to map, add it to the mapping table, and type for it a LivePerson field name.
+			    You can also enter a default value for each field. Please note it is required for mandatory fields.Mark as "Searchable" fields to be included in the default search.
+	        </div>
+         </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!MYcurrentObject == 'Lead' || MYcurrentObject == 'Case'}">
+	        <div class="Description">
+				Define mapping between Salesforce.com and LivePerson fields. 
+				Select each Salesforce.com field you want to map, add it to the mapping table, and type for it a LivePerson field name. You can also enter a default value for each field. Please note it is required for mandatory fields.Mark as "Searchable" fields to be included in the default search.<br/><br/>
+				Specify whether you wish the integration to inherit the Assignment rules defined and if yes, whether to use the Active rule or one of the non Active ones.
+			</div>    
+        </apex:outputPanel>    
+            
+    <br/><br/>
+        
+        <apex:pagemessages />
+        
+        <apex:pageBlock id="pgBlockMapFields"  mode="Edit">
+        
+        
+        <apex:pageBlockButtons id="myPageBlockBtn">
+            <apex:commandButton action="{!save}" value="Save" id="btnSave"/>
+            <apex:commandButton action="{!cancel}" value="Cancel" />
+        </apex:pageBlockButtons>
+        
+        
+        <apex:pageBlockSection title="Assignment Rules" collapsible="false" rendered="{!MYcurrentObject == 'Lead' || MYcurrentObject == 'Case'}">
+        </apex:pageBlockSection>
+        <apex:outputPanel rendered="{!MYcurrentObject == 'Lead' || MYcurrentObject == 'Case'}">
+	        <table cellspacing="0" cellpadding="0"  border="0" class="SettingTable" id="settingTable">
+	            <tr>
+	                <td> 
+	                    <apex:inputCheckBox value="{!UseAssignment}" required="false" onclick="endisableCmp(this.checked)"/>  
+	                </td>
+	                <td colspan="2">   
+	                   <b>Use {!MYcurrentObject} Assignment Rules</b>
+	                </td>
+	                
+	            </tr>
+	              <tr id="TR2">
+	                <td> 
+	                    &nbsp;  
+	                </td>
+	                <td>   
+	                  <input type="radio" name="AssignmentOptions" id="AssignmentOptions1" onchange="setDefaultAssignment(true)"  />
+	                </td>
+	                <td>   
+	                   Active {!MYcurrentObject} Assignment Rule
+	                </td>
+	            </tr>
+	            <tr id="TR3">
+	                <td> 
+	                    &nbsp;  
+	                </td>
+	                <td>   
+	            	   <input type="radio" name="AssignmentOptions" id="AssignmentOptions2" onchange="setDefaultAssignment(false)" />
+	                </td>
+	                <td>   
+	                   Other Assignment Rules&nbsp; 
+	                  <apex:selectList value="{!SelectedAssignmentRule}" size="1">
+	                   <apex:selectOptions value="{!AssignmentRules}" />
+	                   </apex:selectList>
+	                   
+	                </td>
+	            </tr>
+	       </table>
+       </apex:outputPanel>
+        <apex:pageBlockSection title="Mapping" collapsible="false">
+        </apex:pageBlockSection>
+          <table cellspacing="8" cellpadding="0"  border="0" class="SettingTable">
+            <tr>
+                <td> 
+                    <b>  <apex:outputText value="{!MYcurrentObject} Fields" /> </b>
+                </td>
+                <td></td>
+                <td>   
+                   <b>Mapping Table</b>
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td>
+                     <apex:selectList id="listAvailableSfFields" value="{!selectedField}" size="15" > 
+                        <apex:selectOptions value="{!objectFields}"></apex:selectOptions>
+                    </apex:selectList>
+                </td>
+                <td align="center" style="vertical-align:middle;">
+                    
+                      <apex:outputLabel value="Add"/>
+                    <br/>
+                    <a href="javascript:void(0);" onclick="addRowClicked();" ><img class="rightArrowIcon" title="Add" alt="Add" src="/s.gif" /></a>
+                    <br/>
+                    <a href="javascript:void(0);" onclick="removeElem();"><img id="removeImgId" class="leftArrowIcon" title="Remove" alt="Remove" src="/s.gif" /></a>
+                    <br/>
+                    <apex:outputLabel value="Remove"/>
+                                      
+                    
+                </td>
+                <td>
+                
+                   <apex:DataTable styleClass="MappingTable" width="500px" columnClasses="firstRowTable,firstRowTable1,firstRowTable2,rowTable,rowTable,rowTable2" headerClass="headerTable" rowClasses="rowTable" value="{!mappingTable}" var="mappingElement" id="mappingTableId" >
+                            
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                <apex:inputcheckbox value="{!mappingElement.IsSelected}" rendered="{!mappingElement.Mapping.LP__IsMandatory__c == false}"/>
+                            </apex:column>
+                            
+                             
+                            <apex:column >
+                                <apex:facet name="header">SF Field</apex:facet>
+                                {!mappingElement.Mapping.LP__FieldLabel__c}
+                            </apex:column>
+                            
+                           
+                            
+                            <apex:column >
+                                <apex:facet name="header">Mandatory</apex:facet>
+                                <apex:outputField value="{!mappingElement.Mapping.LP__IsMandatory__c}" id="mandatory"/>
+                            </apex:column>
+                            
+                            <apex:column onclick="selectRow(true,this);">
+                                <apex:facet name="header">LP Field</apex:facet>
+                                <apex:outputField value="{!mappingElement.Mapping.LP__LP_FieldName__c}" />
+                                <apex:inputText id="lpField" value="{!mappingElement.Mapping.LP__LP_FieldName__c}" style="display:none" onchange="changeVal(this)" onblur="selectRow(false,null);"></apex:inputText>
+                            </apex:column>
+                            
+                            <apex:column onclick="selectRow(true,this);">
+                                <apex:facet name="header">Default Value</apex:facet>
+                                <apex:outputField value="{!mappingElement.Mapping.LP__DefaultValue__c}"></apex:outputField>
+                                <apex:inputText id="defaultValue" value="{!mappingElement.Mapping.LP__DefaultValue__c}" style="display:none" onchange="changeVal(this)" onblur="selectRow(false,null);"></apex:inputText>
+                            </apex:column> 
+                            
+                             <apex:column >
+                                <apex:facet name="header">Searchable</apex:facet>
+                                <apex:inputField value="{!mappingElement.Mapping.LP__Searchable__c}"/>
+                            </apex:column>
+                            
+                            
+                    </apex:DataTable> 
+                    
+                
+                    
+                </td>
+            </tr>
+            
+        </table>
+        
+        </apex:pageBlock>
+    </apex:form>
+
+<script language="javascript">
+var currentRow;
+var ua = navigator.userAgent.toLowerCase();
+if ( ua.indexOf("firefox") != -1 )
+{
+    HTMLElement.prototype.click = function()
+    {
+    var evt = this.ownerDocument.createEvent('MouseEvents');
+    evt.initMouseEvent('click', true, true, this.ownerDocument.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+    this.dispatchEvent(evt);
+    }
+}
+
+function removeElem()
+{
+    var elem = document.getElementById('{!$Component.myform.pgBlockMapFields.mappingTableId}');
+    var inputs = elem.getElementsByTagName("input");
+    var hasItemchecked = false;
+    for(var i=0 ; i < inputs.length; i++)
+    {
+       if(inputs[i].type == "checkbox" && inputs[i].checked == true)
+       {
+           hasItemchecked = true;
+           break;
+       }
+    }
+    if(hasItemchecked)
+        document.getElementById('{!$Component.myform.clickToRemoveField}').click();
+}
+
+function addRowClicked()
+{
+    var elem = document.getElementById('{!$Component.myform.pgBlockMapFields.listAvailableSfFields}');
+    if(elem.selectedIndex != -1)
+       document.getElementById('{!$Component.myform.clickToMapField}').click();
+}
+
+function selectRow(isInput,obj)
+{
+  if(currentRow!=null && currentRow !=obj)
+  {
+    currentRow.getElementsByTagName("span")[0].style.display = "block";
+    currentRow.getElementsByTagName("input")[0].style.display = "none";
+  }
+  if(isInput)
+  {
+    obj.getElementsByTagName("span")[0].style.display = "none";
+    obj.getElementsByTagName("input")[0].style.display = "block";
+    obj.getElementsByTagName("input")[0].focus();
+    currentRow = obj;
+  } 
+} 
+function changeVal(obj)
+{
+  obj.parentNode.getElementsByTagName("span")[0].innerHTML = obj.value;
+} 
+</script>  
+</apex:page>

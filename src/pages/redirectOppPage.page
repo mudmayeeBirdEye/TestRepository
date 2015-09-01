@@ -1,0 +1,7 @@
+<apex:page sidebar="false" showHeader="false">
+  <script>
+      var URLValue=window.location.href;
+      var query =URLValue.substring(URLValue.indexOf('?'));
+      window.location="/006/e"+unescape(query);
+  </script>
+</apex:page>

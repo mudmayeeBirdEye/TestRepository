@@ -1,0 +1,117 @@
+<apex:page standardController="com_smartsheet__Smartsheet__c" extensions="com_smartsheet.SmartsheetEditExtension"
+           standardStylesheets="false" sidebar="true" showHeader="true" tabStyle="com_smartsheet__Smartsheet__c"
+           title="{!$Label.edit_title}: {!IF(ISNULL(com_smartsheet__Smartsheet__c.com_smartsheet__SmartsheetKey__c), $Label.edit_caption_newSheet, com_smartsheet__Smartsheet__c.Name)}" >
+
+    <style type="text/css">
+        .linkPickers span.requiredInput {
+            margin-left: 10px;
+        }
+    </style>
+    
+    <!--  Reference custom fields so they are returned by SOQL -->
+    <apex:outputText rendered="false" value="{!com_smartsheet__Smartsheet__c.com_smartsheet__SmartsheetKey__c}" />
+
+    <apex:form styleClass="smartsheetForm" id="editForm">
+        <apex:sectionHeader title="{!IF(ISNULL(com_smartsheet__Smartsheet__c.com_smartsheet__SmartsheetKey__c), $Label.edit_caption_newSheet, com_smartsheet__Smartsheet__c.Name)}" help="{!HelpPageUrl}" />
+
+        <apex:pageBlock title="{!$Label.edit_heading_main}" mode="edit" id="editBlock">
+            <apex:pageMessages id="pageMessages" />
+
+            <apex:pageBlockSection title="{!$Label.edit_subheading_information}" columns="1" id="editSection">
+                <!-- Related object type picker (only used when sheet is created from "Create New" drop-down list -->
+                <apex:pageBlockSectionItem rendered="{!NOT(IsReferenceFieldSet)}" id="linkPickerSectionItem">
+                    <apex:outputLabel value="Link Smartsheet To:" for="linkField" />
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+	                    <apex:actionRegion id="theRegion">
+	                        <apex:selectList id="linkFieldList" required="true" size="1" value="{!linkField}">
+	                            <apex:actionSupport event="onchange" action="{!changeLinkField}" reRender="linkPickers" onsubmit="prepLinkFieldChange();" />
+	                            <apex:selectOptions value="{!LinkFieldOptionList}" />
+	                        </apex:selectList>
+	    
+	                        <!-- Related item pickers (only one of these will be visible at a time) -->
+	                        <apex:outputPanel id="linkPickers" styleClass="linkPickers">
+		                        <span class="requiredInput">
+		                            <div class="requiredBlock"></div>
+									<apex:repeat value="{!referenceFieldList}" var="field">
+			                            <apex:inputField value="{!com_smartsheet__Smartsheet__c[field]}" rendered="{!(field == linkField)}" />
+									</apex:repeat>
+		                        </span>    
+	                        </apex:outputPanel>
+	                    </apex:actionRegion>                        
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+
+                <!-- Show related object -->
+				<apex:repeat value="{!referenceFieldList}" var="field">
+                    <apex:pageBlockSectionItem rendered="{!AND(IsReferenceFieldSet, NOT(ISBLANK(com_smartsheet__Smartsheet__c[field])))}">            
+                        <apex:outputLabel value="{!$ObjectType.com_smartsheet__Smartsheet__c.fields[field].label}" />
+                        <apex:outputField value="{!com_smartsheet__Smartsheet__c[field]}" />
+                    </apex:pageBlockSectionItem>
+               	</apex:repeat>
+                
+                <apex:pageBlockSectionItem >            
+                    <apex:outputLabel value="{!$ObjectType.com_smartsheet__Smartsheet__c.fields.Name.label}" for="sheetName" />
+                    <!-- Can't use apex:inputField here since it has no support for maxLength, and we can't shorten the length
+                         of the standard Name field (80 chars, which is bigger than a Smartsheet name at 50 chars). -->
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText id="sheetName" maxlength="50" styleClass="requiredInput" required="true" value="{!com_smartsheet__Smartsheet__c.Name}" style="width:200px" onchange="handleSheetNameChange(this)" />
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            
+                <!-- Let user choose a sheet type if creating a new sheet -->
+                <apex:pageBlockSectionItem rendered="{!ISNULL(com_smartsheet__Smartsheet__c.com_smartsheet__SmartsheetKey__c)}" >
+                    <apex:outputLabel value="{!$Label.edit_field_smartsheetType}" for="sheetType" />
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                        <apex:outputPanel layout="block" styleClass="requiredBlock"/>
+                        <apex:selectList id="sheetType" required="true" value="{!sheetType}" size="1" style="width:200px" >
+                            <apex:selectOptions value="{!SheetTypes}" />
+                        </apex:selectList>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >            
+                    <apex:outputLabel value="{!$ObjectType.com_smartsheet__Smartsheet__c.fields.com_smartsheet__Description__c.label}" for="sheetDescription" />
+                    <apex:inputField id="sheetDescription" value="{!com_smartsheet__Smartsheet__c.com_smartsheet__Description__c}" style="width:200px" />
+                </apex:pageBlockSectionItem>
+
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockButtons location="bottom">
+                <!-- Use commandLink to work-around this bug with parms on commandButton
+                     http://blog.jeffdouglas.com/2010/03/04/passing-parameters-with-a-commandbutton -->
+                <apex:commandLink onClick="{!IF(ISNULL(com_smartsheet__Smartsheet__c.com_smartsheet__SmartsheetKey__c), '', 'return confirmSave();')}" action="{!save}" value="{!IF(ISNULL(com_smartsheet__Smartsheet__c.com_smartsheet__SmartsheetKey__c), $Label.edit_button_save_createSheet,  $Label.edit_button_save)}"
+                                  styleClass="btn" style="text-decoration:none">
+                    <apex:param name="apiSessionId" assignTo="{!apiSessionId}" value="{!$Api.Session_ID}" />                                      
+                    <apex:param name="apiServerUrl" assignTo="{!apiServerUrl}" value="{!$Api.Partner_Server_URL_190}" />                                      
+                </apex:commandLink>
+                
+                <!-- Use commandLink here so it has the same style as the other button -->                
+                <apex:commandLink action="{!cancel}" value="{!$Label.button_cancel}" styleClass="btn" style="text-decoration:none" />
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <script language="JavaScript">
+        var _nameChanged = false;
+        
+        function handleSheetNameChange(element) {
+            _nameChanged = (element.value != '{!JSENCODE(Smartsheet__c.Name)}');
+        }
+        
+        function confirmSave() {
+            if (_nameChanged) {
+                return confirm('{!JSENCODE($Label.edit_message_renameWarning)}');
+            }            
+            
+            return true;
+        }
+        
+        function prepLinkFieldChange() {
+        	document.getElementById('{!$Component.editForm.editBlock.editSection.linkPickerSectionItem.linkPickers}').style.visibility = 'hidden';
+        }
+        
+    </script>
+</apex:page>

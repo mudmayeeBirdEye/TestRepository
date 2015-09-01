@@ -1,0 +1,496 @@
+<apex:page showHeader="false" sidebar="false" standardController="Opportunity" extensions="SignUpLinksDemo"   standardStylesheets="false" id="thePage" cache="false">
+ <!--<apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}"/> 
+--><script type="text/javascript">
+
+ 
+function partnerUNcheck(){
+     var op = document.getElementsByName('thePage:form1:rbPartnerOffer');
+       for(var intChk = 0 ; intChk < op.length; intChk ++ ) { 
+        if(op[intChk].checked){
+            op[intChk].checked = false;
+        }
+      }
+}
+
+function unCheckRet(curr){
+if(curr == 'CAN'){
+ try{
+ var op1 = document.getElementsByName('thePage:form1:canPageBlk:canPageBlkSec_2:rbMainSerivceCANRET');
+ var op2 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+  unCheckOptions ( op1 , op2 );
+  } catch (ex){alert(ex);} 
+ }   
+ if(curr == 'US'){ 
+   try{
+   var op3 = document.getElementsByName('thePage:form1:usPageBlk:usPageBlkSec_2:rbMainSerivceUSRET');
+   var op4 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+   unCheckOptions ( op3 , op4 );
+   }catch(ex) {alert(ex);}
+ }
+  if(curr == 'UK'){  
+   try{
+     var op5 = document.getElementsByName('thePage:form1:ukPageBlk:canPageBlkSec_2:rbMainSerivceUKRET');
+     var op6 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+     unCheckOptions ( op5 , op6 );
+     }catch(ex) {alert(ex);}
+  }
+}
+function unCheckCur(curr){
+if(curr == 'CAN'){
+try {
+ var op1 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+ var op2 = document.getElementsByName('thePage:form1:canPageBlk:canPageBlkSec_1:rbMainSerivceCANOFF');
+ unCheckOptions ( op1 , op2 );
+  } catch (ex){alert(ex);} 
+}
+if(curr == 'US'){  
+   try{
+     var op3 = document.getElementsByName('thePage:form1:usPageBlk:usPageBlkSec_1:rbMainSerivceUSOFF');
+     var op4 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+     unCheckOptions ( op3 , op4 );
+     }catch(ex) {alert(ex);}
+  } 
+  if(curr == 'UK'){  
+   try{
+     var op5 = document.getElementsByName('thePage:form1:ukPageBlk:ukPageBlkSec_1:rbMainSerivceUKOFF');
+     var op6 = document.getElementsByName('thePage:form1:rbPartnerOffer');
+     unCheckOptions ( op5 , op6 );
+     }catch(ex) {alert(ex);}
+  }
+   
+}
+
+function unCheckPar(){
+ /*
+ thePage:form1:ukPageBlk:ukPageBlkSec_1:rbMainSerivceUKOFF
+thePage:form1:ukPageBlk:canPageBlkSec_2:rbMainSerivceUKRET
+ */
+ try{
+ var op1 = document.getElementsByName('thePage:form1:ukPageBlk:ukPageBlkSec_1:rbMainSerivceUKOFF');
+ var op2 = document.getElementsByName('thePage:form1:ukPageBlk:canPageBlkSec_2:rbMainSerivceUKRET');
+ unCheckOptions ( op1 , op2 );
+ } catch (ex){ alert(ex);}
+
+try{
+ var op3 = document.getElementsByName('thePage:form1:canPageBlk:canPageBlkSec_1:rbMainSerivceCANOFF');
+ var op4 = document.getElementsByName('thePage:form1:canPageBlk:canPageBlkSec_2:rbMainSerivceCANRET');
+ unCheckOptions ( op3 , op4 );
+ } catch (ex){ alert(ex);}
+
+ try{
+      var op5 = document.getElementsByName('thePage:form1:usPageBlk:usPageBlkSec_1:rbMainSerivceUSOFF');
+     var op6 = document.getElementsByName('thePage:form1:usPageBlk:usPageBlkSec_2:rbMainSerivceUSRET');
+     unCheckOptions ( op5 , op6 );
+         
+    }catch(ex) {alert(ex);}
+}
+
+
+function unCheckOptions ( op1 , op2){
+    try{
+   // alert( option2 );
+   /* var op1 = document.getElementById( option1 );
+    var op2 = document.getElementById( option2 );*/
+    
+      for(var intChk = 0 ; intChk < op1.length; intChk ++ ) { 
+        if(op1[intChk].checked){
+            op1[intChk].checked = false;
+        }
+      }
+        
+      for(var intChk = 0 ; intChk < op2.length; intChk ++ ) { 
+        if(op2[intChk].checked){
+            op2[intChk].checked = false;
+        }
+      }      
+    } catch(ex) {
+        alert(ex);
+    }
+}
+		function showOverlay() {
+				/*$('#overlay').height($(document).height());*/
+		        var o = document.getElementById('overlay');
+		        o.style.display = 'block';
+		}
+		function hideOverlay() {
+		        var o = document.getElementById('overlay');
+		        o.style.display = 'none';
+		}
+function emptySelected(id) {
+   var spanElem = document.getElementById(id);
+    try {
+        var inputElems = spanElem.getElementsByTagName('INPUT');
+        if(inputElems != null && inputElems.length != 0) {
+          (inputElems[0]).value = '';
+          }
+    } catch(x) {
+        alert(x);
+    }
+} 
+
+function doSave(){
+   var goBtn = document.getElementById('{!$Component.thePage:form1:btnSignUp}');
+     try { 
+       // alert(goBtn);       
+     //  if(window.event.keyCode == 13){
+           goBtn.click();
+     //   }
+     } catch(ex){  alert(ex);  }        
+}  
+function doSearch(){
+   var goBtn = document.getElementById('{!$Component.thePage:form1:doSearch}');
+     try { 
+       // alert(goBtn);       
+     //  if(window.event.keyCode == 13){
+           goBtn.click();
+     //   }
+     } catch(ex){  alert(ex);  }        
+}  
+</script>
+
+<style type="text/css">
+
+.columnA{
+width : 35%;
+vertical-align: top;
+}
+.columnB{
+width : 100%;
+vertical-align: top;
+border-style: none;
+}
+
+.font_color {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+.font_header {
+    color: white;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 12px;
+}
+
+.font_headerTop {
+    /*
+    color: white;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 16px;*/
+    
+    color: white;
+    font-weight: bold;
+    background-color: #0373AC;
+    font: bold 13px/16px arial;
+    padding: 6px;
+    box-shadow: 0 33px 24px -26px white inset;
+    -moz-box-shadow: 0 33px 24px -26px white inset;
+    -webkit-box-shadow: 0 33px 24px -26px white inset;
+    font: bold 13px/16px arial;
+}
+.font_headerSub {
+    /*color: white;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 13px;
+    */
+    color: white;
+    font: bold 12px/16px arial;
+    background-color: #E19823;
+     box-shadow: 0 30px 24px -26px white inset;
+    -moz-box-shadow: 0 30px 24px -26px white inset;
+    -webkit-box-shadow: 0 30px 24px -26px white inset;
+    padding: 4px;
+    font: bold 12px/16px arial;
+}
+
+.squarebutton:hover{
+    color: #4F98BF; /*button text color*/
+}
+.tabCss{
+    /*
+    border-style: none;
+    background-color: #4F98BF;
+    width : 130px;
+    height : 24px;
+    */
+    border-style: none;
+    background-color: white;
+    width: 130px;
+    height: 20px;
+    box-shadow: 0 42px 24px -26px #E5F2F6 inset;
+    font: bold 12px/14px arial;
+}
+
+/*#overlay
+{
+    background: url("{!URLFOR($Resource.loading)}") no-repeat scroll center center gray;
+    border: 0px solid #000000;
+    bottom: 0;
+    left: 0;
+    opacity: 0.75;
+    filter: alpha(opacity=40); 
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    width: 100%;
+    z-index: 1000;
+    zIndex:1000;
+    }*/
+    
+    #overlay {
+	    border: 0px solid #000000;
+	    bottom: 0;
+	    left: 0;
+	    opacity: 0.6;
+	    filter: alpha(opacity=60); 
+	    position: absolute;
+	    top: 0;
+	    display: none;
+	    width: 100%;
+	    z-index: 1000;
+	    zIndex:1000;
+	    background:black;
+	 }
+	 
+	 #billingPanel {
+		  display:none;
+		  position:absolute;
+		  top:34%;
+		  left:35%;
+		  background-color:#d3d3d3;
+		  z-index:9999;
+		  width:400px;
+		  height:160px;
+	 }
+	.columnAlign{
+	    width:255px;
+	    float:right;
+	}
+	div .detailList {
+	    width:100% !important;
+	}
+	.btn {
+            color: #084B8A !important;
+            border: 1px solid #A5A6A5 !important;
+            padding: 5px !important;
+            margin: 1px;
+            //font-weight: bold;
+			//font-size: .9em;
+			-webkit-border-radius: 3px;
+			border-radius: 3px;
+			font-size: 12px;
+			font-family: arial;
+       }
+     .btn:hover {
+			background-position: right -30px;
+	}
+	
+</style>
+
+<apex:form id="form1">
+ 
+ <div style="display:none;"> 
+ <apex:commandButton value="SingUp"  action="{!doSAve}"  id="btnSignUp"/>
+ <apex:commandButton value="DoSearch"  action="{!doSearch}"  id="doSearch" reRender="promotion"/>
+ </div>
+ 
+<span id="hiddenElem">
+    <apex:inputHidden id="hiddenvalue" value="{!selectedValueOffering}"/>
+</span>
+<apex:panelGrid columns="2" columnClasses="columnA,columnB" border="1" rules="cols" id="mainPanel">
+
+<apex:panelGrid columns="1"  id="subPanel" border="0">
+        <div class="font_headerTop">Main Services</div>
+        <apex:tabPanel switchType="ajax"  tabClass="tabCss" inactiveTabClass="inTab" activeTabClass="acTab"  id="tabPanel" value="{!tabName}" reRender="promotion" >
+                                <apex:tab label="US"   name="US" style="background-color:white;border-style: none;" status="ajaxStatus" id="usTab" ontabenter="selectTab('US')" reRender="promotion"  ontableave="partnerUNcheck()"  >
+                                 <apex:pageBlock id="usPageBlk">
+                                 <apex:pageBlockSection columns="1" id="usPageBlkSec_1">
+                                 <div class="font_headerSub" style ="width : 100%;">Current Offerings</div>
+                                 <apex:selectRadio id="rbMainSerivceUSOFF"  value="{!selectedValueOffering}"  layout="pageDirection"  rendered="{!!ISBLANK(ServiceItemsOfferingUS)}" >
+                                  <apex:actionSupport event="onclick" action="{!doSearch}"  reRender="promotion" status="ajaxStatus" onsubmit="unCheckRet('US');" />
+                                         <apex:selectOptions value="{!ServiceItemsOfferingUS}"  id="usOptionsOff" />
+                                     </apex:selectRadio>
+                                 </apex:pageBlockSection>
+                                 
+                            <apex:pageBlockSection columns="1" id="usPageBlkSec_2">
+                              <div class="font_headerSub" style ="width : 100%;">Retired</div> 
+                             <apex:selectRadio id="rbMainSerivceUSRET" value="{!selectedValueRetired}"  layout="pageDirection" rendered="{!!ISBLANK(ServiceItemsRetiredUS)}"   >
+                               <apex:actionSupport event="onclick" action="{!doSearch}"  reRender="promotion" status="ajaxStatus" onsubmit="unCheckCur('US');"/>  
+                                         <apex:selectOptions value="{!ServiceItemsRetiredUS}" id="usOptionsRet"/>
+                                </apex:selectRadio>
+                              </apex:pageBlockSection>
+                              </apex:pageBlock>
+                            
+                         </apex:tab>
+                        <apex:tab label="CANADA"  name="CAN" style="background-color:white;border-style: none;" status="ajaxStatus" ontabenter="selectTab('CAN')" reRender="promotion" ontableave="partnerUNcheck();">
+                                  <apex:pageBlock id="canPageBlk" >
+                              <apex:pageBlockSection columns="1" id="canPageBlkSec_1">
+                                  <div class="font_headerSub" style ="width : 100%;">Current Offerings</div>
+                                  <apex:selectRadio id="rbMainSerivceCANOFF"  value="{!selectedValueOffering}"  layout="pageDirection" rendered="{!!ISBLANK(ServiceItemsOfferingCAN)}" > 
+                                 <apex:actionSupport event="onclick" action="{!doSearch}"  reRender="promotion" status="ajaxStatus" onsubmit="unCheckRet('CAN');"/> 
+                                          <apex:selectOptions value="{!ServiceItemsOfferingCAN}" id="canOptionsOff"/>
+                                  </apex:selectRadio>
+                              </apex:pageBlockSection>
+                              <apex:pageBlockSection columns="1" id="canPageBlkSec_2">
+                                  <div class="font_headerSub" style ="width : 100%;">Retired</div> 
+                                  <apex:selectRadio id="rbMainSerivceCANRET"  value="{!selectedValueRetired}"  layout="pageDirection"   rendered="{!!ISBLANK(ServiceItemsRetiredCAN)}"> 
+                                  <apex:actionSupport event="onclick" action="{!doSearch}"  reRender="promotion" status="ajaxStatus" onsubmit="unCheckCur('CAN');"/>
+                                        <apex:selectOptions value="{!ServiceItemsRetiredCAN}" id="canOptionsRet"/>
+                                  </apex:selectRadio>
+                              </apex:pageBlockSection>
+                        </apex:pageBlock> 
+                          </apex:tab> 
+                          <apex:tab label="UK"  name="UK" style="background-color:white;border-style: none;" status="ajaxStatus" ontabenter="selectTab('UK')" reRender="promotion"  ontableave="partnerUNcheck();">
+                           <apex:pageBlock id="ukPageBlk">
+                                 <apex:pageBlockSection columns="1"  id="ukPageBlkSec_1">
+                                 <div class="font_headerSub" style ="width : 100%;">Current Offerings</div>
+                                  <apex:selectRadio id="rbMainSerivceUKOFF"  value="{!selectedValueOffering}"  layout="pageDirection" rendered="{!!ISBLANK(ServiceItemsOfferingUK)}" > 
+                                   <apex:actionSupport event="onclick" action="{!doSearch}"  reRender="promotion" status="ajaxStatus" onsubmit="unCheckRet('UK');"/> 
+                                          <apex:selectOptions value="{!ServiceItemsOfferingUK}" />
+                                  </apex:selectRadio>
+                            </apex:pageBlockSection>
+                              <apex:pageBlockSection columns="1" id="canPageBlkSec_2">
+                                  <div class="font_headerSub" style ="width : 100%;">Retired</div> 
+                                  <apex:selectRadio id="rbMainSerivceUKRET"  value="{!selectedValueRetired}"  layout="pageDirection"  rendered="{!!ISBLANK(ServiceItemsRetiredUK)}"> 
+                          <apex:actionSupport event="onclick" action="{!doSearch}"  reRender="promotion" status="ajaxStatus"  onsubmit="unCheckCur('UK');" />
+                                           <apex:selectOptions value="{!ServiceItemsRetiredUK}" />
+                                  </apex:selectRadio>
+                             </apex:pageBlockSection>
+                              
+                          </apex:pageBlock>    
+                          </apex:tab>
+                        </apex:tabPanel>
+                            <div class="font_headerTop">Trial or Buy</div>
+                            <span style="color:red;font-size: 14px;font-weight: bold;">NOTE: Invoicing is not available for Trials</span>
+                             <apex:selectRadio id="rbTrail" value="{!selectTrial}" layout="pageDirection"  style="font-size: 11px;font-family: Arial,Verdana,sans-serif;"> 
+                                 <apex:selectOptions value="{!trialItems}"  />
+                             </apex:selectRadio>
+                       
+                        <!-- <apex:outputText styleClass="font_headerTop" value="Partner Offers"/>-->
+                         <div class="font_headerTop">Partner Offers</div>
+                         <apex:selectRadio id="rbPartnerOffer" value="{!selectPartnerOffer}"  rendered="{!!ISBLANK(partnerOfferItems)}" layout="pageDirection" style="font-size: 11px;font-family: Arial,Verdana,sans-serif;"> 
+                          <apex:actionSupport event="onclick" action="{!doSearch}"  reRender="promotion" status="ajaxStatus"  onsubmit="unCheckPar();"/> 
+                             <apex:selectOptions value="{!partnerOfferItems}" />
+                        <!-- <div id="divButton" style="display:none;"> <apex:commandButton id="btnSearch" value="Search" action="{!doSearch}"
+                                style="font-weight:bold;" reRender="promotion"/></div>-->
+                       </apex:selectRadio>
+     </apex:panelGrid>                                
+     <apex:panelGrid columns="1"  border="0" width="100%">
+     <apex:pageBlock > 
+       <!-- <apex:pageMessages />-->
+     <apex:outputPanel id="out">
+         </apex:outputPanel>   
+     <apex:panelGroup id="promotion" >
+     <apex:pageMessages />
+      <apex:actionRegion >
+                    <div class="font_headerTop">Promotions available for the selected service</div>
+                 
+                    <!--<apex:outputLabel styleClass="font_headerTop" value="Promotions available for the selected service"></apex:outputLabel>-->
+                        <apex:selectRadio id="rbPromotion" rendered="{!strRedenderdValue}" value="{!selectedPromotion}" layout="pageDirection" style="font-size: 11px;font-family: Arial,Verdana,sans-serif;">
+                                              <apex:selectOptions value="{!promotionItems}"  />
+                        </apex:selectRadio>
+                  
+                        <BR></BR>
+                 <!--<apex:commandButton value="SignUp" image="/servlet/servlet.FileDownload?file=01580000000pYrO" styleClass="squarebutton"   action="{!doSAve}"  /> 
+                 --><apex:commandButton value="SignUp" image="/servlet/servlet.FileDownload?file=01580000000pYrO" styleClass="squarebutton"  onclick="return signup();" />
+            <!--    <apex:commandButton value="SingUp"  action="{!doSAve}"  id="btnSignUp"/>-->
+           
+                 <BR></BR>
+                 <BR></BR>
+                     <apex:image alt="" rendered="{!strRedenderdValue}" url="{!strImageUrl}"/>
+      		</apex:actionRegion>                
+         </apex:panelGroup>       
+       
+    	</apex:pageBlock>       
+	</apex:panelGrid>
+	</apex:panelGrid>
+	
+	 <div id="billingPanel" style="display:none;
+		  position:absolute;
+		  top:34%;
+		  left:35%;
+		  background-color:#d3d3d3;
+		  z-index:9999;
+		  width:400px;
+		  height:160px;">
+				<!-- <apex:outputPanel id="billingoutputPanel">
+					<apex:outputPanel rendered="{!toShowSignUpPanel}">-->
+						 <div class="font_headerTop">Payment Method</div>
+						 <div style="width: 60%;margin: auto;text-align:center">
+							 <apex:selectRadio id="Payment" value="{!selectedPaymentMethod}" 
+								layout="lineDirection" style="font-size: 15px;font-family: Arial,Verdana,sans-serif;width:100%;margin-top: 15px;
+									margin-bottom: 40px;"> 
+								<apex:selectOptions value="{!PaymentItems}" />
+								<!--<apex:actionSupport event="onclick" action="{!getselectedBillingValue}"/>						                       
+							 --></apex:selectRadio>
+							 <div id="btn" style="text-align:center;">
+							 	<apex:commandButton value="Continue" styleclass="btn"  onclick="continuesignup();return false;" /> &nbsp;
+							 	<apex:commandButton value="Cancel"  styleClass="btn"  onclick="hideBillingPage();return false;" /> 
+							 </div>
+						 </div>
+					<!-- </apex:outputPanel>
+				</apex:outputPanel>-->
+		</div>	
+	
+	<apex:actionStatus id="ajaxStatus" onStart="showOverlay();" onstop="hideOverlay();"/>
+	<!--<div id="overlay" style="height:1000px;"></div> -->
+	<div id="overlay"></div> 
+		<apex:actionFunction action="{!selectTab}" name="selectTab" rerender="showstate" reRender="promotion">
+		    <apex:param name="tabName" assignTo="{!tabName}" value=""/>
+		</apex:actionFunction>
+		<apex:actionFunction action="{!resetAll}" name="resetAll" reRender="promotion"/>
+	    <apex:actionFunction action="{!doSAve}" name="signUpAction">
+		</apex:actionFunction>
+	</apex:form>
+	<script>
+	    function signup() {
+	    	try {
+        	var isSignup = '{!toShowSignUpPanel}';
+        	if(isSignup == 'false') {
+        		signUpAction();
+        	} else if(isSignup == 'true') {
+        		showBillingPage();
+        	}
+        	} catch(x) {alert(x);}
+        	return false;
+        }
+        
+        function continuesignup() {
+        	signUpAction();
+        	hideBillingPage();
+        }
+        
+        function showBillingPage() {
+        	 var options = document.getElementsByName('thePage:form1:rbTrail');
+            //alert(options);
+            for(i = 0; i < options.length; i++) {
+            var opt = options[i];
+                if(opt.type == "radio") {
+                    if(opt.checked) {
+                        //alert(opt.value);
+                        if(opt.value == '7D' || opt.value == '30D') {
+                            //alert('{!$Component.thePage.form1.Payment.0}')
+                           document.getElementById('thePage:form1:Payment:0').disabled = true; 
+                           document.getElementById('thePage:form1:Payment:1').checked = true;    
+                        } else {
+                            //alert('1');
+                            document.getElementById('thePage:form1:Payment:0').disabled  = false;
+                            document.getElementById('thePage:form1:Payment:0').checked = true; 
+                        }      
+                    }                  
+                }
+            }
+       		showOverlay();
+       		var obj = document.getElementById('billingPanel');
+       		obj.style.display = 'block';
+  		}
+		
+		function hideBillingPage() {
+			hideOverlay();
+			var obj = document.getElementById('billingPanel');
+       		obj.style.display = 'none';
+		}
+   	</script>
+</apex:page>

@@ -1,0 +1,194 @@
+<apex:page showChat="false" 
+  sidebar="false" 
+  showHeader="false" 
+  standardStylesheets="false" 
+  docType="html-5.0" 
+  applyHtmlTag="false" 
+  applyBodyTag="false" 
+  contentType="text/html"
+  controller="RingCentral.RingCentralController">
+
+<apex:outputText escape="false" value="{!"<!DOCTYPE html>"}"/>
+
+<html class="no-js">
+  <head>
+    <base href="{!URLFOR($Resource.OpenCTIQAResource,'dist/')}"></base>
+    <meta charset="utf-8"></meta>
+    <title>RC Open CTI</title>
+    <meta name="description" content=""></meta>
+    <meta name="viewport" content="width=device-width"></meta>
+    <link rel="stylesheet" href="styles/5418b2cb.main.css"/>
+    
+    <script type="text/javascript">
+        // bring back the original XMLHttpRequest after SF's apex override it
+        if (typeof Sarissa !== "undefined" && Sarissa.originalXMLHttpRequest) {
+            window.XMLHttpRequest = Sarissa.originalXMLHttpRequest;
+        }
+    </script>
+    
+    <script>
+        // this code is fetching the list of Activity Log subjects (using Apex class RingCentralController)
+        var sfActivityLogSubjectsStr = "{!taskSubjectValues}"; 
+        sfActivityLogSubjectsStr = sfActivityLogSubjectsStr.replace("[", "").replace("]", "");
+        var sfActivityLogSubjectsArr = sfActivityLogSubjectsStr.split(",");
+        var sfActivityLogSubjects = [];
+        for (var i = 0; i < sfActivityLogSubjectsArr.length; i++) {
+            var subject = decodeURIComponent(sfActivityLogSubjectsArr[i].trim().replace(/\+/g, " "));
+            
+            if (sfActivityLogSubjects.indexOf(subject) == -1) {
+                sfActivityLogSubjects.push(subject);
+            }
+        }
+     </script>
+        
+     <script>
+        function sfReplaceInternalKeyWithCallId(activityRecord, call, done, fail) {
+            if (typeof Visualforce === "undefined") {
+                alert("DEVELOPER! Please install index.html as Visualforce page to make this feature work");
+                return;
+            }
+            
+            Visualforce.remoting.Manager.invokeAction(
+               '{!$RemoteAction.RingCentralController.replaceInternalKeyWithCallId}',
+
+               // String fromNo
+               call.fromNumber,
+               // String toNo
+               call.toNumber,
+               // String callId
+               call.id,
+
+               function (result, event) {
+                   if (result !== null) {
+                       done(result);
+                   } else {
+                       fail(event);
+                   }
+               },
+               
+               {escape: false}
+           );  
+        }
+        
+        function sfSaveLog(activityRecord, call, done, fail) {
+            if (typeof Visualforce === "undefined") {
+                alert("DEVELOPER! Please install index.html as Visualforce page to make this feature work");
+                return;
+            }
+            
+            var callDuration = call.duration;
+
+            // When saving a call log for an active call just don't put duration to the activity record
+            if (callDuration === -1) {
+                callDuration = null;
+            }
+            
+            Visualforce.remoting.Manager.invokeAction(
+               '{!$RemoteAction.RingCentralController.upsertTask}',
+
+               // String taskId,
+               activityRecord.id,
+               // String fromNo
+               call.fromNumber,
+               // String toNo
+               call.toNumber,
+               // String callId
+               call.id,
+               // Date callDate
+               (new Date()).toISOString(),
+               // Integer duration, String subject, String callType, String direction, String description, String linkedWith, String relatedTo
+               callDuration,
+               // String subject, String callType, String direction, String description, String linkedWith, String relatedTo
+               activityRecord.subject,
+               // String direction
+               call.direction,
+               // String description
+               activityRecord.comment,
+               // String linkedWith
+               activityRecord.linkedWith,
+               // String relatedTo
+               activityRecord.relatedTo,
+               // isEnded
+               call.hasDuration(),
+
+               function (result, event) {
+                   if (result !== null) {
+                       done(result);
+                   } else {
+                       fail(event);
+                   }
+               },
+               
+               {escape: false}
+           );  
+        }
+        
+        function sfSaveCredentials(phone, extension, password, rememberMe, done, fail) {
+            if (typeof Visualforce === "undefined") {
+                alert("DEVELOPER! Please install index.html as Visualforce page to make this feature work");
+                fail();
+                return;
+            }
+            
+            var credentials = phone + ":" + extension + ":" + password + ":" + (rememberMe ? "1" : "0");
+            
+            Visualforce.remoting.Manager.invokeAction(
+               '{!$RemoteAction.RingCentralController.encrypt}',
+
+               credentials,
+
+               function (result, event) {
+                   if (result !== null) {
+                       done(result);
+                   } else {
+                       fail(event);
+                   }
+               },
+               
+               {escape: false}
+           );  
+        }
+        
+        function sfLoadCredentials(encryptedCredentials, done, fail) {
+            if (typeof Visualforce === "undefined") {
+                alert("DEVELOPER! Please install index.html as Visualforce page to make this feature work");
+                fail();
+                return;
+            }
+            
+            Visualforce.remoting.Manager.invokeAction(
+               '{!$RemoteAction.RingCentralController.decrypt}',
+
+               encryptedCredentials,
+
+               function (result, event) {
+                   if (result !== null) {
+                       var a = result.match(/^([^:]+):([^:]*):(.+):([01])$/);
+                       if (!a) {
+                           fail("Can't parse credentials: " + result);
+                       } else {
+                           done([a[1], a[2], a[3], a[4] === "1"]);
+                       }
+                   } else {
+                       fail(event);
+                   }
+               },
+               
+               {escape: false}
+           );  
+        }
+     </script>
+     
+  </head>
+  <body ng-app="openCtiApp">
+    <div class="ngView" id="mainBody"></div>
+    
+    <script src="scripts/6af0e8d8.vendor.js"></script>
+    <script src="scripts/ca0aa25a.scripts.js"></script>
+
+  </body>
+</html>
+
+
+
+</apex:page>

@@ -1,0 +1,76 @@
+<apex:page standardController="Opportunity" extensions="RCContractTerms" renderAs="{!chooserender}" showHeader="false" sidebar="false">
+<!-- 
+<body><b>Supplemental Terms of Service Agreement for RingCentral® Office<SUP>SM</SUP> Services  </b>
+<p>
+Date of Last Revision:  June 2010</p>
+<p>This Supplemental Terms of Service Agreement for RingCentral® OfficeSM Services is a binding<br/> agreement between RingCentral, Inc., a California corporation, and the undersigned for the Services for<br/>the Service Commitment Period.
+
+
+
+
+</p>
+<p>
+These Supplemental Terms of Service for RingCentral Office<SUP>SM</SUP> Services  (“TOS”) constitute<br/> an agreement between RingCentral, Inc., and its subsidiaries, affiliates, agents, and/or licensors<br/>(“RingCentral”, “we” or “us”), and the end-user customer (“Customer”, “you” , “user” or “undersigned”)<br/>for RingCentral’s Office<SUP>SM</SUP> Services  (“Office<SUP>SM</SUP>” or “Office<SUP>SM</SUP> Services”).  
+</p>
+<p>
+You are required to indicate your assent and agreement to this TOS agreement when you sign this<br/>agreement below and return it to RingCentral.  This agreement shall become binding upon both parties<br/> upon customer’s execution and delivery of this Agreement to RingCentral.
+</p><p>Your use of RingCentral’s Office<SUP>SM</SUP> Services are subject to RingCentral’s Terms of Service governing<br/> those services, available at http://www.ringcentral.com/legal/tos.html (the “General TOS”), as well as<br/> RingCentral’s Supplemental Terms of Service for RingCentral DigitalLineSMVoIP Services, available at<br/> http://www.ringcentral.com/legal/supplemental-voip-tos.html (the “VoIP TOS”) .  RingCentral’s Office<SUP>SM</SUP><br/> service shall also be considered a RingCentral “Service” as that term is used in the General TOS and/or<br/> VoIP TOS, as applicable.   
+
+</p>
+<b>SERVICE COMMITMENT / MIMIMUM TERM / AUTOMATIC RENEWAL
+</b>
+<p>
+Your RingCentral Office<SUP>SM</SUP> plan requires a minimum service commitment period (“MSCP”) of {!StrYears} year(s)<br/> from the day RingCentral activates your RingCentral Office<SUP>SM</SUP> Service.  You hereby acknowledge and <br/>agree that you are purchasing the Office<SUP>SM</SUP> Services for the full MSCP.
+</p><p>
+Following the initial MSCP, this agreement shall automatically renew for successive one (1) year<br/> terms unless you deliver written notice of termination of this agreement to RingCentral at least 30<br/> days prior to the applicable termination date (with such termination date being the last day of the<br/> then-applicable term) (the MSCP and any additional annual renewal periods are referred to,<br/> collectively, as the “Service Commitment Period” or “SCP”). 
+</p>
+<b>NUMBER OF RINGCENTRAL OFFICE LINES AND COST</b><p>
+You hereby agree to the 10 User RingCentral Office<SUP>SM</SUP> plan and <!-- <font style="background-color:yellow"> </font>--><!-- {!StrNoAddLines} additional lines.
+</p>
+<p><b>
+Your initial monthly price, committed to in this agreement 
+for the full SCP is ${!strPrice} per <br/>month, which does not include additional services you may select, taxes, fees,<br/> international usage, and other additional services.
+</b></p>
+<p>
+If, at any time, you purchase additional lines as part of your RingCentral Office<SUP>SM</SUP> plan, then all <br/>of these additional lines shall be subject to all of the terms and conditions of this agreement<br/> (including your SCP). 
+</p><br/><br/><p><b>
+CANCELLATION POLICY / TERMINATION</b></p><p><b><i>
+Termination By You Within First 30 Days.</i></b>  You may terminate this Agreement within<b> thirty (30) <br/>days</b> after activating service without paying any additional fees.  You must return any phones, headsets and<br/> phone accessories purchased with your RingCentral Service in good working order or RingCentral may<br/> charge you Equipment Return Fees in accordance with the RingCentral Equipment Return Policy<br/> available at http://www.ringcentral.com/legal/policies/returns.html. 
+</p><p><b><i>
+Termination by You After 30 days.</i></b>   If you terminate this Agreement on or after the 31st day but before<br/> expiration of the SCP for any reason other than pursuant to the change of terms, conditions or rates as set<br/> forth below, you will owe RingCentral all outstanding contractual amounts due for the remainder of your<br/> SCP for each telephone number line associated with your RingCentral Office<SUP>SM</SUP> plan and hereby authorize<br/> RingCentral to charge your credit card all such amounts.  The collection of such fees is not a penalty, but<br/> rather a charge to compensate us for your failure to satisfy the SCP on which your rate plan is based.<br/>  RingCentral may also charge you an Equipment Return Fee in accordance with its Equipment Return <br/>Policy available at http://www.ringcentral.com/legal/policies/returns.html. 
+<p><b><i>Termination, Cancelation or Suspension by RingCentral. </i></b> RingCentral may terminate this Agreement at<br/> any time without notice if we cease to provide service in your area (in which case, no additional fees shall <br/>be due).  RingCentral may interrupt or terminate your service without notice for any conduct by you that<br/>, in RingCentral’s sole discretion, violates the Terms of Service or any terms and conditions applicable to<br/> your Service Agreement or as otherwise stated in the General TOS or VoIP TOS (in which case, all<br/> outstanding contractual amounts due for the remainder of your SCP shall be due).
+<p><b><i>General Terms</i></b></p>
+This Agreement constitutes the complete, final, and exclusive embodiment of the entire agreement<br/> between you and the Company with regarding the Services.  The undersigned has full power and<br/> authority to execute and deliver this agreement and to perform all of its obligations hereunder.  This <br/>agreement has been duly executed and delivered by the undersigned.  This Agreement is the binding<br/> obligation of the undersigned, enforceable against the undersigned in accordance with its terms.  This <br/>agreement, along with the General TOS and VoIP TOS, represents the entire agreement regarding the<br/> Services and supersedes all prior negotiations, correspondence, writings or agreements.This Agreement <br/>may not be modified or amended except in a writing signed by both you and a duly authorized officer of <br/>the Company.  This Agreement will bind the heirs, personal representatives, successors, and assigns of<br/> both you and the Company, and inure to the benefit of you, the Company, each Released Party, and their<br/> heirs, successors and assigns.  The failure to enforce any breach of this Agreement shall not be deemed to<br/> be a waiver of any other or subsequent breach.  For purposes of construing this Agreement, any <br/>ambiguities shall not be construed against either party as the drafter.  If any provision of this Agreement <br/>is determined to be invalid or unenforceable, in whole or in part, this determination will not affect any<br/> other provision of this Agreement and the provision in question will be modified by the court so as to be<br/> rendered enforceable in a manner consistent with the intent of the parties insofar as possible.  This<br/> Agreement will be deemed to have been entered into and will be construed and enforced in accordance<br/> with the laws of the State of California as applied to contracts made and to be performed entirely within<br/> California.  Venue for all disputes shall be the court of proper jurisdiction in San Francisco, CA.  
+
+</p><br/><br/><br/><br/><br/><br/><br/><br/><p><b>By signing below, the undersigned hereby agrees to and accepts all of the terms and conditions of <br/>this Agreement, <u>including the SCP and number of lines selected (checked) above</u></b></p>
+<br/><br/><p>
+<hr width="140px" align="left"/>
+Signature</p>
+<BR/><BR/>
+<p>
+<hr width="140px" align="left"/>
+Name</p>
+<BR/><BR/>
+<p>
+<hr width="140px" align="left"/>
+Title (if applicable)</p>
+<BR/><BR/>
+<hr width="140px" align="left"/>
+Date</p>
+<br/><BR/>
+<i>PLEASE SIGN AND FAX THIS AGREEMENT TO RINGCENTRAL AT {!strOperatorFax}, OR EMAIL to {!strOperatorEmail}</i>
+
+
+
+
+</body>
+
+
+
+  <apex:form >
+  <BR></BR>
+  <apex:commandButton rendered="{!renderButton}" value="Accept preview and send contract" action="{!deliverAsPDF}" ></apex:commandButton>
+  <apex:commandButton onclick="window.close();" rendered="{!renderButton}" value="Cancel"></apex:commandButton>
+  </apex:form>
+  -->
+</apex:page>

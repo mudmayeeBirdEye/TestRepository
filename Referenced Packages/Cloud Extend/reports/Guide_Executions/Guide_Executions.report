@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Guide_Definition__c.Guide_Executions__r$Name</field>
+    </columns>
+    <columns>
+        <field>Guide_Definition__c.Guide_Executions__r$Run_On__c</field>
+    </columns>
+    <columns>
+        <field>Guide_Definition__c.Guide_Executions__r$Run_On_Type__c</field>
+    </columns>
+    <columns>
+        <field>Guide_Definition__c.Guide_Executions__r$Status__c</field>
+    </columns>
+    <columns>
+        <field>Guide_Definition__c.Guide_Executions__r$Start_Time__c</field>
+    </columns>
+    <columns>
+        <field>Guide_Definition__c.Guide_Executions__r$End_Time__c</field>
+    </columns>
+    <columns>
+        <field>Guide_Definition__c.Guide_Executions__r$Outcome__c</field>
+    </columns>
+    <columns>
+        <field>Guide_Definition__c.Guide_Executions__r$Running_Guide__c</field>
+    </columns>
+    <format>Tabular</format>
+    <name>Guide Executions</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Guide_Executions__c</reportType>
+    <scope>user</scope>
+    <showDetails>true</showDetails>
+    <sortColumn>Guide_Definition__c.Guide_Executions__r$Start_Time__c</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        <dateColumn>Guide_Definition__c$Last_Published__c</dateColumn>
+        <interval>INTERVAL_CURRENT</interval>
+    </timeFrameFilter>
+</Report>

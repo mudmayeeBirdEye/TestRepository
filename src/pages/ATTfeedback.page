@@ -1,0 +1,140 @@
+<apex:page >
+       <div id="rn_DetailTools">
+                <div class="rn_FloatRight">
+                <div class="rn_SocialBookmarkLink" id="rn_SocialBookmarkLink_9">
+                    <a title="Share this page on social networks" href="javascript:void(0);" onclick="javascript:publicShowModel('shareId','share');" class="rc_ShareLink" id="rn_SocialBookmarkLink_9_Link">Share</a>
+        <div id="shareId" style="display:none">
+            <div class="yui-panel-container shadow" id="rn_SocialBookmarkLink_9_Panel_c" style="z-index: 2; visibility: visible; left: 322px; top: 22px;">
+                       <div class="rn_Panel yui-module yui-overlay yui-panel" id="rn_SocialBookmarkLink_9_Panel" style="visibility: inherit;">
+                <ul>
+                                        <li class="rn_Link1">
+                                <a title=" Post to Delicious " id="Delicious" target="_blank" href="#">Delicious </a>
+                        </li>
+                                        <li class="rn_Link2">
+                                <a title=" Post to Digg " id="Digg" target="_blank" href="#">
+         Digg </a>
+                        </li>
+                                        <li class="rn_Link3">
+                                <a title=" Post to Facebook " id="Facebook" target="_blank" href="#">
+         Facebook </a>
+                        </li>
+                                        <li class="rn_Link4">
+                                <a title=" Post to Reddit " id="Reddit" target="_blank" href="#">
+         Reddit </a>
+                        </li>
+                                        <li class="rn_Link5">
+                                <a title=" Post to StumbleUpon " id="StumbleUpon" target="_blank" href="#">
+         StumbleUpon </a>
+                        </li>
+                                        <li class="rn_Link6">
+                                <a title=" Tweet this " id="Tweet" target="_blank" href="#">
+         Twitter </a>
+                        </li>
+                                </ul>
+        </div></div></div>
+</div>
+                <div class="rn_PrintPageLink" id="rn_PrintPageLink_10">
+                <a title="Print this page" href="javascript:void(0);" onclick="window.print(); return false;" class="rc_PrintPageLink">Print</a>
+</div>
+                <div class="rn_EmailAnswerLink" id="rn_EmailAnswerLink_11">
+                <a title="Email a link to this answer" href="javascript:void(0);" class="rc_EmailAnswerLink" id="rn_EmailAnswerLink_11_Link" onclick="javascript:publicShowModel('emailPageId','email');">Email this page</a>
+                <div class="rn_EmailAnswerLinkForm rn_Hidden" id="rn_EmailAnswerLink_11_EmailAnswerLinkForm">
+                <div class="rn_Hidden" id="rn_EmailAnswerLink_11_ErrorMessage"></div>
+                <div class="rc_RecipientEmail">
+                        <label for="rn_EmailAnswerLink_11_InputRecipientEmail" id="rn_EmailAnswerLink_11_LabelRecipientEmail">Recipient Email<span class="rn_ScreenReaderOnly">Required</span><span class="rn_Required"> *</span></label>
+                        <span class="rc_InputTypeTextWrapper"><input type="text" value="" id="rn_EmailAnswerLink_11_InputRecipientEmail" /></span>
+                </div>
+                                <div class="rc_SenderEmail">
+                        <label for="rn_EmailAnswerLink_11_InputSenderEmail" id="rn_EmailAnswerLink_11_LabelSenderEmail">Your Email<span class="rn_ScreenReaderOnly">Required</span><span class="rn_Required"> *</span></label>
+                        <span class="rc_InputTypeTextWrapper"><input type="text" value="" id="rn_EmailAnswerLink_11_InputSenderEmail" /></span>
+                </div>
+                <div class="rc_SenderName">
+                        <label for="rn_EmailAnswerLink_11_InputSenderName" id="rn_EmailAnswerLink_11_LabelSenderName">Your Name<span class="rn_ScreenReaderOnly">Required</span><span class="rn_Required"> *</span></label>
+                        <span class="rc_InputTypeTextWrapper"><input type="text" value="" id="rn_EmailAnswerLink_11_InputSenderName" /></span>
+                </div>
+                        </div>
+</div>
+              <div class="rn_AnswerNotificationIcon3" id="rn_AnswerNotificationIcon3_12">
+          <a title="Notify me by email if this answer is updated" id="rn_AnswerNotificationIcon3_12_Trigger" class="rc_AnswerNotificationLink" href="http://service-officeathand.att.com/service-site/login/support.html?p_next_page=http%3A%2F%2Fhelp-officeathand.att.com%2Fapp%2Fanswers%2Fdetail%2Fa_id%2F1907%2Fkw%2FCan%2520I%2520see%2520messages%2520I%2520have%2520deleted%2520in%2520the%2520Online%2520Account%253F%2Fnotif%2F1">
+                                        Notify Me       </a>
+        </div>
+                </div>
+        </div>
+
+    <div></div>
+
+<div style="display:none;background: #fff;z-index: 99999;" id="emailPageId">
+   <apex:form id="emailform">
+   <div class="yui-panel-container yui-dialog yui-simple-dialog" id="rnDialog1_c" style="visibility: visible;  z-index: 999999;">
+        <div id="rnDialog1" class="yui-module yui-overlay yui-panel rn_Dialog rn_EmailLinkDialog" style="visibility: inherit;">
+            <div class="hd" style="cursor: auto;"><span class="rn_ScreenReaderOnly">Beginning of dialog, please dismiss dialog before continuing<br/>
+                </span>Email Answer</div><div class="bd">
+                    <div class="rn_EmailAnswerLinkForm" id="rn_EmailAnswerLink_11_EmailAnswerLinkForm">
+                        <div class="rc_RecipientEmail">
+                        <label for="rn_EmailAnswerLink_11_InputRecipientEmail" id="rn_EmailAnswerLink_11_LabelRecipientEmail"><span class="rn_ScreenReaderOnly">Email Answer dialog </span>Recipient Email<span class="rn_ScreenReaderOnly">Required</span><span class="rn_Required"> *</span></label>
+                        <span class="rc_InputTypeTextWrapper">
+                        <apex:inputText id="rn_EmailAnswerLink_11_InputRecipientEmail" />
+                  </span>
+                </div>
+                                <div class="rc_SenderEmail">
+                        <label for="rn_EmailAnswerLink_11_InputSenderEmail" id="rn_EmailAnswerLink_11_LabelSenderEmail">Your Email<span class="rn_ScreenReaderOnly">Required</span><span class="rn_Required"> *</span></label>
+                        <span class="rc_InputTypeTextWrapper">
+                            <apex:inputText id="rn_EmailAnswerLink_11_InputSenderEmail" />
+                        </span>
+                </div>
+                <div class="rc_SenderName">
+                        <label for="rn_EmailAnswerLink_11_InputSenderName" id="rn_EmailAnswerLink_11_LabelSenderName">Your Name<span class="rn_ScreenReaderOnly">Required</span><span class="rn_Required"> *</span></label>
+                        <span class="rc_InputTypeTextWrapper">
+                            <apex:inputText id="rn_EmailAnswerLink_11_InputSenderName" />
+                        </span><br/>
+                </div>
+                        </div></div><div class="ft">
+                            <span class="button-group">
+                            <button type="button" class="default" onclick="javascript:sendMail('{!$Component.emailform.rn_EmailAnswerLink_11_InputRecipientEmail}','{!$Component.emailform.rn_EmailAnswerLink_11_InputSenderEmail}','{!$Component.emailform.rn_EmailAnswerLink_11_InputSenderName}');"  >Send Email</button>
+                            <button type="button" onclick="javascript:hideModal('emailPageId');">Cancel</button></span>
+                            <span class="rn_ScreenReaderOnly"><br/>End of dialog, please dismiss dialog before continuing</span>
+                            </div>
+                                                <button  type="button"  class="container-close" style="overflow: hidden; text-indent: -10000em; text-decoration: none;" onclick="javascript:hideModal('emailPageId');">Close</button>
+                                                </div></div>
+               </apex:form>                                 
+           </div>
+                                                
+      <div style="display:none;background: #fff;z-index: 99999;" id="emailMessagePageId">                                          
+         <div class="yui-panel-container yui-dialog yui-simple-dialog" id="rnDialog2_c" style="visibility: visible; z-index: 10001; left: 449px; top: 494px;">
+              <div id="rnDialog2" class="yui-module yui-overlay yui-panel rn_Dialog rn_EmailLinkDialog rn_ConfirmSend" style="visibility: inherit; width: 448px;">
+              <div class="hd" style="cursor: auto;"><span class="rn_ScreenReaderOnly">Beginning of dialog, please dismiss dialog before continuing<br/></span>Information</div>
+                <div class="bd"><span class="yui-icon infoicon">&nbsp;</span>Email has been sent.</div><div class="ft">
+                <span class="button-group"><button type="button" class="default" onclick="javascript:hideModal('emailMessagePageId');">
+                <span class="rn_ScreenReaderOnly">Information dialog Email has been sent. </span>OK</button>
+                </span><span class="rn_ScreenReaderOnly"><br/>End of dialog, please dismiss dialog before continuing</span>
+                </div><button class="container-close" href="#" style="overflow: hidden; text-indent: -10000em; text-decoration: none;" onclick="javascript:hideModal('emailMessagePageId');">Close</button>
+                </div></div>                                       
+      </div>                                  
+       
+   <script>
+   
+    var correntUrl=location.href;
+    var url='';
+  
+     url="http://del.icio.us/post?url="+correntUrl;
+     document.getElementById("Delicious").href =url;
+   
+     url="http://digg.com/submit?url="+correntUrl;
+     document.getElementById("Digg").href = url;
+   
+     url="http://facebook.com/sharer.php?u="+correntUrl;
+     document.getElementById("Facebook").href = url;
+   
+     url="http://reddit.com/submit?url="+correntUrl;
+     document.getElementById("Reddit").href = url;
+     
+     url="http://stumbleupon.com/submit?url="+correntUrl;
+     document.getElementById("StumbleUpon").href = url;
+   
+     url="http://twitter.com/home?status="+correntUrl;
+     document.getElementById("Tweet").href = url;
+  </script>
+                                         
+
+
+</apex:page>

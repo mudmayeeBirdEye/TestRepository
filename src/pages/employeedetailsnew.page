@@ -1,0 +1,293 @@
+<apex:page StandardController="Employee__c" extensions="employeesearchdrillNew,employeedetailsnew" showHeader="false" sidebar="false" title="Employee Details" wizard="false">
+<!--  
+<html>
+ <style type="text/css">
+.font_color{
+color:white;
+font-weight:bold;
+font-size:12px;
+}
+.font_header{
+color:white;
+font-weight:bold;
+background-color:#4F98BF;
+font-size: 16px;
+font-family:Arial;
+}
+.font_header_goback{
+color:white;
+font-weight:bold;
+background-color:#4F98BF;
+font-size: 12px;
+font-family:Arial;
+}
+.font_label{
+/*color:Black;
+font-weight:bold;
+font-size:12px;
+font-family:Arial;*/
+}
+
+.font_text{
+color:Black;
+font-weight:normal;
+font-size:12px;
+font-family:Arial;
+}
+
+</style>
+
+<head>
+<style type="text/css"> 
+#div1
+{ 
+DISPLAY: none; 
+} 
+</style> 
+<script type="text/javascript">
+
+    function ShowTable(id) {
+        var e = document.getElementById(id);
+        if (e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+    }
+
+</script>
+
+<title>Employee Detail</title>
+
+</head>
+
+<apex:outputPanel id="employeeDetails">
+<apex:outputPanel rendered="{!isRecordExist}">
+
+<body style="font:115%/1.7 Arial,Helvetica,Nimbus Sans L,sans-serif">
+ <apex:form >
+     <apex:pagemessage rendered="{!AuthorizationError}" severity="error" strength="3" summary="RingCentral employee directory is for internal use only."/>
+ </apex:form> 
+<apex:outputPanel id="empdetails">
+<apex:form id="form1" rendered="{!showdirectory}"  style="font:115%/1.7 Arial,Helvetica,Nimbus Sans L,sans-serif">
+       <apex:outputpanel >
+             <apex:actionstatus id="status4">
+                  <apex:facet name="start">
+                      <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb;
+                       height: 100%;opacity:0.65;width:100%;"> 
+                       <!-- <div class="waitingHolder" style="top: 74.2px; width: 91px;">
+                       <div class="waitingHolder" >
+                        <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                        <span class="waitingDescription">Loading...</span>
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>
+    </apex:outputpanel>
+    <table border="0" width="100%" id="table2"  style="border-collapse: collapse;font-size: 100%; vertical-align: top;" >
+        <tr>
+       
+         <td align="right" valign="top" style="vertical-align: top;">
+              <table>
+               <tr>
+                    <td  align="left" class="font_label" style="width:30%" NOWRAP="true"><b>Employee Name</b></td>
+                    <td align="center" >&nbsp;:&nbsp;</td>
+                    <td class="font_text">{!EmpName}</td>
+                </tr>
+                 <tr>
+                    <td  align="left" class="font_label" style="width:30%" NOWRAP="true"><b>Email</b></td>
+                    <td align="center">&nbsp;:&nbsp;</td>
+                     <td  class="font_text"><a href="mailto:{!MgrEmail}">{!emp.Email__c}</a></td>
+                </tr>
+                 <tr>
+                    <td  align="left" class="font_label" style="width:30%" NOWRAP="true"><b>Employee Number</b></td>
+                    <td align="center">&nbsp;:&nbsp;</td>
+                    <td class="font_text">{!emp.EmpID__c}</td>
+                </tr>
+               <tr>
+                <td class="font_label" NOWRAP="true"><b>Employee NickName</b></td>
+                <td align="center">&nbsp;:&nbsp;</td>
+                <td class="font_text" NOWRAP="true">{!emp.Employee_Nick_Name__c}</td>
+            </tr>
+           <tr>
+                <td  class="font_label"><b>Title</b></td>
+                <td align="center">&nbsp;:&nbsp;</td>
+                <td  class="font_text" NOWRAP="true">{!emp.Title__c}</td>
+           </tr>
+           
+            <tr>
+                <td class="font_label" NOWRAP="true"><b>Phone Work</b></td>
+                <td align="center">&nbsp;:&nbsp;</td>
+                <td  class="font_text" NOWRAP="true">{!emp.Phone_Work__c}</td>
+            </tr>
+             <tr>
+                <td  class="font_label"><b>Extension</b></td>
+                <td align="center">&nbsp;:&nbsp;</td>
+                <td  class="font_text">{!emp.Extension__c}</td>
+                <td ></td>
+              </tr>
+            <tr>
+                <td class="font_label"><b>Phone Cell</b></td>
+                <td align="center">&nbsp;:&nbsp;</td>
+                <td  class="font_text">{!emp.Phone_Cell__c}</td>
+             </tr>
+             <tr>
+                <td class="font_label" ><b>IM</b></td>
+                <td align="center">&nbsp;:&nbsp;</td>
+                <td  class="font_text">{!emp.IM__c}</td>
+            </tr>
+              <tr>
+                <td class="font_label" ><b>Hire Date</b></td>
+                <td align="center">&nbsp;:&nbsp;</td>
+                <td  class="font_text">{!HireDate}</td>
+            </tr>
+           <tr>
+            <td class="font_label" NOWRAP="true"><b>Manager Name</b></td>
+            <td align="center">&nbsp;:&nbsp;</td>
+            <td  class="font_text" NOWRAP="true"> 
+                <apex:commandLink action="{!showEmployeeDetails}"  reRender="empdetails" status="status4">{!ManagerName}
+                     <apex:param name="empId" assignTo="{!empId1}" value="{!ManagerId}" />
+                </apex:commandLink>                     
+            </td>
+          </tr>
+           <tr>
+            <td class="font_label" ><b>Manager Email</b></td>
+            <td align="center">&nbsp;:&nbsp;</td>
+             <td  class="font_text"><a href="mailto:{!MgrEmail}">{!MgrEmail}</a></td>
+        </tr>     
+        <tr>
+            <td class="font_label" ><b>Department</b></td>
+            <td align="center">&nbsp;:&nbsp;</td>
+            <td  class="font_text">{!emp.Department__c}</td>
+        </tr>
+        <tr>
+            <td class="font_label" ><b>Division</b></td>
+            <td align="center">&nbsp;:&nbsp;</td>
+            <td  class="font_text">{!emp.Division__c}</td>
+        </tr>
+        <tr>
+             <td class="font_label" ><b>Team</b></td>
+             <td align="center">&nbsp;:&nbsp;</td>
+             <td  class="font_text">{!emp.Team__c}</td>
+        </tr> 
+         <tr>
+                <td class="font_label" ><b>Skills</b></td>
+                <td align="center">&nbsp;:&nbsp;</td>
+                <td  class="font_text">{!emp.Skills__c}</td>
+            </tr>
+       </table>
+      </td> 
+      <td width="10%">
+            <table>
+               <tr><td colspan='3'>
+                    <apex:image url="/servlet/servlet.FileDownload?file={!ImageID}" width="300px" height="300px" />
+                 </td>
+                 </tr>
+                <tr>
+                <td class="font_label" NOWRAP="true"><b>Employee Name</b></td>
+                <td align="center">&nbsp;:&nbsp;</td>
+                <td class="font_text" NOWRAP="true">{!EmpName}</td>
+            </tr>
+            <tr>
+                <td class="font_label" ><b>Email</b></td>
+                <td align="center">&nbsp;:&nbsp;</td>
+                <!--<td  class="font_text"><apex:commandLink>{!Email}</apex:commandLink></td>
+                <td  class="font_text" NOWRAP="true"><a href="mailto:{!EmpEmail}">{!EmpEmail}</a></td>
+            </tr>
+                </table> 
+      </td>
+    </tr>
+  <!-- <tr>
+       <td></td>
+        <td  align="left">
+           <table>
+             <tr>
+                <td class="font_label" NOWRAP="true"><b>Employee Name</b></td>
+                <td align="center">:</td>
+                <td class="font_text" NOWRAP="true">{!EmpName}</td>
+            </tr>
+            <tr>
+                <td class="font_label" ><b>Email</b></td>
+                <td align="center">:</td>
+                <td  class="font_text" NOWRAP="true"><a href="mailto:{!EmpEmail}">{!EmpEmail}</a></td>
+            </tr>
+        </table>
+        
+        
+        </td>    
+    </tr>  -- 
+ </table>
+    <apex:outputpanel >
+    <div style='height:200px'>
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="2" >
+               <apex:outputpanel style="overflow:auto;height:250px;" id="test12" rendered="{!isPeersExist}" >  
+                  <div style="overflow:auto;height:150px;" id='peers1'>
+                  <apex:pageBlockTable value="{!Peers}" var="pr" width="100%" rowClasses="even,odd" rendered="{!isPeersExist}" >
+                    <apex:column headerValue="Peers Name">
+                      <apex:commandLink action="{!showEmployeeDetails}"  reRender="empdetails" status="status4">{!pr.First_Name__c} {!pr.Last_Name__c}
+                             <apex:param name="empId" assignTo="{!empId1}" value="{!pr.EmpID__c}" />
+                      </apex:commandLink>  
+                   </apex:column>
+                   <!-- <apex:column headerValue="Team" value="{!pr.Team__c} " /> --
+                    <apex:column headerValue="Team" >
+                        <apex:commandLink action="{!doSearch1}" rerender="employeeList,keySet" status="status">{!pr.Team__c} 
+                            <apex:param name="seletedDepartment" assignTo="{!seletedDepartment}" value="" />
+                            <apex:param name="seletedTeam" assignTo="{!seletedTeam}" value="{!pr.Team__c}" />
+                            <apex:param name="seletedManager" assignTo="{!seletedManager}" value="" />
+                     </apex:commandLink>
+                   </apex:column> 
+                   <!-- <apex:column headerValue="Action">
+                      <apex:commandLink action="{!showEmployeeDetails}"  reRender="empdetails" status="status4">Show Details
+                             <apex:param name="empId" assignTo="{!empId1}" value="{!pr.EmpID__c}" />
+                      </apex:commandLink>  
+                   </apex:column> -
+                </apex:pageBlockTable>
+                </div>
+              </apex:outputpanel>
+              <apex:outputpanel style="overflow:auto;height:250px;">
+                <div style="overflow:auto;height:150px;" id='peers1'>
+                 <apex:pageBlockTable value="{!MgdTeams}" var="tm" rendered="{!isMgrTeamsExist}">
+                   <apex:column headerValue="Team Member Name">
+                      <apex:commandLink action="{!showEmployeeDetails}"  reRender="empdetails" status="status4">{!tm.First_Name__c} {!tm.Last_Name__c}
+                                 <apex:param name="empId" assignTo="{!empId1}" value="{!tm.EmpID__c}" />
+                      </apex:commandLink>  
+                   </apex:column>
+                 <!-- <apex:column headerValue="Action">
+                      <apex:commandLink action="{!showEmployeeDetails}"  reRender="empdetails" status="status4">
+                                  Show Details
+                                 <apex:param name="empId" assignTo="{!empId1}" value="{!tm.EmpID__c}" />
+                      </apex:commandLink>  
+                   </apex:column> -
+                 
+             </apex:pageBlockTable>
+             </div>
+          </apex:outputpanel>
+              
+         </apex:pageBlockSection>
+    </apex:pageBlock>
+        </div>
+    </apex:outputpanel>
+      <apex:outputpanel rendered="false">
+      <apex:pageBlock >
+       <apex:pageBlockSection title="Team" columns="5">
+                 <apex:repeat value="{!MgdTeams}" var="tm" id="theTeamList">
+                      <span style="padding:10px 10px 10px 10px;">
+                         <!--  <a  href="employeedetailsnew?empId={!tm.EmpID__c}" target='frmEmp'>{!tm.First_Name__c} {!tm.Last_Name__c} </a> -
+                          <apex:commandLink action="{!showEmployeeDetails}"  reRender="empdetails" status="status4">{!tm.First_Name__c} {!tm.Last_Name__c}
+                                 <apex:param name="empId" assignTo="{!empId1}" value="{!tm.EmpID__c}" />
+                           </apex:commandLink>  
+                      </span>
+                </apex:repeat>
+         </apex:pageBlockSection>
+      </apex:pageBlock>
+   
+       </apex:outputpanel>
+   </apex:form>
+</apex:outputPanel>
+
+</body>
+</apex:outputPanel>
+</apex:outputPanel>
+
+</html> -->
+</apex:page>

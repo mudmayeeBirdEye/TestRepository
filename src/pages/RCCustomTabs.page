@@ -1,0 +1,247 @@
+<apex:page showHeader="false" sidebar="false">
+<title>Salesforce.com-Enterprise Edition</title>
+<style>
+body #AppBodyHeader1 {
+    background-image: none;
+}
+.bPageHeader, .bPageHeader td.left {
+    background-image: url("/img/bgTop.gif");
+    background-position: left top;
+    background-repeat: repeat-x;
+}
+#AppBodyHeader1 .phHeader {
+    background-color: #1797C0;
+}
+#AppBodyHeader1 .phHeader {
+    margin-bottom: 10px;
+}
+.bPageHeader .phHeader {
+    background-position: right top;
+    background-repeat: no-repeat;
+}
+.bPageHeader .phHeader, .tabsNewBar {
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+ td.left {
+    width: 230px;
+}
+.bPageHeader td.left {
+    background: url("/img/alohaSkin/appHeader_l.png") no-repeat scroll left bottom transparent;
+}
+extended.css (line 595)
+.bPageHeader .phHeader td {
+    vertical-align: top;
+}
+common.css (line 633)
+.bPageHeader, .bPageHeader td.left {
+    background-image: url("/img/bgTop.gif");
+    background-position: left top;
+    background-repeat: repeat-x;
+}
+common.css (line 623)
+body, td {
+    color: #222222;
+    font-family: Arial,Helvetica,sans-serif;
+}
+extended.css (line 24)
+body, td {
+    color: #333333;
+    margin: 0;
+}
+.tabsNewBar {
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.tabsNewBar .tabNavigation {
+    background: url("/img/alohaSkin/tabbar_sprite.png") repeat-x scroll left -73px transparent;
+    margin: 0 5px;
+    padding: 3px 0 0;
+    position: relative;
+}
+.tabNavigation {
+    font-family: 'Verdana','Geneva',sans-serif;
+    font-size: 91%;
+    margin-bottom: 6px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+.tabsNewBar .tabNavigation .tabBarLeft {
+    background: url("/img/alohaSkin/tabbar_sprite.png") no-repeat scroll 0 0 transparent;
+    height: 100%;
+    left: -15px;
+    position: absolute;
+    top: 0;
+    width: 15px;
+}
+body .tabsNewBar .tabNavigation .tab {
+    height: 25px;
+}
+table.tab {
+    line-height: normal;
+}
+body .tabNavigation .tab td div {
+    color: #4B4B57;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 1.18em;
+    font-weight: bold;
+    max-height: 15px;
+    padding: 7px 10px;
+}
+body .tabNavigation .tab a {
+    color: #353535;
+}
+ .primaryPalette {
+    background-color: #E39321;
+    border-color: #E39321;
+}
+body .tabNavigation .tab .currentTab {
+    background-image: url("/img/alohaSkin/tabs_sprite.png");
+    background-position: left 0;
+    background-repeat: no-repeat;
+}
+extended.css (line 881)
+.tab td.currentTab {
+    border: 0 none;
+    font-weight: bold;
+}
+.bgdPalette {
+    background-color: #E39321;
+}
+.tabId{}
+</style>
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+<script>
+ $('.tabId').click(function() {
+         alert('Handler for .click() called.');
+        });
+   /* $('#tabId').click(function()
+        {alert(1);
+           $("#tabId").removeClass("currentTab primaryPalette");
+             $(this).addClass('currentTab primaryPalette');
+        });*/
+        var oldId='';
+    function showTabs(id){
+       if(oldId==''){
+            oldId=id;
+            $('#'+id).addClass('currentTab primaryPalette');
+       }else if(oldId!=id){
+          $('#'+oldId).removeClass('currentTab primaryPalette');
+           $('#'+id).addClass('currentTab primaryPalette');
+       }
+         oldId=id;
+     
+    }   
+    
+    
+    $(document).ready(function(){
+   
+        $("iframe").load(function(){
+           // $('#AppBodyHeader').remove()
+            $("#frm").contents().find("#AppBodyHeader").remove();
+            $("#frm").contents().find("#phHeader").remove();
+        });
+    }); 
+
+</script>
+<div id="AppBodyHeader1" class="bPageHeader">
+  <table cellspacing="0" cellpadding="0" border="0" id="phHeader" class="phHeader" style="max-width: 100%;">
+     <tbody>
+          <tr>
+               <td class="left">
+                     <img height="65" width="175" title="Salesforce.com" id="phHeaderLogoImage" alt="Salesforce.com" src="/img/seasonLogos/sales_logo_aloha_win12.png" />
+                      <img height="1" width="1" title="" class="spacer" alt="" src="/s.gif" />
+                      </td>
+                </tr>
+      </tbody>
+</table>
+  <table cellspacing="0" cellpadding="0" border="0" id="tabsNewBar" class="tabsNewBar">
+     <tbody>
+         <tr>
+               <td>
+                  <div id="tabNavigation" class="tabNavigation">
+                       <div class="tabBarLeft"></div>
+                       <table cellspacing="0" cellpadding="0" border="0" id="tabBar" class="tab">
+                            <tbody>
+                                <tr>
+                                   <td nowrap="nowrap" class='tabId'>
+                                       <div id="home_Tab">
+                                         
+                                            <a title="Home Tab" href="/home/home.jsp" >Home</a>
+                                        </div>
+                                    </td>
+                                   <!-- <td nowrap="nowrap" class='tabId' id='case'>
+                                        <div id="Case_Tab">
+                                            <a title="Cases Tab"  onClick="showTabs('case');"  href="/500/o" target='frm'>Cases</a>
+                                        </div>
+                                     </td>-->
+                                      <td nowrap="nowrap"  id='article'>
+                                        <div id="Case_Tab">
+                                            <a title="Article Rating" onClick="showTabs('article');"  class='tabId' href="/apex/RCArticleRatingDetails" target='frm'>RCArticle Rating</a>
+                                        </div>
+                                     </td>
+                                    <td nowrap="nowrap"  id='syncArticle'>
+                                        <div id="syncArticle1">
+                                            <a title="Article Rating" onClick="showTabs('syncArticle');"  class='tabId' href="/apex/syncKnowledgeArticleDetails" target='frm'>Sync Articles</a>
+                                        </div>
+                                     </td>
+                                      <td nowrap="nowrap"  id='exceptionandnotificationpanel'>
+                                        <div id="exceptionandnotificationpanelTab">
+                                            <a title="Exception And Notification History" onClick="showTabs('exceptionandnotificationpanel');"  class='tabId' href="/apex/ExceptionNotificationHistory" target='frm'>Exception And Notifcation History</a>
+                                        </div>
+                                     </td>
+                               </tr>
+                               </tbody>
+                        </table>
+                        <div class="tabBarRight"></div>
+                   </div>
+              </td>
+         </tr>
+   </tbody>
+</table>
+</div>
+<div class="bodyDiv">
+     <div id="bd_l"></div>
+     <div id="bd_r"></div>
+   <div id="motifCurve" class="bgdPalette">
+        <div id="mc_l" class="bgdPalette"></div>
+        <div id="mc_r" class="bgdPalette"></div>
+    </div>
+</div>
+<iframe  src='' id='frm' name='frm' width='100%' height='1200px' frameBorder='No' frameborder="0" scrolling='No'>
+</iframe>
+<script>
+
+function load(){
+//alert(1);
+$("#frm").contents().find("#AppBodyHeader").css('display','none');
+//var obj=$("#frm").contents().find("#AppBodyHeader");
+//alert(obj);
+tds = document.getElementsByTagName("td");
+for(var x = 0; x < tds.length; x++) {
+if(tds[x].className == 'oLeft' || tds[x].id == 'sidebarCell') {
+if(tds[x].style.display == 'none') {
+tds[x].style.display = 'table-cell';
+} else {
+tds[x].style.display = 'none';
+}
+}
+}
+//$("#frm").contents().find("#AppBodyHeader").css("background-color","#BADA55");
+ //$("#frm").contents().find("iframe").src='';
+//$("#contentPane").append(" onload='load();' ");
+//$("#frm").contents().find("iframe").removeAttr("onload");
+$("#frm").contents().find("iframe").attr('onload', function() {});
+
+//var rit=$("#frm").contents().find("iframe").attr("onload");
+//alert(rit);
+}
+</script>
+
+
+
+</apex:page>

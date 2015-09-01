@@ -1,0 +1,113 @@
+<apex:page showHeader="false" sidebar="false">
+    <iframe src='{!$Label.Organization_Instance}secur/logout.jsp' style='display:none'></iframe>
+    <style>
+    body {background: #ffffff;}#header {background-color: #0e9ecf;border-radius: 10px;-moz-border-radius:10px;-webkit-border-radius:10px;}#headertext, #headertext a {color: #ffffff;}#main-logo {background:transparent url('/img/logo.png') no-repeat scroll left top}#contentwrap, .content{border-radius: 18px;-moz-border-radius:18px;-webkit-border-radius:18px;}#loginpage .content, #contentwrap{background-color: #ecf4f9;}#contentwrap{border: 1px solid #ecf4f9;}#footer, #footer a {color: #cccccc;}
+    
+    
+    #pagewrap {
+    width: 955px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+#headerwrap {
+    height:90px;
+    padding-bottom:0px !important;
+    text-align:left;
+    width:955px;
+} 
+
+#header {
+    width:955px;
+    height:76px;
+    margin-top: 6px;
+    margin-right:0px;
+    float: left;
+}
+
+h2, .pageTitle {
+    font-size: 20pt;
+}
+
+#headertext {
+    font-size:12px;
+    margin:30px 0 0;
+    width:920px;
+    text-align: right;
+    z-index:10;
+    position: relative;
+}
+
+#headertext a {
+    background-color: transparent;
+    text-decoration:none; 
+}
+#headertext a:hover { 
+    text-decoration:underline; 
+}
+
+#main-logo {
+    display:block;
+    height:125px;
+    width:600px;
+    margin:0px;
+    overflow:hidden;
+    position:absolute;
+    z-index:12;
+    margin-top:0px;
+}
+
+#contentwrap {
+    width:895px;
+    overflow: visible;
+    padding: 36px 30px 30px 30px;
+} 
+
+#loginpage .content{
+    padding: 0px;
+}
+
+.content{
+    background-color: #ffffff;
+    padding: 20px 40px 40px 40px;
+}
+
+#footer {
+    clear:both;
+    margin:12px;
+    text-align:center;
+    font-size:11px;
+}
+
+#footer a {
+    font-weight:bold;   
+}
+#footer a:hover { text-decoration:none; }
+    
+    </style>
+    <div id="pagewrap">
+        <a href="{!$Label.Organization_Instance}" id="main-logo"></a>
+        <div id="headerwrap">
+            <div id="header"></div>
+        </div>
+        <!-- .headerwrap -->
+        <div id="contentwrap">
+            <div id="content" class="content">
+                <h2>You Are Now Logged Out.</h2>
+                <br/><br/>
+                You have logged out of your Ringcentral Intranet Portal
+                session. Thank you for using Ringcentral intranet portal!</div>
+        </div>
+        <!-- #contentwrap -->
+        <div id="footer">Copyright © 2000-2012 salesforce.com, inc. All rights reserved.</div>
+        <!--
+        #footer -->
+    </div>
+    <script>
+        setTimeout('doRedirect()', 1000);
+
+        function doRedirect() {
+            window.location = '/rcintranet';
+        }
+    </script>
+</apex:page>

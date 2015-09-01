@@ -1,0 +1,4 @@
+<apex:page sidebar="false"  showHeader="false">
+   <c:AeSalesGuides objectType="_any" objectId="{!$User.Id}" extraInfo="Home ({!JSENCODE($User.Username)})" nothingOnDone="true"
+                    match="Role={!JSENCODE(SUBSTITUTE($UserRole.Name, ",", ""))}"/>
+</apex:page>

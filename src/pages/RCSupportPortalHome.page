@@ -1,0 +1,7 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" docType="html-5.0" >
+<apex:composition template="RCSupportPortalHomeTemplate">
+     <apex:define name="content"><apex:pagemessages /> 
+          <apex:include pageName="RCSupportPortalHomeBody"/>
+    </apex:define>
+  </apex:composition>
+</apex:page>

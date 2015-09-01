@@ -1,0 +1,111 @@
+<apex:page controller="ce4sf20_001.AeSecurityTokenCE" docType="html-5.0" sidebar="false" tabstyle="AeDesigner__tab">
+    <apex:form rendered="{!guideDesignerUrl != ''}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            jQuery.noConflict();
+            
+              //
+              // Resize handler
+              //
+              function _ce4sf_resize_ae_pb_designerframe() {
+                     var $iframeEl = jQuery('#ae_pb_designerframe_container').find('iframe');
+                     if (!$iframeEl || $iframeEl.length === 0) {
+                        // not using connect/canvas app.
+                        $iframeEl = jQuery('#ae_pb_designerframe');
+                     }
+                     // reset margin between iframe and SFDC container div to minimize white space gap.
+                     $iframeEl.closest("div.pbBody").css("margin", "0");
+                    
+                    var iframeT = 0;
+                    if ($iframeEl.offset()) {
+                        iframeT = $iframeEl.offset().top;
+                    }                
+                    var iframeB = jQuery(window).height();
+                    var iframeH = Math.max(iframeB-iframeT, 700);                    
+
+                    //if (console.log) {
+                    //  console.log("Apex-resize ifTop=" + iframeT + ", ifBot=" + iframeB + " H=" + iframeH);
+                    //}
+                    
+                    // resize iframe
+                    $iframeEl.height(iframeH);
+                        
+            } // end _ce4sf_resize_ae_pb_designerframe
+            
+            
+            jQuery(document).ready(function() {
+                // remove extra salesforce padding
+                jQuery("td.noSidebarCell").css("padding", "0");
+                jQuery("table.outerNoSidebar").css("padding-bottom", "0");
+                
+                // record the current window height (note ipad trigger resize sometimes when size didn't change)
+                var currentHeight = jQuery(window).height();
+                
+                // attach to window resize events
+                jQuery(window).resize(function() {
+                   if(currentHeight != jQuery(window).height()) {
+                       _ce4sf_resize_ae_pb_designerframe();
+                       currentHeight = jQuery(window).height();
+                   }
+                }) ;                
+                // do the initial resize.
+                _ce4sf_resize_ae_pb_designerframe();                 
+                
+               }); // end documentReady.
+        </script>
+     </apex:form>    
+     <apex:form rendered="{!guideDesignerUrl != '' && useConnectedApp}">       
+           <div id="ae_pb_designerframe_container"></div>
+           <apex:canvasApp developerName="CloudExtendConnApp" namespacePrefix="ce4sf20_001"
+                id="ae_pb_designerframe"
+                canvasId="ae_pb_designerframe_canvas"
+                containerId="ae_pb_designerframe_container"
+                onCanvasAppLoad="_ce4sf_resize_ae_pb_designerframe"
+                scrolling="yes"
+                width="100%" height="700px"  
+                parameters="{url:'{!guideDesignerUrl}',
+                'redirDelay' : 25,
+                'aepToken' : '{!securityToken}',
+                'aever' : '{!versionNumber}',
+                'aemgrs':'socrates',
+                'aeembed':'true',
+                'aesf-central-opened-flows': '{!$CurrentPage.parameters.flowtoopen}',
+                currencySymbol : '{!JSENCODE(currencySymbol)}',
+                timeZoneOffset : '{!JSENCODE(timeZoneOffset)}',
+                timeZoneName : '{!JSENCODE(timeZoneName)}'  
+                }" />
+      </apex:form>
+      <apex:form rendered="{!guideDesignerUrl != '' && NOT(useConnectedApp)}">          
+           <apex:iframe id="ae_pb_designerframe" frameborder="false" width="100%" height="700" src=""/>
+           <script type="text/javascript">
+               var designerUrl = '{!guideDesignerUrl}'
+                   + '?aemgrs=socrates'
+                   + '&aeembed=true'
+                   + '&aepToken={!securityToken}'
+                   + '&host-SessionId={!$Api.Session_ID}'
+                   + '&host-SessionURL={!$Api.Enterprise_Server_URL_270}'
+                   + '&aesf-central-opened-flows=' + '{!URLENCODE($CurrentPage.parameters.flowtoopen)}';
+   
+               // add user locale, timezone and currency info query string.
+               designerUrl += '&lang_sfdc={!language}';
+               designerUrl += '&lang={!locale}';
+               designerUrl += '&host-UserLocale={!locale}';
+               designerUrl += '&__currencySymbol='  + encodeURIComponent('{!JSENCODE(currencySymbol)}');
+               designerUrl += '&__timeZoneOffset='  + encodeURIComponent('{!JSENCODE(timeZoneOffset)}');
+               designerUrl += '&host-UserTimeZone=' + encodeURIComponent('{!JSENCODE(timeZoneName)}');
+               designerUrl += '&aever={!versionNumber}';
+               // set the url in iframe element.
+               var designerIframeEle = document.getElementById('ae_pb_designerframe'); 
+               designerIframeEle.src = designerUrl; 
+           </script>           
+    </apex:form>
+    <apex:pageBlock title="Cloud Extend setup is not complete"
+                                    rendered="{!guideDesignerUrl == ''}"  >
+        <apex:pageBlockSection columns="1">
+            <apex:outputLabel >
+                <br/>Please click on this link to the <a href="/apex/AeCloudExtendSetup">Cloud Extend Setup</a> page to complete your setup.
+                <br/><br/>Note: the Cloud Extend Setup page is also from the "All Tabs" page (+ button next to the Guide Designer tab).
+            </apex:outputLabel>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

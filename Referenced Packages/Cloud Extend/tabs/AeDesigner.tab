@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Displays the Cloud Extend Guide Designer</description>
+    <label>Guide Designer</label>
+    <mobileReady>false</mobileReady>
+    <motif>Custom83: Pencil</motif>
+    <page>AeDesigner</page>
+</CustomTab>

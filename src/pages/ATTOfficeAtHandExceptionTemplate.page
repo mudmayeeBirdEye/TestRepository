@@ -1,0 +1,19 @@
+<apex:page showHeader="false" title="{!$Label.site.site_under_construction}" id="ATTOfficeAtHandExceptionTemplate">
+  <!--<apex:stylesheet value="{!URLFOR($Resource.SiteSamples, 'SiteStyles.css')}"/>-->
+  <center>
+     <br/>
+    <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer" frame="none"> 
+      <br/>
+      <apex:outputPanel layout="block" styleClass="topPanel">
+        <apex:panelGrid width="758" cellpadding="10" cellspacing="10" bgcolor="white" columns="3" frame="none"> 
+          <img src="http://marketo.ringcentral.com/rs/ringcentral/images/att-logo-office-at-hand-small.jpg" alt="Office At Hand" />
+          <apex:insert name="icon"/>
+          <apex:insert name="error"/>
+        </apex:panelGrid> 
+      </apex:outputPanel>
+   </apex:panelGrid> 
+    <br/>
+    <apex:messages />
+    <br/>
+  </center>
+</apex:page>

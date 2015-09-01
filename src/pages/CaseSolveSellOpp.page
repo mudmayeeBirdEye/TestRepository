@@ -1,0 +1,306 @@
+<apex:page id="pg" standardController="Opportunity" extensions="CaseSolveSellOppController" showHeader="false" sidebar="false" tabStyle="Opportunity" standardStylesheets="true">
+	<!-- Begin Default Content REMOVE THIS -->
+	<style>
+		#overlayNew {
+			background: no-repeat scroll top center gray;
+			border: 0px solid #000000;
+			bottom: 0;
+			left: 0;
+			opacity: 0.75;
+			position: absolute;
+			top: 0;
+			display: none;
+			width: 100%;
+			z-index: 9999;
+			zIndex: 9999;
+			height:1000px;
+		}	
+		.columnclass1 {
+			width: 15%;
+		}
+		.columnclass2 {
+			width: 85%;
+		}
+		select {
+            box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           /*min-width: 250px !important;*/
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+        }
+        .select-min-width {
+            width: 250px;
+        }
+        .styled-select{
+           box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           width: 245px;
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+           /*height: 34px !important;*/
+           /*-webkit-appearance: none !important;*/
+        }
+        .lookupInput input {
+        	box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           width: 245px;
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+           /*height: 34px !important;*/
+           /*-webkit-appearance: none !important;*/
+        }
+        input:focus, select:focus, textarea:focus {
+            outline-size: none;
+            outline-style: none;
+            outline-color: none;
+            border-radius: 10px;
+            border: 1px solid gray;
+        }
+        .bPageBlock {
+        	border-top: none !important;
+        }
+        .pbHeader {
+			/* width: 95%; */
+			margin: auto;
+			border: 1px solid #A5A6A5;
+			/* min-height: 100px; */
+			/* margin-top: 5px; */
+			/* margin-bottom: 5px; */
+			background: #FFF;
+			-moz-border-radius: 11px;
+			-webkit-border-radius: 11px;
+			border-radius: 11px;
+			/* behavior: url(/resource/1352627861000/BorderRadiusHTC); */
+			box-shadow: 0px -48px 54px -20px #236FBD inset;
+			-webkit-box-shadow: 0px -48px 54px -20px #236FBD inset;
+			-moz-box-shadow: 0px -48px 54px -20px #236FBD inset;
+			/* text-align: center; */
+			/* padding: 10px; */
+		}
+		.btn {
+            color: #084B8A !important;
+            border: 1px solid #A5A6A5 !important;
+            padding: 8px !important;
+            font-size:11px !important;
+            background-position: right -240px;
+        }
+        .btn:hover {
+            background-position: right -28px !important;
+        }
+        .mainTitle {
+            color: white !important;
+        }
+        .lookupClass select {
+        	display:none !important;
+        }
+        .requiredfield {
+	        width: 3px;
+	        background: #F00;
+	        padding-top: 5px;
+	        padding-bottom: 6px;
+	        float:left;
+	        margin-top: 2px;
+	        margin-right:2px;
+	   }
+	   label {
+	   		font-weight:bolder;
+	   }
+	   .columnclass3 {
+			width: 37%;
+	   }
+	   textarea {
+	   		width: 500px !important;
+	   		height: 184px;
+	   }
+	   .columnclass4  {
+	   		width: 245px;
+	   }
+	</style>
+	
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>  -->
+    <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+   
+	<script>
+		function showOverlay() {
+			var o = document.getElementById('overlayNew');
+			o.style.display = 'block';
+		}		
+		function hideOverlay() {
+			var o = document.getElementById('overlayNew');
+			o.style.display = 'none';
+		}
+		
+	    $(document).ready(function(){
+	        //j$('.userType').hide();
+	        $("[id$=mlktp]").hide(); 
+	    });		
+	</script>
+	
+	<apex:outputPanel id="mainBlock">
+		<!-- <apex:sectionHeader title="Solve then Sell" subtitle="User ID {!UserId}" /> -->
+		<apex:sectionHeader title="" subtitle="Solve then Sell" />
+		<apex:form id="frm">
+			<apex:pageBlock title="Created Opportunity" id="pblock">				
+				<apex:pageBlockTable value="{!oppList}" var="r" id="refundTable">					
+					<apex:column >
+						<apex:facet name="header">Name</apex:facet>
+						<apex:outputText value="{!r.firstName} {!r.lastName}" />
+					</apex:column>
+					<apex:column >
+						<apex:facet name="header">Company Name</apex:facet>
+						<apex:outputText value="{!r.Company}" />
+					</apex:column>
+					<apex:column >
+						<apex:facet name="header">Email Address</apex:facet>
+						<apex:outputText value="{!r.Email}" />
+					</apex:column>
+					<apex:column >
+						<apex:facet name="header">Phone #</apex:facet>
+						<apex:outputText value="{!r.Phone}" />
+					</apex:column>
+					<apex:column >
+						<apex:facet name="header">Support Agent's Email Address</apex:facet>
+						<apex:outputText value="{!r.AgentEmailAddress}" />
+					</apex:column>
+					<apex:column >
+						<apex:facet name="header">Opp. Stage</apex:facet>
+						<apex:outputText value="{!r.StageName}" />
+					</apex:column>
+				</apex:pageBlockTable>				
+			</apex:pageBlock>	
+			<div id="overlayNew" style="text-align:center;padding-top:700px;">
+				<div class='overLay' style="display:block;z-index:99999;zIndex:99999;"></div>
+				<div class="loader-static" style='z-index:100000;zIndex:100000;'>
+				<div class="loader-static-panel">
+				<div style='margin-top:0px;font-weight:bold;'>
+				<img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+				<span class="waitingDescription" style="font-weight:bold; font-size:20px; position:absolute;z-index:10; color:white;">Loading...</span></div>
+				</div>
+				<div class="loader-fix"></div>
+				</div>
+			</div>
+			
+			<apex:pageBlock title="Create Opportunity" mode="detail" rendered="true" id="oppBlock">			 	
+				<apex:actionFunction name="updateActionContact" action="{!updateContact}" rerender="oppBlock" status="Ajaxstatus"/>
+				<apex:actionFunction name="saveOppAction" action="{!saveOpportunity}" rerender="mainBlock" status="Ajaxstatus"/>
+				<apex:actionStatus id="Ajaxstatus" onStart="showOverlay();" onstop="hideOverlay();"/>
+				<apex:pageMessages />
+				<apex:pageBlockSection columns="1">				
+				<apex:panelGrid columns="2" width="100%" border="0" columnClasses="columnclass5,columnclass2">
+					<!-- <apex:outputLabel value=" Contact " for="contactName"/>
+						<apex:outputpanel rendered="{!IF(newOppContactRole.ContactId!=null,false,true)}">
+							<div class="requiredfield">&nbsp;</div>    
+						</apex:outputpanel>
+					<apex:inputField styleclass="styled-select" id="conName" value="{!newOppContactRole.ContactId}" required="false" onchange="updateScriptContact(this);return false;"/> -->
+					
+					<apex:outputLabel value="Contact" for="contactName"/>
+						<apex:outputpanel >							
+							<div class="requiredfield">&nbsp;</div>						
+							<apex:inputField styleclass="styled-select" id="conName" value="{!newOppContactRole.ContactId}" required="false" onchange="updateScriptContact(this);return false;"/> 
+						</apex:outputpanel>
+					
+				</apex:panelGrid>
+				<apex:panelGrid columns="2" width="100%" columnClasses="columnclass5,columnclass6">
+					<apex:panelGrid columns="2" width="100%" columnClasses="columnclass3,columnclass4">
+						<apex:outputLabel value=" First Name" for="firstName"/>
+						<apex:outputText id="firstName" value="{!strFirstName}" rendered="{!IF(strFirstName!=null,true,false)}"/> 
+						<apex:inputText styleclass="styled-select" id="inpFirstName" value="{!strFirstName}" rendered="{!IF(strFirstName!=null,false,true)}"/>
+						<apex:outputLabel value="Last Name" for="Lastname" />
+						<apex:outputpanel >
+							<apex:outputpanel rendered="{!IF(strLastName!=null,false,true)}">
+								<div class="requiredfield">&nbsp;</div>
+							</apex:outputpanel>
+							<apex:outputText id="Lastname" value="{!strLastName}" rendered="{!IF(strLastName!=null,true,false)}"/> 
+							<apex:inputText styleclass="styled-select" id="inpLastName" value="{!strLastName}" rendered="{!IF(strLastName!=null,false,true)}"/>
+						</apex:outputpanel>
+						<apex:outputLabel value="Company Name" for="Company" style="width:15%"/>
+						<apex:outputText id="company" value="{!strCompanyName}" rendered="{!IF(strCompanyName!=null,true,false)}"/>
+						<apex:inputText styleclass="styled-select" id="inpCompany" value="{!strCompanyName}" rendered="{!IF(strCompanyName!=null,false,true)}"/>
+	
+						<apex:outputLabel value="Email Address" for="Email" />
+						<apex:outputpanel >
+							<apex:outputpanel rendered="{!IF(strEmail!=null,false,true)}">
+								<div class="requiredfield">&nbsp;</div>
+							</apex:outputpanel>
+							<apex:outputText id="email" value="{!strEmail}" rendered="{!IF(strEmail!=null,true,false)}"/>
+							<apex:inputText styleclass="styled-select" id="inpEmail" value="{!strEmail}" rendered="{!IF(strEmail!=null,false,true)}"/>
+						</apex:outputpanel>
+						<apex:outputLabel value="Contact Phone Number" for="Phone" />
+						<apex:outputpanel >
+							<apex:outputpanel rendered="{!IF(strPhone!=null,false,true)}">
+								<div class="requiredfield">&nbsp;</div>
+							</apex:outputpanel>
+							<apex:outputText id="phone" value="{!strPhone}" rendered="{!IF(strPhone!=null,true,false)}"/>
+							<apex:inputText styleclass="styled-select" id="inpPhone" value="{!strPhone}" rendered="{!IF(strPhone!=null,false,true)}"/>
+						</apex:outputpanel>
+						<apex:outputLabel value="Number Of Employee" for="EmpRange" />
+						<!-- <apex:outputText id="EmpRange" value="{!strEmpRange}"/> -->
+						<apex:outputText id="EmpRange" value="{!strEmpRange}" rendered="{!IF(strEmpRange!=null,true,false)}"/>
+						<apex:inputText styleclass="styled-select" id="inpEmpRange" value="{!strEmpRange}" rendered="{!IF(strEmpRange!=null,false,true)}"/>					
+					</apex:panelGrid>
+					<apex:outputpanel >
+						<apex:outputLabel value="Comments" for="desc" style="vertical-align:top;padding-right:20px;"/>
+						<apex:inputField id="desc" value="{!newOpp.Description}" styleclass="styled-select" style="height:100px;"/>
+					</apex:outputpanel> 
+				</apex:panelGrid>	
+				<apex:panelGrid columns="2" width="100%" columnClasses="columnclass1,columnclass2">
+					<apex:outputLabel value="Support Agent's Email Address"
+						for="agentEmail"/>
+					<apex:outputpanel >
+						<div class="requiredfield">&nbsp;</div>
+						<apex:inputText styleclass="styled-select" id="agentEmail" value="{!strAgentEmail}" />
+					</apex:outputpanel>
+					<apex:outputLabel value="Sales Agent" for="theLookup" />
+					<apex:inputField styleclass="lookupClass" id="theLookup"
+						value="{!newOpp.Sales_Agent_User__c}" />
+					<BR />
+					<apex:outputPanel rendered="true">
+						<apex:commandButton onclick="saveOppScript();return false;"
+							value="Save Opportunity"  style="float:left;"
+							id="buttonId"/>
+						<div style="float: left;">
+							<apex:actionStatus id="saveStatus">
+								<apex:facet name="start">
+									<apex:image value="/img/loading.gif" />
+								</apex:facet>
+							</apex:actionStatus>							
+						</div>
+						<input type="hidden" name="userid" value="!{userid}" />
+					</apex:outputPanel>
+				</apex:panelGrid>			
+				</apex:pageBlockSection>
+			</apex:pageBlock>
+			
+			<script>
+				function updateScriptContact(thisObj){					
+					if(thisObj.value==''){
+						return false;
+					}
+					updateActionContact();
+					$("[id$=mlktp]").hide();
+				}
+				function saveOppScript(){					
+					saveOppAction();
+				}
+			</script>
+		</apex:form>
+	</apex:outputPanel>
+</apex:page>

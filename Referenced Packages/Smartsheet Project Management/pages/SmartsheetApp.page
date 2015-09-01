@@ -1,0 +1,81 @@
+<apex:page standardController="com_smartsheet__Smartsheet__c" extensions="com_smartsheet.SmartsheetEditExtension" action="{!checkShowIntro}"
+           sidebar="false" showHeader="false" title="Smartsheet" tabStyle="com_smartsheet__Smartsheet__c">
+
+    <style type="text/css">
+    
+        #smartsheetIntro {
+            background: #fff;
+            display: none;
+            padding-top: 10px;
+        }
+        
+        #smartsheetIntro iframe {
+            width: 600px;
+            height: 320px;
+            position: relative;
+            overflow: hidden;
+        }
+    
+        #smartsheetIntroFooter {
+            margin-top: 10px;
+            text-align: center;
+        }
+    
+    </style>
+    
+    <script language="JavaScript">
+        var _smartsheetUrl = '{!SingleSignOnUrl}?serverUrl={!$Api.Partner_Server_URL_190}&sessionId={!URLENCODE($Api.Session_ID)}{!AppLaunchParm}';
+        
+        var _oldOnload = window.onload;
+        window.onload = function() {
+           if (_oldOnload) {
+               _oldOnload();
+           } 
+            showIntro();
+        }
+          
+        function navigateToSmartsheet() {
+            location.replace(_smartsheetUrl);
+        }
+         
+        // Show intro page if the user has not already seen it
+        function showIntro() {
+            var intro = document.getElementById('smartsheetIntro');
+            var introFrame = document.getElementById('smartsheetIntroFrame');
+            var footer = document.getElementById('smartsheetIntroFooter');
+             
+            if ({!showIntro}) {
+                if (intro && introFrame && footer) {
+                    intro.style.display = 'block';
+                    
+                    // Calculate width based on window width (min. of 50)
+                    var doc = document.documentElement;
+                    var body = document.body;
+                    var screenWidth = (doc && doc.clientWidth || body && body.clientWidth || 0);
+                    var width = (screenWidth >= 90) ? (screenWidth - 40) : screenWidth;
+    
+                    // Calculate height based on available height
+                    var height = intro.parentNode.clientHeight;
+                    var frameHeight = height - footer.clientHeight; 
+                                                          
+                    intro.style.height = height + 'px';
+                    intro.style.width = width + 'px';                        
+    
+                    introFrame.style.height = frameHeight + 'px';                        
+                    introFrame.style.left = ((width - introFrame.clientWidth) / 2) + 'px'; 
+                }
+            } else {
+                navigateToSmartsheet();
+            }
+        }
+        
+    </script>
+    
+    <div id="smartsheetIntro">
+        <apex:iframe id="smartsheetIntroFrame" src="{!IntroductionUrl}" />
+        <div id="smartsheetIntroFooter">
+            <button onclick="navigateToSmartsheet()">{!$Label.app_button_continue}</button>
+        </div>            
+    </div>
+        
+</apex:page>

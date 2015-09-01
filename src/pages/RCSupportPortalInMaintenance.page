@@ -1,0 +1,21 @@
+<apex:page showHeader="false" title="{!$Label.site.in_maintenance}"  >
+  <apex:composition template="RCExceptionTemplate">
+    <apex:define name="icon">
+    </apex:define>
+    <apex:define name="error">
+        <apex:outputText escape="false" styleClass="title" value="The page you are looking for is down for maintenance or was not found.">
+        <!-- <apex:param value="{!$Site.CurrentSiteUrl}"/> -->
+        <br />
+      </apex:outputText>
+      <br />
+      <br />
+      <apex:outputText value="Please use your browser's back button to return to you previous page. If you are looking for support please visit "/>
+      <a href="http://www.ringcentral.com/support">http://www.ringcentral.com/support</a>
+      <!--<apex:outputText escape="false" value=" {!$Label.site.get_in_touch}"> -->
+      <!--<apex:param value="mailto:{!$Site.AdminEmailAddress}"/>-->
+      <!--<apex:param value="{!$Label.site.email_us}"/> -->
+      <br/>
+    <!--</apex:outputText>-->
+   </apex:define>
+  </apex:composition>
+</apex:page>

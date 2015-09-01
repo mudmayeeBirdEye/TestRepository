@@ -1,0 +1,916 @@
+<apex:page controller="ATTController" standardStylesheets="false" cache="true" expires="{!cacheMaxAge}" >
+    <html>
+        <head>
+      
+            <link class="user" href="{!$Site.CurrentSiteUrl}resource/1304414448000/ATTInclude/standard1297210009.themes.ringcentral.SITE.css"  rel="stylesheet" type="text/css" />
+            <link class="user" href="{!$Site.CurrentSiteUrl}resource/1304414448000/ATTInclude/standard1297210009.themes.ringcentral.css"  rel="stylesheet" type="text/css" />
+            <link class="user" href="{!$Site.CurrentSiteUrl}resource/1304414448000/ATTInclude/home1297210009.themes.ringcentral.css"  rel="stylesheet" type="text/css" />
+            <link class="user" href="{!$Site.CurrentSiteUrl}resource/1304414448000/ATTInclude/treeview-menu.css"  rel="stylesheet" type="text/css" />
+            <script type="text/javascript" src="{!$Site.CurrentSiteUrl}resource/1286257412000/jquery/js/jquery-1.4.2.min.js"></script>
+            <script src="{!$Site.CurrentSiteUrl}resource/1304414524000/ATTJS/ATTJS/RightNow.js" type="text/javascript"></script>
+            <script src="{!$Site.CurrentSiteUrl}resource/1304414524000/ATTJS/ATTJS/standard1297210009.js" type="text/javascript"></script>
+            <script src="{!$Site.CurrentSiteUrl}resource/1304414524000/ATTJS/ATTJS/list1297210009.js" type="text/javascript"></script>
+
+          
+       <style type="text/css">
+       
+       
+               body .bPageTitle .ptBody h1.noSecondHeader {
+                    font-size: 14pt;
+                    font-weight: bold;
+                }
+        
+                #modalPage
+                {
+                    display: none;
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    top: 0px;
+                    left: 0px;
+                }
+                .modalBackground
+                {
+                    filter: Alpha(Opacity=40);
+                    -moz-opacity: 0.4;
+                    opacity: 0.4;
+                    width: 100%;
+                    height: 100%;
+                    background-color: #999999;
+                    position: absolute;
+                    z-index: 500;
+                    top: 0px;
+                    left: 0px;
+                }
+                .modalContainer
+                {
+                    position: absolute;
+                    width: 300px;
+                    left: 50%;
+                    top: 50%;
+                    z-index: 750;
+                }
+                .modal
+                {
+                    background-color: white;
+                    border: solid 0px black;
+                    position: relative;
+                    top: -150px;
+                    left: -150px;
+                    z-index: 1000;
+                    width: 600px;
+                    height: 400px;
+                    padding: 0px;
+                }
+                .modalTop
+                {
+                    width: 100%;
+                    /* background-color: #000099;
+                     padding: 4px;
+                     color: #ffffff;*/
+                    text-align: right;
+                }
+                .modalTop a, .modalTop a:visited
+                {
+                    color: #ffffff;
+                }
+                .modalBody
+                {
+                    padding: 10px;
+                }
+                .rn_DisplaySearchFilters {
+                    background: none repeat scroll 0 0 #F2F2F2;
+                    border: 1px solid #A5A5A5;
+                    margin-bottom: 24px;
+                    overflow: hidden;
+                    padding: 12px 16px 14px;
+                }
+
+                .rn_DisplaySearchFilters .rn_Heading {
+                    display: block;
+                    font-size: 13px;
+                    font-weight: bold;
+                    margin-bottom: 9px;
+                }
+
+                .rn_DisplaySearchFilters .rn_Filter {
+                    overflow: hidden;
+                    padding-top: 10px;
+                }
+
+                .rn_DisplaySearchFilters .rn_Label {
+                    margin-bottom: 4px;
+                }
+
+                .rn_DisplaySearchFilters .rn_Selected {
+                    background-color: #F0F0F0;
+                    cursor: default;
+                    font-weight: bold;
+                    text-decoration: none;
+                }
+
+                .rn_DisplaySearchFilters .rn_Separator.rn_Selected {
+                    background-position: right center !important;
+                }
+                .rn_DisplaySearchFilters .rn_Separator {
+                    background: url("{!URLFOR($Resource.ATTInclude, 'breadCrumb.png')}") no-repeat scroll 0 center transparent;
+                    float: left;
+                    height: 0;
+                    padding-top: 29px;
+                    position: relative;
+                    width: 8px;
+                }
+                .rn_DisplaySearchFilters .rn_FilterItem {
+                    /* background-color: #FFFFFF;*/
+                    border-color: #D2D2D2;
+                    border-style: solid;
+                    border-width: 1px 0;
+                    color: #666666;
+                    float: left;
+                    margin-left: -6px;
+                    padding: 6px 4px 6px 10px;
+                }
+                .pageType noSecondHeader {
+                    margin-left: -5px;
+                }
+                ul li, ol li {
+                    margin-left: 0px;
+                    padding-left: 0;
+                }
+                #fade {
+                    display: none;
+                    background: #000; 
+                    position: fixed; left: 0; top: 0; 
+                    z-index: 10;
+                    width: 100%; height: 100%;
+                    opacity: .25;
+                    z-index: 999;
+                }
+
+                .rn_IncidentThreadDisplay .rn_ThreadContent{word-wrap:break-word;}
+                .rn_IncidentThreadDisplay .rn_ThreadHeader{background:#f2f2f2;border:1px solid #a5a5a5;padding:12px 20px 14px 20px;margin-top:-14px;font-size:13px;font-weight:bold;line-height:18px;color:#888;overflow:hidden;position:relative;}
+                .rn_IncidentThreadDisplay .rn_ThreadHeader .rn_ThreadTime{position:absolute;right:20px;}
+                .rn_IncidentThreadDisplay .rn_ThreadContent{background:#fff;border:1px solid #a5a5a5;border-top:0 none;margin-bottom:13px;padding:12px 20px 14px 20px;overflow:hidden;}
+                .rn_ProductCategoryDisplay .rn_DataLabel{float:left;font-weight:bold;}
+                .rn_ProductCategoryDisplay .rn_DataValue{margin-left:180px;}
+                .rn_ProductCategoryDisplay .rn_DataValue ul{clear:none;}
+                .rn_ProductCategoryDisplay .rn_DataValue.rn_LeftJustify{clear:left;margin-left:0;padding-bottom:.5em;}
+                .rn_FileListDisplay .rn_DataLabel{font-weight:bold;}
+                .rn_FileListDisplay .rn_DataValue{}
+                .rn_FileListDisplay .rn_DataValue ul{}
+                .rn_FileListDisplay .rn_DataValue ul li{list-style-type:none;margin-left:0;}
+                .rn_FileListDisplay .rn_DataValue.rn_LeftJustify{}
+                .rn_FileListDisplay .rn_FileSize{color:#888;}
+                .rn_FieldDisplay .rn_DataLabel{float:left;font-weight:bold;}
+                .rn_FieldDisplay .rn_DataValue{margin-left:180px;word-wrap:break-word;}
+                .rn_FieldDisplay .rn_DataValue.rn_LeftJustify{clear:left;margin-left:0;padding-bottom:.5em;}
+                .rn_AnswerFeedback2 .rn_Title{font-size:16px;font-weight:bold;line-height:18px;color:#333;border-bottom:1px solid #a5a5a5;padding-bottom:7px;margin:23px 0 13px 0;}
+                .rn_AnswerFeedback2Control{position:relative;}
+                .rn_RatingButtons{position:relative;left:-5px;}
+                .rn_AnswerFeedback2 .rn_RatingYesButton{width:106px;background-position:0 -30px;margin-right:4px;*margin-right:7px;}
+                .rn_AnswerFeedback2 .rn_RatingYesButton:hover{background-position:-158px -30px;}
+                .rn_AnswerFeedback2 .rn_RatingNoButton{width:106px;background-position:0 -60px;}
+                .rn_AnswerFeedback2 .rn_RatingNoButton:hover{background-position:-158px -60px;}
+                .rn_AnswerFeedback2 .rn_ThanksLabel{position:relative;top:-2px;*top:-7px;left:8px;overflow:hidden;}
+                .yui-skin-sam .rn_AnswerFeedback2Dialog{border:0 none;}
+                .yui-skin-sam .rn_AnswerFeedback2Dialog .hd{background:transparent url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerHeaders.png')}") no-repeat 0 -84px;width:404px;height:33px;padding:9px 22px 0 22px;margin:0;position:absolute;top:-32px;font-size:13px;font-weight:bold;line-height:18px;color:#fff;border:0 none;}
+                .yui-skin-sam .rn_AnswerFeedback2Dialog .container-close{background:url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerHeaders.png')}") no-repeat -448px -94px;width:16px;height:16px;position:absolute;right:16px;top:-22px;}
+                .yui-skin-sam .rn_AnswerFeedback2Dialog .bd{background:transparent url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerMiddle_Dialog.png')}") repeat-y;width:404px;padding:24px 22px 48px 22px;margin:0;border:0 none;}
+                .yui-skin-sam .rn_AnswerFeedback2Dialog .bd form{*display:none;}
+                .yui-skin-sam .rn_AnswerFeedback2Dialog .ft{background:transparent url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerBottoms.png')}") no-repeat 0 -36px;width:404px;height:18px;padding:0 22px;margin:0;font-size:12px;line-height:15px;border:0 none;position:relative;}
+                .yui-skin-sam .rn_AnswerFeedback2Dialog .ft .button-group{displat:block;width:404px;position:absolute;top:-34px;right:18px;}
+                .yui-skin-sam .rn_AnswerFeedback2Dialog .ft .button-group button{background-position:0 -300px;width:106px;}
+                .yui-skin-sam .rn_AnswerFeedback2Dialog .ft .button-group button:hover{background-position:-158px -300px;}
+                .yui-skin-sam .rn_AnswerFeedback2Dialog .ft .button-group button.default{background-position:0 -390px;width:106px;margin-right:7px;}
+                .yui-skin-sam .rn_AnswerFeedback2Dialog .ft .button-group button.default:hover{background-position:-158px -390px;}
+                .rn_AnswerFeedback2Form{}
+                .rn_AnswerFeedback2Form .rn_DialogSubtitle{padding-bottom:10px;line-height:18px;}
+                .rn_AnswerFeedback2Form label{display:block;font-size:13px;font-weight:bold;margin-bottom:5px;}
+                .rn_AnswerFeedback2Form .rc_InputTypeTextWrapper{background:url("{!URLFOR($Resource.ATTInclude, 'rc_CustomFormInput.png')}") no-repeat 0 -200px;width:384px;padding:4px 10px 5px 10px;*padding-bottom:3px;margin-bottom:17px;}
+                .rn_AnswerFeedback2Form .rc_InputTypeTextWrapper input{width:384px;}
+                .rn_AnswerFeedback2Form .rc_TextareaWrapper{background:url("{!URLFOR($Resource.ATTInclude, 'rc_CustomFormInput.png')}") no-repeat 0 -225px;width:384px;height:81px;}
+                .rn_AnswerFeedback2Form .rc_TextareaWrapper textarea{width:384px;height:81px;}
+                .rn_AnswerFeedback2Form .rn_ErrorMessage{width:370px;margin-bottom:17px;}
+                .rn_AnswerFeedback2Form .rn_ErrorMessage a{font-weight:bold;}
+                .yui-skin-sam .rn_ConfirmSend .bd .yui-icon{display:none;}
+                .yui-skin-sam .rn_ConfirmSend .ft .button-group button.default{background-position:0 -450px;width:106px;}
+                .yui-skin-sam .rn_ConfirmSend .ft .button-group button.default:hover{background-position:-158px -450px;}
+                @media print{.rn_AnswerFeedback2{display:none;}
+                }
+                .rn_RelatedAnswers2{}
+                .rn_RelatedAnswers2 h2{margin:23px 0 13px 0;}
+                .rn_RelatedAnswers2 li{}
+                @media print{.rn_RelatedAnswers2{display:none;}
+                }
+                .rn_PreviousAnswers2{}
+                .rn_PreviousAnswers2 h2{margin:23px 0 13px 0;}
+                .rn_PreviousAnswers2 li{}
+                @media print{.rn_PreviousAnswers2{display:none;}
+                }
+                .rn_SocialBookmarkLink{margin-right:20px;float:left;}
+                a.rc_ShareLink{background:url("{!URLFOR($Resource.ATTInclude, 'rc_DetailToolsIcos.png')}") no-repeat 0 -16px;display:block;height:15px;padding:1px 0 0 24px;}
+                a.rc_ShareLink:hover{background-position:0 0;}
+                .rn_SocialBookmarkLink .rn_Panel{}
+                .rn_SocialBookmarkLink ul{padding:0;margin:0;}
+                .rn_SocialBookmarkLink ul li{list-style-type:none;}
+                .rn_SocialBookmarkLink .rn_Panel{background-color:#f3f3f3;padding:8px 10px;border:1px solid #a5a5a5;}
+                .rn_SocialBookmarkLink .underlay{display:none;}
+                .rn_SocialBookmarkLink .hd{display:none;}
+                .rn_SocialBookmarkLink .rn_Panel .hd{}
+                .rn_SocialBookmarkLink .rn_Panel li{background:url("{!URLFOR($Resource.ATTInclude, 'socialBookmark.png')}") no-repeat;height:16px;line-height:1.4em;margin:4px;padding-left:20px;}
+                .rn_SocialBookmarkLink li.rn_Link1{background-position:0 0;}
+                .rn_SocialBookmarkLink li.rn_Link2{background-position:0 -16px;}
+                .rn_SocialBookmarkLink li.rn_Link3{background-position:0 -32px;}
+                .rn_SocialBookmarkLink li.rn_Link4{background-position:0 -48px;}
+                .rn_SocialBookmarkLink li.rn_Link5{background-position:0 -64px;}
+                .rn_SocialBookmarkLink li.rn_Link6{background-position:0 -80px;}
+                .rn_PrintPageLink{margin-right:10px;}
+                .rn_PrintPageLink a img{border:none;vertical-align:middle;}
+                .rn_PrintPageLink{margin-right:20px;float:left;}
+                .rn_QuestionDetail .rn_PrintPageLink{margin-right:0;}
+                a.rc_PrintPageLink{background:url("{!URLFOR($Resource.ATTInclude, 'rc_DetailToolsIcos.png')}") no-repeat 0 -48px;display:block;height:15px;padding:1px 0 0 28px;}
+                a.rc_PrintPageLink:hover{background-position:0 -32px;}
+                .rn_EmailAnswerLink{margin-right:18px;float:left;}
+                a.rc_EmailAnswerLink{background:url("{!URLFOR($Resource.ATTInclude, 'rc_DetailToolsIcos.png')}") no-repeat 0 -80px;display:block;height:15px;padding:1px 0 0 31px;}
+                a.rc_EmailAnswerLink:hover{background-position:0 -64px;}
+                .yui-skin-sam .rn_EmailLinkDialog{border:0 none;}
+                .yui-skin-sam .rn_EmailLinkDialog .hd{background:transparent url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerHeaders.png')}") no-repeat 0 -84px;width:404px;height:33px;padding:9px 22px 0 22px;margin:0;position:absolute;top:-32px;font-size:13px;font-weight:bold;line-height:18px;color:#fff;border:0 none;}
+                .yui-skin-sam .rn_EmailLinkDialog .container-close{background:url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerHeaders.png')}") no-repeat -448px -94px;width:16px;height:16px;position:absolute;right:16px;top:-22px;}
+                .yui-skin-sam .rn_EmailLinkDialog .bd{background:transparent url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerMiddle_Dialog.png')}") repeat-y;width:404px;padding:24px 22px 48px 22px;margin:0;border:0 none;}
+                .yui-skin-sam .rn_EmailLinkDialog .bd form{*display:none;}
+                .yui-skin-sam .rn_EmailLinkDialog .ft{background:transparent url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerBottoms.png')}") no-repeat 0 -36px;width:404px;height:18px;padding:0 22px;margin:0;font-size:12px;line-height:15px;border:0 none;position:relative;}
+                .yui-skin-sam .rn_EmailLinkDialog .ft .button-group{displat:block;width:404px;position:absolute;top:-34px;right:18px;}
+                .yui-skin-sam .rn_EmailLinkDialog .ft .button-group button{background-position:0 -300px;width:106px;}
+                .yui-skin-sam .rn_EmailLinkDialog .ft .button-group button:hover{background-position:-158px -300px;}
+                .yui-skin-sam .rn_EmailLinkDialog .ft .button-group button.default{background-position:0 -390px;width:106px;margin-right:7px;}
+                .yui-skin-sam .rn_EmailLinkDialog .ft .button-group button.default:hover{background-position:-158px -390px;}
+                .rn_EmailAnswerLinkForm{}
+                .rn_EmailAnswerLinkForm label{display:block;font-size:13px;font-weight:bold;margin-bottom:5px;}
+                .rn_EmailAnswerLinkForm .rc_InputTypeTextWrapper{background:url("{!URLFOR($Resource.ATTInclude, 'rc_CustomFormInput.png')}") no-repeat 0 -200px;width:384px;padding:4px 10px 5px 10px;*padding-bottom:3px;}
+                .rn_EmailAnswerLinkForm .rc_InputTypeTextWrapper input{width:384px;}
+                .rn_EmailAnswerLinkForm .rc_RecipientEmail{}
+                .rn_EmailAnswerLinkForm .rc_SenderEmail{margin:17px 0;}
+                .rn_EmailAnswerLinkForm .rc_SenderName{}
+                .rn_EmailAnswerLinkForm .rn_ErrorMessage{width:370px;margin-bottom:17px;}
+                .rn_EmailAnswerLinkForm .rn_ErrorMessage a{font-weight:bold;}
+                .yui-skin-sam .rn_ConfirmSend .bd .yui-icon{display:none;}
+                .yui-skin-sam .rn_ConfirmSend .ft .button-group button.default{background-position:0 -450px;width:106px;}
+                .yui-skin-sam .rn_ConfirmSend .ft .button-group button.default:hover{background-position:-158px -450px;}
+                .rn_AnswerNotificationIcon3{float:left;}
+                a.rc_AnswerNotificationLink{background:url("{!URLFOR($Resource.ATTInclude, 'rc_DetailToolsIcos.png')}") no-repeat 0 -112px;display:block;height:15px;padding:1px 0 0 28px;}
+                a.rc_AnswerNotificationLink:hover{background-position:0 -96px;}
+                .yui-skin-sam .rc_NotificationRequest_DialogBox{border:0 none;}
+                .yui-skin-sam .rc_NotificationRequest_DialogBox .hd{background:transparent url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerHeaders.png')}") no-repeat 0 -84px;width:404px;height:33px;padding:9px 22px 0 22px;margin:0;position:absolute;top:-32px;font-size:13px;font-weight:bold;line-height:18px;color:#fff;border:0 none;}
+                .yui-skin-sam .rc_NotificationRequest_DialogBox .container-close{background:url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerHeaders.png')}") no-repeat -448px -94px;width:16px;height:16px;position:absolute;right:16px;top:-22px;}
+                .yui-skin-sam .rc_NotificationRequest_DialogBox .bd{background:transparent url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerMiddle_Dialog.png')}") repeat-y;width:404px;padding:24px 22px 48px 22px;margin:0;border:0 none;}
+                .yui-skin-sam .rc_NotificationRequest_DialogBox .bd form{*display:none;}
+                .yui-skin-sam .rc_NotificationRequest_DialogBox .ft{background:transparent url("{!URLFOR($Resource.ATTInclude, 'rc_ContentContainerBottoms.png')}") no-repeat 0 -36px;width:404px;height:18px;padding:0 22px;margin:0;font-size:12px;line-height:15px;border:0 none;position:relative;}
+                .yui-skin-sam .rc_NotificationRequest_DialogBox .ft .button-group{displat:block;width:404px;position:absolute;top:-34px;right:18px;}
+                .yui-skin-sam .rc_NotificationRequest_DialogBox .ft .button-group button{background-position:0 -450px;width:106px;}
+                .yui-skin-sam .rc_NotificationRequest_DialogBox .ft .button-group button:hover{background-position:-158px -450px;}
+
+                body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+                    -moz-border-radius: 3px 3px 3px 3px;
+                    background: url("{!URLFOR($Resource.ATTInclude, 'rc_CustomFormButton.png')}") repeat-x scroll right top #E8E8E9;
+                    border-color: #B5B5B5 #B5B5B5 #7F7F7F;
+                    border-style: solid;
+                    border-width: 0px;
+                    color: #333333;
+                    font-size: 0.9em;
+                    font-weight: bold;
+                    margin: 1px;
+                    padding: 2px 3px;
+                }
+    .datePicker {
+       display: none;
+ }
+ div#ext-comp-1002{ display:none;} 
+ h1, h2, h3, h4, h5, h6 {
+    border-bottom:none;
+    }
+            </style>
+
+    <script language="javascript" type="text/javascript">
+    var oldAnswerPagevalue='';
+    var currentAction='';
+    function revealModal(divID)
+    {
+        oldAnswerPagevalue=document.getElementById('{!$component.searchBox.rn_KeywordText2_9_Text}').value;
+        currentAction='advanceSearch';
+
+        document.getElementById('{!$component.advanceSearch.rn_KeywordText2_6_Text}').value=oldAnswerPagevalue;
+        window.onscroll = function () {document.getElementById(divID).style.top = document.body.scrollTop; };
+        document.getElementById(divID).style.display = "block";
+        document.getElementById(divID).style.top = document.body.scrollTop;
+        document.getElementById('{!$component.advanceSearch.rn_KeywordText2_6_Text}').focus();
+        //Fade in Background
+        $('body').append('<div id="fade"></div>'); //Add the fade layer to bottom of the body tag.
+        $('#fade').css({'filter' : 'alpha(opacity=80)'}).fadeIn(); //Fade in the fade layer 
+    }
+    function sendMail1(recId,senderId,senderName){
+
+        var currentPage=location.href;
+        var recMail=recId.value;
+        var senderMail=senderId.value;
+        var sendername=senderName.value;
+        var title='{!$CurrentPage.parameters.Title}';
+
+
+         var redirectPage='{!$Site.CurrentSiteUrl}';
+        var postUrl=redirectPage+"ATTEmailPage?emailPage='"+currentPage+"'&recMail="+
+        recMail+"&senderMail="+senderMail+"&sendername="+sendername+"&title="+title;
+
+        hideModal('emailPageId');
+       
+        //alert(postUrl);
+        setAjaxSetup();
+        $.ajax({
+        url: postUrl,
+        asynchronous:true,
+        success: function(data) {
+            $('.result').html(data);
+            // alert('Load was performed.');
+            recId.value="";
+            senderId.value="";
+            senderName.value="";
+            publicShowModel('emailMessagePageId','message');
+        }
+        });
+    }
+    function setAjaxSetup(){
+   jQuery.ajaxSetup({
+                      xhr: function() {
+                                  //return new window.XMLHttpRequest();
+                     try{
+                          if(window.ActiveXObject)
+                            return new window.ActiveXObject("Microsoft.XMLHTTP");
+                     } catch(e) { }
+                    return new window.XMLHttpRequest();
+                   }
+             });
+     }
+
+    function publicShowModel(divID,action)
+    {
+        document.getElementById(divID).style.display =(document.getElementById(divID).style.display== "block"?"none":"block");
+
+        if(action=='email' || action=='message'){
+        divID='rn_DetailTools'; 
+        var divId1='rnDialog1_c' ;
+        if(action=='message'){
+            divId1='rnDialog2_c' ;
+        }
+
+        //Define margin for center alignment (vertical + horizontal) - we add 80 to the height/width to accomodate for the padding + border width defined in the css
+
+       // var offset = $('#' + divID).offset();
+        //var popMargTop = offset.top-400;
+       // var popMargLeft = 280;
+        //Apply Margin to Popup
+
+        $('#' + divId1).css({
+           // 'top' : popMargTop,
+            //'left' :popMargLeft ,
+             'top' : '30%',
+            'left' :'30%',
+            'position':'fixed',
+            'margin-top' : 'auto',
+            'margin-left' :'auto'
+        });
+        $('body').append('<div id="fade"></div>'); //Add the fade layer to bottom of the body tag.
+        $('#fade').css({'filter' : 'alpha(opacity=80)'}).fadeIn(); //Fade in the fade layer 
+     }
+
+
+    }
+
+        function sendMail(recId,senderId,senderName){
+       
+         var strMessage='';
+         var isFilled=true;
+         var recId1=recId;
+         var senderId1=senderId;
+         var senderName1=senderName;
+      
+        recId=document.getElementById(recId);
+        senderId=document.getElementById(senderId);
+        senderName=document.getElementById(senderName);
+          
+        if(recId.value=='' || recId.value==null){
+              strMessage=strMessage+"<a href='#' onclick=\"document.getElementById('"+recId1+"').focus();return false;\">Recipient Email is required</a><br/>";
+            isFilled=false;
+        }else if(isValidEmail(recId.value)==false){
+            strMessage=strMessage+"<a href='#' onclick=\"document.getElementById('"+recId1+"').focus(); return false;\">Recipient Email is invalid</a><br/>";
+        isFilled=false;
+        }
+       
+         if(senderId.value=='' || senderId.value==null){
+           strMessage=strMessage+"<a href='#' onclick=\"document.getElementById('"+senderId1+"').focus(); return false;\">Your Email is required</a><br/>";
+          isFilled=false;
+        }else if(isValidEmail(senderId.value)==false){
+            strMessage=strMessage+"<a href='#' onclick=\"document.getElementById('"+senderId1+"').focus(); return false;\">Your Email is invalid</a><br/>";
+            isFilled=false;
+        }
+         if(senderName.value=='' || senderName.value==null){
+           strMessage=strMessage+"<a href='#' onclick=\"document.getElementById('"+senderName1+"').focus(); return false;\">Your Name is required</a><br/>";
+        isFilled=false;
+        }
+ 
+    $('div.rn_MessageBox').remove();
+   if(isFilled==true){
+       sendMail1(recId,senderId,senderName);
+   }else{
+     $('.rn_EmailAnswerLinkForm').append("<div class='rn_MessageBox rn_ErrorMessage' id='rn_EmailAnswerLink_11_ErrorMessage'>"+strMessage+"</div>");
+   }
+   }
+   function isValidEmail(txtEmail){
+         var filter = /^[a-zA-Z0-9]+[a-zA-Z0-9_.-]+[a-zA-Z0-9_-]+@[a-zA-Z0-9]+[a-zA-Z0-9.-]+[a-zA-Z0-9]+.[a-z]{2,4}$/;
+             // var filter = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}$/;  
+           if(filter.test(txtEmail)){
+                  return true;
+                }
+    else{
+        return false;
+    }
+}
+   
+    function hideModal(divID,action)
+    {
+        document.getElementById(divID).style.display = "none";
+        if(action=='closeAction'){
+        document.getElementById('{!$Component.searchBox.rn_KeywordText2_9_Text}').value=oldAnswerPagevalue;
+        }
+        $("#fade").fadeOut("fast");
+        currentAction='';
+        $("#fade").remove();
+    }
+    function Search(text,catg)
+    {
+         var text1=document.getElementById(text).value;
+         var catg1='{!currentCategory}';
+         var sortBy=document.getElementById('rn_SortList2_9_Headings').value;
+         if(catg!=null){
+         catg1=document.getElementById(catg).value;
+        // sortBy='mostViewed';
+        }
+
+        var siteName='{!$Site.CurrentSiteUrl}';
+        var url=siteName+'{!searchUrl1}'+"?c="+catg1+"&k="+text1+'&action=SearchAnswer&sortBy='+sortBy;
+        window.location.href=url;
+        //location.href=url;
+        //alert(url);
+        if(catg!=null){
+        hideModal('showDiv','searchAction');
+        }
+    }
+    function setValue(sourceDiv,destDiv){
+        //document.getElementById(destDiv).value=document.getElementById(sourceDiv).value;
+    }
+    function updateTextField(actionFrom,answertextId,advanceTextId){
+        if(actionFrom=='advanceSearch'){
+        document.getElementById(answertextId).value=document.getElementById(advanceTextId).value;
+        }
+        else{
+        document.getElementById(advanceTextId).value=document.getElementById(answertextId).value;
+        }
+    }
+    </script>
+    <script type="text/javascript">
+    window.onkeypress = getActiveHTMLElement;
+    function getActiveHTMLElement(keyevent) {
+        keyevent = (keyevent) ? keyevent : ((window.event) ? event : null);
+        if(keyevent.keyCode==13 && '{!isExternalPage}'=='true' && document.activeElement.tagName=='INPUT'){
+        Search('rn_SimpleSearch_13_SearchField',null);
+        }    
+    }
+
+    </script>
+            <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+            <meta http-equiv="Content-Style-Type" content="text/css" />
+            <meta http-equiv="Content-Script-Type" content="text/javascript" />
+            <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+        <apex:outputPanel rendered="{!IsAnswerSearch}">
+             <apex:outputPanel rendered="{!!IsContact}" layout="none">
+                  <!-- <title>Find Answers</title>-->
+                   <title>{!$CurrentPage.parameters.Title}</title>
+               </apex:outputPanel>
+             <apex:outputPanel rendered="{!IsContact}" layout="none">
+                   <title>Telephone Numbers for Customer Care</title>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!!IsAnswerSearch}">
+            <title>Support Home Page</title>
+        </apex:outputPanel>
+        <link rel="search" type="application/opensearchdescription+xml" title="Support Home Page Search"
+              href="ci/browserSearch/desc/http%253A%252F%252Fhelp-officea/Support+Home+Page+Search/Support+Home+Page+Search/images%252Ficons%252FSearch16.png" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="-1" />
+        <style type='text/css'>
+            .rn_ScreenReaderOnly
+            {
+                position: absolute;
+                height: 1px;
+                left: -10000px;
+                overflow: hidden;
+                top: auto;
+                width: 1px;
+            }
+            .rn_Hidden
+            {
+                display: none;
+            }
+            .h1class{
+                border-bottom: 1px solid #A5A5A5;
+                color: #333333;
+                font-size: 20px;
+                font-weight: normal;
+                padding-bottom: 10px;
+                width:100%;
+            }
+            .h2class{
+                border-bottom: 1px solid #A5A5A5;
+                color: #333333;
+                font-size: 16px;
+                line-height: 18px;
+                margin-bottom: 10px;
+                padding-bottom: 7px;
+                width:100%;
+                font-weight: bold;
+
+
+            }
+
+        </style>
+        <base></base>
+        <!--
+        <link href='Include/standard1297210009.themes.ringcentral.SITE.css' rel='stylesheet'
+            type='text/css' media='all' />
+        <link href='Include/standard1297210009.themes.ringcentral.css' rel='stylesheet' type='text/css'
+            media='all' />
+        <link href='Include/home1297210009.themes.ringcentral.css' rel='stylesheet' type='text/css'
+            media='all' />
+        -->
+        <style type='text/css'>
+            #rn_History_Iframe
+            {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 1px;
+                height: 1px;
+                visibility: hidden;
+            }
+        </style>
+    
+ <script type="text/javascript" language="Javascript">  
+    function gup(name)
+    {
+      name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+      var regexS = "[\\?&]"+name+"=([^&#]*)";
+      var regex = new RegExp( regexS );
+      var results = regex.exec(window.location.href);
+      if( results == null )
+        return "";
+      else
+        return results[1];
+    }
+   
+    var articleparamname=gup('ARTICLENAME');
+    var articleTypeparam=gup('ARTICLETYPE');
+   
+    if(articleparamname != "" && articleTypeparam != ""){
+       var urlString="{!$Site.CurrentSiteUrl}articles/"+articleTypeparam+"/"+articleparamname+'?retURL=true'
+       window.location=urlString;
+    }
+    </script>
+   <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31198114-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  </script>
+  
+        <apex:variable var="currentCategoryVar" value="{!currentCategory}" />
+        </head>
+
+        <body class="yui-skin-sam">
+        <apex:outputPanel styleClass="pkbPage" layout="block" rendered="{!!canUserSeeKnowledge}" style="text-align:center;" >
+            <span style="color:red; font-size:16px; font-weight:bold" >Configuration ERROR<br />Your user is not allowed to view knowledge</span>
+        </apex:outputPanel>
+
+        <apex:variable var="productUrlVar" value="{!productUrl}"  />
+        <apex:variable var="categoryParameterNameVar" value="{!categoryParameterName}" />
+        <apex:variable var="cpt" value="{!0}" />
+        <apex:variable var="categoryDescriptionsVar" value="{!categoryDescriptions}" />
+        <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+        <apex:variable var="securityOK" value="False" />
+        <apex:variable var="currentCategoryVar" value="{!currentCategory}" />
+        <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+        <apex:variable var="sortOrderDirection" value="{!StrSortOrderDirection}" />
+
+        <div id="rn_Container">
+            <div id="rn_SkipNav">
+               <!--  <a href="#">
+                    Skip Navigation</a>--></div>
+            <div id="rn_Header">
+                <noscript>
+                    <h1>
+                        Scripting must be enabled to use this site.</h1>
+                </noscript>
+                <h1 id="rn_Logo" style="font-family: 'Verdana','Geneva',sans-serif;">
+                   <!-- <a href="{!$Site.CurrentSiteUrl}ATTHome"><span class="rn_LogoTitle">AT&amp;T -->
+                   <a href="http://att.com/officeathand"><span class="rn_LogoTitle">AT&amp;T
+                            <span class="rn_LogoTitleMinor">Office@Hand</span></span></a></h1>
+                <div id="rn_LoginStatus">
+                </div>
+            </div>
+            <div id="rn_Navigation">
+                <div id="rn_NavigationBar">
+                    <ul>
+                        <li style="margin-left:0px;"><span id="rn_NavigationTab2_1" class="rn_NavigationTab2 ">
+                                <apex:outputPanel rendered="{!!IsAnswerSearch}">
+                                    <a class="rn_SelectedTab"
+                                       href="{!$Site.CurrentSiteUrl}" target="_self"><span>Support Home</span>
+                                    </a>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IsAnswerSearch}">
+                                    <a class="" href="{!$Site.CurrentSiteUrl}ATTHome" target="_self"><span>Support Home</span>
+                                    </a>
+                                </apex:outputPanel>
+                            </span></li>
+                        <li style="margin-left: 0px;"><span id="rn_NavigationTab2_2" class="rn_NavigationTab2 ">
+                                <apex:outputPanel rendered="{!!IsAnswerSearch}">
+                                    <a class="" href="{!$Site.CurrentSiteUrl}ATTAnswer?action=SearchAnswer"
+                                       target="_self"><span>Answers</span> </a>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IsAnswerSearch}">
+                                    <a class="rn_SelectedTab" href="{!$Site.CurrentSiteUrl}ATTAnswer?action=SearchAnswer"
+                                       target="_self"><span>Answers</span> </a>
+                                </apex:outputPanel>
+                            </span></li>
+                        <li style="margin-left: 0px;"><span id="rn_NavigationTab2_3" class="rn_NavigationTab2 ">
+                                <a id="rn_NavigationTab2_3_Link"
+                                   class="rn_DropDown" href="https://service-officeathand.att.com/service-site/login/enter.html"
+                                   target="_blank">
+                                    <span>Your Account</span> </a></span></li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div id="rn_Body">
+                <div id="rn_MainColumn">
+                    <a name="rn_MainContent" id="rn_MainContent"></a>
+
+                    <div id="rn_PageTitle" class="rn_AnswerList">
+                        <apex:outputPanel rendered="{!!IsAnswerSearch}">
+                          <apex:outPutpanel rendered="{!!IsVideoLinkPage}">
+                             <div class="h1class">Support Home
+                                 &nbsp;</div>
+                              </apex:outPutpanel>    
+                            <apex:outPutpanel rendered="{!IsVideoLinkPage}">
+                                   <div class="h1class">Videos &nbsp;</div>
+                             </apex:outPutpanel>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!!IsContact}" layout="none">
+                            <apex:outputPanel rendered="{!IsAnswerSearch}">
+                                <div class="h1class">Answers &nbsp;</div>
+                            </apex:outputPanel></apex:outputPanel>
+
+                        <apex:outputPanel rendered="{!AND(!isExternalPage, 1 = 1)}" layout="none">
+                            <apex:outPutpanel rendered="{!!IsVideoLinkPage}">
+                               <div id="rn_SearchControls">
+                                <h2 class="rn_ScreenReaderOnly">
+                                    Search</h2>
+
+                                <apex:form id="searchBox">
+                                    <div class="rn_SearchInput">
+                                        <div id="rn_AdvancedSearchDialog_4" class="rn_AdvancedSearchDialog">
+                                            <!-- <a href="javascript:void(0);" id="rn_AdvancedSearchDialog_4_TriggerLink" class="rn_AdvancedLink">
+                                                 Advanced Search</a>-->
+                                            <a href="#" onclick="javascript:revealModal('showDiv')" id="rn_AdvancedSearchDialog_4_TriggerLink" class="rn_AdvancedLink">
+                                                Advanced Search</a>
+                                            <apex:actionFunction name="searchJs" action="{!doSearch}" />
+                                            <label for="rn_KeywordText2_10_Text">Find the answer to your question</label>
+
+                                            <div class="rc_InputTypeTextWrapper">
+                                                <!--<apex:inputText id="rn_KeywordText2_9_Text" value="{!currentKeyword}" size="25" onkeypress="return submitEnter(event),updateTextField();" />-->
+                                                <apex:inputText id="rn_KeywordText2_9_Text" value="{!currentKeyword}" size="25" maxlength="255" onblur="updateTextField('answerPage','{!$Component.searchBox.rn_KeywordText2_9_Text}','{!$Component.advanceSearch.rn_KeywordText2_6_Text}');" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="rn_SearchButton2_10" class="rn_SearchButton2">
+                                        <apex:commandButton styleClass="rn_SubmitButton"
+                                                            action="{!doSearch}" value="SearchNEW"
+                                                            onclick="return updateCategoryField()" id="searchButton" />
+
+                                        <label for="rn_SearchButton2_10_HiddenInput" class="rn_Hidden">
+                                            &nbsp;</label>
+                                        <input id="rn_SearchButton2_10_HiddenInput" type="text" class="rn_Hidden" disabled="disabled" />
+                                    </div>
+                                </apex:form>
+                            </div>
+                             </apex:outputPanel>
+                          </apex:outputPanel>
+
+
+                    </div>
+
+                    <div>
+
+                        <apex:outputPanel rendered="{!!IsContact}" layout="none">
+                            <apex:outputPanel rendered="{!AND(isExternalPage, 1 = 1)}" layout="none">
+                                <knowledge:articleRendererToolbar canvote="false"   rendered="true" articleId="{! $CurrentPage.parameters.id}">                            
+                    </knowledge:articleRendererToolbar>
+                               
+                                <apex:insert name="header" />
+                                <apex:insert name="body" />
+                                <apex:include pageName="ATTfeedback" />
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+
+                        <!--PAGWE WILL BE CALLED HERE-->
+                        <apex:outputPanel rendered="{!!IsContact}" layout="none">
+                            <apex:outputPanel rendered="{!AND(!isExternalPage, 1 = 1)}" layout="none">
+                                <apex:insert name="content" />
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        <!--Contact PAGE CALLED HERE-->
+
+                        <apex:outputPanel rendered="{!IsContact}" layout="none">
+                            <apex:insert name="contact" />
+                            <apex:include pageName="ATTfeedback" />
+                        </apex:outputPanel>
+
+
+
+                    </div>
+                </div>
+                <apex:outputPanel rendered="{!AND(isExternalPage, 1 = 1)}" layout="none">
+                    <div id="rn_SideBar">
+                        <div class="rn_Module rc_SearchMiniBox">
+                            <h2>Find Answers</h2>
+                            <div class="rn_SimpleSearch" id="rn_SimpleSearch_13">
+                                <div class="rc_InputTypeTextWrapper">
+                                    <input type="text" title="Search" value="" maxlength="255" class="rn_SearchField" name="rn_SimpleSearch_13_SearchField" id="rn_SimpleSearch_13_SearchField"  onkeypress="return submitEnter(event)"/>
+                                </div>
+                                <input type="image" alt="Search" src="images/icons/search.png" class="rn_SearchImage" id="rn_SimpleSearch_13_Submit" onclick="javascript:Search('rn_SimpleSearch_13_SearchField',null);"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </apex:outputPanel>
+                <div id="rn_SideBar">
+                    <div class="rn_Module">
+                        <div class="h2class">Contact Us</div>
+                        <div class="rn_HelpResources">
+                            <div class="rn_Contact">
+                                <a href="{!$Site.CurrentSiteUrl}ATTContactUs?action=SearchAnswer&attContactUs=contact">Contact Us</a> <span>If you can't
+                                    find what you are looking for on the site, give us a call.<br />
+                                    <br />
+                                    General Questions:
+                                    <br />
+                                    Support 1-800-331-0500</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div id="rn_Footer">
+                <p>
+                    <a href="http://www.att.com/officeathandpolicy" target="_blank">Legal</a></p>
+                <p>
+                    &copy;RingCentral Intellectual Property. All Rights Reserved.<br />
+                    AT&amp;T and the AT&amp;T logo are trademarks of AT&amp;T Intellectual Property.<br />
+                    All other marks, logos, designs and otherwise are the trademarks and intellectual
+                    property of RingCentral.</p>
+                <div id="rc_RingCentralCredit">
+                    <a href="http://www.ringcentral.com/" title="Powered by RingCentral" target="_blank">
+                        Powered by RingCentral</a>
+                </div>
+            </div>
+        </div>
+        <form class='rn_Hidden' action=''>
+            <input id='rn_History_Field' type='hidden' />
+        </form>
+        </body>
+
+        <div id="showDiv"  style="display:none;background: #fff;z-index: 99999;" >
+            <apex:form id="advanceSearch"  >
+                <div id="rnDialog1_c" class="yui-panel-container yui-dialog yui-simple-dialog" style="visibility: visible; left: 391px; top: 23%; z-index: 9999; position:fixed;">
+                    <div style="visibility: inherit;" class="yui-module yui-overlay yui-panel rn_Dialog rn_AdvancedSearchDialog" id="rnDialog1">
+                        <div style="cursor: auto;" class="hd"><span class="rn_ScreenReaderOnly">Beginning of dialog, please dismiss dialog before continuing<br/></span>Advanced Search</div><div class="bd"><div id="rn_AdvancedSearchDialog_5_DialogContent" class="rn_DialogContent">
+                                <div class="rn_AdvancedKeyword rn_AdvancedSubWidget">
+                                    <div id="rn_KeywordText2_6" class="rn_KeywordText2">
+                                        <label for="rn_KeywordText2_6_Text"><span class="rn_ScreenReaderOnly">Advanced Search dialog </span>Search terms</label>
+                                        <div class="rc_InputTypeTextWrapper">
+                                            <apex:inputText id="rn_KeywordText2_6_Text" value="{!currentKeyword}" size="25"  maxlength="255"  onblur="updateTextField('advanceSearch','{!$Component.searchBox.rn_KeywordText2_9_Text}','{!$Component.advanceSearch.rn_KeywordText2_6_Text}');" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rn_AdvancedFilter rn_AdvancedSubWidget"></div>
+                                <div class="rn_AdvancedFilter rn_AdvancedSubWidget"><div id="rn_ProductCategorySearchFilter_8" class="rn_ProductCategorySearchFilter">
+                                        <a href="javascript:void(0);" class="rn_ScreenReaderOnly" id="rn_ProductCategorySearchFilter_8_LinksTrigger">Screen Reader users press enter to Limit by category.&nbsp;<span id="rn_ProductCategorySearchFilter_8_TreeDescription"></span></a>
+                                        <span class="rn_Label">Limit by category</span>
+                                        <select id="categorySelect"  name="strSearchCategory" size="1"  onchange="setValue('categorySelect','{!$component.advanceSearch.categId}')" >
+                                            <apex:outputpanel layout="none" rendered="true">
+                                                <apex:outputPanel layout="none" rendered="{!currentCategoryVar=rootCategoryName}" >
+                                                    <option value="{!rootCategoryName}" >-- Select a category --</option>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="none" rendered="{!currentCategoryVar!=rootCategoryName}" >
+                                                    <option value="{!rootCategoryName}">-- Select a category --</option>
+                                                </apex:outputPanel>
+                                                <!--<knowledge:categoryList categoryGroup="{!categoryGroupNameVar}" rootCategory="{!rootCategoryName}" categoryVar="category" level="-1" >
+                                                    <apex:outputPanel layout="none" rendered="{!currentCategoryVar=category.name}" >
+                                                        <option value="{!category.name}" selected="selected">
+                                                        <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="none" rendered="{!currentCategoryVar!=category.name}">
+                                                        <option value="{!category.name}">
+                                                        <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                    </apex:outputPanel>
+                                                </knowledge:categoryList>--> 
+                                                <knowledge:categoryList categoryGroup="{!categoryGroupNameVar}" rootCategory="{!rootCategoryName}" categoryVar="category" level="-1" >
+                                                      <apex:outputPanel layout="none" rendered="{!currentCategoryVar=category.name}" >
+                                                        <option value="{!category.name}" selected="selected">
+                                                        <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="none" rendered="{!currentCategoryVar!=category.name}">
+                                                        <option value="{!category.name}">
+                                                        <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                    </apex:outputPanel>
+                                                </knowledge:categoryList>
+                                            </apex:outputpanel>
+                                        </select>
+
+
+
+
+                                    </div>
+                                </div>
+                                <div class="rn_AdvancedSort rn_AdvancedSubWidget"><div id="rn_SortList2_9" class="rn_SortList2">
+                                        <label for="rn_SortList2_9_Headings">Sort by</label>
+                                       
+                                        <select id="rn_SortList2_9_Headings" class="rn_Headings" onchange="setValue('rn_SortList2_9_Headings','{!$component.advanceSearch.sortBy}')">
+                                            <apex:outputPanel layout="none" rendered="{!IF(sortOrderDirection='mostViewed', 'true', 'false')}" >
+                                                <option value="mostViewed"  selected="selected">Most Viewed</option>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!IF(sortOrderDirection !='mostViewed', 'true', 'false')}" >
+                                                <option value="mostViewed"  >Most Viewed</option>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!IF(sortOrderDirection='lastUpdated', 'true', 'false')}" >
+                                                <option value="lastUpdated" selected="selected">Date Updated</option>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!IF(sortOrderDirection!='lastUpdated', 'true', 'false')}" >
+                                                <option value="lastUpdated" >Date Updated</option>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!IF(sortOrderDirection='title', 'true', 'false')}" >
+                                                <option value="title" selected="selected">Title </option>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!IF(sortOrderDirection!='title', 'true', 'false')}" >
+                                                <option value="title" >Title </option>
+                                            </apex:outputPanel>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <a class="rn_SearchTips" href="javascript:void(0);" onclick="window.open('http://help-officeathand.att.com/app/utils/help_search', '', 'scrollbars,resizable,width=720,height=700'); return false;">Search Tips</a>
+                            </div>
+                        </div><div class="ft">
+                            <span class="button-group">
+                                <button type="button" class="default" style=' border-width: 0px;' onclick="javascript:Search('{!$component.advanceSearch.rn_KeywordText2_6_Text}','categorySelect');">Search</button>
+                                <button type="button" style=" border-width: 0px;background: url('{!URLFOR($Resource.ATTInclude, 'rc_CustomFormButton.png')}') 
+                                        no-repeat scroll 0 0 transparent;background-position: 0 -300px;"  onclick="javascript:hideModal('showDiv','closeAction')" >Cancel</button>
+                            </span><span class="rn_ScreenReaderOnly">End of dialog, please dismiss dialog before
+                                continuing</span></div>
+                        <a style="overflow: hidden; text-indent: -10000em; text-decoration: none;" href="#" class="container-close" onclick="javascript:hideModal('showDiv','closeAction')">Close</a>
+                    </div>
+                </div>
+            </apex:form>
+
+        </div>
+<script type="text/javascript">
+   var getRatingDiv = document.getElementById("j_id0:j_id1:j_id51:j_id52:toolbar");
+      
+       if(getRatingDiv!=null && getRatingDiv!=''){
+       getRatingDiv.style.display = "";
+       }
+</script>
+    </html>
+</apex:page>

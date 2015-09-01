@@ -1,0 +1,3 @@
+<apex:page standardController="Event" sidebar="false" showHeader="false">
+   <c:AeSalesGuides objectType="Event" objectId="{!Event.Id}" guideName="Email Invitations" extraInfo="{!JSENCODE(Event.Subject)}" match="Role={!JSENCODE(SUBSTITUTE($UserRole.Name, ",", ""))}" closeOnDone="true"/>
+</apex:page>

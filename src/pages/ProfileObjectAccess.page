@@ -1,0 +1,55 @@
+<apex:page controller="ProfileObjectAccess">
+    <apex:form >
+    	Profile:
+        <apex:selectList value="{!selectedId}" size="1" >
+            <apex:selectOptions value="{!display}"></apex:selectOptions>
+            <apex:actionSupport event="onchange" action="{!DisplayPermission}" reRender="p"/>
+        </apex:selectList>  
+    </apex:form>
+    
+    <apex:pageBlock title="Profile Acess to Objects" id="p">  
+        <apex:pageBlockTable value="{!lWrap}" var="wrap">
+        	<!--  
+            <apex:column >
+                <apex:facet name="header" >Profile Id</apex:facet>
+                <apex:outputText value="{!wrap.ProfileId}" />
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header" >Profile Name</apex:facet>
+                <apex:outputText value="{!wrap.ProfileName}" />
+            </apex:column>
+            -->
+            <apex:column >
+                <apex:facet name="header" >Object</apex:facet>
+                <apex:outputText value="{!wrap.ObjectName}" />
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header" >Has Create</apex:facet>
+                <apex:outputText value="{!wrap.hasCreate}" />
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header" >Has Read</apex:facet>
+                <apex:outputText value="{!wrap.hasRead}" />
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header" >Has Edit</apex:facet>
+                <apex:outputText value="{!wrap.hasEdit}" />
+            </apex:column> 
+            <apex:column >
+                <apex:facet name="header" >Has Delete</apex:facet>
+                <apex:outputText value="{!wrap.hasDelete}" />
+            </apex:column> 
+            <apex:column >
+                <apex:facet name="header" >Has View All</apex:facet>
+                <apex:outputText value="{!wrap.hasViewAll}" />
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header" >Has Modify All</apex:facet>
+                <apex:outputText value="{!wrap.hasModifyAll}" />
+            </apex:column>
+  
+        </apex:pageBlockTable>
+    </apex:pageBlock> 
+     
+   
+</apex:page>

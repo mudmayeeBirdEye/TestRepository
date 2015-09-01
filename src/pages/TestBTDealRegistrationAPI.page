@@ -1,0 +1,139 @@
+<apex:page controller="TestBTDealRegistrationAPI">
+    <style>
+.required {
+    color: red;
+}
+
+#overlay {
+    background: url("{!URLFOR($Resource.EmailValidation,'loading.gif')}")
+        no-repeat scroll center center gray;
+    border: 0px solid #000000;
+    bottom: 0;
+    left: 0;
+    opacity: 0.75;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    width: 100%;
+    z-index: 1000;
+}
+</style>
+    <script type="text/javascript">
+        function showOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'visible';
+        }
+        function hideOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'hidden';
+        }
+    </script>
+    <apex:outputPanel id="requestPanel">
+        <div id="overlay"></div>
+        <apex:form >
+            <table>
+                <tr>
+                    <td colspan="2"><b>Request Parameters</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Partner Agent Name (partnerAgentName)</td>
+                    <td><apex:inputText value="{!partnerAgentName}" /></td>
+                </tr>
+                <tr>
+                    <td>Partner Agent Id (partnerAgentID)</td>
+                    <td><apex:inputText value="{!partnerAgentID}" /></td>
+                </tr>
+                <tr>
+                    <td>Company<span class="required">*</span></td>
+                    <td><apex:inputText value="{!company}" /></td>
+                </tr>
+                <tr>
+                    <td>First Name<span class="required">*</span></td>
+                    <td><apex:inputText value="{!firstName}" /></td>
+                </tr>
+                <tr>
+                    <td>Last Name<span class="required">*</span></td>
+                    <td><apex:inputText value="{!lastName}" /></td>
+                </tr>
+                <tr>
+                    <td>Email<span class="required">*</span></td>
+                    <td><apex:inputText value="{!emailId}" /></td>
+                </tr>
+                <tr>
+                    <td>Phone<span class="required">*</span></td>
+                    <td><apex:inputText value="{!phone}" /></td>
+                </tr>
+                <tr>
+                    <td>No of Employees<span class="required">*</span></td>
+                    <td><apex:inputText value="{!numberOfEmployees}" /></td>
+                </tr>
+                <tr>
+                    <td>Zip Code</td>
+                    <td><apex:inputText value="{!zipCode}" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><apex:commandButton value="Call API" action="{!callBTAPI}"
+                            reRender="responsePanel" onClick="javascript:showOverlay();"
+                            onComplete="javascript:hideOverlay();" /></td>
+                </tr>
+            </table>
+        </apex:form>
+    </apex:outputPanel>
+
+    <apex:outputPanel id="responsePanel">
+        <table>
+            <tr>
+                <td colspan="3"><b>Response</b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"><hr />
+                </td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>:</td>
+                <td>{!responseObj["Status"]}</td>
+            </tr>
+            <tr>
+                <td>ErrorCode</td>
+                <td>:</td>
+                <td>{!responseObj["ErrorCode"]}</td>
+            </tr>
+            <tr>
+                <td>ApprovalStatus</td>
+                <td>:</td>
+                <td>{!responseObj["ApprovalStatus"]}</td>
+            </tr>
+            <tr>
+                <td>PartnerDealID</td>
+                <td>:</td>
+                <td>{!responseObj["PartnerDealID"]}</td>
+            </tr>
+            <tr>
+                <td>ValidUntilDate</td>
+                <td>:</td>
+                <td>{!responseObj["ValidUntilDate"]}</td>
+            </tr>
+            <tr>
+                <td colspan="3"><hr />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td><b>Execution time (in second/s)</b>
+                </td>
+                <td>:</td>
+                <td>{!responseTime}</td>
+            </tr>
+        </table>
+    </apex:outputPanel>
+</apex:page>

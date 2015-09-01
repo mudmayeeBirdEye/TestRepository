@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cloud_Extend_oauth</fullName>
+    <apiAccessLevel>Unrestricted</apiAccessLevel>
+    <modules>
+        <module>
+            <description>Informatica Cloud Extend for Salesforce enables sales, customer service and marketing professionals to create and deploy custom wizards that automate processes and methodologies, ensuring best practices are followed.</description>
+            <label>Cloud_Extend_oauth</label>
+            <moduleType>connected</moduleType>
+            <name>Cloud_Extend_oauth</name>
+            <types>
+                <members>Cloud_Extend_oauth_devConfig</members>
+                <name>ConnectivityDevConfigMetadata</name>
+            </types>
+            <types>
+                <members>ce4sf20_001__Cloud_Extend_oauth</members>
+                <name>Module</name>
+            </types>
+            <version>6.0</version>
+        </module>
+    </modules>
+    <namespacePrefix>ce4sf20_001</namespacePrefix>
+    <version>29.0</version>
+</Package>

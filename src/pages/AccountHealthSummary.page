@@ -1,0 +1,135 @@
+<apex:page standardController="Account" extensions="AccountHealthcardHelper">
+
+<style>
+h1 {position:relative; top:0px; color:black; font-weight:bold; font-size:12px; text-align:center;}
+h2 {position:relative; top:0px; color:blue; font-weight:bold; font-size:12px; text-align:center;}
+h3 {position:relative; top:0px; color:blue; font-weight:normal; font-size:12px; text-align:center;}
+
+table, td {
+    border:0px solid black; 
+    padding:0px;
+    vertical-align:top;
+}
+.btn {
+    color: #084B8A !important;
+    border: 1px solid #A5A6A5 !important;
+    padding: 5px !important;
+}
+</style>
+
+    <apex:form >
+         <apex:pageBlock >
+            <apex:pageBlockButtons location="top">
+<!--                <div><apex:outputLink target="__self" value="{!$Page.AccountHealthScoreCard}?accid={!Account.Id}" style="text-decoration:none;"><input type="button" class="btn" value="Account Health Scorecard"/></apex:outputLink></div>-->
+                <!--<div><apex:outputLink target="__self" value="{!$Page.AccountHealthScoreCard}?accid={!Account.Id}" styleclass="btn" style="text-decoration:none;">Account Health Scorecard</apex:outputLink> -->
+                <div><apex:outputLink target="__self" value="{!$Page.AccountHealthScoreCard2}?accid={!Account.Id}" styleclass="btn" style="text-decoration:none;">Account Health Scorecard</apex:outputLink>
+                <apex:outputLink target="__self" value="{!$Page.CustomerGraduationScorecard}?accid={!Account.Id}" styleclass="btn" style="text-decoration:none;">Customer Graduation Scorecard</apex:outputLink></div>
+            </apex:pageBlockButtons>
+
+<center>
+
+            <apex:pageBlockButtons location="top">
+                <table>
+                    <tr>
+                    <td align="center">
+                        <H1>Peer Group </H1>
+                        <H2>
+                            <apex:OutputText rendered="{!accMetricObj.Peer_Group_ID__c == 1}" value="Fax"/>
+                            <apex:OutputText rendered="{!accMetricObj.Peer_Group_ID__c == 2}" value="Pro"/>
+                            <apex:OutputText rendered="{!accMetricObj.Peer_Group_ID__c == 3}" value="Office 0-1"/>
+                            <apex:OutputText rendered="{!accMetricObj.Peer_Group_ID__c == 4}" value="Office 2-19"/>
+                            <apex:OutputText rendered="{!accMetricObj.Peer_Group_ID__c == 5}" value="Office 20+ DLs"/>
+                            <apex:OutputText rendered="{!accMetricObj.Peer_Group_ID__c == 6}" value="ATT Premium Only"/>
+                            <apex:OutputText rendered="{!accMetricObj.Peer_Group_ID__c == 7}" value="ATT Virtual Only"/>
+                            <apex:OutputText rendered="{!accMetricObj.Peer_Group_ID__c == 8}" value="ATT Mix Users"/>
+                            <apex:OutputText rendered="{!accMetricObj.Peer_Group_ID__c == 101}" value="Other"/>
+                            <apex:OutputText rendered="{!ISNULL(accMetricObj.Peer_Group_ID__c)}" value="N/A"/>
+                        </H2>    
+                        <br/>
+                        <h1>Number of Users in Peer Group </H1>
+                        <h2>
+                            <apex:outputText value="{0,number,integer}">
+                                <apex:param value="{!peergroupMap[1000].Number_of_Accounts__c}" />
+                            </apex:outputText>                        
+                            <apex:OutputText rendered="{!ISNULL(peergroupMap[1000].Number_of_Accounts__c)}" value="N/A"/>
+                        </H2>
+                    </td>
+                    <td width="320">&nbsp;</td>
+                    </tr>
+                </table>
+            </apex:pageBlockButtons>
+
+
+<!-- Metrics -->
+<BR/>
+<table width="1100">
+<tr height="50">
+    <!-- Mid Left -->
+    <td colspan="4">&nbsp;</td>
+    <!-- Mid Middle -->
+    <td><center><h1>Overall</h1></center></td>
+    <td><center><h2>Actual:<br/>{!Floor((accMetricObj.Metric_1000_value__c)*100)}%</h2></center></td>
+    <td><center><h3>Median:<br/>{!Floor((peergroupMap[1000].Median_Value__c)*100)}%</h3></center></td>
+    <td>
+        <DIV style="position: relative; top: -5px; width: 3px; left: {!Floor((accMetricObj.Metric_1000_Position__c)*1.5)}px; height: 30px; float:left; z-index:3; background-color: Black"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[1000].Red_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Red"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[1000].Yellow_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[1000].Green_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+    </td>
+    <!-- Mid Right -->
+    <td colspan="4">&nbsp;</td>
+</tr>
+<tr height="50">
+    <!-- Bottom Left -->
+    <td width="80"><center><h1>Configuration <BR/>/ Setup</h1></center></td>
+    <td width="45"><center><h2>Actual:<br/>{!Floor((accMetricObj.Metric_101_value__c)*100)}%</h2></center></td>
+    <td width="45"><center><h3>Median:<br/>{!Floor((peergroupMap[101].Median_Value__c)*100)}%</h3></center></td>
+    <td width="160">
+        <DIV style="position: relative; top: -5px; width: 3px; left: {!Floor((accMetricObj.Metric_101_Position__c)*1.5)}px; height: 30px; float:left; z-index:3; background-color: Black"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[101].Red_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Red"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[101].Yellow_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[101].Green_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+    </td>
+    <!-- Bottom Middle -->
+    <td width="80"><center><h1>Usage</h1></center></td>
+    <td width="45"><center><h2>Actual:<br/>{!Floor((accMetricObj.Metric_102_value__c)*100)}%</h2></center></td>
+    <td width="45"><center><h3>Median:<br/>{!Floor((peergroupMap[102].Median_Value__c)*100)}%</h3></center></td>
+    <td width="160">
+        <DIV style="position: relative; top: -5px; width: 3px; left: {!Floor((accMetricObj.Metric_102_Position__c)*1.5)}px; height: 30px; float:left; z-index:3; background-color: Black"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[102].Red_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Red"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[102].Yellow_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[102].Green_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+    </td>
+    <!-- Bottom Right -->
+    <td width="80"><center><h1>Service <BR/>Health</h1></center></td>
+    <td width="45"><center><h2>Actual:<br/>{!Floor((accMetricObj.Metric_103_value__c)*100)}%</h2></center></td>
+    <td width="45"><center><h3>Median:<br/>{!Floor((peergroupMap[103].Median_Value__c)*100)}%</h3></center></td>
+    <td width="160">
+        <DIV style="position: relative; top: -5px; width: 3px; left: {!Floor((accMetricObj.Metric_103_Position__c)*1.5)}px; height: 30px; float:left; z-index:3; background-color: Black"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[103].Red_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Red"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[103].Yellow_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+        <DIV style="position: relative; width: {!(Floor((peergroupMap[103].Green_Bucket_Percentage__c)*100)*1.5)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+    </td>
+</tr>
+</table>
+</center>
+
+<apex:pageBlockButtons location="bottom">
+
+<table>
+<!-- Bottom -->
+<tr>
+    <!-- Legend -->
+    <td width="50">&nbsp;</td>
+    <td width="50"><H1>Legend</H1></td>
+    <td width="50" style="background-color: Red;color:black; font-weight:bold; font-size:11px; text-align:center;">{!peergroupMap[1000].Red_Bucket_Label__c}</td>       
+    <td width="50" style="background-color: Yellow;color:black; font-weight:bold; font-size:11px; text-align:center;">{!peergroupMap[1000].Yellow_Bucket_Label__c}</td>
+    <td width="50" style="background-color: Green;color:black; font-weight:bold; font-size:11px; text-align:center;">{!peergroupMap[1000].Green_Bucket_Label__c}</td>    
+    <td width="300">&nbsp;</td>
+</tr>
+</table>
+
+    </apex:pageBlockButtons>
+           </apex:pageBlock>
+    </apex:form>
+</apex:page>

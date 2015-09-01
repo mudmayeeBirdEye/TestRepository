@@ -1,0 +1,110 @@
+<apex:page controller="RCSiteLoginController" id="loginComponent"  >
+ 
+<head>
+  <title>RingCentral Partner Portal</title>
+     <apex:stylesheet value="{!URLFOR($Resource.RCPartnerPortalLoginCSS, 'partnerPortalCss/reset.css')}" />
+      <apex:stylesheet value="{!URLFOR($Resource.RCPartnerPortalLoginCSS, 'partnerPortalCss/style.css')}" />
+<style>
+h1, h2, h3, h4, h5, h6 {
+    display: block;
+   
+}
+.login input[type="password"] {
+    border: 1px solid #CCCCCC;
+    height: 20px;
+    width: 286px;
+}
+
+</style>
+
+<script type="text/javascript">
+   function bookmarksite(){
+   try{
+     var  title='Ringcentral Partner Portal';
+     var url=window.location;
+     if (window.sidebar){ // firefox
+         window.sidebar.addPanel(title, url, "");
+         }else if(window.opera && window.print){ // opera
+          alert(3);  var elem = document.createElement('a');
+            elem.setAttribute('href',url);
+            elem.setAttribute('title',title);
+            elem.setAttribute('rel','sidebar');
+            elem.click();
+         }
+        else if(document.all){
+              window.external.AddFavorite(url, title);
+              }
+          }catch(e){
+            //alert(e);
+          }
+        
+}
+</script>
+
+</head>
+
+    <div class="wrapper">
+        <!-- Header -->
+        <div class="header">
+            <div class="clearfix">
+                <!-- Logo -->
+                <div class="rc_logo"><a href="http://www.ringcentral.com/" target="_blank" title="#1 Cloud-based Phone System for your Business - RingCentral"><img src="{!URLFOR($Resource.RCPartnerPortalLoginCSS, 'partnerPortalCss/rc-logo.gif')}" alt="#1 Cloud-based Phone System for your Business - RingCentral" /></a></div>
+                <!-- Bookmark -->
+                <div class="bookmark"><a href='javascript:void(0);' onClick="javascript:bookmarksite()" title="Bookmark this page">Bookmark this page</a></div>
+            </div>
+            <!-- Header content -->
+            <div class="container">
+                <!-- Tagline -->
+                <div class="tagline">
+                    <h1><span>Welcome to the</span><br />RingCentral Partner Portal</h1>
+                    <h2><strong>Boost your sales</strong> by<br />partnering with the industry's<br />fastest growing <strong>Internet phone<br />system provider for small businesses</strong>.</h2>
+                    <img src="{!URLFOR($Resource.RCPartnerPortalLoginCSS, 'partnerPortalCss/rc-authorized-dealer.gif')}" alt="RingCentral Authorized Dealer" />
+                </div>
+                <!-- End tagline -->
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Login form -->
+                   <apex:insert name="body" />
+                    <!-- End form -->
+                    <!-- Reseller Training Portal -->
+                    <div class="go_to_training_portal"><h3><a href="http://ringcentral.rapidtraining.com" target="_blank" title="RingCentral Reseller Training Portal">RingCentral Reseller Training Portal</a></h3></div>
+                </div>
+                <!-- End sidebar -->
+            </div>
+            <!-- End header content -->
+        </div>
+        <!-- End header -->
+        <!-- Main content area -->
+        <div class="content">
+            <h3>To learn more about how to become a RingCentral Sales Agent:</h3>
+            <ol class="clearfix">
+                <!-- IE dont recognize :first/last-child good -->
+                <li class="first"><strong class="marker">1 </strong>Complete the <a href="http://www.ringcentral.com/partner/agent.html" target="_blank" title="Online Partner Application">Online<br />Partner Application</a>*</li>
+                <li><strong class="marker">2 </strong>After you complete the form, register for one of our upcoming weekly webinars to learn more about our reseller program.</li>
+                <li class="last"><strong class="marker">3 </strong>Attend the webinar and we'll provide you with everything you need to get started as a RingCentral reseller.</li>
+            </ol>
+        </div>
+        <!-- End content area -->
+        <!-- Footer -->
+        <div class="footer">
+            <p>Only partner admins can access this portal. All other partner employees should go the <a href="http://ringcentral.rapidtraining.com" target="_blank" title="RingCentral Reseller Training Portal">RingCentral Reseller Training Portal</a>.</p>
+            <p>For partner support please call: 800-595-8110 or email us at <a href="mailto:resellers@ringcentral.com">resellers@ringcentral.com</a></p>
+            <!-- Copyright and Site nav -->
+            <div class="copyright clearfix">
+                <p class="copy">&copy; 1999-2011 RingCentral, Inc. All rights reserved.</p>
+                <p class="navi">
+                    <a href="http://www.ringcentral.com/whyringcentral/contactus.html" target="_blank" title="Contact Us">Contact Us</a> | 
+                    <a href="http://www.ringcentral.com/whyringcentral/company.html" target="_blank" title="About RingCentral">About RingCentral</a> | 
+                    <a href="http://www.ringcentral.com/partner/agent.html" title="Partners">Partners</a> | 
+                    <a href="http://www.ringcentral.com/legal.html" target="_blank" title="Legal">Legal</a> | 
+                    <a href="http://www.ringcentral.com/security-statement.html" target="_blank" title="Security Policy">Security Policy</a> | 
+                    <a href="http://www.ringcentral.com/sitemap.html" target="_blank" title="Site Map">Site Map</a>
+                </p>
+            </div>
+            <!-- End copyright -->
+        </div>
+        <!-- End footer -->
+    </div>
+
+
+  </apex:page>

@@ -1,0 +1,225 @@
+<apex:page docType="html-5.0" controller="LiquidPlanner.LiquidPlannerProjectChooseController" action="{!loadAvailableWorkspaces}">
+    <script src="{!URLFOR($Resource.jQueryFiles, 'js/jquery-1.4.4.min.js')}"
+            type="text/javascript"
+            charset="utf-8"></script>
+    <script src="{!URLFOR($Resource.jQueryFiles, 'js/jquery-ui-1.8.7.custom.min.js')}"
+            type="text/javascript"
+            charset="utf-8"></script>
+    <script src="{!URLFOR($Resource.jQueryFiles, 'js/jquery.validate-1.6.min.js')}"
+            type="text/javascript"
+            charset="utf-8"></script>
+    <link rel="stylesheet"
+          href="{!URLFOR($Resource.jQueryFiles, 'css/jquery-ui-1.8.7.custom.css')}"
+          type="text/css"
+          charset="utf-8" />
+
+   <style type="text/css">
+    .milestoneName {
+        width:258px;
+        height:27px;
+    }
+    .milestoneDate {
+        width:130px;
+        height:27px;
+    }
+    div.centered {
+        display:block;
+
+        /*set the div in the center of the screen*/
+        position:absolute;
+        top:50%;
+        left:35%;
+        width:350px;
+    }
+    .inner_table td {
+        vertical-align:middle;
+    }
+    .right {
+        text-align:right;
+        padding-right: .5em;
+    }
+    .error {
+      color:red
+    }
+    .button{
+      background: none !important;
+      background-color:#1d7fdc !important;
+      background-image:url({!URLFOR($Resource.Images, 'ButtonBackground.png')}) !important;
+      color:white !important;
+      border-width:0px !important;
+      background-repeat:no-repeat !important;
+      height:30px;
+      width:120px;
+    }
+  </style>
+  <apex:messages />
+  <apex:form id="theForm">
+    <div class="centered">
+     <apex:actionStatus id="SaveStatus" Style="align:center">
+        <apex:facet name="start">
+            <img align="center" src="{!URLFOR($Resource.LiquidPlanner__Images, 'loading.gif')}"/>
+        </apex:facet>
+        <apex:facet name="stop"></apex:facet>
+     </apex:actionStatus>
+    </div>
+
+    <body onload="init()"/>
+
+    <apex:outputPanel rendered="{!!IsValidCredential}">
+      <table width="100%" class="inner_table" align="left" cellspacing="0">
+        <tr style="height:34px; background:#00ADD9">
+          <td style="Width:200px">
+              <h1 align="left" style="Padding:15px">Choose Project</h1>
+          </td>
+          <td>
+               <img align="right" style="Padding:0px" src="{!URLFOR($Resource.Images, 'LiquidLogo.png')}"/>
+          </td>
+        </tr>
+      </table>
+      <table class="inner_table" align="left" cellspacing="0">
+        <tr>
+          <td colspan="3">
+            <center>
+              <br/>
+              <apex:outputText value="{!InvalidCredentialMessage}"/>
+            </center>
+          </td>
+        </tr>
+      </table>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!IsValidCredential}" id="find">
+      <table width="100%" class="inner_table" align="left" cellspacing="0">
+        <tr style="height:40px; background:#505759">
+          <td style="Width:200px">
+            <h1 align="left" style="color:White;Padding:15px">Choose Project</h1>
+          </td>
+          <td>
+             <img align="right" style="Padding:0px" src="{!URLFOR($Resource.Images, 'LiquidLogo.png')}"/>
+          </td>
+        </tr>
+      </table>
+      <table class="inner_table" align="left" cellspacing="0">
+        <tr>
+          <td class="right">
+            <p>Workspace*</p>
+          </td>
+          <td colspan = "2">
+            <apex:selectList id="workspaceChoice" value="{!selectedWorkspaceId}" size="1">
+              <apex:selectOptions value="{!WorkspaceOptions}"/>
+              <apex:actionSupport event="onchange" reRender="find" action="{!resetSearch}"/>
+            </apex:selectList>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="2">
+            <br/>
+             <h2>Find Project</h2>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <br/>
+            <apex:outputlabel for="searchName">Name Contains</apex:outputlabel>
+          </td>
+          <td colspan = "2">
+            <br/>
+            <apex:inputText id="searchName" value="{!searchName}" style="width:220px;height:27px;horiz"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <br/>
+            <apex:outputlabel >Created Between</apex:outputlabel>
+          </td>
+          <td colspan = "2">
+            <br/>
+             <apex:inputText id="searchCreatedAtStart" value="{!searchCreatedAtStart}" styleClass="milestoneDate" onclick="DatePicker.pickDate(false, this, false);" onfocus="DatePicker.pickDate(false, this, false);"/>
+             <span> to </span>
+             <apex:inputText id="searchCreatedAtEnd" value="{!searchCreatedAtEnd}" styleClass="milestoneDate" onclick="DatePicker.pickDate(false, this, false);" onfocus="DatePicker.pickDate(false, this, false);"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="right">
+            <br/>
+            <apex:outputlabel for="searchDone">Include done</apex:outputlabel>
+          </td>
+          <td colspan = "2">
+            <br/>
+            <apex:inputCheckbox value="{!searchDone}"></apex:inputCheckbox>
+          </td>
+        </tr>
+        <tr>
+          <td/>
+          <td colspan="2">
+            <br/>
+            <apex:commandButton value="Search" action="{!searchProject}" reRender="find" styleClass="button" status="SaveStatus"/>
+          </td>
+        </tr>
+       <apex:outputPanel id="projectSelect" layout="none" rendered="{!searchCompleted}">
+          <tr id="projectSelection">
+            <td class="right">
+               <p>Project*</p>
+            </td>
+            <td colspan = "2">
+             <apex:outputPanel layout="none" rendered="{!ProjectOptions.size < 1}">
+                No Matching Projects Found
+             </apex:outputPanel>
+             <apex:outputPanel layout="none" rendered="{!ProjectOptions.size > 0}">
+                <apex:selectList id="projectChoice" value="{!selectedProjectId}" size="1">
+                  <apex:selectOptions value="{!ProjectOptions}"/>
+                </apex:selectList>
+             </apex:outputPanel>
+            </td>
+          </tr>
+       </apex:outputPanel>
+        <tr>
+          <td/>
+          <td colspan="3">
+            <br/>
+            <apex:actionFunction name="paraFunction" action="{!chooseProject}" reRender="find" status="SaveStatus">
+              <apex:param assignTo="{!selectedProjectId}" value="{!selectedProjectId}" name="selectedProjectId"/>
+            </apex:actionFunction>
+            <apex:outputPanel layout="none" rendered="{!ProjectOptions.size > 0}">
+              <input type="button" class="btn button" value="Associate Project" onclick="doChoose('{!$Component.projectChoice}');"/>
+              <span> or </span>
+            </apex:outputPanel>
+            <apex:commandButton value="Cancel" action="{!cancel}" styleClass="button"/>
+          </td>
+        </tr>
+        <tr>
+          <td/>
+          <td colspan="2">
+            <a style="color:black;text-decoration: none">* Required to associate project.</a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" align="center">
+            <hr/>
+            <a style="color:gray;text-decoration: none">Copyright &#169; 2013 LiquidPlanner Inc. All rights reserved.</a>
+            <a style="color:#0087d9" href="https://www.liquidplanner.com/privacy/">Privacy Policy.</a>
+          </td>
+        </tr>
+      </table>
+    </apex:outputPanel>
+
+  </apex:form>
+  <script type="text/javascript">
+
+    function init(){
+      var message = $(jQuery('input[id$=messageText]')).val();
+      if(message != ''){
+          alert(message);
+      }
+    }
+
+    function doChoose(date) {
+      var projectId = document.getElementById(date).value;
+      if (projectId == undefined || projectId == ''){
+        $('[id$=projectChoice]').after('<label for="j_id0:theForm:projectChoice" generated="true" class="error">This field is required.</label>');
+      } else {
+        paraFunction(projectId);
+      }
+    }
+  </script>
+</apex:page>

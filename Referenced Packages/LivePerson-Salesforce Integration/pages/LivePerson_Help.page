@@ -1,0 +1,61 @@
+<apex:page showheader="false" renderas="PDF">
+
+<apex:stylesheet value="{!$Resource.LP__LivePerson_CSS}" /> 
+
+<div class="header">
+    <img src="{!$Resource.LivePerson_Logo}"/>
+ <br/><br/>
+</div>
+
+<div class="text">
+<h2 class="exchangeTitle">Help - Searching and Creating records</h2>
+<div class="innerTxt">
+
+            <h4>Searching for records in Salesforce</h4>
+           By default, the search is performed on the Salesforce object that was specified in LivePerson Alert. Open the Search In combo box to run the search on any other object or to search on All the objects at once. If the All option is selected, the search results are displayed for every object separately.
+            <br/><br/>
+           You can apply different search methods to find records in Salesforce that match the information contained in LivePerson Form.
+            <br/><br/>
+The Search By Keywords allows defining values for the search using free text. By default, the search is performed on the values of all the fields in the form that were marked as Searchable in the Mapping table of the given object with OR relationship between them. You can customize the search using the following:
+<br/><br/>
+<ul>
+<li> Use operators such as AND, OR, and AND NOT to refine your search.</li>
+
+<li> Put quotation marks around multiple keywords to perform an exact phrase match, for example, "call john smith".</li>
+
+<li> Add an asterisk to the end of your keyword to search for items that start with the word, for example, acme*.</li>
+</ul>
+Revert to the default keywords values via the Information tooltip next to the Search button.
+<br/><br/>
+The Advanced Search is aimed at defining a structured search in Salesforce, i.e., searching for matching values in specific Salesforce fields of the searched object. You can apply any operator required for the search and customize the search such that it contains several search criteria with AND relationship between them.
+<br/>
+Note the Advanced Search is not available for searches performed on ALL objects at once.      
+<br/><br/>
+
+            <h4>Creating new records</h4>
+            When the Search operation does not yield any satisfactory match, the user can create a new record 
+            in Salesforce based on the current Liveperson interaction.
+            <br/><br/>
+            The Integration system will create the record in the desired object and will pre populate it with 
+            the values included in the Liveperson Alert Form. By default the Liveperson chat in question will be 
+            logged to the new record.
+            
+            <h4>Logging a Chat</h4>
+            The Integration allows the user to log a chat to an existing Salesforce record or to a record created
+             through the integration process. 
+            <br/><br/>
+            Hit the Log a Chat link next to the desired record. That will create a new Chat Activity to this record
+             in the History or Open Activities related list (based on the Settings definition).
+             <br/><br/>
+            From the Chat Activity hit the View the Chat link to open a Liveperson session from within Salesforce
+             with the basic Chat Information parameters and the full Chat Transcript. See Authentication Settings
+              for configuring login to Liveperson from Salesforce.
+              <br/><br/>
+            The Store button saves the transcript directly into Salesforce database so it’s available in Salesforce
+             without the need to login in the future to Liveperson. The chat Information and Transcript are then 
+             accessible through a dedicated Chat Transcript related list for the record in question.  
+
+
+</div>
+</div>
+</apex:page>

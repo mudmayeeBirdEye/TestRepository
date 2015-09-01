@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>app_button_continue</fullName>
+        <categories>app,button</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Caption for continue button at bottom of intro window</shortDescription>
+        <value>Continue to Smartsheet</value>
+    </labels>
+    <labels>
+        <fullName>button_cancel</fullName>
+        <categories>button,cancel</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>General cancel button caption</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>button_delete_link</fullName>
+        <categories>button,delete</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>General purpose delete button caption</shortDescription>
+        <value>Delete Link</value>
+    </labels>
+    <labels>
+        <fullName>button_edit</fullName>
+        <categories>button,edit</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>General purpose edit button/link caption</shortDescription>
+        <value>Edit</value>
+    </labels>
+    <labels>
+        <fullName>delete_heading_main</fullName>
+        <categories>delete,heading</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Heading for main area on Smartsheet delete page</shortDescription>
+        <value>Delete Smartsheet Link</value>
+    </labels>
+    <labels>
+        <fullName>delete_message_instructions</fullName>
+        <categories>delete,message</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Instructional text at the top of the delete sheet link page</shortDescription>
+        <value>This will delete the link to this Smartsheet from the item listed above.  You must launch Smartsheet to delete the sheet from the system.</value>
+    </labels>
+    <labels>
+        <fullName>delete_title</fullName>
+        <categories>delete,title</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Delete page title</shortDescription>
+        <value>Smartsheet Delete</value>
+    </labels>
+    <labels>
+        <fullName>edit_button_save</fullName>
+        <categories>edit,button,save</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Save button caption when saving a new or existing Smartsheet link</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>edit_button_save_createSheet</fullName>
+        <categories>edit,button,save</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Save button caption when creating a new Smartsheet and linking to it</shortDescription>
+        <value>Create New Smartsheet</value>
+    </labels>
+    <labels>
+        <fullName>edit_caption_newSheet</fullName>
+        <categories>edit,caption,new</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Caption used for sheet name in heading for a new sheet</shortDescription>
+        <value>New Smartsheet</value>
+    </labels>
+    <labels>
+        <fullName>edit_field_smartsheetType</fullName>
+        <categories>edit,field</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Field caption for Smartsheet Type (creating new sheet)</shortDescription>
+        <value>Smartsheet Type</value>
+    </labels>
+    <labels>
+        <fullName>edit_heading_main</fullName>
+        <categories>edit,heading</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Heading for main area on Smartsheet edit page</shortDescription>
+        <value>Smartsheet Edit</value>
+    </labels>
+    <labels>
+        <fullName>edit_message_renameWarning</fullName>
+        <categories>edit,message,rename</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Popup message that appears upon save if a name change has been made</shortDescription>
+        <value>This will change the name of this link but not the sheet name in Smartsheet.</value>
+    </labels>
+    <labels>
+        <fullName>edit_subheading_information</fullName>
+        <categories>edit,subheading</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Subheading for edit/create page field data</shortDescription>
+        <value>Smartsheet Information</value>
+    </labels>
+    <labels>
+        <fullName>edit_title</fullName>
+        <categories>edit,title</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Edit page title</shortDescription>
+        <value>Smartsheet Edit</value>
+    </labels>
+    <labels>
+        <fullName>link_heading</fullName>
+        <categories>link,heading</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Page heading when linking to an existing sheet</shortDescription>
+        <value>Link Existing Sheet or Report</value>
+    </labels>
+    <labels>
+        <fullName>link_heading_withRelatedName</fullName>
+        <categories>link,heading,args</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Heading used for linking an existing sheet, with name of  related object</shortDescription>
+        <value>Link Smartsheet to {0}: {1}</value>
+    </labels>
+    <labels>
+        <fullName>link_message_instructions</fullName>
+        <categories>link,message</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Instructional text at the top of the link existing sheet page</shortDescription>
+        <value>Please select the Smartsheet you want to link.</value>
+    </labels>
+    <labels>
+        <fullName>link_message_no_parent_list</fullName>
+        <categories>link,message</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error displayed when the user clicks &quot;Link Existing Smartsheet&quot; without a parent</shortDescription>
+        <value>Smartsheets can only be linked to accounts, contacts, opportunities, or cases.</value>
+    </labels>
+    <labels>
+        <fullName>link_progress_loading</fullName>
+        <categories>link,progress</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Progress message displayed when loading list of existing sheets</shortDescription>
+        <value>Loading Smartsheets...</value>
+    </labels>
+    <labels>
+        <fullName>link_title</fullName>
+        <categories>link,title</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Link page title</shortDescription>
+        <value>Link Smartsheet</value>
+    </labels>
+    <labels>
+        <fullName>message_error_maintenance</fullName>
+        <categories>message,error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error displayed when the Smartsheet service is down for maintenance</shortDescription>
+        <value>Smartsheet.com is currently offline for system maintenance. Please check back again shortly.</value>
+    </labels>
+    <labels>
+        <fullName>message_error_saveSheet</fullName>
+        <categories>message,error,edit,link</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error displayed when a new sheet cannot be saved</shortDescription>
+        <value>There was an error saving your new Smartsheet link.</value>
+    </labels>
+    <labels>
+        <fullName>message_error_service</fullName>
+        <categories>message,error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error displayed when there is a communication error with Smartsheet</shortDescription>
+        <value>There was an error communicating with the Smartsheet service. Please try again later.</value>
+    </labels>
+    <labels>
+        <fullName>message_noSheets</fullName>
+        <categories>message,link</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Message displayed when there are no existing sheets to link</shortDescription>
+        <value>You do not have any Smartsheets to link.</value>
+    </labels>
+    <labels>
+        <fullName>message_no_link_record</fullName>
+        <categories>message,error,link,edit</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error displayed when a sheet link has no related objects</shortDescription>
+        <value>No related object has been specified to link to this Smartsheet.</value>
+    </labels>
+    <labels>
+        <fullName>message_no_reference_field</fullName>
+        <categories>message,error,link,edit</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error displayed when an appropriate related object field is not found</shortDescription>
+        <value>Cannot find a reference field of type {0} on Smartsheet__c.</value>
+    </labels>
+    <labels>
+        <fullName>message_sheet_key_required</fullName>
+        <categories>message,api,error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error displayed when a sheet link is saved without a smartsheet key</shortDescription>
+        <value>Smartsheet Key is required</value>
+    </labels>
+    <labels>
+        <fullName>message_sheet_name_required</fullName>
+        <categories>message,error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error displayed from API when no name passed to createSheet</shortDescription>
+        <value>Smartsheet Name is required.</value>
+    </labels>
+    <labels>
+        <fullName>message_sheet_type_required</fullName>
+        <categories>message,api,error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error displayed from API when no type passed to createSheet</shortDescription>
+        <value>Smartsheet Type is required.</value>
+    </labels>
+    <labels>
+        <fullName>view_button_openSmartsheet</fullName>
+        <categories>view,button</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Caption for open smartsheet button on view page</shortDescription>
+        <value>Open Smartsheet</value>
+    </labels>
+    <labels>
+        <fullName>view_link_openSmartsheet</fullName>
+        <categories>view,link</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Caption for open Smartsheet link in view page</shortDescription>
+        <value>Open Smartsheet</value>
+    </labels>
+    <labels>
+        <fullName>view_title</fullName>
+        <categories>view,title</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>View page title</shortDescription>
+        <value>Smartsheet</value>
+    </labels>
+</CustomLabels>

@@ -1,0 +1,58 @@
+<apex:page Controller="SystemStatusControllerSite" sidebar="false" showHeader="false" cache="false">
+ <script type="text/javascript" src="{!URLFOR($Resource.clueTip,'clueTip/jquery.js')}"></script>
+ <script type="text/javascript" src="{!URLFOR($Resource.clueTip,'clueTip/jquery.cluetip.js')}"></script>
+
+ <link rel="stylesheet" href="{!URLFOR($Resource.clueTip,'clueTip/jquery.cluetip.css')}"/>
+ <link rel="stylesheet" href="{!URLFOR($Resource.clueTip,'clueTip/systemstatus.css')}"/>
+ <style>
+    .ui-cluetip-content{
+      background-color:#FFF;
+    }
+   .cluetip-default .ui-cluetip-header{
+     background:none;
+     border:none;
+   }
+   .cluetip-default .ui-cluetip-header{
+     display:inline;
+   }
+   #cluetip{
+    color:#000;
+   }
+   </style>
+ 
+ <div class="system_status">
+    <div class="ssbg" id="ssbg">
+        <p class="sst">System Status</p>
+    
+          <apex:outputText rendered="{!isRecordFound}" escape="false" value="{!objStatus.System_Status__c}"></apex:outputText>  
+          <apex:outputText escape="false" rendered="{!!isRecordFound}">
+             <img src="{!URLFOR($Resource.System_Status,'systemstatusimage/green.gif')}"> </img>
+          </apex:outputText> 
+        <p class="iss">
+          <apex:outputText rendered="{!isPublicDescFound && isRecordFound}">
+           <!-- <a title='Public Description' class='status' href="javaScript:void(0)" rel="{!$Site.CurrentSiteUrl}systemStatusDetail?id={!objStatus.id}"
+               style="color:#095183;text-decoration:underline !important"> -->
+             <a title='Public Description' class='status' href="javaScript:void(0)" rel="p.localvisible"
+               style="color:#095183;text-decoration:underline !important">  
+              More Information
+           </a>
+            <p class='localvisible' style='display:none;'> <apex:outputText value="{!objStatus.Public_Description__c}" escape="false"></apex:outputText></p>
+            <script>
+              $(document).ready(function() {
+                $('a.status').cluetip({local: true,activation: 'hover',mouseOutClose: true,sticky: false, closePosition: 'title',arrows: true});
+              });
+           </script>
+           </apex:outputText>
+            <apex:outputText rendered="{!!isPublicDescFound || !isRecordFound}">
+               <span id="ssp">No Known Issues</span>
+             </apex:outputText>
+        </p>
+      
+    
+    </div>
+</div>
+ 
+ 
+ 
+ 
+</apex:page>

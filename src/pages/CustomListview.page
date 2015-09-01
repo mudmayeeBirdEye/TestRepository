@@ -1,0 +1,12 @@
+<!--
+<apex:page controller="CustomListview">
+    <apex:repeat value="{!Accounts}" var="a">
+        <apex:outputText value="{!a.Id}"/>
+    </apex:repeat>
+</apex:page>
+-->
+
+<apex:page >
+    <apex:enhancedList type="Account" height="300" rowsPerPage="10" id="Eugene_View" />
+    <!--<apex:enhancedList type="Account" height="300" rowsPerPage="100" id="Austin_View1" customizable="False"/>-->
+</apex:page>

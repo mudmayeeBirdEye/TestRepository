@@ -1,0 +1,635 @@
+<apex:page controller="GccSmartSearchController" docType="html-5.0">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Gcc Smart Search</title>
+        <link href="{!URLFOR($Resource.JqueryAccordion, 'JqueryAccordion/jquery-ui.css')}" type="text/css" rel="stylesheet"  media="screen" />
+        <link href="{!URLFOR($Resource.HelperResource, '/css/pageguide.min.css')}" type="text/css" rel="stylesheet"/>
+    </head>
+    <style>
+        .container{ 
+             
+            margin: 10px;
+            background: #FFF !important;
+        }
+        .round-border{
+            border-radius: 10px;
+        } 
+        .row{
+            padding-left: 15px;
+            padding-right: 10px;
+            padding-bottom: 10px;
+            padding-top: 6px;
+            margin-bottom: 5px;
+            float: left;
+            width: 100%;
+            box-sizing: border-box;
+            
+        }
+        .border{
+            border: 1px solid #A5A6A5;
+        }
+        fieldset{
+            -webkit-margin-start: -3px;
+            -webkit-margin-end: 0px;
+            -webkit-padding-before: 0px;
+            -webkit-padding-start: 0px;
+            -webkit-padding-end: 0px;
+            -webkit-padding-after: 0px;
+        }
+        .center{
+            text-align: center;
+        }
+        table label{
+            color: rgb(19, 87, 136);
+        }
+        .valueClass{
+            float: left;
+            display: block;
+            color: rgb(19, 87, 136);
+            border-bottom: 1px dotted;
+            cursor: default;
+        }
+        .tableColumns td span,.tableColumns td a{
+            color: rgb(19, 87, 136);
+        }
+        .tableHeader th  *{
+            color:rgb(23, 151, 192);
+        }
+        .margin-box > *{
+             margin-left: 0.3%;
+             margin-right: 0.3%;
+        }
+        .bottomMargin{
+            margin-bottom: 11px;
+        }
+        .bottomMargin > * > *{
+            margin-bottom: 2.5%; 
+        }
+        .blue-theme{
+            
+            box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+            -webkit-box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+            -moz-box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+        }
+        div.message{
+            margin: 0px !important;
+            font-weight: bolder;
+            font-size: 14px;
+        }
+         
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-warning {
+            color: #8a6d3b;
+            background-color: #fcf8e3;
+            border-color: #faebcc;
+        }
+        .col-12{
+            width: calc(12*(100%/12));
+            float: left;
+        }
+        .col-11{
+            width: calc(11*(100%/12));
+            float: left;
+        }
+        .col-10{
+            width: calc(10*(100%/12));
+            float: left;
+        }
+        .col-9{
+            width: calc(9*(100%/12));
+            float: left;
+        }
+        .col-8{
+            width: calc(8*(100%/12));
+            float: left;
+        }
+        .col-7{
+            width: calc(7*(100%/12));
+            float: left;
+        }
+        .col-6{
+            width: calc(6*(100%/12));
+            float: left;
+        }
+        .col-5{
+            width: calc(5*(100%/12));
+            float: left;
+        }
+        .col-4{
+            width: calc(4*(100%/12));
+            float: left;
+        }
+        .col-3{
+            width: calc(3*(100%/12));
+            float: left;
+        }
+        .col-2{
+            width: calc(2*(100%/12));
+            float: left;
+        }
+        .col-1{
+            width: calc(1*(100%/12));
+            float: left;
+        }
+        .nopadding{
+            padding-left: 0px;
+            padding-right: 0px;
+            padding-bottom: 0px;
+            padding-top: 0px;
+        }
+        .big-input{
+            height: 25px;
+            font-size: 14px;
+            font-family: monospace;
+            box-sizing: content-box;
+            font-weight: bolder;
+            
+        } 
+        .col-6 label{
+            width: 35%;
+            display: block;
+            float: left;
+        }
+        .clearClass > *{
+            clear: both;
+            
+        }
+        .gray-text{
+            color : gray;
+        }
+        h1{
+            color: rgb(80, 87, 136);
+        }
+        
+        .sky-text{
+            color:rgb(23, 151, 192);
+        }
+        .bold{
+            font-weight: bold;
+        }
+        
+        a.btn{
+            padding: 8px 11px !important;
+            text-decoration: none;
+        }
+        a.btn:hover{
+            text-decoration: none;
+        }
+        body input.btn, body input.btnDisabled, body input.btnCancel {
+            padding: 8px 11px;
+        }
+        .newTabLink{
+            cursor: pointer;
+            margin-left: 2%;
+        }
+        #tlyPageGuideMessages{
+            height: 55px !important;
+        }
+        
+    </style>
+    <script>
+        
+    </script>
+    <apex:sectionHeader title="New Case" subtitle="Search and Create"/>
+    
+    <apex:outputpanel styleClass="container" layout="block">
+        <apex:form onkeypress="return event.keyCode != 13;">
+            <apex:actionFunction name="showAccount" action="{!showAccount}" rerender="pageMainContent,noContent" status="OverlayStatus" onComplete="goToByScroll('.contentdetailsSection .row')">
+                <apex:param name="selectedAccount" value=""  assignTo="{!selectedAccount}"/>
+            </apex:actionFunction>
+            <apex:actionStatus id="OverlayStatus" onStart="showOverlay();" onStop="hideOverlay();"/>
+            <apex:outputpanel styleClass="row border round-border blue-theme searchContainer" layout="block">
+                <apex:outputpanel styleClass=" col col-12" layout="block">
+                    <div>
+                         <apex:selectRadio value="{!searchChoice}" layout="lineDirection">
+                            <apex:selectOption itemValue="accountNumber" itemLabel="Account Number"/>
+                            <apex:selectOption itemValue="phone" itemLabel="Account Mobile Number"/>
+                         </apex:selectRadio>
+                    </div> 
+                    <div class="margin-box">
+                        <apex:inputText styleClass="searchText col-3 big-input sky-text" title="Enter search term" value="{!searchValue}" />
+                        <apex:commandbutton action="{!searchAccount}" value="Search" reRender="MainContent" status="OverlayStatus"/>
+                        <apex:outputlabel value="Enter RC Account Number or Mobile Number to view the account manually." styleClass="sky-text bold"/>
+                    </div>
+                    
+                </apex:outputpanel>
+            </apex:outputpanel> 
+            <apex:outputpanel styleClass="row border round-border blue-theme paramInfoSection" layout="block">
+                <apex:outputpanel styleClass=" col col-12" layout="block">
+                   <div >
+                        <apex:outputpanel styleClass=" col col-6 bottomMargin clearClass" layout="block">
+                            <div>
+                                <apex:outputLabel value="inContact DNIS:" styleClass="sky-text bold"/>
+                                <apex:outputtext value="{!paramClass.dnis}" dir="LTR" styleClass="valueClass"></apex:outputtext>
+                            </div>
+                            <div>
+                                <apex:outputLabel value="inContact Contact Id:" styleClass="sky-text bold"/>
+                                <apex:outputtext value="{!paramClass.inContactId}" styleClass="valueClass"></apex:outputtext>
+                            </div>
+                            
+                        </apex:outputpanel>
+                        <apex:outputpanel styleClass=" col col-6 bottomMargin clearClass" layout="block">
+                           <!--These changes are requested by Deji to remove campaign information -->
+                            <div>
+                                <apex:outputLabel value="inContact SKILL:" styleClass="sky-text bold"/>
+                                <apex:outputtext value="{!paramClass.skillName}" styleClass="valueClass"></apex:outputtext>
+                            </div>
+                           <!-- <div>
+                                <apex:outputLabel value="Campaign Name:" styleClass="sky-text bold"/>
+                                <apex:outputtext value="{!paramClass.campaignName}" styleClass="valueClass"></apex:outputtext>
+                            </div>
+                            <div>
+                                <apex:outputLabel value="Campaign Description:" styleClass="sky-text bold"/>
+                                <apex:outputtext value="{!paramClass.campObj.Description}" rendered="{!!ISBlank(paramClass.campObj)}" styleClass="valueClass"></apex:outputtext>
+                            </div>-->
+                        </apex:outputpanel>
+                    </div>
+                    
+                </apex:outputpanel>
+            </apex:outputpanel>
+            <apex:outputpanel id="MainContent">
+                <apex:outputpanel id="searchResultPanel">
+                    <apex:outputpanel styleClass="row border round-border blue-theme" layout="block" rendered="{!showList}">
+                            <apex:outputpanel styleClass=" col col-12 bottomMargin" layout="block">
+                                <h1>Account List</h1>
+                            </apex:outputpanel>
+                            <apex:pageBlock >
+                                    <apex:pageBlockSection columns="1" title="Accounts"  collapsible="true" >
+                                        <apex:pageBlockTable styleClass="accountTable" value="{!dataTableClassForAccount.objectsList}" var="record" headerClass="tableHeader" rowClasses="tableColumns">
+                                            
+                                            <apex:column headerValue="Select" > 
+                                                <apex:outputpanel rendered="{!record['Id'] == selectedAccount}">
+                                                    <input type="radio" value="{!record['Id']}" name="accountSelect" onClick="showAccount('{!record.Id}')" checked="checked"/>
+                                                </apex:outputpanel>
+                                                <apex:outputpanel rendered="{!record['Id'] != selectedAccount}">
+                                                    <input type="radio" value="{!record['Id']}" name="accountSelect" onClick="showAccount('{!record.Id}')"/>
+                                                </apex:outputpanel>
+                                                
+                                            </apex:column>
+                                            <apex:repeat value="{!dataTableClassForAccount.fieldList}" var="field" > 
+                                                <apex:column value="{!record[field.name]}">  
+                                                    <apex:facet name="header">
+                                                    <!--creating link to initiate shorting method -->
+                                                        <apex:commandLink value="{!field.label} {!IF(dataTableClassForAccount.sortbyField ==field.name,IF(dataTableClassForAccount.sortDirection='ASC','▲','▼'),'')}" title="click to sort!!!{!field.label}" action="{!dataTableClassForAccount.sortTable}" reRender="searchResultPanel" status="OverlayStatus">
+                                                            <apex:param name="sortfield" value="{!field.name}"  assignTo="{!dataTableClassForAccount.sortbyField}"/>
+                                                        </apex:commandLink>
+                                                    </apex:facet>
+                                                </apex:column> 
+                                            </apex:repeat>  
+                                            <apex:facet name="footer">Displaying Page # {!dataTableClassForAccount.pageNumber} of {!dataTableClassForAccount.totalPages}</apex:facet> <!--facet to display page no status -->
+                                            <!-- <apex:column value="{!acc.name}"/>
+                                            <apex:column value="{!acc.RC_Account_Status__c}"/>
+                                            <apex:column value="{!acc.RC_Brand__c}"/> 
+                                            <apex:column value="{!acc.Service_Type__c}"/>
+                                            <apex:column value="{!acc.Total_DLs__c}"/>
+                                            <apex:column value="{!acc.Total_Account_DL_s__c}"/>
+                                            <apex:column value="{!acc.RC_Tier__c}"/>  -->
+                                
+                                        </apex:pageBlockTable>  
+                                    </apex:pageBlockSection>
+                                    <apex:pageBlockButtons location="top" >
+                                        <apex:outputPanel styleClass="tablebuttonclass">
+                                            <!--buttons to create pagination -->
+                                            <apex:commandButton action="{!dataTableClassForAccount.Beginning}" title="Beginning" value="<<" disabled="{!dataTableClassForAccount.disablePrevious}" reRender="searchResultPanel" status="OverlayStatus"/>
+                                            <apex:commandButton action="{!dataTableClassForAccount.Previous}" title="Previous" value="<" disabled="{!dataTableClassForAccount.disablePrevious}" reRender="searchResultPanel" status="OverlayStatus"/>       
+                                            <apex:commandButton action="{!dataTableClassForAccount.Next}" title="Next" value=">" disabled="{!dataTableClassForAccount.disableNext}" reRender="searchResultPanel" status="OverlayStatus"/>
+                                            <apex:commandButton action="{!dataTableClassForAccount.End}" title="End" value=">>" disabled="{!dataTableClassForAccount.disableNext}" reRender="searchResultPanel" status="OverlayStatus"/>       
+                   
+                                       </apex:outputPanel>
+                                       <!--select list give an option to user to jump over desired page  -->
+                                       <label style="margin-left: 50px;">Select Page:</label>
+                                       <apex:selectList size="1" value="{!dataTableClassForAccount.showpage}" styleClass="pageChangeClass">
+                                             <apex:actionSupport event="onchange" action="{!dataTableClassForAccount.changePage}" reRender="searchResultPanel" status="OverlayStatus" />
+                                             <apex:selectOptions value="{!dataTableClassForAccount.pageOptions}" />       
+                                       </apex:selectList>
+                                        <!-- list to set user's preference of list size-->
+                                         <apex:outputLabel style="margin-left:50px">Set List Size : </apex:outputLabel>  
+                                         <apex:selectList size="1" value="{!dataTableClassForAccount.list_size}" styleClass="listSizeClass">
+                                                 <apex:actionSupport event="onchange" action="{!dataTableClassForAccount.prepareTable}"  reRender="searchResultPanel" status="OverlayStatus"/>
+                                                 <apex:selectOptions value="{!dataTableClassForAccount.sizeOptions}" />       
+                                         </apex:selectList>
+                                    </apex:pageBlockButtons>
+                                </apex:pageBlock>
+                                                    
+                </apex:outputpanel>                             
+                
+                </apex:outputpanel>
+                <apex:outputpanel id="pageMainContent" styleClass="contentdetailsSection" layout="block">
+                    <apex:outputpanel rendered="{!showDetails}">
+                            <apex:outputpanel styleClass="row nopadding" layout="block">
+                                <apex:outputpanel styleClass=" col col-12 center" layout="block" >
+                                  <apex:pageMessage summary="{!detailsClass.accountToShow.Banner_Alert__c}" severity="error" strength="3" rendered="{!!IsBlank(detailsClass.accountToShow.Banner_Alert__c)}" />
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel styleClass="row border round-border blue-theme" layout="block">
+                                <apex:outputpanel styleClass=" col col-12 center" layout="block" style="padding-top: 4px;">
+                                  <a class="btn createcasebutton" href="/setup/ui/recordtypeselect.jsp?ent=Case&save_new_url=/500/e&cas4_lkid={!detailsClass.accountToShow.Id} &00N80000004jGG9={!$CurrentPage.parameters.cid}" target="_blank">Create Case</a> 
+                                </apex:outputpanel>
+                            </apex:outputpanel>                     
+                            <apex:outputpanel styleClass="row border round-border blue-theme summerysection" layout="block">
+                                <apex:outputpanel styleClass=" col col-12 bottomMargin" layout="block">
+                                    <h1>Search Results</h1>
+                                </apex:outputpanel>
+                                <apex:outputpanel styleClass="col col-6 bottomMargin clearClass" layout="block">
+                                    <div>
+                                        <apex:outputLabel value="Total Cases (past 30 days):" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.totalCount}" styleClass="valueClass"></apex:outputtext>
+                                    </div>
+                                    <div>
+                                        <apex:outputLabel value="Open Cases:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.openCount}" styleClass="valueClass"></apex:outputtext>
+                                    </div>                          
+                                </apex:outputpanel>
+                                <apex:outputpanel styleClass="col col-6 bottomMargin clearClass" layout="block">
+                                    <div>
+                                        <apex:outputLabel value="Last CSAT(Transactional):" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.lastCsatScore}" styleClass="valueClass"></apex:outputtext>
+                                    </div>
+                                    <div>
+                                        <apex:outputLabel value="CSAT Score(Relationship):" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.csatScore}" styleClass="valueClass"></apex:outputtext>
+                                    </div>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        
+                        <apex:outputpanel styleClass="row border round-border blue-theme detailInfoSection" layout="block">
+                                <apex:outputpanel styleClass=" col col-12 bottomMargin" layout="block">
+                                    <h1>Customer Information</h1>
+                                </apex:outputpanel>
+                                <apex:outputpanel styleClass="col col-6 bottomMargin clearClass" layout="block">
+                                    <div>
+                                        <apex:outputLabel value="Account Name:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.accountToShow.name}" styleClass="valueClass"></apex:outputtext><a href="/{!detailsClass.accountToShow.Id}" class="newTabLink" target="_blank"><img alt="Click to open" src="/img/apexpages/setup/launch.jpg"/></a>
+                                    </div>
+                                    <div>
+                                        <apex:outputLabel value="User ID:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.accountToShow.RC_User_ID__c}" styleClass="valueClass"></apex:outputtext>
+                                    </div>
+                                    
+                                    <div>
+                                        <apex:outputLabel value="Partner ID:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.accountToShow.Partner_ID__c}" styleClass="valueClass"></apex:outputtext>
+                                    </div>
+                                    <div>
+                                        <apex:outputLabel value="Brand:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.accountToShow.RC_Brand__c}" styleClass="valueClass"></apex:outputtext>
+                                    </div>  
+                                    <div>
+                                        <apex:outputLabel value="Tier:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.accountToShow.RC_Tier__c}" styleClass="valueClass"></apex:outputtext>
+                                    </div>  
+                                    <div>
+                                        <apex:outputLabel value="MRR:" styleClass="sky-text bold"/>
+                                        <apex:outputText value="{!detailsClass.accountToShow.CurrencyIsoCode} {0, number, ###,###,###,###,##0.00}" styleClass="valueClass" rendered="{!!IsBlank(detailsClass.accountToShow.MRR__c)}"> 
+                                              <apex:param value="{!detailsClass.accountToShow.MRR__c}" />
+                                        </apex:outputText>
+                                       <!--  <apex:outputtext value="{!detailsClass.accountToShow.MRR__c}" styleClass="valueClass"></apex:outputtext> -->
+                                    </div>
+                                    <div>
+                                        <apex:outputLabel value="Parent Child Status:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.parentChildValue}" styleClass="valueClass"></apex:outputtext>
+                                    </div>  
+                                    <div>
+                                        <apex:outputLabel value="CCExpireDate:" styleClass="sky-text bold"/>
+                                        <apex:outputText value="{0,date,MM'/'dd'/'yyyy}" styleClass="valueClass">
+                                            <apex:param value="{!detailsClass.accountToShow.CCExpireDate__c}" /> 
+                                        </apex:outputText>
+                                        <!-- <apex:outputtext value="{!detailsClass.accountToShow.CCExpireDate__c}" styleClass="valueClass"></apex:outputtext> -->
+                                    </div>                              
+                                </apex:outputpanel>
+                                <apex:outputpanel styleClass="col col-6 bottomMargin clearClass" layout="block">
+                                    <div style="height: 50px;">
+                                        <apex:outputLabel value="Billing Address:" styleClass="sky-text bold"/>
+                                        <div class="valueClass">
+                                            {!detailsClass.accountToShow.BillingStreet}<br/>
+                                            {!detailsClass.accountToShow.BillingCity}<apex:outputtext value="," rendered="{!!IsBlank(detailsClass.accountToShow.BillingState)}"/>{!detailsClass.accountToShow.BillingState}<br/>
+                                            {!detailsClass.accountToShow.BillingCountry}<apex:outputtext value="," rendered="{!!IsBlank(detailsClass.accountToShow.BillingPostalCode)}"/>{!detailsClass.accountToShow.BillingPostalCode}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <apex:outputLabel value="Total DL's:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.accountToShow.Total_DLs__c}" styleClass="valueClass"></apex:outputtext>
+                                    </div>
+                                    
+                                    <div>
+                                        <apex:outputLabel value="Total Account DL's:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.accountToShow.Total_Account_DL_s__c}" styleClass="valueClass"></apex:outputtext>
+                                    </div>
+                                    <div>
+                                        <apex:outputLabel value="Red Account Status:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.accountToShow.Red_Account_Status__c}" styleClass="valueClass"></apex:outputtext>
+                                    </div>
+                                    <div>
+                                        <apex:outputLabel value="Technical Account Manager:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!detailsClass.accountToShow.Technical_Account_Manager__r.Name}" styleClass="valueClass"></apex:outputtext><apex:outputpanel rendered="{!!IsBlank(detailsClass.accountToShow.Technical_Account_Manager__c)}"><a href="/{!detailsClass.accountToShow.Technical_Account_Manager__c}" class="newTabLink" target="_blank"><img alt="Click to open" src="/img/apexpages/setup/launch.jpg"/></a></apex:outputpanel>
+                                    </div>
+                                    <div> 
+                                        <apex:outputLabel value="VIP Account Indicator:" styleClass="sky-text bold"/>
+                                        <apex:outputtext value="{!IF(!IsBlank(detailsClass.accountToShow.VIP_Account_Indicator__c),'Yes','No')}" styleClass="valueClass"></apex:outputtext>
+                                    </div>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel styleClass="row border round-border blue-theme recentCases" layout="block">
+                                    <apex:outputpanel styleClass=" col col-12 bottomMargin" layout="block">
+                                        <h1>Last 5 Cases</h1>
+                                    </apex:outputpanel>
+                                    <apex:outputpanel styleClass=" col col-12 bottomMargin" layout="block" rendered="{!detailsClass.lastFiveCaseList.size > 0}">
+                                        <apex:pageBlock >
+                                            <apex:pageBlockSection columns="1"> 
+                                                <apex:pageBlockTable value="{!detailsClass.lastFiveCaseList}" var="recentCases" headerClass="tableHeader" rowClasses="tableColumns">
+                                                    <apex:column headerValue="Case Number"><a href="/{!recentCases.Id}" target="_blank">{!recentCases.CaseNumber}</a></apex:column>
+                                                    <apex:column value="{!recentCases.Subject}"/>
+                                                    <apex:column value="{!recentCases.Status}"/>
+                                                    <apex:column value="{!recentCases.Support_Disposition_Level_3__c}"/>
+                                                    <apex:column value="{!recentCases.CreatedDate}"/>
+                                                    <apex:column value="{!recentCases.RecordTypeId}"/> 
+                                        
+                                                </apex:pageBlockTable>  
+                                            </apex:pageBlockSection>
+                                        </apex:pageBlock>
+                                    </apex:outputpanel>
+                                    <apex:outputpanel styleClass=" col col-12 bottomMargin" layout="block" rendered="{!detailsClass.lastFiveCaseList.size == 0}">
+                                        No Cases !!
+                                    </apex:outputpanel>
+                            </apex:outputpanel> 
+                            <apex:outputpanel styleClass="row border round-border blue-theme allOpenCases" layout="block" id="openCaseList">
+                                    <apex:outputpanel styleClass=" col col-12 bottomMargin" layout="block">
+                                        <h1>Open Cases</h1>
+                                    </apex:outputpanel>
+                                    <apex:outputpanel styleClass=" col col-12 bottomMargin" layout="block" rendered="{!detailsClass.dataTableClassForOpenCases.objectsList.size > 0}">
+                                        <apex:pageBlock >
+                                            <apex:pageBlockSection columns="1" title="Open Cases"  collapsible="true">
+                                                <apex:pageBlockTable value="{!detailsClass.dataTableClassForOpenCases.objectsList}" var="record" headerClass="tableHeader" rowClasses="tableColumns">
+                                                    <apex:column headerValue="Case Number"><a href="/{!record.Id}" target="_blank">{!record['CaseNumber']}</a></apex:column>
+                                                    <apex:repeat value="{!detailsClass.dataTableClassForOpenCases.fieldList}" var="field" > 
+                                                        <apex:column value="{!record[field.name]}" rendered="{!field.name != 'CaseNumber'}">
+                                                            <apex:facet name="header">
+                                                            <!--creating link to initiate shorting method -->
+                                                                <apex:commandLink value="{!field.label} {!IF(detailsClass.dataTableClassForOpenCases.sortbyField ==field.name,IF(detailsClass.dataTableClassForOpenCases.sortDirection='ASC','▲','▼'),'')}" title="click to sort!!!{!field.label}" action="{!detailsClass.dataTableClassForOpenCases.sortTable}" reRender="openCaseList" status="OverlayStatus">
+                                                                    <apex:param name="sortfield" value="{!field.name}"  assignTo="{!detailsClass.dataTableClassForOpenCases.sortbyField}"/>
+                                                                </apex:commandLink>
+                                                            </apex:facet>
+                                                        </apex:column> 
+                                                    </apex:repeat>  
+                                                    <apex:facet name="footer">Displaying Page # {!detailsClass.dataTableClassForOpenCases.pageNumber} of {!detailsClass.dataTableClassForOpenCases.totalPages}</apex:facet> <!--facet to display page no status -->
+                                                    <!-- <apex:column value="{!openCases.Subject}"/>
+                                                    <apex:column value="{!openCases.Support_Disposition_Level_3__c}"/>
+                                                    <apex:column value="{!openCases.CreatedDate}"/>
+                                                    <apex:column value="{!openCases.RecordTypeId}"/>  -->
+                                        
+                                                </apex:pageBlockTable>  
+                                            </apex:pageBlockSection>
+                                            <apex:pageBlockButtons location="top">
+                                                <apex:outputPanel >
+                                                    <!--buttons to create pagination -->
+                                                    <apex:commandButton action="{!detailsClass.dataTableClassForOpenCases.Beginning}" title="Beginning" value="<<" disabled="{!detailsClass.dataTableClassForOpenCases.disablePrevious}" reRender="openCaseList" status="OverlayStatus"/>
+                                                    <apex:commandButton action="{!detailsClass.dataTableClassForOpenCases.Previous}" title="Previous" value="<" disabled="{!detailsClass.dataTableClassForOpenCases.disablePrevious}" reRender="openCaseList" status="OverlayStatus"/>       
+                                                    <apex:commandButton action="{!detailsClass.dataTableClassForOpenCases.Next}" title="Next" value=">" disabled="{!detailsClass.dataTableClassForOpenCases.disableNext}" reRender="openCaseList" status="OverlayStatus"/>
+                                                    <apex:commandButton action="{!detailsClass.dataTableClassForOpenCases.End}" title="End" value=">>" disabled="{!detailsClass.dataTableClassForOpenCases.disableNext}" reRender="openCaseList" status="OverlayStatus"/>       
+                           
+                                               </apex:outputPanel>
+                                               <!--select list give an option to user to jump over desired page  -->
+                                               <label style="margin-left: 50px;">Select Page:</label>
+                                               <apex:selectList size="1" value="{!detailsClass.dataTableClassForOpenCases.showpage}" >
+                                                     <apex:actionSupport event="onchange" action="{!detailsClass.dataTableClassForOpenCases.changePage}" reRender="openCaseList" status="OverlayStatus" />
+                                                     <apex:selectOptions value="{!detailsClass.dataTableClassForOpenCases.pageOptions}" />       
+                                               </apex:selectList>
+                                                <!-- list to set user's preference of list size-->
+                                                 <apex:outputLabel style="margin-left:50px">Set List Size : </apex:outputLabel>  
+                                                 <apex:selectList size="1" value="{!detailsClass.dataTableClassForOpenCases.list_size}" >
+                                                         <apex:actionSupport event="onchange" action="{!detailsClass.dataTableClassForOpenCases.prepareTable}"  reRender="openCaseList" status="OverlayStatus"/>
+                                                         <apex:selectOptions value="{!detailsClass.dataTableClassForOpenCases.sizeOptions}" />       
+                                                 </apex:selectList>
+                                            </apex:pageBlockButtons>
+                                        </apex:pageBlock>
+                                    </apex:outputpanel>
+                                    <apex:outputpanel styleClass=" col col-12 bottomMargin" layout="block" rendered="{!detailsClass.dataTableClassForOpenCases.objectsList.size == 0}">
+                                        No Open Cases !!
+                                    </apex:outputpanel>
+                            </apex:outputpanel>                                     
+                        
+                        </apex:outputpanel>
+                </apex:outputpanel>
+                <apex:outputpanel id="noContent">
+                    <apex:outputpanel rendered="{!showNoAccount }">
+                            <apex:outputpanel styleClass="row nopadding" layout="block">
+                                <apex:outputpanel styleClass=" col col-12 center" layout="block" >
+                                  <apex:pageMessage summary="{!errorMsg}" severity="error" strength="3"  />
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                    </apex:outputpanel> 
+                </apex:outputpanel>         
+            </apex:outputpanel>
+        </apex:form>    
+    </apex:outputpanel>
+    <ul id="tlyPageGuide" data-tourtitle="Help on click!">
+      <li class="tlypageguide_left" data-tourtarget=".searchContainer">
+        <div>
+          User can select the search choice from checkbox and should provide search text to search the accounts !!
+        </div>
+      </li>
+      <li class="tlypageguide_left" data-tourtarget=".paramInfoSection">
+        <div>
+          User will see the inContact information and campaign related information in this section!!
+        </div>
+      </li>
+      <li class="tlypageguide_left" data-tourtarget=".accountTable">
+        <div>
+          This section shows the results of accounts for user entered search text !
+        </div>
+      </li>
+      <li class="tlypageguide_left" data-tourtarget=".tablebuttonclass">
+        <div>
+          User can change the page from these buttons to move from one page to another.
+        </div>
+      </li>
+      <li class="tlypageguide_left" data-tourtarget=".pageChangeClass">
+        <div>
+          User can jump directly to a page available in this list!
+        </div>
+      </li>
+      <li class="tlypageguide_left" data-tourtarget=".listSizeClass">
+        <div>
+          User can change the number of records in the result table!
+        </div>
+      </li> 
+      <li class="tlypageguide_left" data-tourtarget=".createcasebutton">
+        <div>
+          User can create a new case which will be related to selected account!
+        </div>
+      </li> 
+      <li class="tlypageguide_left" data-tourtarget=".summerysection">
+        <div>
+          This section displays summary information about account related cases and surveys!
+        </div>
+      </li> 
+      <li class="tlypageguide_left" data-tourtarget=".detailInfoSection">
+        <div>
+          This section displays detail information about user selected account!
+        </div>
+      </li> 
+      <li class="tlypageguide_left" data-tourtarget=".recentCases">
+        <div>
+          This section displays most recent 5 cases of this account!
+        </div>
+      </li>
+      <li class="tlypageguide_left" data-tourtarget=".allOpenCases">
+        <div>
+          This section displays all open cases of this account!
+        </div>
+      </li>      
+    </ul>
+   
+    <apex:includeScript value="{!URLFOR($Resource.HelperResource, '/js/jquery.1.11.1.js')}"/>
+        <script src="{!URLFOR($Resource.JqueryAccordion, 'JqueryAccordion/jquery-ui.js')}"></script>
+        <apex:includeScript value="{!URLFOR($Resource.HelperResource, '/js/jquery.blockUI.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.HelperResource, '/js/pageguide.min.js')}"/>
+        <script>
+             var __sfdcSessionId = '{!GETSESSIONID()}';
+            showOverlay = function(){
+                $.blockUI({ css: { 
+                    border: 'none', 
+                    padding: '15px', 
+                    backgroundColor: '#000', 
+                    '-webkit-border-radius': '10px', 
+                    '-moz-border-radius': '10px', 
+                    opacity: .5, 
+                    color: '#fff' 
+                    }});
+            }
+            showOverlay();
+            hideOverlay = function(){
+                $.unblockUI();
+            }
+            goToByScroll = function(id){
+                  $('html,body').animate({
+                    scrollTop: $(id).offset().top},
+                  'slow');
+            }
+            $(document).ready(function(){
+                $('.searchText').on('keypress',function(e){
+                    var code = (e.keyCode ? e.keyCode : e.which);
+                    if (code == 13) {
+                        $('.searchText ~ input.btn').trigger('click');
+                    }
+                    
+                });
+                tl.pg.init();
+            });   
+            $(window).load(function(){
+                        
+                  hideOverlay();
+            });  
+            $( window ).unload(function() {
+              showOverlay();
+            });       
+        </script>
+        
+</apex:page>

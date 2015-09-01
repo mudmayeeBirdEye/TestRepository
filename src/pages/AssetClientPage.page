@@ -1,0 +1,5 @@
+<!-- 
+	this page use for override the edit funtionality for Asset Object, make IT Manager field balk it case of EDIT ONLY
+ -->
+<apex:page standardController="Asset__c" extensions="AssetController" action="{!callDispatcher}">
+</apex:page>

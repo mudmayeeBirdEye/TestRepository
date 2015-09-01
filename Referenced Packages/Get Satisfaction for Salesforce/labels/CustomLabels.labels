@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Enter_Credentials</fullName>
+        <categories>GetSat</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Enter Credentials</shortDescription>
+        <value>Click here to enter or update your credentials.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Message</fullName>
+        <categories>GetSat</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Message</shortDescription>
+        <value>Your reply has been saved but not posted to Get Satisfaction.  Please confirm that you have entered a valid Get Satisfaction username and password.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Message_Case</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Message Case</shortDescription>
+        <value>There was some problem creating case. Please try after some time.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Message_Style</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Message Style</shortDescription>
+        <value>Status cannot be updated when style is</value>
+    </labels>
+    <labels>
+        <fullName>Error_Message_Topic</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Message Topic</shortDescription>
+        <value>Your Topic cannot be saved to Get Satisfaction.
+Please try after some time.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Message_UpdateSatus</fullName>
+        <categories>GetSat</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Message_UpdateSatus</shortDescription>
+        <value>The topic status update has not posted to Get Satisfaction.  Please confirm that you have entered a valid Get Satisfaction username and password and that you are designated as a moderator of this community</value>
+    </labels>
+    <labels>
+        <fullName>Error_Message_for_CompanyId</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Message for CompanyId</shortDescription>
+        <value>Company Id cannot be duplicate</value>
+    </labels>
+    <labels>
+        <fullName>ErrorforTopic</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ErrorforTopic</shortDescription>
+        <value>You can not select more than 10 topics.</value>
+    </labels>
+    <labels>
+        <fullName>No_record_found</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>No record found</shortDescription>
+        <value>No record found</value>
+    </labels>
+    <labels>
+        <fullName>Ok</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Ok</shortDescription>
+        <value>OK</value>
+    </labels>
+    <labels>
+        <fullName>Status</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Status</shortDescription>
+        <value>Status</value>
+    </labels>
+    <labels>
+        <fullName>Success_Message</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Success Message</shortDescription>
+        <value>Reply posted successfully to Get Satisfaction using user&apos;s credentials.</value>
+    </labels>
+    <labels>
+        <fullName>Success_Message_config</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Success Message config</shortDescription>
+        <value>Record has been saved successfully .</value>
+    </labels>
+    <labels>
+        <fullName>TopicCreate</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TopicCreate</shortDescription>
+        <value>Please create Topic for the Case</value>
+    </labels>
+    <labels>
+        <fullName>Topic_Error</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Topic Error</shortDescription>
+        <value>Your Topic cannot be created.
+Please try after some time.</value>
+    </labels>
+    <labels>
+        <fullName>Topic_Success_Message</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Topic Success Message</shortDescription>
+        <value>Topic Record has been successfully created.</value>
+    </labels>
+</CustomLabels>

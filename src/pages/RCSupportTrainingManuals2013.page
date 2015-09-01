@@ -1,0 +1,419 @@
+<apex:page controller="RCSupportController2013" showHeader="false" cache="true" expires="{!cacheMaxAge}">
+ 
+ <style>
+a.trainingVideoLink {font-size:10pt; text-decoration:underline; } 
+a.trainingVideoLink:link    { color:blue; text-decoration:underline; }
+a.trainingVideoLink:visited { color:purple; text-decoration:underline; }
+
+</style>
+
+<!-- <apex:variable var="currentKeywordVar" value="{!currentKeyword}" />
+    <apex:variable var="keywordParameterNameVar" value="{!keywordParameterName}" />
+    <apex:variable var="currentCategoryVar" value="{!currentCategory}" />
+    <apex:variable var="currentArticleTypeVar" value="{!currentArticleType}" />
+    <apex:variable var="categoryParameterNameVar" value="{!categoryParameterName}" />
+    <apex:variable var="articleTypeParameterNameVar" value="{!articleTypeParameterName}" />
+    <apex:variable var="searchUrlVar" value="{!searchUrl}" />
+    <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+    <apex:variable var="brandFilterVar" value="{!BrandFilter}" />      
+-->     
+    <apex:composition template="RCSupportController2013">
+    <apex:define name="search">  
+       
+      
+      <apex:outputPanel layout="block">
+       <span  style="margin-left:5%">
+           <a href="javascript:history.back()" style="color: #015BA7;">« Go Back </a>
+          </span>
+            <div class="tabs">
+                <div class="tabs_left"></div>
+                <div class="tabs_center">
+                    <ul class="tab_area">
+                        <li class="tab current">
+                            <div class="tab_left"></div>
+                            <p>Training</p>
+                            <div class="tab_right"></div>
+                        </li>
+                        <li class="tab">
+<!--                            <div class="tab_left"></div>
+                            <p>Videos</p>
+                            <div class="tab_right"></div>
+-->                            
+                        </li>
+                    </ul>
+                    <div class="cb"></div>
+                    <div class="tab_content">
+                        <div class="box_tab visible"><BR/>
+                            <div class="info_line video">
+                                <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How To Videos</h2><BR/>
+                            <!--<p class="subheader">Suggested Items</p>-->
+<!--                                    <p class="il_header">How To Videos</p> -->
+<!--                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/guides/officeuserguide.pdf">Office Quick Start Guide</A><BR/>
+                                <BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                          
+                                    <A target="_blank" class="trainingVideoLink" HREF="http://info.ringcentral.com/guides/userguide.pdf">Mobile User Guide</A><BR/>
+                                <BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/images/RingCentralFax_QuickStartGuide.pdf">Fax Quick Start Guide</A><BR/>
+                                                                
+                                <BR/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/interactiveguide/rc2012.html">Interactive Guide</A>
+                            </div>
+-->                                                          
+<!--TAB REMOVAL                     </div>
+                        <div class="box_tab">
+-- TAB REMOVAL>                        
+                        <BR/>
+                            <div class="info_line video">
+                                <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Videos</h2>
+                            <!--<p class="subheader">Suggested Items</p>-->
+                                   <table width="100%" cellspacing="5">
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th>General</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/rwE4-NSpZck" >Set up Do Not Disturb</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/SfdIckrczpk" >Updating your credit card information</a></td>
+                                                        </tr>
+                                                        <tr>    
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/_cN7SbDCRpc" >How to use RingOut</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th>RingCentral Call Controller</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/ceq_TrpX6DM" >Call controller Download</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/2N_Usrr2aEU" >Fax through RingCentral Softphone</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th >Company Number</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/879BlSWOSTU" >Transfer an existing number</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/0ynhyOBlU68" >Setting up your Company greeting</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/3-we9bfJhFI" >Editing your phone numbers</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/AUPYFYU8K6g" >Editing additional numbers</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                             <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th>Number Transfer</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/879BlSWOSTU" >Online Porting Process</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/WKL4qISApIE" >Manual Porting Process (Getting Started)</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/fsMW3TmlD98" >Manual Porting Process (Important Tips)</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/J6BFBFcIfJM" >Manual Porting Process (How does it work?)</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead >
+                                                        <tr><th>Auto-Receptionist</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/xcsPjWNA5c4" >Setting up custom call handling rules</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                             <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/AK8Yl244n7w" >Setting up your Company business hours</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/KGK9QijZHYU" >Setting up your incoming call handling rules</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th>RingCentral Numbers</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/AUPYFYU8K6g" >Additional Numbers (Editing)</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/3-we9bfJhFI" >Company Fax Number</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top">
+                                                <table>
+                                                    <thead>
+                                                        <tr><th >Faxing</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="70%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/DH4ONcPA00A" >Sending a fax using the Call Controller</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/2JLSiDhpkRA" >Sending a fax by email</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/e8Jy6jg3Shs" >How to use FaxOut to send a fax</a></td>
+                                                        </tr>
+                                                         <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/e8Jy6jg3Shs" >FaxOut</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/2JLSiDhpkRA" >Email to Fax</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/DH4ONcPA00A" >Fax through RingCentral Softphone</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/J6GDDfU40RA" >Fax forwarding</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th>Call Handling/ Answering Rules</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/0ynhyOBlU68" >Company Greeting</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/KGK9QijZHYU" >Incoming Calls</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/AK8Yl244n7w" >Company business hours</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/xcsPjWNA5c4" >Custom Rules (Set up)</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/TnEVPXS4yc8" >Connect Prompt</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/XT51qNYUvIA" >Ring a number only (After Hours)</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/_cN7SbDCRpc" >RingOut</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/rwE4-NSpZck" >DND (Do Not Disturb)</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/FMavaorvPb4" >Dial-by-Name Directory</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/rEGAlGbCg68" >Custom Voice Name</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                   </table>
+                        </div>
+                            <div class="info_line video">
+                                <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interactive Guide</h2>                                 
+                                   <table width="100%" cellspacing="5">
+                                      <tr>
+                                            <td valign="top">                                        
+                                                <table>
+                                                    <thead>
+                                                        <tr><th colspan="2">Interactive RingCentral online account guide - See the online portal in action with a "live" image of a RingCentral account.</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                       <tr>
+                                                            <td width="100%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/interactiveguide/rc2012.html">Click through the guide to see how easy is it to set up and manage your phone system.</A></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+<!--                                    <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th colspan="2">Call Controller for Windows</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/d-ovlO8C2wg" >Sending Fax</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/A2DJQOYiIMM" >Signing Faxes</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/B_JzTNjWs8s" >Editing Fax Cover Page</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/tzjiHMewbXU" >Adding a document to a fax from Microsoft Applications</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th colspan="2">Call Controller for MAC</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/4Hcc_uHXkf0" >Downloading Call Controller</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/HxJR-LK9ltE" >Sending Fax</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr><th colspan="2">Call Management</th></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/0L9HDHAwbPE" >Sending Inbound Calls Straight to your Mobile</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/_GHfBD5THNc" >Blocking Unwanted Calls</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/IxxrGZtGDco" >Creating a New Custom Answering Rule</a></td>
+                                                            <td width="50%"><a target="_blank" class="trainingVideoLink" href="http://youtu.be/xJnAgC0CdM4" >Creating An After Hour Answering Rule</a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" valign="top">&nbsp;</td>
+                                        </tr>
+-->                                        
+                                        
+                                    </table>
+                                    
+                                    <!-- 
+                                    <BR/><BR/><BR/><p class="il_header">All Videos</p>
+                                    <TABLE width="100%">
+                                        <TR>
+                                            <TD width="11%">&nbsp;&nbsp;&nbsp;</TD>
+                                            <TD width="89%">
+                                                <TABLE width="100%" cellspacing="6">
+                                                    <TR>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink"  HREF="http://www.ringcentral.com/support/training.html">Answering Rules Overivew - The Basics</A></TD>
+                                                        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=contacts">Viewing contacts</A></TD>
+                                                    </TR>
+                                                    <TR>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=advanced">Answering Rules Overivew - Advanced</A></TD>
+                                                        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=fax">Sending and receiving faxes</A></TD>
+                                                    </TR>
+                                                    <TR>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=config">Configuring Answering Rules</A></TD>
+                                                        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=message_notification">Getting message notifications</A></TD>
+                                                    </TR>
+                                                    <TR>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=greetings">Setting up greetings</A></TD>
+                                                        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=ringme">Using Ringme</A></TD>
+                                                    </TR>
+                                                    <TR>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=call_logs">Using the Call Log</A></TD>
+                                                        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                                                        <TD width="45%"><A target="_blank" class="trainingVideoLink" HREF="http://www.ringcentral.com/support/training.html?video=ringout">Using Ringout</A></TD>
+                                                    </TR>
+                                                </TABLE>                                                        
+                                            </TD>
+                                        </TR>
+                                    </TABLE>
+                                 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabs_right"></div>
+            </div>
+            <script>
+            (function($) {
+            $(function() {
+            
+                $('ul.tab_area').delegate('li:not(.current)', 'click', function() {
+                    $(this).addClass('current').siblings().removeClass('current')
+                        .parents('div.tabs_center').find('div.box_tab').hide().eq($(this).index()).fadeIn(0);
+                })
+            
+            })
+            })(jQuery)
+            </script>
+            
+      </apex:outputPanel>
+
+    </apex:define>
+    </apex:composition>
+      
+</apex:page>

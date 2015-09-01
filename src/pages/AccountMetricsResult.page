@@ -1,0 +1,139 @@
+<!----------------------------------------------------------------------------------------------------------------
+* Project Name..........: Account Metrics Reporting                                                              *
+* File..................: AccountMetricsResult.Page                                                              *
+* Version...............: 1.0                                                                                    *
+* Created by............: Simplion Technologies                                                                  *
+* Created Date..........: 11-09-2013                                                                             *
+* Last Modified by......: Simplion Technologies                                                                  *
+* Last Modified Date....: 11-09-2013                                                                             *
+* Description...........: This page is used for account metrics reporting                                        *
+----------------------------------------------------------------------------------------------------------------->
+
+<apex:page controller="AccountMetricsReportingController" showHeader="true" standardStylesheets="true" docType="html-5.0" cache="false" readOnly="true">
+    <apex:pageMessages />
+    <head>
+<style>
+.header {
+    font: Bold 13px Arial;
+    color: #084B8A;
+    text-decoration: underline; 
+}
+
+.result { /*padding: 10px 25px 10px 25px;*/
+}
+
+tr.headerRow {
+    border-color: white;
+}
+th.headerRow {
+    background:#1797C0 !important;
+    color:white !important;
+}
+.btn {
+    color: #084B8A !important;
+    border: 1px solid #A5A6A5 !important;
+    padding: 6px !important;
+}
+table.list tr td {
+    height:15px !important;
+}
+</style>
+    <!-- <apex:includeScript value="{!URLFOR($Resource.AssetSearch,'AssetSearch/jquery.js')}"/>
+    <link rel="stylesheet" href="{!URLFOR($Resource.DataTables,'datatable/demo_table_jui.css')}"/>
+    <link rel="stylesheet" href="{!URLFOR($Resource.DataTables,'datatable/demo_page.css')}"/>
+    <link rel="stylesheet" href="{!URLFOR($Resource.DataTables,'datatable/jquery-ui-1.7.2.custom.css')}"/>
+    <script src="{!URLFOR($Resource.DataTables,'datatable/jquery.dataTables.js')}" type="text/javascript"></script>
+    <script src="{!URLFOR($Resource.DataTables,'datatable/ColReorderWithResize.js')}" type="text/javascript"></script> 
+    <script src="{!URLFOR($Resource.DataTables,'datatable/FixedHeader.js')}" type="text/javascript"></script>
+    <script src="{!URLFOR($Resource.JQUERY_SORT_JS, 'jquery.dataTables.nightly.js')}" type="text/javascript"></script>  
+    <script>
+        $(document).ready(function(){
+            $('#myTable').dataTable( {
+                "sScrollX": "1000px",
+                "bProcessing": true,
+                "bPaginate": true
+            } );
+        });
+    </script> -->
+    
+    <!-- <script src="{!URLFOR($Resource.DataTables,'datatable/jquery.dataTables.js')}" type="text/javascript"></script>
+    <script src="{!URLFOR($Resource.DataTables,'datatable/ColReorderWithResize.js')}" type="text/javascript"></script>  -->
+    <script src="{!URLFOR($Resource.JQUERY_SORT, 'jquery-1.10.2.min.js')}"></script>
+    <script src="{!URLFOR($Resource.JQUERY_SORT, '__jquery.tablesorter.min.js')}"></script>
+    <script>
+        $_JQUERY = $.noConflict();
+        $_JQUERY(document).ready(function(){
+            $_JQUERY("#myTable").tablesorter();
+        });
+    </script> 
+    </head>
+    <body>
+        <apex:sectionHeader title="Account Metrics" subtitle="Account Health Metrics Report Results" />
+        <apex:form >
+            <apex:pageBlock >
+                <apex:outputLabel styleClass="header" value="Total record(s) found: {!mainResult.size}" />
+                <!-- <div class="wrapper1" style="overflow-x: auto;height: 20px;overflow-y:hidden;">
+                    <div class="div1" style="width: 1000px; "><table id="topcontent"><tr><td>&nbsp;</td></tr></table></div>
+                </div> -->
+                <div class="wrapper2" style="overflow-x: auto;overflow-y:hidden;">
+                    <apex:pageblockbuttons style="text-align: center;">
+                        <apex:commandbutton value="Back" action="{!backMain}" />
+                        <apex:commandbutton value="Export to CSV" action="{!exportToCSV}" rendered="{!IF(mainResult.size >0, true, false)}"/>
+                        <apex:commandbutton value="Export to Excel" action="{!exportToExcel}" rendered="{!IF(mainResult.size >0, true, false)}"/>
+                    </apex:pageblockbuttons>
+                    <apex:outputPanel >
+                        <div style="width: 1000px; " class="pbBody">
+                        <!--<apex:repeat value="{!mainResult}" var="thisResult" id="dataList">
+                                <apex:pageblocktable value="{!queryResult}" var="thisField" id="headerList" >
+                                    <apex:column >{!thisResult[thisField.API_Name__c]}"</apex:column>
+                                </apex:pageblocktable>
+                            </apex:repeat>-->
+                            <table cellspacing="0px" cellpadding="10px" frame="border" rules="rows" align="center" class="list tablesorter display" id="myTable" >
+                                <thead class="rich-table-thead">
+                                    <tr class="headerRow ">
+                                        <!-- <th class="headerRow " style="height: 25px;text-decoration: none;cursor:pointer !important;" scope="col">
+                                            <apex:outputLabel value="Account" style="cursor:inherit !important;"/>
+                                        </th> -->
+                                        <th class="headerRow " style="height: 25px;text-decoration: none;cursor:pointer !important;" scope="col">
+                                            <apex:outputLabel value="Account Name" style="cursor:inherit !important;"/>
+                                        </th>
+                                        <apex:repeat value="{!queryResult}" var="thisField" id="headerList">
+                                            <th class="headerRow " style="height: 25px;text-decoration: none;cursor:pointer !important;" scope="col">
+                                                <apex:outputLabel value="{!thisField.Name}" style="cursor:inherit !important;"/>
+                                            </th>
+                                        </apex:repeat>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <apex:variable var="index" value="1" />
+                                    <apex:repeat value="{!mainResult}" var="thisResult" id="dataList">
+                                        <tr class="{!IF(MOD(VALUE(index), 2) == 0, 'dataRow even', 'dataRow odd')}">
+                                            <td class="dataCell  " >
+                                                <a href="/{!thisResult['Account_ID__c']}">{!thisResult['Account_ID__r.Name']}</a>
+                                            </td>
+                                            <apex:repeat value="{!queryResult}" var="thisField" id="headerList">
+                                                <td class="dataCell  " >
+                                                    <apex:outputLabel value="{!thisResult[thisField.API_Name__c]}" rendered="{!IF(thisField.Type__c != 'Number' && thisField.Type__c != 'Currency' && thisField.Type__c != 'Boolean' && thisField.Type__c != 'Checkbox' && thisField.Type__c != 'Date/Time' && thisField.Type__c != 'Percent',true,false)}"/>
+                                                    <!-- <apex:outputLabel value="{!thisResult[thisField.API_Name__c]}" rendered="{!IF(thisField.Type__c != 'Number' && thisField.Type__c != 'Currency' && thisField.Type__c != 'Percent' && thisField.Type__c != 'Checkbox',true,false)}"/> -->
+                                                    <apex:outputText value="{!FLOOR(thisResult[thisField.API_Name__c])}" rendered="{!IF(thisField.Type__c == 'Number',true,false)}"/>
+                                                    <apex:outputText value="Yes" rendered="{!IF((thisField.Type__c == 'Boolean' || thisField.Type__c == 'Checkbox') && (thisResult[thisField.API_Name__c] == true || (thisField.Suggested_Values__c == '1,0' && (!ISBLANK(thisResult[thisField.API_Name__c]) && FLOOR(thisResult[thisField.API_Name__c]) == 1))),true,false)}"/>
+                                                    <apex:outputText value="No" rendered="{!IF((thisField.Type__c == 'Boolean' || thisField.Type__c == 'Checkbox') && (thisResult[thisField.API_Name__c] == false || (thisField.Suggested_Values__c == '1,0' && (ISBLANK(thisResult[thisField.API_Name__c]) || FLOOR(thisResult[thisField.API_Name__c]) == 0))),true,false)}"/>
+                                                    <apex:outputText value="{0,date,MM'/'dd'/'yyyy}" rendered="{!IF(thisField.Type__c == 'Date/Time',true,false)}">
+                                                        <apex:param value="{!thisResult[thisField.API_Name__c]}" />
+                                                    </apex:outputText>
+                                                    <apex:outputText value="{!thisResult[thisField.API_Name__c]*100} %" rendered="{!IF((thisField.Type__c == 'Percent' && (thisResult[thisField.API_Name__c] != ' ')),true,false)}"/>
+                                                    <apex:outputText value="{!thisResult.Account_ID__r.CurrencyIsoCode} {!thisResult[thisField.API_Name__c]}" rendered="{!IF(thisField.Type__c == 'Currency' && thisResult[thisField.API_Name__c] != ' ',true,false)}"/>
+                                                </td>
+                                            </apex:repeat>
+                                        </tr>
+                                        <apex:variable var="index" value="{!VALUE(index)+1}" />
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </apex:outputPanel>
+                </div>
+            </apex:pageBlock>
+        </apex:form>
+    </body>
+</apex:page>

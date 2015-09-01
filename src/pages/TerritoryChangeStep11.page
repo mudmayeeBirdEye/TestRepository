@@ -1,0 +1,308 @@
+<apex:page sidebar="true" id="thepage" >
+<!--  controller="TerritoryChangeController"
+ <style>
+.infoM3 .msgIcon,
+.infoMedium { background-image: url(/img/msg_icons/info24.png);
+    background-position: 0px 0px;width:24px;
+    height:24px; 
+    }
+    
+ .dataCol1 {
+    padding-top: 2px;
+    padding-right: 28px;
+    padding-bottom: 2px;
+    padding-left: 149px;
+    text-align: center;
+}   
+    
+    
+ </style>
+
+<apex:includeScript value="{!URLFOR($Resource.jquery, '/js/jquery-1.4.2.min.js')}" /> 
+
+<script>
+function confirmCancel() {
+var isCancel = confirm("Are you sure you wish to cancel?");
+if (isCancel)
+return true;
+return false;
+}
+
+var checkOnlyOne;
+$(document).ready(function() {
+checkOnlyOne = function(checkbox) {
+$("#resultDiv").find("input[type=checkbox]").removeAttr('checked');
+document.getElementById(checkbox).checked = true;
+};
+});
+
+
+</script>
+ 
+<apex:sectionHeader title="Object Selection" subtitle="Step 2 of 4"/> 
+
+
+
+<apex:form id="theForm">
+<apex:pageMessages escape="false"></apex:pageMessages>
+
+<!-- Selected User Info  -->
+
+<!--<table>
+<!--<tr><td><apex:outputText value="&#9830; {!msg}" rendered="{!msgr}" escape="false" style="background-color: #ffc;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #39F;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 2px 237px 2px 10px;"/>
+</td></tr>-->
+<!--<tr><td> 
+ <apex:outputText value="&#9830; {!err_msg}" rendered="{!err_r}" escape="false"  style="background-color:
+  #ffc; color: red;
+  margin: 10px"/>
+<!--</td></tr>
+</table>
+
+
+
+
+<apex:pageBlock title="" mode="" id="block">
+
+<apex:pageBlockButtons location="both"  >
+<apex:commandButton action="{!back1}" value="Back"/>
+    <apex:commandButton action="{!step2}" value="Filter"/>
+<!-- <apex:commandButton action="{!cancel}" value="Cancel"
+onclick="return confirmCancel()" status="status" />-->
+
+<!--</apex:pageBlockButtons>
+
+<apex:pageBlockSection title="User Selected"  rendered="{!msgr}" id="usr_info" collapsible="false" columns="1" >
+<!---- User Info ---------->
+<!--<apex:outputText value="&#9830; {!msg}" rendered="{!msgr}" escape="false" />
+    
+</apex:pageBlockSection>
+
+
+<apex:pageBlockSection title="Object Selection" id="obj_sel" collapsible="true"  >
+
+
+
+<apex:panelGroup styleClass="dataCol1">
+<apex:outputLabel >Select Object&nbsp;</apex:outputLabel>
+
+<apex:SelectList size="1" value="{!objectvalue}" rendered="true"  >
+
+<apex:selectOptions value="{!ObjectName}" />
+
+<apex:actionSupport event="onchange" action="{!listFields}" reRender="objFieldList" status="selectObject" />
+
+</apex:SelectList>
+&nbsp; 
+<apex:actionStatus id="selectObject" >
+<apex:facet name="start">
+<apex:image url="{!$Resource.TeamChanges}" />
+</apex:facet>
+</apex:actionStatus>
+<!-- <apex:actionStatus startText="Please wait..." id="selectObject" /> -->
+
+
+<!--</apex:panelGroup>
+
+
+
+
+</apex:pageBlockSection>
+
+
+
+
+<apex:pageBlockSection title="Filter By"  collapsible="true" >
+
+
+<apex:outputPanel id="objFieldList">
+
+<apex:panelGrid columns="4" cellspacing="7" >
+
+<!-- <apex:outputText value="Field" style="font-weight:bold" />
+
+<apex:outputText value="Operator" style="font-weight:bold" />
+
+<apex:outputText value="Value" style="font-weight:bold" />
+
+<apex:outputText value="" />-->
+
+<!--<apex:variable var="count" value="{!0}" />
+<apex:dataTable cellPadding="5" value="{!filters}" var="filter" id="theList" >
+
+
+<apex:column >
+<!--<apex:facet name="header">Field</apex:facet>
+<apex:selectList size="1" value="{!filter.filterName}" style="width:150px">
+<apex:actionSupport event="onchange"
+action="{!changeDisplayList}"
+rerender="{!$Component.operatorId},objFieldList" >
+<apex:param name="currentField" value="{!filter.index}" assignTo="{!currentField}"/>
+</apex:actionSupport>
+
+<!--<apex:selectOptions value="{!FilteringFieldsLists}" />
+
+</apex:selectList>
+
+
+<!--</apex:column>
+
+<apex:column >
+<apex:facet name="header">Operator</apex:facet>
+<apex:selectList size="1" value="{!filter.operator}" id="operatorId" style="width:150px">
+
+<apex:selectOptions value="{!filter.operatorList}" />
+
+</apex:selectList> 
+</apex:column>
+
+
+<apex:column >
+<apex:facet name="header">Value</apex:facet>
+<apex:inputText value="{!filter.value}" rendered="{!IF(filter.fieldType == NULL , true, false)}"  id="valueNullField1"  />
+<apex:inputText value="{!filter.value}" rendered="{!IF(filter.fieldType =='Date/Time', true, false)}"  id="valueTextField11" />
+<apex:inputText value="{!filter.value}" rendered="{!IF(filter.fieldType=='lookup' , true, false)}" id="valueTextField2" />
+
+<apex:selectList size="1" value="{!filter.value}" rendered="{!IF(filter.fieldType=='picklist' , true, false)}" style="width:150px" id="valueTextField3">
+    <apex:selectOptions value="{!filter.valueList}" /> 
+</apex:selectList>
+<apex:selectList size="1" value="{!filter.value}" rendered="{!IF(filter.fieldType=='boolean' , true, false)}" style="width:150px" id="valueTextField4">
+    <apex:selectOptions value="{!filter.valueList}" /> 
+</apex:selectList>-->
+<!-- Date Litrals -->
+<!--<apex:selectList size="1" value="{!filter.value}" rendered="{!IF(filter.fieldType=='Date/Time' , true, false)}" style="width:150px" id="valueTextField5">
+    <apex:selectOptions value="{!filter.valueList}" /> 
+</apex:selectList>-->
+
+<!--<apex:inputhidden value="{!filter.fieldType}" id="fieldtypehidden"/>
+</apex:column>
+
+
+<apex:column >
+<apex:facet name="header"></apex:facet>
+<apex:outputText value="AND" rendered="{!IF(count<filterSize-1,true,false)}" />
+
+<apex:variable var="count" value="{!count+1}" />
+</apex:column>
+
+<!--Date Format Msg-->
+<!--<apex:column >
+<apex:outputText Value=" MM/DD/YYYY" rendered="{!IF(filter.fieldType =='Date/Time',true,false)}"/>
+</apex:column>-->
+
+<!-- <apex:selectList size="1" value="{!filter.operator}">
+
+<apex:selectOptions value="{!OpreatorValues}" />
+
+</apex:selectList>
+
+
+
+<apex:inputtext />
+
+<apex:outputText value="AND" />-->
+<!--</apex:dataTable>-->
+
+
+<!--
+<apex:selectList size="1" value="{!filter.filterName}">
+
+<apex:selectOptions value="{!FilteringFieldsLists}" />
+
+</apex:selectList>
+
+
+
+<apex:selectList size="1" value="{!filter.operator}">
+
+<apex:selectOptions value="{!OpreatorValues}" />
+
+</apex:selectList>
+
+
+
+<apex:inputtext />
+
+<apex:outputText value="AND" />
+
+
+
+<apex:selectList size="1" value="{!filters[2].filterName}">
+
+<apex:selectOptions value="{!FilteringFieldsLists}" />
+
+</apex:selectList>
+
+
+
+<apex:selectList size="1" value="{!filters[2].operator}">
+
+<apex:selectOptions value="{!OpreatorValues}" />
+
+</apex:selectList>
+
+
+
+<apex:inputtext />
+
+<apex:outputText value="AND" />
+
+
+
+<apex:selectList size="1" value="{!filters[3].filterName}">
+
+<apex:selectOptions value="{!FilteringFieldsLists}" />
+
+</apex:selectList>
+
+
+
+<apex:selectList size="1" value="{!filters[3].operator}">
+
+<apex:selectOptions value="{!OpreatorValues}" />
+
+</apex:selectList>
+
+
+
+<apex:inputtext />
+
+-->
+
+
+
+<!--</apex:panelgrid>
+
+<apex:commandLink action="{!addFilter}" value="Add More Filters..." rerender="objFieldList" style="border: medium none;
+    font-family: verdana;
+    font-size: 11px;
+    margin-left: 5px;
+    width: 30px;" /> 
+<apex:commandLink action="{!removeFilter}" value="Remove Filters... " rerender="objFieldList" style="border: medium none;
+    font-family: verdana;
+    font-size: 11px;
+    margin-left: 5px;
+    width: 30px;"  rendered="{!IF(filters.size <= 1, false, true)}" />
+
+</apex:outputPanel>
+
+
+</apex:pageBlockSection>
+
+<apex:outputText value="<b>Note:</b> For date fields, enter the value in following format: <b>9/26/2011</b>" escape="false" id="note" style="margin-left:5px;"/>
+<apex:outputText escape="false" value="Or you can use <a href=http://www.salesforce.com/us/developer/docs/api/Content/sforce_api_calls_soql_select_dateformats.htm target=_blank> <b><u>Date Literals</u></b></a>. e.g. TODAY" style="margin-left:5px;"/>
+
+
+</apex:pageBlock>
+
+
+</apex:form>-->   
+  
+</apex:page>

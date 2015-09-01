@@ -1,0 +1,184 @@
+<apex:page id="CSATSurvey" controller="CSATSurveyservice" standardStylesheets="false" showHeader="false" title="RingCentral Service Questionairre" cache="false">
+<apex:includeScript value="{!$Resource.jquery172}"/>
+<HEAD>
+<TITLE>RingCentral Service Questionairre</TITLE>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+<META HTTP-EQUIV="Expires" CONTENT="-1"/>
+
+</HEAD>
+<script>
+function maxLengthcheck(){
+if( parseInt(document.getElementById('CSATSurvey:myform1:comment').value.length()) > 2000)
+{
+   //alert("Please Enter upto 2000 characters Only."); 
+   //return false;
+}
+//return true;
+}
+
+</script>
+
+<style>
+p{
+    color:#798496;
+    font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; 
+    font-size:11px; 
+    font-style:normal; 
+    line-height:20px;
+ }
+.content{
+    border: 1px solid #000; 
+    width: 740px;
+    padding: 10px;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+}
+#offer {
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width:30em;
+    height:18em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    border-radius: 30px;
+    -moz-border-radius: 30px;
+    display:none;
+    -moz-box-shadow: 0 0 15px #999999 inset;
+    box-shadow: 0 0 15px #999999 inset;
+    background: none repeat scroll 0 0 #DEDEDE;
+    border: 3px solid #DEDEDE;
+}
+a,span{
+    border: 0 none;
+    font: inherit;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    color: #E98514;
+}
+h3{
+    color: #7C7C7C;
+    font-size: 15px;
+    line-height: 21px;
+    padding-bottom: 22px;
+    padding-left: 21px;
+    padding-right: 35px;
+    width:300px;
+}  
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.Style_Resources, 'default2.style.css')}">
+
+
+<center><table width="80">
+<tr>
+
+<td></td><td></td>
+<td>
+
+        
+  
+   <div  class="content"> 
+    <apex:image url="{!URLFOR($Resource.Style_Resources, 'images/logo.gif')}" /><br/><br/>
+     <apex:form id="myform1" rendered="{!isEmpty}">
+       <br/><br/>Thank you for using RingCentral for your communication needs!<br/>
+        <br/>
+        Please tell us how we're doing by answering a few quick questions on your recent service incident.
+        <br/><br/>
+        
+        <apex:outputText rendered="{!Answered}">
+        <font color="red">
+        &#8226; Please answer all the required questions.<br/>
+                   
+        </font>
+        </apex:outputText>  
+        
+        <apex:outputText rendered="{!CommentLength}">
+        <font color="red">
+          
+        &#8226; Please enter upto only 2000 characters on Comment field.
+              
+        </font>
+        
+        </apex:outputText>  
+        
+        
+        <br/><br/>
+        <b><font color="red">*</font>1. My issue was resolved to my satisfaction:</b> <br/>
+        <apex:selectRadio value="{!q3Value}" title="" layout="pageDirection">
+             <apex:selectOptions value="{!values}"/>
+        </apex:selectRadio> <p/>     
+        
+        <b><font color="red">*</font>2. The agent was very knowledgeable concerning RingCentral's products and services.</b> <br/>
+        <apex:selectRadio value="{!q1Value}" title="Knowledgeable " layout="pageDirection">
+             <apex:selectOptions value="{!values}"/>
+        </apex:selectRadio> <p/>   
+        
+        
+        <b><font color="red">*</font>3. The RingCentral agent displayed a friendly and helpful attitude towards me and my company.</b> <br/>
+        <apex:selectRadio value="{!q4Value}" title="Submission" layout="pageDirection">
+             <apex:selectOptions value="{!values}"/>
+        </apex:selectRadio> <p/>     
+        
+        
+        <b><font color="red">*</font>4.How likely is it that you would recommend RingCentral to a friend or colleague?</b> <br/>
+        <apex:selectRadio value="{!q5Value}" title="Recommendation" layout="pageDirection">
+             <apex:selectOptions value="{!values2}"/>
+        </apex:selectRadio> <p/>   
+        
+         <b><font color="red">*</font>5.The help I received resolved my issue right away:</b> <br/>
+        <apex:selectRadio value="{!q2Value}" title="Satisfaction" layout="pageDirection">
+             <apex:selectOptions value="{!values3}"/>
+        </apex:selectRadio> <p/>   
+        
+        
+        <!--@@@@end of code-->
+        
+        <b>6.Comments</b> <br/>
+        <apex:inputTextarea value="{!comments}" title="Comments" rows="4" cols="100" id="comment" onblur="maxLengthcheck();"/><p/>     
+        
+        <apex:commandButton action="{!save}" value="Submit Your Answers"/>
+        <p/>
+    </apex:form>  
+    
+    
+ 
+            <p/>
+     <apex:outputText rendered="{!IsFilled}">Thank you for filling out our survey.
+      <div id="offer">
+            <script>
+            try{
+            if('{!q5Value}' == 10 || '{!q5Value}' == 9 || '{!q5Value}' == 8) {
+                if ($("#offer").is(":hidden")) {
+                    $("#offer").slideDown(2000);
+                } else {
+                    $("#offer").hide();
+                }
+             }  
+             } catch(e){alert(e);}
+            </script>
+            <h3>Do you know anyone who might benefit from RingCentral?
+                You can <span>earn up to $300</span> for each business you refer! 
+                <a href=" http://www.ringcentral.com/buylove/buylove.html?cid=referral&bmid=buylove&pid=6523&aid=11902&rep={!repEmail}">Get started</a>
+                    <apex:image url="{!URLFOR($Resource.rcphones)}" />
+            </h3>   
+        </div>      
+    </apex:outputText>   
+    <apex:outputText rendered="{!alreadyFilled}">
+        You already filled this survey.
+    </apex:outputText>   
+    
+    </div>
+    
+    </td>
+    </tr>
+    </table>
+   </center> 
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+<META HTTP-EQUIV="Expires" CONTENT="-1"/>
+</HEAD>
+</apex:stylesheet>
+</apex:page>

@@ -1,0 +1,55 @@
+<apex:page sidebar="false" showHeader="false" Controller="DealRegistrationExt" id="thePage" cache="false">
+<style>
+        #overlay
+        {
+            background: url("{!URLFOR($Resource.EmailValidation,'loading.gif')}") no-repeat scroll center center gray;
+            border: 0px solid #000000;
+            bottom: 0;
+            left: 0;
+            opacity: 0.75;
+            position: absolute;
+            top: 0;
+            visibility: hidden;
+            width: 100%;
+            z-index: 1000;
+        }
+</style>
+<!--display overlay-->
+<div id="overlay"></div>   
+
+<apex:pageMessage summary="Please approve this deal registration before marking it closed." severity="error" strength="3"  rendered="{!!isApproved}"/>
+<center id="ctrBtn" style="display:none;"><input type="Button" value="Close"  onClick="window.close();" /></center>
+
+<apex:form id="theForm" rendered="{!isApproved}">
+<apex:pageMessages />
+    <apex:pageBlock title="Deal Registration" id="thePgblk">  
+         <apex:panelGrid columns="2" id="theGrid">
+            <apex:outputLabel value="Mark as closed"/>
+            <apex:inputCheckbox value="{!dealRegistration.Deal_Closed__c}"/>
+            <apex:outputLabel value="Customer Account"/>
+            <apex:inputField value="{!dealRegistration.DealRegistrationAccount__c}"/>
+         </apex:panelGrid>  
+         <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Close"  onClick="window.opener.location.reload(),window.close();"/>
+                <apex:commandButton value="Update" action="{!onUpdate}"  status="ajaxStatus"  onComplete="window.opener.location.reload(),window.close();">
+                    <apex:actionStatus id="ajaxStatus" onStart="showOverlay();" onstop="hideOverlay();" />
+                </apex:commandButton>
+         </apex:pageBlockButtons>
+         </apex:pageBlock>  
+</apex:form> 
+<script type="text/javascript"> 
+    window.onload = function() {
+        if('{!!isApproved}' == 'true'){
+            document.getElementById('ctrBtn').style.display='block';
+        }
+    }   
+    function showOverlay() {
+        var o = document.getElementById('overlay');
+        o.style.visibility = 'visible';
+    }
+    function hideOverlay() {
+        var o = document.getElementById('overlay');
+        o.style.visibility = 'hidden';
+    }
+</script> 
+</apex:page>

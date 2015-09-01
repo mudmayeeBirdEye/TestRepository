@@ -1,0 +1,9 @@
+<apex:page showHeader="false"  cache="false" controller="SupportPortalSitemapController" docType="html-5.0">
+
+<head>
+        <meta name="google-site-verification" content="vRtMWhrsGKX-VIV0lLfDk3ASMgQY7mcCD3krO0c17Ec" />
+  </head>
+<apex:repeat id="faqrepeat" var="d" value="{!FaqList}">
+{!IF(d.Ranking__c=='','.5',d.Ranking__c)} 
+</apex:repeat>
+</apex:page>

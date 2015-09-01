@@ -1,0 +1,141 @@
+<apex:page controller="ATTControllerNew" showHeader="false" title="RC Support" cache="true" expires="{!cacheMaxAge}">
+<style>
+    /*body .bPageTitle {
+        padding : 0px !important;
+    }*/
+    .maindiv {
+        width : 522px;
+      
+        padding-top: 15px;
+        height: 33px;
+    }
+    .linkclass {
+        color: #015BA7;
+        text-decoration: none;
+    }
+    .linkclass1 {
+        color: #015BA7;
+        text-decoration: underline;;
+    }
+    .headerCls {
+        color:black;
+        font-size: 12pt;
+        font-weight: bold;
+    }
+    .maindiv1 {
+        padding-bottom: 4px;
+        border-bottom: 1px dotted lightgray;
+    }
+    .maindiv2 {
+        padding-top: 20px;
+    }
+    .listyle {
+        margin-left: 1.5em !important; 
+        padding-left: 0 !important;
+        list-style: url(/images/bullet.gif) !important;
+    }
+    .main_right2 {
+        min-height: 616px !important;
+        border-left: 1px dotted lightgray !important;
+        margin-top: 22px !important;
+        /*margin-top: 0px !important;*/
+    }
+    .right_bloks {
+        margin-top: 0px !important;
+    }
+</style>
+<apex:composition template="{!$Site.Template}">
+    <apex:define name="content">
+        <div style= "width:522px">
+            <div class="maindiv">
+                <span style="color: black;font-size: 14px;">What's New with Office@Hand</span>
+            </div>
+            <div class="maindiv1">
+                <a class="linkclass" href="javascript:history.back()">&#171; Go Back</a>
+            </div>
+            <div>
+                <div class="maindiv2">
+                    <span style="color: black;font-size: 14px;">RingCentral Office@Hand from AT&amp;T</span>
+                </div>
+                <div style="padding-top: 10px;color: gray;">
+                    The Office@Hand team has worked very hard to bring you some great new features, in addition to the 
+                        functionality that you love and use.
+                </div>
+                <div style="padding-top: 10px;">
+                    <table style="width:100%" border="0">
+                        <tr>
+                            <td style="width:75%;vertical-align: top;">
+                                <div id="innertablediv" style="width: 90%">
+                                    <span style="color: black;font-weight: bold;font-size: 13px;">Find out what's new:</span>
+                                </div>
+                                <div id="innertablediv1" style="width: 95%;padding-top: 10px;">
+                                    <ul style="color: gray;">
+                                        <li class="listyle">
+                                            <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/RingCentral-Office-Hand-from-AT-T-Mobile-App?retURL=%2FATT2%2Fapex%2FATTSupportSearch%3Fc%3D%26k%3D3088%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=RingCentral+Office%40Hand+from+AT%26T+Mobile+App" 
+                                                class="linkclass1" 
+                                                >New mobile apps</a> 
+                                                offers added control almost instantly from virtually anywhere.
+                                        </li>
+                                        <li class="listyle">
+                                            <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/RingCentral-Office-Hand-from-AT-T-Mobile-VoIP?retURL=%2FATT2%2Fapex%2FATTSupportSearch%3Fc%3D%26k%3D3089%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=RingCentral+Office%40Hand+from+AT%26T+Mobile+VoIP" 
+                                                class="linkclass1" 
+                                                >
+                                                Mobile VoIP</a> 
+                                            - make calls over Wi-Fi or 3G/4G mobile broadband network.
+                                        </li>
+                                         <li class="listyle">
+                                            Improved call handling for all users and departments. 
+                                        </li>
+                                        <li class="listyle">
+                                            An enhanced service platform with a great new look. 
+                                        </li>
+                                    </ul>
+                                    <br/>
+                                    <span style="font-size: 14px;color: black;">And there’s more to cover your business needs!</span>
+                                    <br/><br/>
+                                    <span style="color: black;font-weight: bold;font-size: 13px;">New optional features to cover your needs and to 
+                                            make your business phone system even more powerful:</span>
+                                </div>
+                            </td>
+                            <td style="width:25%">
+                                <apex:image url="{!URLFOR($Resource.ATT2Image)}" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="padding-top: 10px;color: gray;">
+                    <ul>
+                        <li class="listyle">
+                            <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/Desktop-and-IP-Phones?retURL=%2FATT2%2Fapex%2FATTSupportSearch%3Fc%3D%26k%3D3085%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=Cloud-based+Desktop+and+IP+Phones" class="linkclass1" >
+                                    Desktop and Conferencing IP phones</a> for your 
+                                    office employees.
+                        </li>
+                        <li class="listyle">
+                            Further customize how customers reach your business with additional&nbsp;
+                            <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/Local-Toll-Free-and-Vanity-Number?retURL=%2FATT2%2Fapex%2FATTSupportSearch%3Fc%3D%26k%3DToll%2BFree%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=Adding+Additional+Local%2C+Toll+Free+and+Vanity+Number" class="linkclass1" >
+                                    Toll Free (Vanity or True 800), 
+                                    local or fax numbers</a>.
+                        </li>
+                        <li class="listyle">
+                            <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/International-Calling?retURL=%2FATT2%2Fapex%2FATTSupportSearch%3Fc%3D%26k%3D3087%26action%3DSearchAnswer%26sortBy%3D&popup=false&Title=International+Calling" class="linkclass1" > 
+                                    International calling</a>
+                                    so you and your customers are always within reach.
+                        </li>
+                    </ul>
+                </div>
+                <br/><br/>
+                <span style="font-size: 14px;color: black;">Want to know more?&nbsp;</span>
+                <br/><br/>
+                    <a href="http://youtu.be/vkd5mctaMlg?hd=1" class="linkclass">&gt; Watch our video to get a sneak peek</a>
+                <!--<span class="linkclass"> &gt; Watch our video to get a sneak peek </span>-->
+                <br/><br/><br/><br/>
+            </div>
+        </div>
+    </apex:define>
+</apex:composition> 
+</apex:page>
+
+
+<!-- <apex:include pageName="ATTSuportHomeBody"/>
+        Content1  --- {!isExternalPage} <br/><br/>
+        <apex:include pageName="ATTWhatIsNewContent"/> -->

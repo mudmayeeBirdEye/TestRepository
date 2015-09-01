@@ -1,0 +1,1165 @@
+<apex:page controller="RCSupportController" showHeader="false" standardStylesheets="false" cache="true" expires="{!cacheMaxAge}">
+<html lang="en">
+<head>
+<title>RingCentral Customer Service - Customer Support</title>
+
+   <meta name="google-site-verification" content="CDwwVN25F3ETDzAa06fb84uTS2DlVnA6HUnpRmvgaX8" />
+   <meta name="msvalidate.01" content="0D5FDE9F766CABE08F87AD145947C33E" />
+   <meta name="y_key" content="b036bfdb419f58f2" />
+   
+   <apex:stylesheet value="{!URLFOR($Resource.RCSupportLatestCss, 'css/support/inc_content.css')}" />
+   <apex:stylesheet value="{!URLFOR($Resource.RCSupportLatestCss, 'css/support/left.css')}" />
+     
+ <script type="text/javascript" src="http://ringcentral.force.com/rcsupport/resource/1286257412000/jquery/js/jquery-1.4.2.min.js"></script>
+   
+   <!--<apex:includeScript value="{!URLFOR($Resource.jquery_min, 'jquery/js/jquery-1.4.2.min.js')}" />-->
+  
+   <apex:stylesheet value="{!URLFOR($Resource.RCSupportTopNav2, 'RCSupportTopNav2/navcss.css')}" />
+   <apex:stylesheet value="{!URLFOR($Resource.RCSupportTopNav2, 'RCSupportTopNav2/default.css')}" />
+   
+  <apex:stylesheet value="{!URLFOR($Resource.RCSupportTopNav, 'RCSupportTopNav/navcss.css')}" />
+  <apex:stylesheet value="{!URLFOR($Resource.RCSupportTopNav, 'RCSupportTopNav/nav2.css')}" />
+   
+   <apex:stylesheet value="{!URLFOR($Resource.RCAdvancedSearchCss, 'advanceSearchCss.css')}" />
+   <apex:stylesheet value="{!URLFOR($Resource.RCAdvancedSearchCss, 'feedback.css')}" />
+   <apex:stylesheet value="{!URLFOR($Resource.RCAutoSuggestCss, 'autusuggested.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.staticResource_js, 'staticResource_js.js')}" />  
+
+   
+   <script type="text/javascript" language="Javascript">
+   
+   var showBanner = 1;
+   if (window.top!=window.self) 
+   {
+      showBanner = 0;
+   }else {
+       showBanner = 1;
+   } 
+   
+   jQuery.ajaxSetup({
+            xhr: function() {
+                    //return new window.XMLHttpRequest();
+                try{
+                    if(window.ActiveXObject)
+                            return new window.ActiveXObject("Microsoft.XMLHTTP");
+                  } catch(e) { }
+
+                    return new window.XMLHttpRequest();
+                }
+        });
+
+    var oldId='';
+    var oldObj='';
+      var oldAnswerPagevalue='';
+     var lastAction='';
+   
+   function showAndHide(elementId,obj){
+           // alert(elementId);
+             if(oldId==null || oldId==''){
+                    oldId=elementId;
+                    oldObj=obj;
+                 }
+             if(oldId!=null && oldId!=elementId){
+                document.getElementById(oldId).style.display="none";
+                 // $(oldObj).css('background-image', "url('')");
+                   if(oldObj!=''&& oldObj!=null && oldObj!='undefined'){
+                    $(oldObj).removeAttr("style")
+                   }
+               else if(id!=''){
+                  $("#parent_"+id).removeAttr("style");
+                   id='';
+                }
+                }
+    oldId=elementId;
+    oldObj=obj;
+   if(document.getElementById(elementId).style.display=="block"){
+   // document.getElementById(elementId).style.display="none";
+   $("#"+elementId).hide("fast");
+         $(obj).css('background-image', "url('{!URLFOR($Resource.RCSupportLatestCss,'/images/support/inc_images/arrow-blue-right.gif')}')");
+   }else{
+   //document.getElementById(elementId).style.display="block";
+         $("#"+elementId).show("fast");
+         $(obj).css('background-image', "url('{!URLFOR($Resource.RCSupportLatestCss,'/images/support/inc_images/arrow-blue-bottom.gif')}')");
+      }
+   }
+
+    function SearchArticle(articlename,id,parentId){
+        var text1='';
+        var siteName='{!$Site.CurrentSiteUrl}';
+        var getframeCase = document.getElementById("frameCase");
+         var url=siteName+'RCSupportArtList'+"?c="+articlename+"&k="+text1+"&parentId="+parentId+"&action=SearchAnswer";
+         var servicefilter=document.getElementById('serviceSelect').value;
+        if(servicefilter!='None'){
+            url=url+"&serviceFilter="+servicefilter;
+        }
+        url=url+"&{!AuthToken}";
+         getframeCase.style.display="none";
+       // $('#mainBody').fadeOut('slow').load(url).fadeIn('slow');
+       window.location=url;
+    }
+
+    /*function showAricleDetails(articleHref){
+ 
+        var siteName='{!$Site.CurrentSiteUrl}';
+        var url="http://ringcentral.box3.cs0.force.com"+articleHref;
+       window.location.href=url;
+    }*/
+
+
+    function showCases(custPortalURL){
+        //var text1='';
+        //var url=custPortalURL;
+        //alert(url);
+        //$('#mainBody').fadeOut('slow').load(url).fadeIn('slow');
+        var getframeCase = document.getElementById("frameCase");
+        var getmainBody = document.getElementById("mainBody");
+        getframeCase.src=custPortalURL;
+        getframeCase.style.display="";
+        getmainBody.style.display="none";
+    }
+    function Search(textId){
+            var sortBy='';
+          var text1=document.getElementById(textId).value;
+          
+           if(text1!='')
+           {
+            text1=text1.replace(/^\s+|\s+$/g,"");
+            text1=text1.replace(/ {2,}/g,' ');
+           }
+
+
+          if(text1!=null && text1!=''){
+                text1=text1.replace('&',' and ');
+           }
+           
+         var catg1='';
+                
+        var siteName='{!$Site.CurrentSiteUrl}';
+        var url=siteName+'RCSupportSearch'+"?c="+catg1+"&k="+text1+'&action=SearchAnswer&sortBy='+sortBy+'&{!AuthToken}';
+        window.location.href=url;
+      
+   }
+
+    </script>
+    
+   <script type="text/javascript">
+   function Ausgabe(Ereignis) {
+   
+    if(Ereignis == null || Ereignis == undefined) {
+        Ereignis = window.event;
+    }
+    var enterKeyCode = -1;
+    if(Ereignis.keyCode != undefined && Ereignis.keyCode != null) {
+        enterKeyCode =  Ereignis.keyCode;
+    } else if(Ereignis.which != undefined && Ereignis.which != null ) {
+        enterKeyCode = Ereignis.which;
+    }
+   
+   if(enterKeyCode == 13 && document.activeElement.tagName=='INPUT'){
+                if(lastAction=='advancedSearch'){
+                    $("#searchButton").click();
+               }else{
+                  Search('searchText');
+                  }
+            }
+      }
+
+ </script>
+  <script type="text/javascript" language="Javascript">
+   
+ function showDiv(divId){
+   document.getElementById(divId).style.display="block";
+   lastAction='advancedSearch';
+   
+   oldAnswerPagevalue=document.getElementById('searchText').value;
+   document.getElementById('advanceSearchText').value=oldAnswerPagevalue;
+    document.getElementById('advanceSearchText').focus();
+    
+     $('body').append('<div id="fade"></div>'); //Add the fade layer to bottom of the body tag.
+        $('#fade').css({'filter' : 'alpha(opacity=80)'}).fadeIn(); //Fade in the fade layer 
+    }
+function hideDiv(divId,action,frame){
+document.getElementById(divId).style.display="none";
+ lastAction=action;
+ if(frame=='frame'){
+ var iframe = document.getElementById('frameCase');
+   //iframe.src = '{!CaseURL}';
+   iframe.src = '';
+  //iframe.src ="http://ringcentral.force.com/rcsupport";
+ }
+if(action=='closeAction'){
+    document.getElementById('searchText').value=oldAnswerPagevalue;
+    }
+ document.getElementById('searchText').focus();
+$("#fade").fadeOut("fast");
+$("#fade").remove();
+}
+
+function AdvancedSearch(textId,serviceId,catId){
+
+var text=document.getElementById(textId).value;
+
+ if(text!='')
+     {
+       text=text.replace(/^\s+|\s+$/g,"");
+       text=text.replace(/ {2,}/g,' ');
+     }
+
+if(text!=null && text!=''){
+text=text.replace('&',' and ');
+}
+var service=document.getElementById(serviceId).value;
+var catg=document.getElementById(catId).value;
+  var siteName='{!$Site.CurrentSiteUrl}';
+     var url=siteName+'RCSupportSearch'+"?c="+catg+"&k="+text+"&action=SearchAnswer";
+        var servicefilter=document.getElementById(serviceId).value;
+        if(servicefilter!='None'){
+            url=url+"&serviceFilter="+service;
+        }
+         url=url+"&{!AuthToken}";
+   hideDiv('showDiv','advancedSearchAction');
+   window.location=url;
+  
+}
+function setTextValue(sourceDiv,destDiv){
+     document.getElementById(destDiv).value=document.getElementById(sourceDiv).value;
+}
+
+
+function openCasefromMenu(divId)
+{
+   if('{!CaseURL}' != 'false'){
+      var iframe = document.getElementById('frameCase');
+        iframe.src = '{!CaseURL}';
+       showDiv(divId);
+   }else{
+       loadCaseBool();
+   }
+}
+
+function loadCaseBool()
+{
+    window.location="http://service.ringcentral.com/login.asp?p_next_page=MYSTUFF";
+}
+
+   function publicShowModel(divID,action)
+    {
+        document.getElementById(divID).style.display =(document.getElementById(divID).style.display== "block"?"none":"block");
+
+        if(action=='email' || action=='message'){
+        divID='rn_DetailTools'; 
+        var divId1='rnDialog1_c' ;
+        if(action=='message'){
+            divId1='rnDialog2_c' ;
+        }
+
+        //Define margin for center alignment (vertical + horizontal) - we add 80 to the height/width to accomodate for the padding + border width defined in the css
+
+       // var offset = $('#' + divID).offset();
+        //var popMargTop = offset.top-400;
+       // var popMargLeft = 280;
+        //Apply Margin to Popup
+
+        $('#' + divId1).css({
+           // 'top' : popMargTop,
+            //'left' :popMargLeft ,
+             'top' : '30%',
+            'left' :'30%',
+            'position':'fixed',
+            'margin-top' : 'auto',
+            'margin-left' :'auto'
+        });
+        $('body').append('<div id="fade"></div>'); //Add the fade layer to bottom of the body tag.
+        $('#fade').css({'filter' : 'alpha(opacity=80)'}).fadeIn(); //Fade in the fade layer 
+     }
+
+
+    }
+
+      function sendMail(recId,senderId,senderName){
+       
+         var strMessage='';
+         var isFilled=true;
+      
+              
+         var recId1=recId;
+         var senderId1=senderId;
+          var senderName1=senderName;
+      
+        recId=document.getElementById(recId);
+        senderId=document.getElementById(senderId);
+        senderName=document.getElementById(senderName);
+          
+        if(recId.value=='' || recId.value==null){
+              strMessage=strMessage+"<a href='#' onclick=\"document.getElementById('"+recId1+"').focus();return false;\">Recipient Email is required</a><br/>";
+            isFilled=false;
+        }else if(isValidEmail(recId.value)==false){
+            strMessage=strMessage+"<a href='#' onclick=\"document.getElementById('"+recId1+"').focus(); return false;\">Recipient Email is invalid</a><br/>";
+        isFilled=false;
+        }
+       
+         if(senderId.value=='' || senderId.value==null){
+           strMessage=strMessage+"<a href='#' onclick=\"document.getElementById('"+senderId1+"').focus(); return false;\">Your Email is required</a><br/>";
+          isFilled=false;
+        }else if(isValidEmail(senderId.value)==false){
+            strMessage=strMessage+"<a href='#' onclick=\"document.getElementById('"+senderId1+"').focus(); return false;\">Your Email is invalid</a><br/>";
+            isFilled=false;
+        }
+         if(senderName.value=='' || senderName.value==null){
+           strMessage=strMessage+"<a href='#' onclick=\"document.getElementById('"+senderName1+"').focus(); return false;\">Your Name is required</a><br/>";
+        isFilled=false;
+        }
+ 
+    $('div.rn_MessageBox').remove();
+   if(isFilled==true){
+       sendMail1(recId,senderId,senderName);
+   }else{
+     $('.rn_EmailAnswerLinkForm').append("<div class='rn_MessageBox rn_ErrorMessage' id='rn_EmailAnswerLink_11_ErrorMessage'>"+strMessage+"</div>");
+   }
+   }
+   function isValidEmail(txtEmail){
+         var filter = /^[a-zA-Z0-9]+[a-zA-Z0-9_.-]+[a-zA-Z0-9_-]+@[a-zA-Z0-9]+[a-zA-Z0-9.-]+[a-zA-Z0-9]+.[a-z]{2,4}$/;
+             // var filter = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}$/;  
+           if(filter.test(txtEmail)){
+                  return true;
+                }
+    else{
+        return false;
+    }
+}
+ function sendMail1(recId,senderId,senderName){
+          var currentPage=location.href;
+    
+        var recMail=recId.value;
+        var senderMail=senderId.value;
+        var sendername=senderName.value;
+
+         var title='{!$CurrentPage.parameters.Title}';
+       
+        var redirectPage='{!$Site.CurrentSiteUrl}';
+        var postUrl=redirectPage+"RCSupportEmailPage?emailPage='"+currentPage+"'&recMail="+
+        recMail+"&senderMail="+senderMail+"&sendername="+sendername+"&title="+title;
+        hideModal('emailPageId');
+     
+        //alert(postUrl);
+        $.ajax({
+        url: postUrl,
+        asynchronous:true,
+        success: function(data) {
+            $('.result').html(data);
+            // alert('Load was performed.');
+            recId.value="";
+            senderId.value="";
+            senderName.value="";
+            publicShowModel('emailMessagePageId','message');
+        }
+        });
+    }
+
+  function hideModal(divID,action)
+    {
+        document.getElementById(divID).style.display = "none";
+        if(action=='closeAction'){
+        document.getElementById('{!$Component.searchBox.rn_KeywordText2_9_Text}').value=oldAnswerPagevalue;
+        }
+        $("#fade").fadeOut("fast");
+        currentAction='';
+        $("#fade").remove();
+    }
+  
+  
+  
+    </script>
+  <script>
+ 
+
+  function LTrim( value ) {
+                var re = /\s*((\S+\s*)*)/;
+                return value.replace(re, "$1");
+             }
+            function RTrim( value ) {
+                var re = /((\s*\S+)*)\s*/;
+                return value.replace(re, "$1");
+              }
+            function trim( value ) {
+                return RTrim(LTrim(value));
+            }
+            function suggest(text,Ereignis) {
+                try {
+                     if(Ereignis== null || Ereignis== undefined) {
+                     Ereignis = window.event;
+                     }
+                    var enterKeyCode = -1;
+                    if(Ereignis.keyCode != undefined && Ereignis.keyCode != null) {
+                        enterKeyCode =  Ereignis.keyCode;
+                    } else if(Ereignis.which != undefined && Ereignis.which != null ) {
+                        enterKeyCode = Ereignis.which;
+                    }
+            if(enterKeyCode != 13){
+                var html = '';
+                var panelObj = document.getElementById('suggestionsList');
+                var resultArr = new Array();
+                 var iCountSize=0;
+                if(panelObj != null) {
+                    var searchText =  trim(text);
+                     searchText = searchText.replace(/ {2,}/g,' ');
+                    var breakIndex = 5;
+                    if(searchText.length == 0) {
+                        $('#suggestionsList').html('');
+                         setTimeout("$('#suggestions').fadeOut();", 1); 
+                    } else {
+                         staticResourceArr.sort();
+                        for(var i = 0; i < staticResourceArr.length; i++) {
+                           if(staticResourceArr[i].toUpperCase().indexOf(trim(searchText.toUpperCase())) ==0) {
+                                resultArr[resultArr.length] = i;
+                                iCountSize++;
+                                if(resultArr.length == breakIndex ) {
+                                    break;
+                                }
+                            }
+                        }
+                         if(iCountSize<5){
+                            resultArr=searchWordWise(searchText,resultArr,iCountSize);
+                          }
+                        if(resultArr.length == 0) {
+                            $('#suggestionsList').html('');
+                            setTimeout("$('#suggestions').fadeOut();", 1); 
+                        } else {
+                            html = "<ul>";
+                            for(var j = 0; j < resultArr.length; j++) {
+                                html +="<li onClick=\"fill('"+escape(staticResourceArr[resultArr[j]])+"','suggestions','suggestionsList');\">"+ staticResourceArr[resultArr[j]] + "</li>";
+                            }
+                            html += "</ul>";
+                            //panelObj.innerHTML = html;
+                            
+                            if('{!isExternalPage}'=='true'){
+                                  $('#suggestions').removeClass('suggestionsBox');
+                                  $('#suggestions').addClass('suggestionsBox1');
+                             }else{
+                                    $('#suggestions').removeClass('suggestionsBox1');
+                                    $('#suggestions').addClass('suggestionsBox');
+                                  }  
+                            
+                             $('#suggestions').fadeIn();
+                             $('#suggestionsList').html(html);
+                              }
+                        }
+                    }
+                }
+                else{
+                      if(enterKeyCode == 13 && document.activeElement.tagName=='INPUT'){
+                          Search('searchText');
+                         }
+                        setTimeout("$('#suggestions').fadeOut();", 10); 
+                    
+                    }
+                }catch(x){}
+            }
+  function searchWordWise(text,arrResult,count){
+       
+        var inputString= new Array();
+          var resultArray= new Array();
+            inputString=text.split(' ');
+            resultArray=arrResult;
+            var isExist='false';
+            try{
+                for(var k=0;k<inputString.length && count<5;k++){
+                  isExist='false';
+                  for(var ii=0;ii<staticResourceArr.length && count<5;ii++){
+                       if(staticResourceArr[ii].toUpperCase().indexOf(trim(inputString[k].toUpperCase())) != -1) {
+                           for(var j = 0; j < arrResult.length; j++) {
+                              if(arrResult[j]==ii) {
+                                 isExist=true;
+                                 break;
+                             }
+                     }
+                     if(isExist=='false'  ){
+                           arrResult[arrResult.length] = ii;
+                           count++;
+                   } 
+                   if(arrResult.length==5){
+                      count=5;
+                   }   
+                 }
+             
+             }
+         }
+     }catch(x){
+           //alert(x);
+            return resultArray;
+         }
+         return arrResult;
+     }
+          
+
+
+    function fill(thisValue,divId1,divId2) {
+         if(thisValue!=''){
+           $('#searchText').val(unescape(thisValue));
+         }
+        setTimeout("$('#suggestions').fadeOut();", 100);
+        setTimeout("$('#suggestionsList').html('');", 600);
+        if(thisValue!=''){
+        Search('searchText');
+        }
+    }
+  
+ 
+</script>
+   
+   <style>
+   ul li, ol li {
+    margin-left: 0;
+    padding-left: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    display: block;
+   
+}
+
+
+
+  #fade {
+        display: none;
+        background: #000; 
+        position: fixed; left: 0; top: 0; 
+        z-index: 10;
+        width: 100%; height: 100%;
+        opacity: .25;
+        z-index: 99;
+    }
+
+body a:hover{
+text-decoration: none;
+}
+a:hover{
+text-decoration: none;
+}
+#search a{
+text-decoration: underline;
+color:#015BA7;
+}
+.box_mod_1 .center_content {
+     background: url("{!URLFOR($Resource.RCSupportCss,'/images/support/inc_images/bg_bl1_center.png')}") no-repeat scroll left top transparent;
+     /* background: url("") no-repeat scroll left top transparent;*/
+   /* float: left !important;*/
+    float: left;
+    min-height: 525px;
+    min-height:test ;
+    position: relative;
+    top: -13px;
+   width: auto;
+}
+.info_line.phone{background:transparent url("{!URLFOR($Resource.RCSupportLatestCss,'images/support/inc_images/rblock_img_1.png')}") no-repeat scroll 14px 2px;
+}
+.liveChat{background:transparent url("{!URLFOR($Resource.RCSupportLatestCss,'/images/support/inc_images/rblock_img_2.png')}") no-repeat scroll 14px 2px;
+}
+img{
+display: inline;
+}
+.main_center .search{
+    padding-top: 2px;
+}
+.main_center2 .search{
+    padding-top: 2px;
+}
+body .bPageTitle .ptBody h1.noSecondHeader {
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+
+ul.tab_area li.tab.current p {
+    padding: 16px 25px 0;
+}
+
+ul.tab_area li.tab p {
+    padding: 16px 25px 0;
+}
+ 
+div#ext-comp-1002{ display:none;} 
+.suggestionsBox1 {
+    background-color: #C3C3C4;
+    border-top: 0px solid #FFFFFF;
+    color: #FFFFFF;
+    left: 0;
+    margin: 0 0 0 21%;
+    padding: 0;
+    position: absolute;
+    top: 40px;
+    width: 560px;
+    z-index: 99999;
+}
+.suggestionsBox {
+    background-color: #C3C3C4;
+    border-top: 0px solid #FFFFFF;
+    color: #FFFFFF;
+    left: 0;
+    margin: 0 0 0 28%;
+    padding: 0;
+    position: absolute;
+    top: 40px;
+    width: 365px;
+    z-index: 99999;
+}
+.suggestionList ul {
+    color: blue;
+    font-size:12px;
+   }
+   .bPageTitle .ptBreadcrumb {
+margin-bottom: -12px;
+}
+.info_line2{
+    /* width: 690px;*/
+    width: auto;
+}
+.sfdc_richtext th, .sfdc_richtext td {
+    border:0px;
+}
+</style>
+
+
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23400640-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+
+ function gup(name)
+    {
+      name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+      var regexS = "[\\?&]"+name+"=([^&#]*)";
+      var regex = new RegExp( regexS );
+      var results = regex.exec(window.location.href);
+      if( results == null )
+        return "";
+      else
+        return results[1];
+    }
+    
+    var frank_param = gup('NEXTPAGE');
+    var articleparamname=gup('ARTICLENAME');
+    var articleTypeparam=gup('ARTICLETYPE');
+    
+     if(frank_param =='ideaandanswer' && '{!IdeaURL}' != 'false'){
+        //  window.location='{!IdeaURL}';
+                   var url='{!IdeaURL}';
+         window.open(url);
+       
+    }
+    
+    if(frank_param == 'kb')
+    {
+        window.location = "{!$Site.CurrentSiteUrl}RCSupportArtList?k=&action=SearchAnswer&pageid=knowledge&{!AuthToken}";
+    }
+    if(frank_param == 'contact')
+    {
+        window.location = "{!$Site.CurrentSiteUrl}RCSupportContactSupport?k=&action=SearchAnswer&pageid=contact-support&{!AuthToken}";
+    }
+    if(articleparamname != "" && articleTypeparam != ""){
+       var urlString="{!$Site.CurrentSiteUrl}articles/"+articleTypeparam+"/"+articleparamname+'?retURL=true&pageid=knowledge&{!AuthToken}'
+       window.location=urlString;
+    }
+
+</script>
+
+</head>
+
+
+
+
+<body  marginheight="0" marginwidth="0" id="{!PageId}">
+       <apex:variable var="productUrlVar" value="{!productUrl}"  />
+       <apex:variable var="categoryParameterNameVar" value="{!categoryParameterName}" />
+       <apex:variable var="cpt" value="{!0}" />
+       <apex:variable var="categoryDescriptionsVar" value="{!categoryDescriptions}" />
+       <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+       <apex:variable var="securityOK" value="False" />
+       <apex:variable var="currentCategoryVar" value="{!currentCategory}" />
+       <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+       <apex:variable var="sortOrderDirection" value="{!StrSortOrderDirection}" />
+       <apex:variable var="currentCategoryVar" value="{!currentCategory}" />
+       <apex:variable var="FramedParamVar" value="{!FramedParam}" />
+       <apex:variable var="CaseURLVar" value="{!CaseURL}" />
+       <apex:variable var="serviceFilterVar" value="{!ServiceFilter}" /> 
+       <apex:variable var="currentpagevar" value="{!currentpage}" />
+       <apex:variable var="serviceFilterURLVar" value="{!ServiceFilterURL}" />
+       
+        
+<!--MENU
+<apex:outputPanel rendered="{!FramedParamVar == 'false'}" layout="none"> 
+-->
+<div class="homeFrame" align="center" id="bannerDiv">
+<div class="nov_head">
+<table width="100%" border="0">
+    <tr>
+        <td>
+             <a title="RingCentral Virtual PBX, Phone and Internet Fax Service and Software" class="logo" href="{!$Site.CurrentSiteUrl}RCSupportHome?pageid=home&{!AuthToken}" style="margin-left: 0px ! important; z-index: 0 ! important;"><span></span></a>
+        </td>
+        <td align="right" valign="bottom">
+        <apex:outputPanel rendered="{!CaseURL == 'false'}">
+            <b><a href="http://service.ringcentral.com/login.asp" style="text-decoration:underline;color:#0d426a">My Account</a></b>
+        </apex:outputPanel>
+        </td>
+    </tr>
+</table>
+</div>
+<div class="nov_main_menu" style="z-index:9">
+<div class="menu_item">
+<ul id="topnav">
+    <li class="home"><a href="{!$Site.CurrentSiteUrl}RCSupportHome?pageid=home&{!AuthToken}">Support Home</a></li>
+    <li class="knowledge"><a href="{!$Site.CurrentSiteUrl}RCSupportArtList?k=&action=SearchAnswer&pageid=knowledge&{!AuthToken}">Knowledge</a></li>
+    <li class="mystuff"><a href="javascript:void(0);" onClick="javascript:openCasefromMenu('showDivCase')">My Cases</a></li>
+   
+    <li class="community">
+    <!-- <a href="#" onClick="window.open('http://forum.ringcentral.com','mywindow')">Forum</a>-->
+     <apex:outputPanel rendered="{!IdeaURL=='false'}" >
+        <a href="http://service.ringcentral.com/login.asp?p_next_page=IDEAANDANSWER" target="_self">
+             Community
+        </a>
+      </apex:outputPanel>
+       <apex:outputPanel rendered="{!IdeaURL !='false'}" >
+           <a href="{!IdeaURL}" target="_blank">
+             Community
+          </a>
+       </apex:outputPanel>
+    </li>
+    
+    <li class="contact-support"><a href="{!$Site.CurrentSiteUrl}RCSupportContactSupport?k=&action=SearchAnswer&pageid=contact-support&{!AuthToken}">Contact Us</a></li>
+    <li class="rc"><a href="#" onClick="window.open('http://www.ringcentral.com','mywindow')">My Account</a></li>
+</ul>
+</div>
+</div>
+</div>
+<script type="text/javascript" language="Javascript">
+
+if(showBanner == 1){
+    document.getElementById("bannerDiv").style.display="block";
+} else if (showBanner == 0) {
+    document.getElementById("bannerDiv").style.display="none";
+}
+
+</script>
+<!--
+</apex:outputPanel>
+MENU--> 
+
+        <div class="inc_content content_fixed">
+           <!-- <div class="box_mod_1"> -->
+              <apex:outputText escape="false" value="{!IF(isExternalPage,'<div  class=\"box_mod_2\">','<div  class=\"box_mod_1\">')}" />   
+                            
+                <div class="topbg">
+                </div>
+                <div class="repeatbg">
+                    <apex:outputPanel rendered="{!AND(!isExternalPage, 1 = 1)}" >                                   
+                    <div class="left_area">
+                        <div class="left_menu">
+                            <div id="left-nav" class="ie-browser left-menu sub-active-none">
+                                <ul class="level-1">
+                                    <div class="bgIEtop">
+                                    </div>
+                                    <div class="li-top">
+                                    </div>
+                                    <p class="heading">
+                                        Browse Support</p>
+                                    <p class="filter">
+                                        Filter by</p>
+                                                                      
+                                    <div class="top-p select1 selectoptions-hide item-0" >
+                                        <div class="selectarea list-off" style="z-index:90">
+                                           <select id="serviceSelect"  name="strSearchCategory" size="1" >
+                                               <option value="None" >All</option>
+                                                   <!--  <knowledge:categoryList categoryGroup="Service" rootCategory="All" categoryVar="category" level="-1" >
+                                                       <apex:outputPanel rendered="{!serviceFilterVar=category.name}">
+                                                            <option value="{!category.name}" selected="selected">
+                                                              <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                       </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!serviceFilterVar!=category.name}">
+                                                           <option value="{!category.name}" >
+                                                             <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                       </apex:outputPanel>
+                                            </knowledge:categoryList> --> 
+                                            
+                                            <knowledge:categoryList categoryGroup="Service" rootCategory="All" categoryVar="category" level="-1" >
+                                                       <apex:outputPanel rendered="{!serviceFilterURLVar=category.name}">
+                                                            <option value="{!category.name}" selected="selected">
+                                                              <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                       </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!serviceFilterURLVar!=category.name}">
+                                                           <option value="{!category.name}" >
+                                                             <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                       </apex:outputPanel>
+                                            </knowledge:categoryList>
+                                          
+                                        </select>
+                                     </div>
+                                    </div>
+        <apex:variable var="depth1" value="{!1}" />
+       <apex:variable var="depth2" value="{!0}" />
+      <apex:variable var="p2" value="{!0}" />
+        <apex:variable var="rowCount"  value="{!0}"/>
+      <apex:variable var="menuId" value="All" />
+ 
+         <knowledge:categoryList categoryGroup="{!categoryGroupNameVar}" rootCategory="{!rootCategoryName}" categoryVar="category" level="2" >
+                         <apex:outputpanel rendered="{!category.depth=1}">
+                                        <apex:variable var="depth1" value="{!depth1+100}" />
+                                        <apex:variable var="menuId" value="{!category.name}" />
+                                        <apex:variable var="rowCount"  value="{!IF(((rowCount) > 0),'0','1')}"/>
+                                        <apex:outputText escape="false" value="{!IF(p2=0,IF(p2=0,'',''),'')}" />
+                                       <apex:outputText escape="false" value="{!IF(depth1!=0,IF(depth2=1,'</ul>',''),'')}"></apex:outputText>
+                                       <apex:outputText escape="false" value="{!IF(category.depth=1,IF(p2=1,IF(rowCount=1,'',''),''),'')}" />
+                                       <apex:variable var="p2" value="{!1}"  />
+                                         <apex:variable var="depth2" value="{!0}" />
+                                       <li class="li-item-F" id="parent_menu_{!menuId}"  onClick="showAndHide('menu_{!menuId}',this)" style="line-height:24.3px;"><a href="javascript:void(0)" class="linkTop" >{!category.label}</a></li>
+                              <!--  <apex:outputText escape="false" value="{!IF(category.depth=1,IF(p2=1,'<ul id=\"Ul1\" class=\"level-2 menu \">',''),'')}" />-->
+                              <apex:outputText escape="false" value="{!IF(category.depth=1,IF(p2=1,'<ul id=menu_',''),'')}" />
+                              <apex:outputText escape="false" value="{!IF(category.depth=1,IF(p2=1,menuId,''),'')}" />
+                              <apex:outputText escape="false" value="{!IF(category.depth=1,IF(p2=1,' class=\"level-2 menu \"> ',''),'')}" />
+                             
+                                 </apex:outputpanel>
+
+                                 <apex:outputpanel rendered="{!category.depth=2}">
+                                 <apex:variable var="depth2" value="{!1}" />
+                                    <li  class="li2-item-1 noSubMenu">
+                                   <a href="javascript:void(0)"  onClick="SearchArticle('{!category.name}','','menu_{!menuId}')" class="linkLv2">
+                                          <!-- <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />-->
+                                    {!category.label}</a></li>  
+                                
+                                 <!-- <a href="{!$Site.CurrentSiteUrl}RCSupportArtList?c={!category.name}&k=&action=SearchAnswer" class="linkLv2">{!category.label}</a></li>-->
+
+                           </apex:outputpanel>
+
+                       </knowledge:categoryList>
+                          <apex:outputText escape="false" value="{!IF(depth2=1,'</ul>','')}"></apex:outputText>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                     </apex:outputpanel>
+                     
+                   <!--  <div class="center_content">-->
+                   <apex:outputText escape="false" value="<div class=center_content>" />   
+                           
+                          <apex:outputText escape="false" value="{!IF(isExternalPage,'<div  class=\"main_center2\">','<div  class=\"main_center\">')}" />    
+                         
+                         <!--  <div class="main_center">  -->
+                            <div class="search" id="search">
+                               <input type="text" id="searchText"  onkeyup="suggest(this.value,event);" onblur="fill('','suggestions','suggestionsList')"   maxlength="255" style="border:1px;" value="{!currentKeyword}" />
+                                <img onClick="Search('searchText');"  src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/img_search.png')}" width="12" height="13" alt="Search"
+                                    title="Search" />
+                                      <div class="suggestionsBox" id="suggestions" style="display: none;">
+                                      <img src="{!URLFOR($Resource.RCAutoSuggestCss, 'arrow.png')}" style="position: relative; top: -12px; left: 32%;" alt="upArrow" />
+                                           <div class="suggestionList" id="suggestionsList"> &nbsp; </div>
+                                     </div>
+                                    
+                                    <br/>
+                                    <a href="javascript:void(0);" onClick="showDiv('showDiv')"><br/><br/>Advanced Search</a>
+                            </div>
+                 
+                      <div id='mainBody'> 
+                                <apex:outputPanel rendered="{!IsHomePage}">
+                                   <apex:include pageName="RCSuportHomeBodyDemo"/>
+                                 </apex:outputPanel>
+                               <apex:outputPanel rendered="{!AND(!isExternalPage, 1 = 1)}" >   
+                             <br/><br/>  <apex:insert name="content" />
+                             </apex:outputPanel>
+                  </div> 
+             <apex:outputPanel rendered="{!AND(isExternalPage, 1 = 1)}" >
+                  <br/><br/>
+                   <apex:outputPanel rendered="{!IsArticleDetailsPage}">
+                     <!-- <div class="line"></div>-->
+                <div  class="info_line2">
+                 <knowledge:articleRendererToolbar canvote="false"   rendered="true" articleId="{! $CurrentPage.parameters.id}">                            
+                    </knowledge:articleRendererToolbar>
+                      <apex:insert name="header" />
+                      <apex:insert name="body" />
+                       <apex:include pageName="RCSupportRatingNew" /> 
+                     <apex:include pageName="RCSupportFeedback" /> 
+               </div>
+                </apex:outputPanel>
+              </apex:outputPanel>
+              
+      <apex:outputPanel rendered="{!AND(isExternalPage, 1 = 1)}" >
+               
+                      <apex:insert name="search" />
+             
+              </apex:outputPanel>
+                                   <script type="text/javascript">
+                        $('.bblock1').hover(function(){
+                             $('.bottom_menu').toggleClass("hover1");
+                        });
+                        $('.bblock2').hover(function(){
+                             $('.bottom_menu').toggleClass("hover2");
+                        });
+                        $('.bblock3').hover(function(){
+                             $('.bottom_menu').toggleClass("hover3");
+                        });
+                        $('.bblock4').hover(function(){
+                             $('.bottom_menu').toggleClass("hover4");
+                        });
+                            </script>
+
+                       <!-- </div> -->
+                        <apex:outputText escape="false" value="{!IF(isExternalPage,'</div>','')}" />   
+           <apex:outputtext escape="false" value="</div>"  ></apex:outputText> 
+             <!-- </div> -->
+                           <apex:outputPanel rendered="{!IsHomePage}">
+                        <div class="main_right">
+                            <!--<script language="JavaScript" type="text/javascript" src="http://www.ringcentral.com/systemdata.html"></script>-->
+                            <apex:include pageName="SystemStatusSite"/>
+                            <div class="right_links">
+                                <p class="rl_header">
+                                    Quick Links</p>
+                                <p>
+                                    <a href="http://www.ringcentral.com/support/fordevelopers.html" target="_blank"  title="For Developers">FOR DEVELOPERS</a></p>
+                                <p>
+                                    <a href="http://www.ringcentral.com/partner/agent.html" target="_blank"  title="For Resellers">FOR RESELLERS</a></p>
+                                <p>
+                                    <a href="http://www.ringcentral.com/partner/overview.html" target="_blank"  title="For Partners">FOR PARTNERS</a></p>
+                                <p>
+                                    <a href="http://www.ringcentral.com/support/qos-information.html" target="_blank" title="Quality of Service">QUALITY OF SERVICE</a></p>
+                                <p>
+                                    <a href="http://www.ringcentral.com/support/images/creditcardauthorizationform.pdf"  target="_blank" title="Credit Card Auth Form">CREDIT CARD AUTH FORM</a></p>
+                               
+                                <!--<apex:outputPanel rendered="{!CaseURLVar != ''}">-->
+                               <!-- <p>
+                                    <a href="#" onClick="showCases('{!CaseURLVar}')" title="View Cases"><h1><b>View My Case(s)</b></h1></a></p>-->
+                                <!--</apex:outputPanel>  -->
+                                <p class="rl_follow">
+                                    Follow RingCentral:</p>
+                                <a href="http://www.facebook.com/ringcentral" target="_blank">
+                                    <img class="fb_icon" src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/fb_icon.png')}" width="27" height="28"
+                                        alt="" title="" /></a>
+                                         <a href="http://twitter.com/ringcentral" target="_blank">
+                                            <img class="tw_icon" src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/tw_icon.png')}" width="27" height="28"
+                                                alt="" title="" /></a> <a href="">
+                                                    <p class="fb">
+                                                        Facebook</p>
+                                                </a><a href="">
+                                                    <p class="tw">
+                                                        Twitter</p>
+                                                </a>
+                            </div>
+                        </div>
+                         </apex:outputPanel>
+                      <apex:outputPanel rendered="{!!IsHomePage}">
+                        <div class="main_right2"><BR/><BR/><BR/><BR/><BR/>
+                            <div class="right_bloks">
+                                <apex:outputPanel rendered="{!!IsContactSupportPage}">
+                                <div class="menublock">
+                                    <a href="{!$Site.CurrentSiteUrl}RCSupportContactSupport?k=&action=SearchAnswer&pageid=contact">
+                                        <img height="55" width="68" title="" alt="" src="{!URLFOR($Resource.RCSupportCss, 'images/support/inc_images/rblock_img_1.png')}" />
+                                        <p>Contact Support</p>
+                                    </a>
+                                </div></apex:outputPanel>
+                                <div class="menublock">
+                                    <!-- <a href="http://forum.ringcentral.com" target="_blank">
+                                        <img height="55" width="68" title="" alt="" src="{!URLFOR($Resource.RCSupportCss, 'images/support/inc_images/rblock_img_2.png')}" />
+                                        <p>Ask the Community</p>   </a> -->
+                                    <apex:outputPanel rendered="{!IdeaURL=='false'}" >
+                                     <a href="http://service.ringcentral.com/login.asp?p_next_page=IDEAANDANSWER" target="_self">
+                                        <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bm_img2.png')}" width="85" height="51" alt="" title="" /><p>
+                                        Ask the Community</p>
+                                     </a>
+                                  </apex:outputPanel>
+                                   <apex:outputPanel rendered="{!IdeaURL !='false'}" >
+                                       <a href="{!IdeaURL}" target="_blank">
+                                         <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bm_img2.png')}" width="85" height="51" alt="" title="" /><p>
+                                            Ask the Community</p>
+                                       </a>
+                                   </apex:outputPanel>
+
+                                  
+                                </div>
+                            </div>
+                         <!--   <div class="right_links">
+                                <p class="rl_header">Related Articles</p>
+                                <p><a title="RECEIVING A PROFESSIONAL GREETING" href="">RECEIVING A<br/>PROFESSIONAL GREETING</a></p>
+                                <p><a title="CREATING A PROFESSIONAL GREETING" href="">CREATING A<br/>PROFESSIONAL GREETING</a></p>
+                                <p><a title="CHANGING YOUR PROFESSIONAL GREETING" href="">CHANGING YOUR<br/>PROFESSIONAL GREETING</a></p>
+                            </div>-->
+                        </div>
+                     </apex:outputPanel><apex:outputText escape="false" value="{!IF(!isExternalPage,'</div>','')}" />   
+                        <div class="cb">
+                        </div>
+                   
+                </div>
+                <div class="bottombg">
+                </div>
+              <apex:outputText escape="false" value="</div>"/>
+            <!--</div>-->
+        </div>
+        
+        
+        
+        
+       <!-- <site:googleAnalyticsTracking />-->
+        
+</body>
+   <div id="showDiv"  style="display:none;background: #fff;z-index: 99999;height:300px;width:500px;"  >
+    <div class="yui-skin-sam" style="color:#666666">
+       <div id="rnDialog1_c" class="yui-panel-container yui-dialog yui-simple-dialog" style="visibility: visible; left: 391px; top: 100px; z-index: 9999; position:fixed;">
+                    <div style="visibility: inherit;" class="yui-module yui-overlay yui-panel rn_Dialog rn_AdvancedSearchDialog" id="rnDialog1">
+                        <div style="cursor: auto;" class="hd"><span class="rn_ScreenReaderOnly">Beginning of dialog, please dismiss dialog before continuing<br/></span>Advanced Search</div><div class="bd"><div id="rn_AdvancedSearchDialog_5_DialogContent" class="rn_DialogContent">
+                                <div class="rn_AdvancedKeyword rn_AdvancedSubWidget">
+                                    <div id="rn_KeywordText2_6" class="rn_KeywordText2">
+                                        <label for="rn_KeywordText2_6_Text"><span class="rn_ScreenReaderOnly">Advanced Search dialog </span>Search terms</label>
+                                        <div class="rc_InputTypeTextWrapper">
+                                            <input type="text"  id="advanceSearchText" onBlur="setTextValue('advanceSearchText','searchText');" onkeyup="Ausgabe(event);" maxlength="255" value="{!currentKeyword}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rn_AdvancedFilter rn_AdvancedSubWidget"></div>
+                                <div class="rn_AdvancedFilter rn_AdvancedSubWidget"><div id="rn_ProductCategorySearchFilter_8" class="rn_ProductCategorySearchFilter">
+                                        <a href="javascript:void(0);" class="rn_ScreenReaderOnly" id="rn_ProductCategorySearchFilter_8_LinksTrigger">Screen Reader users press enter to Limit by category.&nbsp;<span id="rn_ProductCategorySearchFilter_8_TreeDescription"></span></a>
+                                        <span class="rn_Label">Service</span>
+                                       <select id="serviceSelect1"  name="strSearchCategory1" size="1" >
+                                           <option value="None" >-- Select a Service--</option>
+                                                <knowledge:categoryList categoryGroup="Service" rootCategory="All" categoryVar="category" level="-1" >
+                                                       <apex:outputPanel rendered="{!serviceFilterURLVar=category.name}">
+                                                            <option value="{!category.name}" selected="selected">
+                                                              <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                       </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!serviceFilterURLVar!=category.name}">
+                                                           <option value="{!category.name}" >
+                                                             <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                       </apex:outputPanel>
+                                            </knowledge:categoryList>
+                                          
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="rn_AdvancedSort rn_AdvancedSubWidget"><div id="rn_SortList2_9" class="rn_SortList2">
+                                        <label for="rn_SortList2_9_Headings">Topic</label>
+                                       
+                                        <select id="categorySelect"  name="strSearchCategory" size="1"   >
+                                            <apex:outputpanel layout="none" rendered="true">
+                                                <apex:outputPanel layout="none" rendered="{!currentCategoryVar=rootCategoryName}" >
+                                                    <option value="{!rootCategoryName}" >-- Select a category --</option>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="none" rendered="{!currentCategoryVar!=rootCategoryName}" >
+                                                    <option value="{!rootCategoryName}">-- Select a category --</option>
+                                                </apex:outputPanel>
+                                                <knowledge:categoryList categoryGroup="{!categoryGroupNameVar}" rootCategory="{!rootCategoryName}" categoryVar="category" level="1" >
+                                                    <apex:outputPanel layout="none" rendered="{!currentCategoryVar=category.name}" >
+                                                        <option value="{!category.name}" selected="selected">
+                                                        <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="none" rendered="{!currentCategoryVar!=category.name}">
+                                                        <option value="{!category.name}">
+                                                        <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                    </apex:outputPanel>
+                                                </knowledge:categoryList>
+                                            </apex:outputpanel>
+                                        </select>
+                                    </div>
+                                </div>
+                             </div>
+                        </div><div class="ft">
+                            <span class="button-group">
+                                <button type="button" id='searchButton' class="default" style=' border-width: 0px;' onClick="AdvancedSearch('advanceSearchText','serviceSelect1','categorySelect');">Search</button>
+                                <button type="button" style=" border-width: 0px;background: url('{!URLFOR($Resource.RCAdvancedSearchCss, 'rc_CustomFormButton.png')}') 
+                                        no-repeat scroll 0 0 transparent;background-position: 0 -300px;"  onClick="hideDiv('showDiv','closeAction')" >Cancel</button>
+                            </span><span class="rn_ScreenReaderOnly">End of dialog, please dismiss dialog before
+                                continuing</span></div>
+                        <a style="overflow: hidden; text-indent: -10000em; text-decoration: none;" href="javascript:void(0);" class="container-close" onClick="hideDiv('showDiv','closeAction')">Close</a>
+                    </div>
+                </div>
+
+      </div>          
+ 
+</div>
+
+<!--DIV for CASE -->
+
+<div id="showDivCase"  style="display:none;background: #fff;z-index: 99999;height:300px;width:500px;">
+     <div class="yui-skin-sam" style="color:#666666">
+       <div id="rnDialog1_c" class="yui-panel-container yui-dialog yui-simple-dialog" style="visibility: visible; left: 200px; top: 75px; z-index: 9999; position:fixed;">
+                    <div style="visibility: inherit;" class="yui-module yui-overlay yui-panel rn_Dialog rn_AdvancedSearchDialog" id="rnDialog1">
+                        <div style="cursor: auto;" class="hd1"><span class="rn_ScreenReaderOnly">Beginning of dialog, please dismiss dialog before continuing<br/></span>My Stuff</div>
+                        <div class="bd1" style="height:475px;width:655px">                        
+                             <div id="rn_AdvancedSearchDialog_5_DialogContent" class="rn_DialogContent">   
+                                     <a href="javascript:history.back()" style="color: #015BA7;">« back </a>                        
+                                    <iframe src="" height="450" width="650" border="0" id='frameCase' />                            
+                              </div>
+                        </div>
+                    
+                        <a style="overflow: hidden; text-indent: -10000em; text-decoration: none;" href="#" class="container-close1" onClick="hideDiv('showDivCase','closeAction','frame')">Close</a>
+                    </div>
+                </div>
+
+      </div>   
+     
+    
+    
+</div>
+
+
+<script>
+var frank_param = gup('NEXTPAGE');
+if(frank_param == 'mystuff' && '{!CaseURLVar}' != 'false')
+{
+    openCasefromMenu('showDivCase');
+}
+
+//document.getElementById('searchText').focus();
+$('#searchText').focus();
+ var id='';
+if('{!!isExternalPage}'=='true'){
+  if('{!currentCategory}'!='All' && '{!ParentId}'!=''){
+  id='{!ParentId}';
+  oldId=id;
+   $("#"+id).show("fast");
+   //$(obj).css('background-image', "url(/rcsupport/resource/1304836899000/RCSupportLatestCss/images/support/inc_images/arrow-blue-bottom.gif)");
+  $("#parent_"+id).css('background-image', "url({!URLFOR($Resource.RCSupportLatestCss, 'images/support/inc_images/arrow-blue-bottom.gif')})");
+  }
+
+}
+
+if('{!isExternalPage}'=='true'){
+   var getRatingDiv = document.getElementById("j_id0:j_id1:j_id109:j_id110:toolbar");
+   //var getRatingDiv = document.getElementById("{!$component.toolbar}");
+   if(getRatingDiv!=null && getRatingDiv !=''){
+   getRatingDiv.style.display = "block";
+   }
+   if(showBanner ==1){
+    $('#showProperties').children("a").attr("href","javascript:void(0)");
+    $('#hideProperties').children("a").attr("href","javascript:void(0)");
+   }
+   if($(".configLinks").parent('a').parent(".links").html()!=null){
+     $('.ptBreadcrumb').append("<div style='float:right;'>"+$(".configLinks").parent('a').parent(".links").html()+"</div>");
+     $(".configLinks").parent('a').parent(".links").html('');
+     $(".pageTitleIcon").parent('.content').css('width','100%');
+    }
+}
+</script>
+
+<!--<site:googleAnalyticsTracking />-->
+</html>
+</apex:page>

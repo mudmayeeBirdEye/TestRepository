@@ -1,0 +1,84 @@
+<apex:page controller="ImplementationSurveyController" standardStylesheets="true" cache="false" id="ImplementationSurvey" showHeader="false">
+<style>
+input[type="radio"] {
+      border:none !important;
+      border-color: white !important;
+      margin-top: 0px;
+      position: relative;
+      padding-left:14px !important;
+      width:12px!important;
+      height:12px!important;
+      
+       }
+    /* input[type="radio"] {
+            border:none !important;
+            margin-top: 0px;
+            position: relative;
+            width:10px!important;
+            height:10px!important;
+    } */
+    label{
+      vertical-align:middle !important;
+      font-size:12px;
+      float:right; 
+      margin-left:5px;
+      
+        }
+   b {color:#798496;font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:11px; font-style:normal; line-height:20px;}
+    .content{background: white; border: 1px solid #919191; width: 693px;box-shadow: 0px 0px 30px 1px; padding: 10px;margin: 0px auto;border-radius: 15px 15px 15px 15px;border-radius: 15px 15px 15px 15px;-moz-border-radius: 15px 15px 15px 15px;-webkit-border-radius: 15px 15px 15px 15px;}
+   .body {background: rgb(243, 243, 243)}
+   .message {margin-left: 0%;}
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.Style_Resources, 'default2.style.css')}"/>
+<div class='content'>
+
+       <!--<apex:image url="{!$Resource.ATTSurveyHeader}" width="480px"/><br/><br/>-->
+       <div style="padding-left:4%;">
+       <apex:dynamicComponent componentValue="{!logo}"/><br/><br/>
+       </div>
+    <apex:form id="theForm" style="padding-left:4%;">
+         <div style="text-align:center;">
+            <apex:dynamicComponent componentValue="{!rogersHeader}" rendered="{!rogersHeaderFlag}"/>
+        </div>
+        <!-- <p style="text-align:center"> <b><u>RingCentral Implementation Experience Survey</u><br/>
+            We would like to thank you for taking the time to provide your feedback regarding your Implementation experience. 
+            It should take about a minute to complete.</b>
+         </p> --> 
+         <!-- <apex:outputText escape="false" value="Overall, how satisfied are you in your experience with your RingCentral Implementation?">
+         </apex:outputText>  -->     
+          <apex:outputText escape="false" rendered="{!errorflag }"><b>Invalid Survey</b></apex:outputText>
+          <!-- <apex:dynamicComponent componentValue="{!ThanksMsg}"/>  -->
+         <!-- <apex:dynamicComponent componentValue="{!UserMsg}"/>-->
+         <apex:PageMessages escape="false"></apex:PageMessages>
+          <!-- <apex:dynamicComponent componentValue="{!alradyFilled}" rendered="{!RespondFlag}"/> -->
+          <apex:dynamicComponent componentValue="{!ImplementationSurvey}" rendered="{!isEmpty && !(isExpired)}"/>
+          
+    </apex:form>  
+     <div style="margin-left:28px;">
+        <apex:dynamicComponent componentValue="{!rogersFooter}" rendered="{!rogersFooterFlag}"/>
+    </div>
+</div>
+<script>
+var maximumLength = 2000;
+
+function checkLength(control, maximum) {
+    var length = control.value.length;
+    
+    if (length > maximum) {
+        alert('Please limit your message to ' + maximumLength
+        + ' characters. There are currently ' + length + '.');
+    return false;
+    }
+return true;
+}
+
+function validate(form) {
+    var controls = form.elements;
+    if (!checkLength(controls.textArea, maximumLength))
+    return false;
+
+return true;
+}
+</script>
+
+</apex:page>

@@ -1,0 +1,139 @@
+<apex:page controller="RCSupportArticleRating" showHeader="false"  sidebar="false" >
+<script src="../../soap/ajax/21.0/connection.js" type="text/javascript"></script>
+<script src="../../soap/ajax/21.0/apex.js" type="text/javascript"></script>
+
+
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" /> 
+
+<style>
+
+textarea:focus{
+  border:1px solid;
+}
+
+
+textarea {
+    resize: both;
+    border: 1px solid;
+    background-color: #fff;
+    
+}
+body .bPageBlock, body #bodyCell
+.bResource
+.secondaryPalette,
+ body .secondaryPalette.bPageBlock, 
+ body .overlayDialog .secondaryPalette.bPageBlock,
+  body .individualPalette .secondaryPalette.bPageBlock,
+   body .bodyDiv .genericTable, body .genericPageBlockTable, 
+   body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock,
+    body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock,
+     body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock,
+      body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+            border-radius: 4px 4px 0 0;
+}
+</style>
+<apex:form >
+ <!-- <apex:pageBlock mode="edit" > -->
+<div style="margin-top: -9px;background-color: #F8F8F8;border-left: 1px solid #EAEAEA;border-radius: 0px 0px 9px 9px;border-right:1px solid #EAEAEA;border-bottom: 1px solid #EAEAEA;">
+     <div style='color: #000000;margin-left: 2%;padding-top:10px;'>
+          <b>Was this information helpful?</b>
+      </div>
+     <table cellspacing='10' cellpadding='10' style='margin-left: 3%;'>
+       <tr>
+         <td> <input type='radio' name='rating' id='rating1' value='3' CHECKED='true'/></td>
+         <td> Yes</td>
+       </tr>
+       <tr>
+         <td><input type='radio' name='rating' id='rating2'  value='1'/></td>
+         <td>No</td>
+       </tr>
+       <tr>
+         <td>
+             <input type='radio' name='rating' id='rating3'  value='2'/></td>
+         <td>Somewhat</td>
+       </tr>
+     </table> 
+     <!-- <apex:selectRadio value="{!strRating}" layout='pageDirection'>
+            <apex:selectOptions value="{!items}"/>
+            </apex:selectRadio><p/>
+            <apex:commandButton value="Test" action="{!test}" rerender="out" status="status"/> -->
+      <br/>
+       <apex:outputPanel id="out">
+      
+   
+      <table width='100%' style='margin-left: 2%;'>
+         <tr>
+           <td>  <b>Tell us why and what can we do to improve this information</b></td>
+          </tr>
+          </table>
+          
+          <div id='detail-panel' style='margin-left: 2%;margin-bottom: 2%;'>
+          <table >
+          <tr>
+           <td>
+           <textarea rows='5' cols='80' id='comments' resize='both' style='border: 1 solid;' />
+           </td>
+         </tr>
+         <tr>
+           <td colspan='2'>
+            <input type='button' value='Submit' onclick='upadateRatingDetails()' />
+           </td>
+         </tr>
+         </table>
+         </div>
+      
+     </apex:outputPanel> 
+ 
+</div>
+<!-- </apex:pageBlock>-->
+</apex:form>
+ 
+ <script type="text/javascript" > 
+                  function upadateRatingDetails(){
+                       var loadindContent="<div class='waitingSearchDiv' id='el_loading' style='background-color: #fbfbfb;"+
+                           " height: 100%;opacity:0.65;width:100%;'><div class='waitingHolder' ><img class='waitingImage' src='/img/loading.gif' title='Please Wait...' />"+
+                           " <span class='waitingDescription'>Please Wait...</span>"+
+                           " </div></div>";
+                       
+                      
+                       var starNumber1= $("input[name='rating']:checked").val(); 
+                       var comments=document.getElementById('comments').value;  
+                        if (comments.length > 32767){
+                            alert("Comments too long. Must be 32768 characters or less");
+                           return false;
+                          }                    
+                         var articleId="{!HTMLENCODE($CurrentPage.parameters.id)}";
+                       // var userRating=starNumber1;
+                   
+                 try{
+                   if(starNumber1>3){
+                      starNumber1=3;
+                   }else if(starNumber1<1){
+                      starNumber1=1;
+                   }
+                   $("#detail-panel").empty().html(loadindContent);
+                      //document.getElementById('starVotingProcessing').style.visibility='visible';
+                        sforce.connection.sessionId = "{!$Api.Session_ID}";
+                         var strTitle='{!HTMLENCODE($CurrentPage.parameters.Title)}';
+                         if(strTitle==''){
+                           try{
+                             strTitle=DesktopContext.pageTitle;
+                            }catch(ex){}
+                         }
+                       //var message='Insert functionality is not implemented!';
+                       var message= sforce.apex.execute("RCSupportArticleRating","articleCountSave2", {rating: starNumber1,strArticleId:articleId,IPAddress:'{!IPAddress}',strComments:comments,strTitle:strTitle}); 
+
+                  
+                      document.getElementById('rating1').disabled=true;
+                      document.getElementById('rating2').disabled=true;
+                      document.getElementById('rating3').disabled=true;
+                        $("#detail-panel").html('');
+                         $("#detail-panel").empty().html('Thank you for your comments');
+                    }catch(e){//alert(e);
+                        $("#detail-panel").empty().html('Thank you for your comments');
+                    }  
+                      
+                      
+                     }
+                 </script>
+</apex:page>

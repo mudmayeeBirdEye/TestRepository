@@ -1,0 +1,107 @@
+<apex:page sidebar="true" id="thepage"  >
+<!-- controller="TerritoryChangeController"
+<apex:includeScript value="{!URLFOR($Resource.jquery, '/js/jquery-1.4.2.min.js')}" />
+<script>
+function confirmCancel() {
+var isCancel = confirm("Are you sure you wish to cancel?");
+if (isCancel)
+return true;
+return false;
+}
+
+var checkOnlyOne;
+$(document).ready(function() {
+checkOnlyOne = function(checkbox) {
+$("#resultDiv").find("input[type=checkbox]").removeAttr('checked');
+document.getElementById(checkbox).checked = true;
+};
+});
+</script>
+<apex:sectionHeader title="Team Changes" subtitle="Step 1 of 4" />
+<apex:form id="theForm">
+<apex:pageMessages escape="false"></apex:pageMessages>
+<apex:pageBlock id="block">
+
+<!-- This Section use for serching user -->
+
+<!--<apex:pageBlockSection title="Select Source User" columns="1">
+    <apex:pageBlockSectionItem >
+        <apex:panelGrid columns="4" style="width:500px"  >
+            <apex:outputLabel for="searchText" >Search for Users</apex:outputLabel>
+            <apex:inputText id="searchText" value="{!searchText}"  title="Default to Administrator"/>
+            <apex:selectList value="{!selectedProfile}" size="1"  title="Select for Profile Based Search">
+                <apex:selectOptions value="{!ProfileName}"/>
+            </apex:selectList>
+             <apex:commandButton value="Search" action="{!search}" status="status2" rerender="resultsBlock,otpNav2" style="font-size: 12px;"/>
+            <apex:actionStatus startText="Requesting..." id="status2">
+                <apex:facet name="start"/>
+                <apex:image url="{!$Resource.TeamChanges}"/>
+            </apex:actionStatus>
+        </apex:panelGrid> 
+    </apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+
+
+
+
+<!-- Result div -->
+<!--<div id="resultDiv"><apex:pageBlockSection columns="1">
+
+
+
+<!--<apex:pageBlockTable value="{!searchResults}" var="c" rendered="{!NOT(ISNULL(searchResults))}" style="width:700px" id="resultsBlock" >
+    <apex:column >
+        <apex:inputCheckbox value="{!c.checked}" id="user_cbox" onclick="checkOnlyOne('{!$Component.user_cbox}')" />
+    </apex:column>
+    <apex:column value="{!c.usr.Name}" headerValue="Name" />
+    <apex:column value="{!c.usr.UserRole.name}" headerValue="Role"  />
+    <apex:column value="{!c.usr.Manager.name}" headerValue="Manager"  />
+    <apex:column value="{!c.usr.Profile.name}" headerValue="Profile" />
+</apex:pageBlockTable>
+
+<!-- Start of Action status -->
+<!--<apex:actionStatus startText="Requesting..." id="status" >
+        <apex:facet name="start">
+            <apex:outputPanel styleClass="pShowLess noLink" style="color:red;text-align:center;display:block;font-size:11px;width:700px">Loading...</apex:outputPanel>
+        </apex:facet>
+        <apex:facet name="stop">
+            <apex:outputPanel layout="block" styleClass="pSearchShowMore"
+                id="otpNav2" rendered="{!NOT(ISNULL(searchResults))}" style="width:700px">
+                Total Records Found: <apex:outputText rendered="{!IF(Con.resultSize==10000,true,false)}">10000 +</apex:outputText>
+            <apex:outputText rendered="{!IF(Con.resultSize < 10000,true,false)}">{!Con.resultSize}</apex:outputText>
+            <apex:image url="/img/search_prevarrow_disabled.gif"
+                styleClass="prevArrow" rendered="{!NOT(Con.HasPrevious)}" />
+            <apex:image url="/img/search_prevarrow.gif" title="Previous Page"
+                styleClass="prevArrow" rendered="{!Con.HasPrevious}" />
+            <apex:commandLink action="{!Previous}" title="Previous Page"
+                value="Previous Page" rendered="{!Con.HasPrevious}"
+                reRender="resultsBlock,otpNav2" status="status" />
+            <apex:outputPanel styleClass="pShowLess noLink"
+                style="color:grey" rendered="{!NOT(Con.HasPrevious)}">Previous Page</apex:outputPanel>
+                &nbsp;({!IF(Con.PageNumber == 1,1,((Con.PageNumber -1) * Con.PageSize)+1)}-{!IF(Con.resultSize < Con.PageSize,Con.resultSize,Con.PageNumber * Con.pageSize)})&nbsp;
+            <apex:outputPanel styleClass="pShowLess noLink" style="color:grey"
+                rendered="{!NOT(Con.HasNext)}">Next Page</apex:outputPanel>
+            <apex:commandLink title="Next Page" value="Next Page"
+                rendered="{!Con.HasNext}" action="{!next}"
+                reRender="resultsBlock,otpNav2" status="status" />&nbsp;
+            <apex:image url="/img/search_nextarrow.gif" title="Next Page"
+                styleClass="nextArrow" rendered="{!Con.HasNext}" />
+            <apex:image url="/img/search_nextarrow_disabled.gif"
+                rendered="{!NOT(Con.HasNext)}" />
+
+<br/><br/>
+
+<apex:commandButton action="{!next_to}" id="next" value="Next" title="move to object selection page..." rendered="{!!next_btn}" 
+    style="font-size:12px;" />
+    
+                       </apex:outputPanel>
+    </apex:facet>
+    </apex:actionStatus> <!-- End of ActionStatus -->
+
+    <!--</apex:pageBlockSection></div>
+
+</apex:pageBlock>
+
+
+</apex:form>-->
+</apex:page>

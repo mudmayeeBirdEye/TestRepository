@@ -1,0 +1,103 @@
+<!-----------------------------------------------------------------------------
+* Case Name..........:    Sales Battle Cards   
+* Case Number...........: 02577716                                                     *                                        *
+* File..................: SalesBattleCards.Page                                        *
+* Created by............: Simplion Technologies                                        *
+* Created Date..........: 25-06-2014                                                   *
+* Last Modified by......: Simplion Technologies                                        *
+* Description...........: This page is used to display List view of Same Industry Name *
+------------------------------------------------------------------------------>
+<apex:page standardController="Industry__c" extensions="IndustryListViewControlr"  sidebar="false" showHeader="true">
+    <style>
+        .header {
+            font: Bold 13px Arial;
+            color: #084B8A;
+            text-decoration: underline; 
+        }
+        
+        .result { /*padding: 10px 25px 10px 25px;*/
+        }
+        
+        tr.headerRow {
+            border-color: white;
+        }
+        th.headerRow {
+            background: #E19823 !important;
+            color:White !important;
+            cursor: pointer;
+            box-shadow: 0px -54px 54px -20px;
+            
+        }
+        th.headerRoww {
+            background:#9999FF!important;
+            color:white !important;
+        }
+        
+        .btn {
+            color: #084B8A !important;
+            border: 1px solid #A5A6A5 !important;
+            padding: 6px !important;
+        }
+        
+        .clss{
+        table-layout: fixed;        
+        }
+        
+        table.list tr td {
+            height:15px !important;
+        }               
+        table tr:nth-child(even) {
+            background: rgba(151, 139, 67, 0.12)
+        }
+        table tr:nth-child(odd) {  
+           background: rgb(255,255,255)
+        }
+                    
+    </style> 
+    <apex:form >              
+        <apex:pageBlock >    
+        <!-- Table to create custom view of the Records of Industry Object -->     
+            <table  cellspacing="0px" cellpadding="10px" frame="border" rules="rows" align="center" class="list tablesorter display clss" id="myTable"  >    
+                <thead>
+                    <tr class="headerRoww">
+                       <!-- <th  style="height: 25px; width:15%;text-decoration: none;" scope="col">  Industry  </th> --> 
+                        <th  style="height: 25px;text-decoration: none; background: #0373AC ; box-shadow: 0px -42px 54px -20px ;border-radius: 6px;font-size: 17px; color:white;" scope="col" colspan="4"> <b>Industry</b>: {!strIndustryName}  </th> 
+                    </tr>                   
+                    <tr>          
+                        <th class="headerRow " style="height: 25px;width:25%;text-decoration: none;" scope="col">
+                             <center> Industry Pain Point </center> </th>
+                        <th class="headerRow " style="height: 25px;width:25%;text-decoration: none;" scope="col"> 
+                            <center> Pain Reliever</center>  </th>
+                        <th class="headerRow " style="height: 25px;width:25%;text-decoration: none;" scope="col"> 
+                            <center> Value/Benefit </center> </th>
+                        <th class="headerRow " style="height: 25px;width:25%;text-decoration: none;" scope="col">
+                             <center> Web Resource  </center> </th>
+                    </tr>    
+               </thead>
+               <tbody>       
+               <!-- <apex:commandButton value="back" action="{!redirectToPartnerRequest}" /> -->
+                   <apex:variable var="clickCount" value="{!0}"/>          
+                   <apex:repeat value="{!indsList}" var="ind" id="indust" >       
+                       <tr>                                                                                                             
+                            <td  style="vertical-align:top; word-wrap: break-word;">
+                            <apex:outputlink value="/{!ind.id}?nooverride=1" target="_blank"  style="text-decoration: none;">{!ind.Industry_Pain_Point__c}</apex:outputlink>              
+                            </td>                      
+                            <td  style="vertical-align:top; word-wrap: break-word;">
+                            <apex:outputText value="{!ind.Pain_Reliever__c}"/>                               
+                            </td>
+                            <td  style="vertical-align:top; word-wrap: break-word;">
+                            <apex:outputText value="{!ind.Value_Benefit__c}"/>                                 
+                            </td>
+                            <td  style="vertical-align:top; word-wrap: break-word;">                             
+                            <!-- <a id="theLink" name="theLink" href="{!ind.Web_Resource__c}" target="_blank">{!ind.Web_Resource__c}</a> --> 
+                            <apex:outputfield value="{!ind.Web_Resource__c}" />                            
+                           <!-- <apex:outputText value="{!ind.Web_Resource__c}"/>   -->                               
+                            </td>
+                       </tr>
+                   <apex:variable var="clickCount" value="{!clickCount+1}"/>
+                   </apex:repeat>
+                </tbody>
+            </table>
+        </apex:pageBlock>
+   </apex:form>
+</apex:page>

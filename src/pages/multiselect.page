@@ -1,0 +1,258 @@
+<apex:page controller="multiselect" tabStyle="Task" id="emailvalidation" showHeader="true" sidebar="true" readOnly="true" >
+
+<script type="text/javascript"> 
+
+    function showOverlay() {
+        var o = document.getElementById('overlay');
+        o.style.visibility = 'visible';
+    }
+    function hideOverlay() {
+        var o = document.getElementById('overlay');
+        o.style.visibility = 'hidden';
+    }
+</script> 
+
+<style type="text/css">
+
+body .x-btn-pressed, body .x-btn-click, body .x-btn-menu-active, body button:active, body .btn:active, body .btnPressed, body .btnCancel:active, body .menuButton .menuButtonButton:active {
+    background-position: left bottom;
+    border-color: #585858 #585858 #939393;
+}
+body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+
+background: none;
+
+}
+/*.btn commandButtonStyle:active{
+   background-position: left bottom;
+    border-color: #585858 #585858 #939393;
+}
+.btn commandButtonStyle:hover{
+   background-position: left bottom;
+    
+}
+.btn commandButtonStyle:click{
+   background-position: left bottom;
+    
+}*/
+
+body button:hover, body .btn:hover, body .btnCancel:hover, body .menuButton .menuButtonButton:hover{
+  background-position: left bottom;
+}
+/*
+body button:hover, body .btn:hover, body .btnCancel:hover, body button:click{
+  background-position: left bottom;
+}
+*/
+.b1 {color:Red;}
+
+.centerAlign TD {
+   vertical-align:middle;
+   height:100%;
+}
+
+#overlay
+{
+    background: url("{!URLFOR($Resource.EmailValidation,'loading.gif')}") no-repeat scroll center center gray;
+    border: 0px solid #000000;
+    bottom: 0;
+    left: 0;
+    opacity: 0.75;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    width: 100%;
+    z-index: 1000;
+    }
+.columnAlign{
+    width:255px;
+    float:right;
+}
+.selectListWidth{
+    width:250px
+}
+.headerClassDiv {
+    background: url('/img/alohaSkin/grid_headerbg.gif') repeat-x scroll 0 bottom #FFFFFF;
+    border-width: 0 0 1px 1px;
+    color: #000000;
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 5px 2px 4px 5px;
+    width:294px;
+    float:left;
+    text-align:center;
+}
+.bPageBlock .detailList .dataCol {
+    width: auto;
+}
+.bPageBlock .detailList th, .bPageBlock .detailList .centerAlign TD {
+    vertical-align: middle;
+}
+</style>
+    <apex:form id="theform" title="Email Address">
+   
+    <apex:pageMessages />
+   <!-- <apex:inputHidden id="contactFinalList" value="{!finalList}"/> -->
+ 
+  <!--Display Overlay-->
+  <div id="overlay"></div>   
+    <apex:pageBlock >
+        <apex:pageBlockSection >
+           <apex:pageBlockSectionItem >
+        <apex:panelGrid columns="5" >
+            <apex:dataTable id="table"  value="{!}" var="a" width="100%" align="center"  > 
+                <!--Contact Window-->   
+                <apex:column colspan="3" id="c1"> 
+                    <apex:panelGrid columns="1" >
+                   <!-- Account Section Starts -->
+                       <apex:panelGroup >
+                           <apex:outputLabel rendered="{!msg4}" >Account Search:</apex:outputLabel> 
+                           <apex:inputField value="{!temp.SEAccount__c}" id="accountid" rendered="{!msg4}">
+                                  <apex:actionSupport action="{!searchContact}" reRender="allSearchedContacts,ValidatedMsg1"  event="onchange" status="ajaxStatus" />
+                                  <!--<apex:actionStatus id="ajaxStatus" onStart="showOverlay();" onstop="hideOverlay();"/>-->
+                                  <apex:actionStatus id="ajaxStatus" />
+                          </apex:inputField>   
+                      </apex:panelGroup>
+                      <apex:selectList id="allSearchedContacts" value="{!globalSelectedList}" multiselect="true"  size="5" style="height: 388px;width: 278px;" >
+                                <apex:selectOptions value="{!globalContactOptions}" />
+                      </apex:selectList>
+                    </apex:panelGrid>
+               </apex:column> 
+                <!-- as a blank column--> 
+                <apex:column > 
+                <!-- To Field Must be on Value at a time--> 
+                    <apex:panelGrid columns="4" id="abcd3" >
+                        <apex:panelGroup >                    
+                            <apex:image value="/s.gif" title="Add" alt="Add"  styleClass="rightArrowIcon" style="margin-top: 20px;"   >   
+                                <apex:actionSupport event="onclick" action="{!setToAddress}" reRender="toAdd,ValidatedMsg2,renderIsEmailVal" status="ajaxStatus1"/>
+                                <apex:actionStatus id="ajaxStatus1" onStart="showOverlay();" onstop="hideOverlay();"/>
+                            </apex:image>
+                            <br/>
+                         
+                            <apex:image value="/s.gif" title="Remove" alt="Add"  styleClass="leftArrowIcon" >  
+                                <apex:actionSupport event="onclick" action="{!removeToAddress}" reRender="toAdd,ValidatedMsg2,renderIsEmailVal" />
+                            </apex:image>
+                        </apex:panelGroup>
+                        <apex:panelGroup > 
+                            <apex:outputLabel style="text-align:center;" styleClass="headerClassDiv" value="To" /><BR/> 
+                            <apex:inputTextarea id="toAdd"  style="width:296px" cols="1"  value="{!toAddress}"  readonly="true"/>
+                        </apex:panelGroup>
+                    </apex:panelGrid>
+                    <apex:panelGrid columns="4" id="abcd" rendered="{!disable}" >
+                        <apex:panelGroup >                    
+                             <apex:image value="/s.gif" title="Add" alt="Add"  styleClass="rightArrowIcon" style="margin-top: 25px;">   
+                                <apex:actionSupport event="onclick" action="{!setAdditionalTo}" reRender="additionalToDiv,ValidatedMsg2" status="ajaxStatus2"/>
+                                <apex:actionStatus id="ajaxStatus2" onStart="showOverlay();" onstop="hideOverlay();"/>
+                            </apex:image>
+                            <br/>
+                         
+                            <apex:image value="/s.gif" title="Remove" alt="Remove"  styleClass="leftArrowIcon" >  
+                                <apex:actionSupport event="onclick" action="{!removeAdditionalTo}" reRender="additionalToDiv,ValidatedMsg2" />
+                            </apex:image>
+                       </apex:panelGroup>
+                       <apex:panelGroup >
+                           <apex:outputLabel styleClass="headerClassDiv" value="Additional To"/><BR/> 
+                            <apex:selectList id="additionalToDiv" value="{!selectedAdditionalToList}" multiselect="true"  size="5" style="width:300px"  >
+                                <apex:selectOptions value="{!AllAdditionalTo}" />
+                            </apex:selectList>
+                        </apex:panelGroup>  
+                    </apex:panelGrid>
+                    <apex:panelGrid columns="4" id="abcd1" rendered="{!disable}" >
+                        <apex:panelGroup >
+                            <br/>
+                            <apex:image value="/s.gif" title="Add" alt="Add"  styleClass="rightArrowIcon" style="margin-top: 25px;">  
+                                <apex:actionSupport event="onclick" action="{!setCCList}" reRender="ccPanl,ValidatedMsg2" status="ajaxStatus3"/>
+                                <apex:actionStatus id="ajaxStatus3" onStart="showOverlay();" onstop="hideOverlay();"/>
+                            </apex:image>
+                            <br/>
+                           <apex:image value="/s.gif" title="Remove" alt="Add"  styleClass="leftArrowIcon"> 
+                                <apex:actionSupport event="onclick" action="{!removeCCList}" reRender="ccPanl,ValidatedMsg2" />
+                           </apex:image>
+                        </apex:panelGroup>
+                        <apex:panelGroup >
+                            <apex:outputLabel style="text-align:center;" styleClass="headerClassDiv" value="CC"/><BR/>
+                            <apex:selectList id="ccPanl" value="{!selectedCCList}" multiselect="true"  size="5" style="width:300px">
+                                <apex:selectOptions value="{!AllCCOptionsList}" />
+                            </apex:selectList>
+                        </apex:panelGroup>
+                    </apex:panelGrid>
+                    <apex:panelGrid columns="4" id="abcd2" rendered="{!disable}">
+                        <apex:panelGroup >
+                        <br/>
+                        <apex:image value="/s.gif" title="Add" alt="Add"  styleClass="rightArrowIcon" style="margin-top: 25px;">  
+                            <apex:actionSupport event="onclick" action="{!setBccList}" reRender="bccPanel,ValidatedMsg2" status="ajaxStatus4"/>
+                            <apex:actionStatus id="ajaxStatus4" onStart="showOverlay();" onstop="hideOverlay();"/>
+                        </apex:image>
+                        <br/>
+                        <apex:image value="/s.gif" title="Remove" alt="Remove"  styleClass="leftArrowIcon"> 
+                            <apex:actionSupport event="onclick" action="{!removeBccList}" reRender="bccPanel,ValidatedMsg2" />
+                        </apex:image>
+                    </apex:panelGroup>
+                    <apex:panelGroup >
+                        <apex:outputLabel value="BCC" styleClass="headerClassDiv" /><BR/>                       
+                        <apex:selectList id="bccPanel" value="{!selectedBccList}" multiselect="true"  size="5" style="width:300px">
+                            <apex:selectOptions value="{!AllBccOptionsList}" />
+                        </apex:selectList>
+                    </apex:panelGroup>
+                </apex:panelGrid>
+           </apex:column>  
+        </apex:dataTable>    
+                </apex:panelGrid> 
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:panelGroup id="validationCol">
+                    <apex:panelGrid styleClass="centerAlign"  style="background: url({!URLFOR($Resource.EmailValidation,'WarningSignBackGround.png')})no-repeat;height: 420px;width: 400px;vertical-align:middle;" rendered="{!msg1}" >
+                        <apex:dataTable value="{!}" var="a" id="theTable" styleClass="centerAlign" style="width:100%;background-color: #FFFF99; font-family:TRebuchet MS;font-weight: bold;border:2.5px solid #32588E;-moz-border-radius:9px 9px 9px 9px;border-radius:9px 9px 9px 9px;vertical-align:middle;"  rendered="{!msg1}">
+                              <apex:column id="thecolumn1" style="vertical-align:middle;width:15%;text-align:center;">
+                                 <apex:image value="{!URLFOR($Resource.EmailValidation,'warningSign.png')}"  width="48" height="40"  />  
+                              </apex:column>
+                              <apex:column id="thecolumn2" style="vertical-align:middle;padding-top:5px;padding-bottom:5px;">
+                                  <apex:outputText escape="false"  >
+                                   WARNING:The customers below have opted out of receiving emails from RingCentral or are associated to partners. 
+                                   <br/><br/> Please do not send solicitation email to these customers:<br/>
+                                           <apex:repeat value="{!OptedOutOfEmailSet}" var="pos"> 
+                                                <apex:outputText value="&#8226;&#160;&#160;{!pos}" escape="false"/><br/>
+                                           </apex:repeat>   
+                                   </apex:outputText>
+                              </apex:column>
+                        </apex:dataTable>
+                    </apex:panelGrid>
+                    <apex:panelGrid styleClass="centerAlign"  style="background: url({!URLFOR($Resource.EmailValidation,'WarningSignBackGround.png')})no-repeat;height: 420px;width: 400px;vertical-align:middle;" rendered="{!!isEmailValidated}" >
+                        <apex:dataTable value="{!}" var="a" id="theTable1" styleClass="centerAlign" style="width:100%;background-color: #FFFF99; font-family:TRebuchet MS;font-weight: bold;border:2.5px solid #32588E;-moz-border-radius:9px 9px 9px 9px;border-radius:9px 9px 9px 9px;vertical-align:middle;"  rendered="{!!isEmailValidated}">
+                              <apex:column id="thecolumn1" style="vertical-align:middle;width:15%;text-align:center;height:85px;">
+                                 <apex:image value="{!URLFOR($Resource.EmailValidation,'warningSign.png')}"  width="48" height="40"  />  
+                              </apex:column>
+                              <apex:column id="thecolumn2" style="vertical-align:middle;">
+                                  <apex:outputText escape="false"  >
+                                    Please validate the selected email addresses before creating an email
+                                  </apex:outputText>
+                              </apex:column>
+                        </apex:dataTable>
+                    </apex:panelGrid>
+                    <apex:panelGrid styleClass="centerAlign" style="background: url({!URLFOR($Resource.EmailValidation,'OKSignBackGround.png')})no-repeat ;height: 420px;width: 400px;" rendered="{!msg3}">
+                        <apex:dataTable value="{!}" var="a" id="theTable2" styleClass="centerAlign" style="width:100%;background-color: #B5E61D; font-family:TRebuchet MS;font-weight: bold;border:2.5px solid #32588E;-moz-border-radius:9px 9px 9px 9px;border-radius:9px 9px 9px 9px;vertical-align:middle;"  rendered="{!msg3}">
+                              <apex:column id="thecolumn1" style="vertical-align:middle;width:15%;text-align:center;height:85px;">
+                                 <apex:image value="{!URLFOR($Resource.EmailValidation,'OKSmallImage.png')}" width="48.7" height="48.7"  />  
+                              </apex:column>
+                              <apex:column id="thecolumn2" style="vertical-align:middle;">
+                                  <apex:outputText escape="false" >
+                                    Email addresses have been validated - No issues found
+                                  </apex:outputText>
+                              </apex:column>
+                        </apex:dataTable>
+                    </apex:panelGrid>
+                </apex:panelGroup>                
+            </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+                <apex:pageBlockButtons location="both"  id="commandButtonSec">
+                      <apex:commandButton id="validemailid"  action="{!OptedOutOfEmail}" reRender="validationCol,validationCol1,renderIsEmailVal" style="background-image:url({!URLFOR($Resource.EmailValidation,'ValidateEmailAddressButton.png')});width:247px;height:36px;display:inline;color:transparent;border-radius:15px 15px 15px 15px;border-style: none;"   status="Status" styleClass="commandButtonStyle" >
+                           <apex:actionStatus id="Status" onStart="showOverlay();" onstop="hideOverlay();"/>
+                       </apex:commandButton>
+                       <apex:commandButton action="{!emailAuthor}"  reRender="validationCol,validationCol1,renderIsEmailVal" style="background-image:url({!URLFOR($Resource.EmailValidation,'CreateEmailButton.png')});width:167px;height:36px;display:inline;border:1px solid #FFFFFF;border-radius:9px 9px 9px 9px;border-style: none;" status="Status1" styleClass="commandButtonStyle" >
+                           <apex:actionStatus id="Status1" onStart="showOverlay();" onstop="hideOverlay();"/>
+                       </apex:commandButton>
+                    <apex:commandButton action="{!cancel}"  style="background-image:url({!URLFOR($Resource.EmailValidation,'CancelButton.png')});width:86px;height:36px;display:inline;border-radius:9px 9px 9px 9px;border-style: none;" styleClass="commandButtonStyle"/>
+                </apex:pageBlockButtons> 
+        </apex:pageBlock>  
+    </apex:form>
+</apex:page>

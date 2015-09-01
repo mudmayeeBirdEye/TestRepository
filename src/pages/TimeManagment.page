@@ -1,0 +1,355 @@
+<apex:page controller="schedulerAdminConfiguration" showheader="false">
+    <style>
+.tableContainer {
+    float: left;
+    height: auto;
+    width: 95%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    align: center;
+    margin-left: 40px;
+}
+
+.bPageBlock {
+    align: center;
+    background: #CCFFFF;
+    font-weight: bolder;
+    font-family: Georgia, arial;
+    clear: both;
+    margin: 25px 8px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 5px;
+    padding: 25px;
+    border: 1px solid #d2d2d2;
+    -moz-box-shadow: 8px 8px 10px #999;
+    -webkit-box-shadow: 5px 5px 8px #999;
+    box-shadow: 5px 5px 7px #999;
+}
+
+#advisor th {
+    border-left: 1px dotted;
+    font-size: 12px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+    background-color: #6F6D69;
+}
+
+#advisor #advisor th {
+    border-bottom: 0px;
+}
+
+#advisor {
+    color: Black;
+    width: 98%;
+}
+
+#advisor th {
+    background-color: #EDE8E1;
+    color: black;
+    border: 1px solid #EDE8E1;
+    border-collapse: collapse;
+    border-radius: 2px 2px 2px 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+    line-height: 18px;
+    z-index: 6000;
+}
+
+#advisor td {
+    background-color: #FBFBFB;
+    vertical-align: top;
+    color: black;
+    border: 0px solid black;
+    border-collapse: collapse;
+    border-radius: 2px 2px 2px 2px;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
+    line-height: 18px;
+    /* z-index: 1000; */
+    /* text-align: center; */
+    padding-left: 13%; 
+    width: 550px;
+    font-family: Georgia;
+    font-size: 12px;
+}
+
+#Configure td {
+    padding-bottom: 2px;
+    padding-left: 1px;
+}
+
+#Configure th {
+    border-left: 1px dotted;
+    font-size: 12px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+    background-color: #6F6D69;
+}
+
+#Configure #Configure th {
+    border-bottom: 0px;
+}
+
+#Configure {
+    color: Black;
+    width: 75%;
+}
+
+#Configure th {
+    background-color: #EDE8E1;
+    color: black;
+    border: 1px solid #EDE8E1;
+    border-collapse: collapse;
+    border-radius: 2px 2px 2px 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+    line-height: 18px;
+    z-index: 6000;
+}
+
+#Configure td {
+    background-color: #DDDEDF;
+    vertical-align: top;
+    color: black;
+    border: 0px solid black;
+    border-collapse: collapse;
+    border-radius: 2px 2px 2px 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    line-height: 18px;
+    z-index: 1000;
+    text-align: center;
+    padding-left: 4px;
+    width: 550px;
+    padding: 6px;
+    font-family: Georgia;
+    font-size: 12px;
+}
+
+.tableClass {
+    width: 850px;
+    font-family: Georgia;
+    font-size: 12px;
+    padding: 10px;
+}
+
+.header {
+    font-size: 25px;
+    display: block;
+    font-family: Georgia;
+    margin-left: 500px;
+}
+
+.user {
+    margin-left: -185px;
+}
+
+.formInputField {
+    color: #363636;
+    font: normal 13px/18px Arial;
+    padding: 4px;
+    text-align: left;
+    width: 20%;
+    border: solid 2px #ccc;
+    border-radius: 3px 3px 3px 3px;
+}
+
+#Display div {
+    display: inline-block;
+}
+
+.custPopup {
+    background-color: white;
+    border-width: 2px;
+    border-style: solid;
+    z-index: 9999;
+    left: 35%;
+    padding: 10px;
+    position: absolute;
+    width: 800;
+    height: 150;
+    margin-left: -250px;
+    top: 300px;
+}
+
+.popupBackground {
+    background-color: black;
+    opacity: 0.20;
+    filter: alpha(opacity = 20);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+}
+
+.background {
+    background-color: #fff;
+}
+
+.preRequiredLabel:after {
+    content: " * ";
+    color: red;
+}
+</style>
+    <script>
+      /*call remove method from controller*/
+      function removeAdvisor(Id){
+           alert(Id);
+           removeAdvisor();
+
+      }
+   </script>
+    <apex:form >
+        <br />
+        <apex:commandLink value="Brand " action="{!brandLink}" style="margin-left: 40px;font-size: 15px; font-weight:bold">>></apex:commandLink>
+        <apex:commandLink value="Resource " action="{!resourceLink}" style="font-size: 15px; font-weight:bold">>></apex:commandLink> 
+        <apex:commandLink value="Advisor " action="{!advisorLink}" style="font-size: 15px; font-weight:bold">>></apex:commandLink> 
+            <!--  apex:param name="Brandid" value="{!configure.Resource_Pool__r.Brand_Name__c}" /-->
+        
+        <apex:outputpanel layout="block" styleclass="header">
+            <apex:image value="/servlet/servlet.ImageServer?id=01580000001DgnQ&oid=00D80000000aRUX&lastMod=1373356571000"
+                height="45px" width="45px" />Scheduler Admin Configuration</apex:outputpanel>
+        <table style="margin-left: 40px; width: 95%; padding: 6px;">
+            <tr>
+                <td>
+                    <apex:pageBlock rendered="{!isTimeSlot}">
+                        <apex:pageBlockSection columns="1">
+                            <apex:pageBlockSectionItem >
+                                <apex:PageBlockTable value="{!listTimeSlots}" var="configure"
+                                    id="theTable2" rowClasses="odd,even" styleClass="tableClass">
+                                    <apex:facet name="header">Time Slot List</apex:facet>
+                                    <apex:column >
+                                        <apex:facet name="header">Action</apex:facet>
+                                        <apex:commandLink value="Remove" id="theCommandLinkDelete"
+                                            onclick="if(!confirm('Are you sure to remove this timeSlot?')) return false;"
+                                            action="{!removeTimeSlot}">
+                                            <apex:param name="timeSlotId" value="{!configure.id}" />
+                                        </apex:commandLink>&nbsp;|&nbsp;
+                                        <apex:commandLink value="Edit"
+                                            id="theCommandLinkEdit" action="{!editTimeSlot}">
+                                            <apex:param name="toEditTS" value="{!configure.id}" />
+                                        </apex:commandLink>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Advisor Name</apex:facet>
+                                        <apex:outputText value="{!configure.Advisor_Name__r.Name}"></apex:outputText>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Day</apex:facet>
+                                        <apex:outputText value="{!configure.Day__c}"></apex:outputText>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Start Time</apex:facet>
+                                        <apex:outputText value="{!configure.Start_Time__c}"></apex:outputText>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">End Time</apex:facet>
+                                        <apex:outputText value="{!configure.End_Time__c}"></apex:outputText>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Available For</apex:facet>
+                                        <apex:outputText value="{!configure.availableFor__c}"></apex:outputText>
+                                    </apex:column> 
+                                     <apex:column >
+                                    <apex:facet name="header">Time Zone</apex:facet>
+                                      <apex:outputText value="America/Los_Angeles"></apex:outputText>
+                                 
+                                    </apex:column>                                   
+                                </apex:PageBlockTable>                              
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                </td>
+            </tr>
+        </table>
+        <table class="tableContainer">
+            <tr>
+                <td>
+                    <fieldset id="advisor">
+                        <legend style="font-family: Georgia; font-size: 14px;">Configure Time Slots for Advisor</legend>
+                        <br />
+                        <apex:pageblock >
+                            <apex:pageblocksection columns="2">
+                                <apex:pageblocksectionItem >
+                                    <apex:outputPanel >
+                                        <b> 
+                                        <apex:outputlabel value="Select Advisor" style="font-family: Georgia" styleclass="preRequiredLabel" />
+                                        </b>
+                                        <apex:inputText value="{!advisorName}" disabled="true" />
+                                    </apex:outputPanel>
+                                </apex:pageblocksectionItem>
+                                <apex:pageblocksectionItem >
+                                    <apex:outputPanel >
+                                        <b> 
+                                        <apex:outputlabel value="Select Day" style="font-family: Georgia" styleclass="preRequiredLabel" />
+                                        </b>
+                                        <apex:inputfield value="{!objTimeSlot.Day__c}" />
+                                    </apex:outputPanel>
+                                </apex:pageblocksectionItem>
+                                <apex:pageblocksectionItem >
+                                    <apex:outputPanel >
+                                        <b> 
+                                        <apex:outputlabel value="Select Start Time" style="font-family: Georgia" styleclass="preRequiredLabel" />
+                                        </b>
+                                        <apex:inputfield value="{!objTimeSlot.Start_Time__c}" />
+                                    </apex:outputPanel>
+                                </apex:pageblocksectionItem>
+                                <apex:pageblocksectionItem >
+                                    <apex:outputPanel >
+                                        <b> 
+                                        <apex:outputlabel value="Select End Time" style="font-family: Georgia" styleclass="preRequiredLabel" />
+                                        </b>
+                                        <apex:inputfield value="{!objTimeSlot.End_Time__c}" />
+                                        
+                                         <br/><br/>
+                                         <b> 
+                                        <apex:outputlabel value="Time Zone" style="font-family: Georgia" styleclass="preRequiredLabel" />
+                                        </b>
+                                        <apex:inputfield value="{!objTimeSlot.Time_Zone__c}" />
+                                    </apex:outputPanel>
+                                    
+                                </apex:pageblocksectionItem>
+                                <apex:pageblocksectionItem >
+                                    <apex:outputPanel >
+                                        <b> 
+                                        <apex:outputlabel value="Select Availability" style="font-family: Georgia" styleclass="preRequiredLabel" />
+                                        </b>
+                                        <apex:inputfield value="{!objTimeSlot.availableFor__c}" />
+                                    </apex:outputPanel>
+                                </apex:pageblocksectionItem>
+                                <apex:pageblocksectionItem >
+                                    <apex:commandbutton value="Add Time Slot" action="{!addTimeSlot}" />
+                                </apex:pageblocksectionItem>
+                            </apex:pageblocksection>
+                        </apex:pageblock>
+                    </fieldset>
+                </td>
+            </tr>
+            <!-- <tr>
+                <td width="20%">
+                    <apex:pageblock >
+                        <apex:pageblocksection columns="3">
+                                <apex:pageblocksectionItem >
+                                    <apex:outputPanel >
+                                        <b> 
+                                        <apex:outputlabel value="Select Start Time" style="font-family: Georgia" styleclass="preRequiredLabel" />
+                                        </b>
+                                        <apex:inputfield value="{!objTimeSlot.Start_Time__c}" />
+                                    </apex:outputPanel>
+                                </apex:pageblocksectionItem>
+                                <apex:pageblocksectionItem >
+                                    <apex:outputPanel >
+                                        <b> 
+                                        <apex:outputlabel value="Select End Time" style="font-family: Georgia" styleclass="preRequiredLabel" />
+                                        </b>
+                                        <apex:inputfield value="{!objTimeSlot.End_Time__c}" />
+                                    </apex:outputPanel>
+                                </apex:pageblocksectionItem>
+                                <apex:pageblocksectionItem >
+                                    <apex:commandbutton value="Add Time Slot" action="{!addTimeSlot}" />
+                                </apex:pageblocksectionItem>
+                        </apex:pageblocksection>
+                    </apex:pageblock>
+                </td>
+            </tr> -->
+        </table>
+    </apex:form>
+</apex:page>

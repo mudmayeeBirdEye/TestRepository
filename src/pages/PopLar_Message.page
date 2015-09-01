@@ -1,0 +1,234 @@
+<apex:page showHeader="true" sidebar="true" standardController="Lead_Assignment_Rules__c" extensions="LARPopupExtension" action="{!showPopup}">
+ <Head>
+   <style type="text/css">
+        #para1
+        {
+                text-align:left;           
+                font-size:12px;
+                background-color:lightyellow;
+                border-width:15px;
+                padding:10px;
+                font-family:arial;
+                height:290px;
+                opacity:0.;
+                border-radius:20px;
+         } 
+      
+       .customPopup
+       {
+                background-color: white;
+                border-style: solid;
+                border-width: 1px;
+                left: 50%;
+                padding:10px;
+                position: absolute;
+                z-index: 9999;
+                /* These are the 3 css properties you will need to tweak so the pop 
+                up displays in the center of the screen. First set the width. Then set 
+                margin-left to negative half of what the width is. You can also add 
+                the height property for a fixed size pop up.*/
+                width: 500px;
+                margin-left: -250px;
+                top:100px;
+        }
+                  
+       .popup
+         {
+                background-color: white;
+                border-width: 2px;
+                border-style: solid;
+                
+                z-index: 15000;
+                left: 50%;
+                padding:10px;
+                position: absolute;
+                width: 500px;
+                margin-left: -450px;
+                top:80px;
+                border-radius:20px;
+                width :950px;
+                margin-top:50px; 
+                padding-top:35px ; 
+                padding-bottom:35px ;
+                position:fixed;
+                    
+         }
+        .popupBg{       
+                background-color:black;
+                opacity: 0.6;
+                filter: alpha(opacity = 70);
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 9998;
+            
+        }                                    
+       .searchBtn{
+                border:1px solid transparent;
+                float:left;
+                text-align:center;
+                border-radius:5px;
+                font-size: 12px;
+                border: 0px;
+                margin-left:300px;
+                width:250px;
+                font-weight:bold;
+            
+      }
+      .infopanel {
+                margin: auto;
+                border: 1px solid blue;
+                background-color:lightyellow;
+                -moz-border-radius: 5px;
+                opacity:0.;
+                -webkit-border-radius: 5px;
+                t
+                border-radius: 5px;
+                /*box-shadow: 2px 0px 45px -8px #dfeffc inset;
+                -webkit-box-shadow: 2px 0px 45px -8px #dfeffc inset;
+                -moz-box-shadow: 2px 0px 45px -8px #dfeffc inset;
+                */
+                box-shadow:7px -9px 107px 30px #dfeffc inset;
+                -webkit-box-shadow:7px -9px 107px 30px #dfeffc inset;
+                -moz-box-shadow:7px -9px 107px 30px #dfeffc inset;
+                background: white;
+                padding: 2px;
+                /*width:50%;*/
+                width:800px;
+                height:50%;
+                z-index:9999;
+                border-radius:25px;
+                min-height:1px;
+                min-width:500px;
+        }
+       .positionCSS {
+                position:fixed;
+                left:20%;
+                top:20%;
+                z-index: 999;
+                zIndex: 999;
+        }
+       .fancybox-close {
+                position: absolute;
+                top: -18px;
+                right: -20px;
+                width: 36px;
+                height: 36px;
+                cursor: pointer;
+                z-index: 8040;
+                background-image:
+                    url("{!URLFOR($Resource.RCSupportPortal, 'supportPortal/img/fancybox_sprite.png')}");
+       }  
+                
+       .overLay{
+                z-index: 99;
+               
+                border: none;
+                margin: 0px;
+                padding: 0px;
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                background-color: rgb(0, 0, 0);
+                opacity: 0.2;
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+                /* IE 5-7 */
+                filter: alpha(opacity=60);
+                /* Netscape */
+                -moz-opacity: 0.6;
+                /* Safari 1.x */
+                -khtml-opacity: 0.6;
+                /*cursor: wait;*/
+                position: fixed;
+       }           
+  </style>       
+      <script type="text/javascript">
+        function jsfind()
+        {
+         redirectToLAR();
+        }
+     </script>     
+       <script>
+            function hideOverlay() {
+                try {document.getElementById('loadingPanel').style.display = 'none';} catch(x){}
+            }
+            function showOverlay() {
+                try {document.getElementById('loadingPanel').style.display = 'block';} catch(x){}
+            }
+        </script>
+        <script>
+            function closePanel() {
+                //alert('hdkjfhkjasdfkja');
+                //closePan = true;
+                //document.getElementById('popup').style.display='none';
+                redirectToRTN();
+            }
+        </script>       
+        </Head>
+        <body style="width:100%;height:100%;">
+            <div class='overLay'><div style="display:none;" id="loadingPanel">Please wait...</div></div>
+            <div class="positionCSS"></div>
+            <apex:form >
+                 <apex:actionFunction name="redirectToRTN" action="{!redirectTORTNCall}" />  
+                 <apex:actionFunction name="redirectToLAR" action="{!redirectTOLARCall}" />
+                    <apex:outputPanel id="popup">
+                    <apex:outputPanel styleClass="popupBg" layout="block" rendered="{!displayPopUp}"/>                
+                        <apex:outputPanel id="para1" styleClass="popup" layout="block" rendered="{!displayPopUp}">
+                            <a class="fancybox-item fancybox-close" href="Javascript:void(0);"
+                            title="Close" onclick="closePanel();return false;">&nbsp;</a>
+                            <div class ="infopanel">
+                             <div id = "para1">                       
+                                    <span>                       
+                                        <span><b>o Campaign LARs:</b></span>
+                                            <ul type="square">
+                                                <li>Identify the Lead Source/s for Leads tied to this Campaign</li>
+                                            </ul>
+                                            <ul type="circle">
+                                                <ul>
+                                                    <li>If all Leads will be flagged as a single Lead Source, see if the LAR for that Lead Source is suitable</li>
+                                                </ul>
+                                                <ul>
+                                                    <li>Do not create an LAR if the Lead Source LAR would route the Leads as desired</li>
+                                                </ul>
+                                            </ul>                                    
+                                            <ul type="square">
+                                                <li>If the Lead Source routing only partially fulfills the Lead Routing need, then create the necessary LAR on the Campaign, but don’t create any redundant LARs
+                                                </li>
+                                            </ul>
+                                            <ul>
+                                                <ul>
+                                                    <li>Example</li>
+                                                </ul>
+                                                <ul type="circle">
+                                                    <ul type="circle">
+                                                        <li>Campaign LeadGen Jan 2014 should route to CDRs and EDRs</li>
+                                                    </ul>
+                                                    <ul type="circle">
+                                                        <li>Lead Source LeadGen is routed to SDRs and EDRs</li>
+                                                    </ul>
+                                                    <ul type="circle">
+                                                        <li>Create LAR on Campaign for CDRs only, as 250+ would be routed to EDR based on the LS LAR</li>
+                                                    </ul>
+                                                </ul>
+                                            </ul>                                
+                                        <span><b>o Lead Source LARs:</b></span>
+                                            <ul type="square">
+                                                <li>Ensure there is no company size overlap for the same Lead Source</li>
+                                          </ul>                              
+                                    </span>                        
+                                    <div class="searchBtn">
+                                   <apex:commandButton status="Ajaxstatus" action="{!searchAndfind}" value="I agree to the above terms" onclick="jsfind();return false;"/> 
+                                   <apex:actionStatus id="Ajaxstatus" onStart="showOverlay();" onstop="hideOverlay();"/>
+                                  </div>
+                                </div>
+                            </div>                   
+                        </apex:outputPanel>
+                    </apex:outputPanel>                    
+                       <!-- <a class="fancybox-item fancybox-close" href="Javascript:void(0);" onclick="closePanel();return false;" title="Close">&nbsp;</a>  -->          
+              </apex:form>  
+             <apex:ListViews type="Lead_Assignment_Rules__c" />
+        </body> 
+</apex:page>

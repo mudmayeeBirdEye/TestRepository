@@ -1,0 +1,182 @@
+<apex:page controller="schedulerAdminConfiguration" showheader="false">
+    <style>
+        .tableContainer {
+            /*float: left;*/
+            height: auto;
+            width: 95%;
+            /*align: center;*/
+            text-align: left;
+            margin: 20px !important;
+            /*margin-top: 30px;
+            margin-bottom: 30px;
+            margin-left: 50px;  
+            margin-right: 50px;*/
+        }
+        
+        #advisor {
+            color: Black;
+            width: 100%;
+        }
+        
+        #advisor td {
+            background-color: #DDDEDF;
+            vertical-align: top;
+            color: black;
+            border: 0px solid black;
+            border-collapse: collapse;
+            /*border-radius: 2px 2px 2px 2px;*/
+            /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);*/
+            line-height: 18px;
+            z-index: 1000;
+            text-align: left;
+            /*width: 10%;*/
+            padding: 6px;
+            font-family: Georgia;
+            font-size: 12px;
+        }
+        
+        .tableClass {
+            /*width: 850px;*/
+            font-family: Georgia;
+            font-size: 12px;
+            padding: 10px;
+        }
+        
+        .header {
+            font-size: 25px;
+            display: block;
+            font-family: Georgia;
+            margin-left: 500px;
+        }
+        
+        .preRequiredLabel:after {
+            content: " | ";
+            color: red;
+        }
+    </style>
+    <script>
+      /*call remove method from controller*/
+      function removeAdvisor(Id){
+           alert(Id);
+           removeAdvisor();
+      }
+    </script>
+    <apex:form >
+        <br />
+        <apex:commandLink value="Brand " action="{!brandLink}" style="margin-left: 40px;font-size: 15px;font-weight:bold">>></apex:commandLink>
+        <apex:actionFunction name="callAction" action="{!showTemplates}" />
+        <apex:outputpanel layout="block" styleclass="header">
+            <apex:image value="/servlet/servlet.ImageServer?id=015Q0000000Maft&oid=00DQ0000003Mh6u&lastMod=1369288826000" 
+                        height="45px" width="45px" />Scheduler Admin Configuration
+        </apex:outputpanel>
+        <table style="padding: 6px;width: 100%;">
+            <tr>
+                <td>
+                    <apex:pageBlock rendered="{!isresourcedata}">
+                        <apex:pageBlockSection columns="1">
+                            <apex:pageBlockSectionItem >
+                                <apex:PageBlockTable value="{!lstResourcePool}" var="configure" id="theTable2" rowClasses="odd,even" styleClass="tableClass">
+                                    <apex:facet name="header">Resource Pool List</apex:facet>
+                                    <apex:column >
+                                        <apex:facet name="header">Action</apex:facet>
+                                        <apex:commandLink value="Remove" id="theCommandLinkDelete"
+                                                          onclick="if(!confirm('Are you sure to remove this Resource Pool?')) return false;"
+                                                          action="{!removeRpRecord}">
+                                            <apex:param name="Name" value="{!configure.id}" />
+                                        </apex:commandLink>&nbsp;|&nbsp;
+                                        <apex:commandLink value="Edit" id="theCommandLinkEdit" 
+                                                          action="{!editResourcePoolRecords}">
+                                            <apex:param name="ResourcePoolName" value="{!configure.id}" />
+                                        </apex:commandLink>
+                                    </apex:column>
+                                    
+                                    <apex:column >
+                                        <apex:facet name="header">Brand Name</apex:facet>
+                                        <apex:outputText value="{!configure.Brand_Name__r.Name}" />
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Resource Pool Name</apex:facet>
+                                        <apex:commandLink value="{!configure.Name}" id="toBrandScreen"
+                                            action="{!toResourceScreen}">
+                                            <apex:param name="Resourceid" value="{!configure.id}" />
+                                        </apex:commandLink>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Dispatch Admin</apex:facet>
+                                        <apex:outputText value="{!configure.Dispatch_Admin__r.Name}" />
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Resource Pool Email</apex:facet>
+                                        <apex:outputText value="{!configure.Resource_Pool_Email__c}" /> 
+                                    </apex:column>                                  
+                                    <apex:column >
+                                        <apex:facet name="header">Criteria</apex:facet>
+                                        <apex:outputText value="{!configure.Criteria__c}" />
+                                    </apex:column>                                  
+                                    <apex:column >
+                                        <apex:facet name="header">No of User DLs</apex:facet>
+                                        <apex:outputText value="{!configure.No_of_User_DLs__c}" />
+                                    </apex:column>                                   
+                                    <apex:column >
+                                        <apex:facet name="header">Active/Inactive Status</apex:facet>
+                                        <apex:inputCheckbox value="{!configure.Active__c}" disabled="true" />
+                                    </apex:column>  
+                                    
+                                    <apex:column >
+                                        <apex:facet name="header">Preferred Language</apex:facet>
+                                         <apex:outputText value="{!configure.Preferred_Language__c}"  />
+                                    </apex:column>                                                                
+                                </apex:PageBlockTable>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                </td>
+            </tr>
+        </table>
+        <table class="tableContainer">
+            <tr>
+                <td>
+                    <fieldset id="advisor">
+                        <legend style="font-family: Georgia; font-size: 14px;">Resource Pool Configuration</legend>
+                        <apex:pageblock >
+                            <apex:pageblocksection >
+                                <apex:pageblocksectionItem >
+                                    <apex:outputtext value="Brand Name" styleclass="preRequiredLabel" />
+                                    <apex:inputField value="{!objResourcePool.Brand_Name__c}" />
+                                </apex:pageblocksectionItem>
+                                <apex:pageblocksectionItem >
+                                    <apex:outputtext value="Dispatch Administrator" styleclass="preRequiredLabel" />
+                                    <apex:inputfield value="{!objResourcePool.Dispatch_Admin__c}" />
+                                </apex:pageblocksectionItem>
+                                <apex:pageblocksectionItem >
+                                    <apex:outputtext value="Preferred Langauge" styleclass="preRequiredLabel" />
+                                    <apex:inputField value="{!objResourcePool.Preferred_Language__c}" />
+                                </apex:pageblocksectionItem>    
+                                <apex:pageblocksectionItem >
+                                    <apex:outputtext value="Resource Pool Email Address" styleclass="preRequiredLabel" />
+                                    <apex:inputField value="{!objResourcePool.Resource_Pool_Email__c}" />
+                                </apex:pageblocksectionItem>    
+                                <apex:pageblocksectionItem >
+                                    <apex:outputtext value="Number of DLs/User" styleclass="preRequiredLabel" />
+                                    <apex:outputpanel >
+                                        <apex:inputfield value="{!objResourcePool.Criteria__c}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <apex:inputField value="{!objResourcePool.No_of_User_DLs__c}" />
+                                    </apex:outputpanel>
+                                </apex:pageblocksectionItem>                                                                                             
+                                <apex:pageblocksectionItem >
+                                    <apex:outputtext value="Active/Inactive Status" styleclass="preRequiredLabel" />
+                                    <apex:inputfield value="{!objResourcePool.Active__c}" />
+                                </apex:pageblocksectionItem>                                
+                            </apex:pageblocksection>
+                        </apex:pageblock>
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <apex:commandButton value="Save Resource Pool" style="margin-left:50%;" action="{!saveResourcePool}" />
+                </td>
+            </tr>
+        </table>
+    </apex:form>
+</apex:page>

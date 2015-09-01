@@ -1,0 +1,93 @@
+<apex:page extensions="TabSharingCtrl" id="thePage" standardController="Intranet_Main_Tab__c"  cache="false" > <!-- action="{!userValidate}" -->
+<style>
+#overlay
+{
+//background: url("{!URLFOR($Resource.loading)}") no-repeat scroll top center gray;
+background: url("/img/loading.gif") no-repeat scroll center center gray;
+border: 0px solid #000000;
+bottom: 0;
+left: 0;
+opacity: 0.75;
+filter: alpha(opacity=40);
+position: absolute;
+top: 0;
+visibility: hidden;
+width: 100%;
+z-index: 1000;
+zIndex:1000;
+}
+</style>
+<script>
+function showOverlay() {
+    var o = document.getElementById('overlay');
+    o.style.visibility = 'visible';
+}
+
+function hideOverlay() {
+    var o = document.getElementById('overlay');
+    o.style.visibility = 'hidden';
+}
+</script>
+
+<script  type="text/javascript">
+    function addShare(){
+  //window.showModalDialog('/apex/shareTab?parentid={!$CurrentPage.parameters.id}','' ,"dialogWidth:800px; dialogHeight:300px; center:yes | no | 1 | 0 | on | off") ;
+	 try{
+   	var mywindow = window.open('/apex/shareTab?parentid={!$CurrentPage.parameters.id}','','height=450,width=600,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
+    mywindow.focus();
+    //window.open('/apex/shareTab?parentid={!$CurrentPage.parameters.id}','popUpWindow','height=500,width=400,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');		
+     } catch (ex){
+   		alert(ex);
+     }
+   }
+</script>
+
+
+ <apex:form id="theForm" rendered="{!isValidUser}">
+	<apex:pageMessages />
+ <apex:pageBlock title="Tab Sharing" id="pgb">
+ <apex:outputPanel id="out">
+	<!--apex:pageBlockTable value="{!TabShare}"  var="tab" id="theTable">
+     
+     <apex:column width="3%">
+     <apex:facet name="header">Action</apex:facet>
+         <apex:inputCheckbox value="{!tab.isDel}" rendered="{!IF(tab.tabSh.RowCause == 'Owner', false , true)}"/>
+     </apex:column>
+     
+     <apex:column >
+     <apex:facet name="header">Reason</apex:facet>
+         {!tab.tabSh.RowCause}
+     </apex:column>
+     
+     <apex:column >
+     <apex:facet name="header">Type</apex:facet>
+         {!tab.userType}
+     </apex:column>
+     
+     <apex:column >
+     <apex:facet name="header">Name</apex:facet>
+         {!tab.Name}
+     </apex:column>
+     
+     <apex:column >
+     <apex:facet name="header">Access Level</apex:facet>
+         {!tab.tabSh.AccessLevel}
+     </apex:column>
+     
+ </apex:pageBlockTable> -->   
+ </apex:outputPanel>
+ 
+ 
+ <!-- <apex:pageBlockButtons id="theblkBtn" location="Top">
+           <!-- <apex:commandButton value="Add" id="onAdd" onclick="addShare();"/>-->
+          <!--   <input type="button" value="Add" onclick="addShare();" class="btn"/>
+           <!-- <apex:commandButton value="Expand List" id="onExpand"/>-->
+          <!--   <apex:commandButton value="Cancel" id="onCancel" action="{!onCancel}"/>
+            <apex:commandButton value="Delete Sharing" id="onDelete" action="{!delShare}" reRender="theForm" status="del" >
+            <apex:actionStatus id="del" onstart="showOverlay();"  onStop="hideOverlay();"/>
+            </apex:commandButton>
+            </apex:pageBlockButtons> --> 
+ </apex:pageBlock> 
+<div id="overlay"></div>   
+</apex:form> 
+</apex:page>

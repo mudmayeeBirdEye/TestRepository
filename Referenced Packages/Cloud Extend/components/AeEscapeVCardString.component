@@ -1,0 +1,7 @@
+<!-- 
+    Component to escape vCard strings.
+    The code is based on Force.com labs app at http://appexchange.salesforce.com/listingDetail?listingId=a0N30000003JUzIEAW 
+-->
+<apex:component controller="ce4sf20_001.AeEscapeVCardStringController" >
+<apex:attribute name="vcString" assignTo="{!inputText}" description="The vCard string to be escaped." type="String" 
+required="true"/>{!EscapedText}</apex:component>

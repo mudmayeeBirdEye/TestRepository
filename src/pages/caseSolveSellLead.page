@@ -1,0 +1,225 @@
+<apex:page standardController="Lead" extensions="CaseSolveSellLeadController"   showHeader="false" sidebar="false"  tabStyle="Lead" standardStylesheets="true">
+
+<apex:sectionHeader title="Solve then Sell" subtitle="User ID {!UserId}"/>
+<apex:pagemessage summary="This UserId was not found in SFDC." severity="error" strength="2" rendered="{!userIdNotFound}" />
+   
+<apex:form >
+
+
+<apex:pageBlock title="Created Lead" >
+<!-- <apex:outputPanel layout="block" style="overflow:auto;height:250px" > --> 
+   <apex:pageBlockTable value="{!leadList }" var="r" id="refundTable" >
+           <apex:column rendered="false">
+            <apex:facet name="header">LeadSource</apex:facet>
+                <apex:outputText value="{!r.LeadSource}" />
+            </apex:column> 
+           <apex:column >
+                <apex:facet name="header">Name</apex:facet>
+                <apex:outputText value="{!r.Name}" />
+            </apex:column>
+            
+            <apex:column >
+                <apex:facet name="header">Company Name</apex:facet>
+                <apex:outputText value="{!r.company}"/>                  
+            </apex:column>
+             <apex:column >
+                <apex:facet name="header">Email Address</apex:facet>
+                <apex:outputText value="{!r.Email}"/>                  
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Phone #</apex:facet>
+                <apex:outputText value="{!r.Phone}"/>                  
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Support Agent's Email Address</apex:facet>
+                <apex:outputText value="{!r.AgentEmailAddress}"/>                  
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Lead Status</apex:facet>
+                <apex:outputText value="{!r.Status}"/>                  
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Opp. Stage</apex:facet>
+                <apex:outputText value="{!r.StageName}"/>                  
+            </apex:column>
+             <apex:column rendered="false" >
+                <apex:facet name="header">User Id</apex:facet>
+                <apex:outputText value="{!userid}"/>                  
+            </apex:column>
+            <apex:column rendered="false">
+                <apex:facet name="header">Edit</apex:facet>
+                <a href="solveselllead?userid={!userID}&id={!r.Id}">Edit</a>                
+            </apex:column>            
+     </apex:pageBlockTable>
+ <!-- </apex:outputPanel>  -->
+</apex:pageBlock>
+ 
+
+    <apex:pageBlock title="Lead Creation" mode="detail" rendered="true" >
+   
+    <apex:pageMessages /> 
+    <apex:panelGrid columns="2">
+    
+    <apex:outputLabel value=" First Name *" for="Firstname" />
+    <apex:inputText id="category" value="{!newlead.FirstName}"    />
+    
+    <apex:outputLabel value="Last Name *" for="Lastname" />
+    <apex:inputText id="category1" value="{!newlead.LastName}" />
+    
+    <apex:outputLabel value="Company Name *" for="Company" /> 
+    <apex:inputfield id="company" value="{!newlead.Company}"  required="false" />  
+    
+    <apex:outputLabel value="Email Address *" for="Email" />   
+    <apex:inputText id="Email" value="{!newlead.Email}" />
+    
+    <apex:outputLabel value="Contact Phone Number *" for="Phone" />   
+    <apex:inputText id="Phone" value="{!newlead.Phone}" />
+    
+    <apex:outputLabel value="Lead source:" for="type" rendered="false"/> 
+    <apex:inputfield id="type" value="{!newlead.LeadSource}"  rendered="false"/>
+    
+    <apex:outputLabel value="Support Agent's Email Address *" for="type" /> 
+    <apex:inputText id="Phone1" value="{!newlead.Agent_Email_Address__c}"/>
+    
+   
+    <apex:outputLabel value="Sales Agent" for="theLookup"/>
+    <apex:inputField id="theLookup" value="{!newlead.Sales_Agent_User_Lookup__c}"/>
+
+    
+    </apex:panelGrid>
+    <BR/>
+    <apex:outputPanel rendered="true">
+         <apex:commandButton action="{!saveLead}" value="Save Lead"/>         
+     </apex:outputPanel>
+</apex:pageBlock>
+    </apex:form>  
+    
+
+<!--
+For PRODUCTION
+<form action="https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
+<input type=hidden name="oid" value="00D80000000aRUX">
+------
+For SANDBOX
+<form action="https://tapp0.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
+<input type="hidden" name="oid" value="00DT0000000J9lZ" />
+-->
+<apex:outputPanel rendered="false">
+<form action="https://tapp0.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST" >
+<input type="hidden" name="oid" value="00D80000000aRUX" />
+
+<script>
+    function chkform()
+    {
+    
+        var getFName = document.getElementById("first_name");
+        var getLName = document.getElementById("last_name");
+        var getemail = document.getElementById("email");
+        var getcompany = document.getElementById("company");
+        var getphone = document.getElementById("phone");
+        var getAEmail= document.getElementById("00N80000004heNh");
+        var getretURL = document.getElementById("retURL");
+        var url = window.location;
+
+       // alert(getretURL );
+       // alert(url);
+        getretURL.value = url;
+        if(getFName.value == ''){
+            alert('Please provide First name');
+            return false;
+        }
+        if(getLName.value == ''){
+            alert('Please provide Last name');
+            return false;
+        }
+        if(getemail.value == ''){
+            alert('Please provide E-mail');
+            return false;
+        }else{
+              if(!validateEmail(getemail.value)){
+                 alert('Please Enter valid E-mail');
+                 return false;
+              }
+        
+        }
+        if(getcompany.value == ''){
+            alert('Please provide Company name');
+            return false;
+        }
+        if(getphone.value == ''){
+            alert('Please provide Phone');
+            return false;
+        }
+        if(getAEmail.value == ''){
+            alert('Please provide Support Agent Email Address');
+            return false;
+        }else{
+              if(!validateEmail(getAEmail.value)){
+                 alert('Please Enter valid Support Agent Email Address');
+                return false;
+              }
+           }
+        return true;              
+    }
+    
+    function validateEmail(email){
+          var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}$/;  
+            if(!emailPattern.test(email)){
+                //alert('Please Enter valid E-Mail');
+                return false;
+            }
+            return true;    
+     }
+    
+</script>
+    <!-- <input type="hidden" name="debug" value="1" /> -->                            
+    <!-- <input type="hidden" name="debugEmail" value="alok@simplion.com" />  -->    
+    <!-- <input type="hidden" id="retURL" name="retURL" value="http://ringcentral.box1.cs0.force.com/solveSellLead/apex/solveSellLead?userid={!UserId}" /> -->
+    <input type="hidden" id="retURL" name="retURL" value="" />
+  
+    
+    <table style="padding-left:20px;">
+        <tr>
+            <td>
+                <label for="first_name"><b>First Name</b> <font color="red">*</font></label>
+            </td>
+            <td>
+                <input  id="first_name" maxlength="40" name="first_name" size="30" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td><label for="last_name"><b>Last Name</b> <font color="red">*</font></label></td>
+            <td><input  id="last_name" maxlength="80" name="last_name" size="30" type="text" /></td>        
+        </tr>
+        <tr>
+            <td><label for="email"><b>Email</b> <font color="red">*</font></label></td>
+            <td><input  id="email" maxlength="80" name="email" size="30" type="text" /></td>        
+        </tr>
+        <tr>
+            <td><label for="company"><b>Company</b> <font color="red">*</font></label></td>
+            <td><input  id="company" maxlength="40" name="company" size="30" type="text" /></td>        
+        </tr>
+        <tr>
+            <td><label for="phone"><b>Phone</b> <font color="red">*</font></label></td>
+            <td><input  id="phone" maxlength="40" name="phone" size="30" type="text" /></td>        
+        </tr>
+        <tr>
+            <td><label for="Support Agent Email Address"><b>Support Agent Email Address</b> <font color="red">*</font></label></td>
+            <td><input  id="00N80000004heNh" maxlength="150" name="00N80000004heNh" size="30" type="text"  /></td>       
+        </tr>
+        <tr>
+            <td valign="top"><label for="Notes"><b>Notes</b></label></td>
+            <td><textarea  id="00N80000003AqlJ" name="00N80000003AqlJ" rows="5" cols="30" type="text" wrap="soft"></textarea></td>
+        </tr>  
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" name="submit" value="Save Lead" onclick="return chkform();"  /></td>
+        </tr> 
+    </table>
+    <input type="hidden" id="lead_source" name="lead_source" value="Solve then Sell" />
+    <input type="hidden" id="00N80000004Ecl8" name="00N80000004Ecl8"  value="SOLVETHENSELL" />
+    <input type="hidden" id="00N80000003S757" name="00N80000003S757" value="{!UserId}" />
+</form>
+</apex:outputPanel>
+
+</apex:page>

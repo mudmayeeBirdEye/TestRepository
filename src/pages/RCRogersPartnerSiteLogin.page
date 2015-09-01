@@ -1,0 +1,45 @@
+<apex:page showHeader="false" sidebar="false"  controller="RCSiteLoginController" id="loginComponent" >
+ <apex:composition template="{!$Site.Template}"> 
+    <apex:define name="body">  
+     <div class="login">
+                      <apex:form id="loginForm" forceSSL="true">
+                       <apex:outputPanel >
+                            <apex:pageMessages id="error" />
+                        </apex:outputPanel>
+                            <!-- Login form fields -->
+                            <fieldset>
+                                <ul>
+                                    <li>
+                                        <label for="userName">User Name</label>
+                                        <div class="input"><div>
+                                               <apex:inputText id="username" value="{!username}" size="40"/>
+                                        </div></div>
+                                    </li>
+                                    <li>
+                                        <label for="userPass">Password</label>
+                                        <div class="input"><div>
+                                              <apex:inputSecret id="password" value="{!password}" size="40" />
+                                        </div></div>
+                                    </li>
+                                   <!-- <li>
+                                        <input type="checkbox" id="rememberUser" name="rememberUser" />
+                                        <label for="rememberUser">Remember User Name</label>
+                                    </li>
+                                    -->
+                                </ul>
+                            </fieldset>
+                            <!-- End login form fields -->
+                            <!-- Form submit -->
+                            <div class="submit clearfix">
+                                <!-- <input type="button" value="Login" id="submit" /> -->
+                                 <apex:commandButton action="{!login}" value="{!$Label.site.login_button}" id="loginButton" /> 
+                                <a class="forgot_pass" href="{!$Page.RCForgotPassword}" title="Forgot your password?">Forgot your password?</a>
+                                
+                            </div>
+                            <!-- End submit -->
+                        </apex:form>
+                    </div>
+
+</apex:define>
+</apex:composition>
+</apex:page>

@@ -1,0 +1,653 @@
+<!-----------------------------------------------------------------------------
+* Project Name..........: RingCentral - Self Serve Scheduling                 *
+* File..................: bookIAppointment.Page                               *
+* Version...............: 1.0                                                 *
+* Created by............: Simplion Technologies                               *
+* Last Modified by......: Simplion Technologies                               *
+* Description...........: This page is used to let Customer and Sales Support *
+*                         User to Book Implementation Appointment.            *
+------------------------------------------------------------------------------>
+<apex:page controller="extAppointment" id="pid" showHeader="true"
+    standardStylesheets="true" docType="html-5.0" cache="true">
+    <apex:pageMessages />
+    <head>
+<title>Self Schedule Appointment</title>
+<script src="{!URLFOR($Resource.ImplementationScheduler, '/jquery.min.js')}"></script>
+<script src="{!URLFOR($Resource.ImplementationScheduler, '/jquery-ui.min.js')}"></script>
+<apex:stylesheet value="{!URLFOR($Resource.ImplementationScheduler, '/jquery-ui.css')}"/>
+<!-- <script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<link rel="stylesheet"
+    href="https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css" />
+<script
+    src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script> -->
+<script type="text/javascript">             
+           function isNumberKey(evt){
+                  return false;
+           }    
+           
+           function hideAvailableNew() { 
+                 $("#atsdiv").hide();
+                 $("#applendiv").hide();
+                $("#timezonediv").hide();
+                
+           }               
+           function hideAvailable() { 
+                 $("#atsdiv").hide();
+                 $("#applendiv").hide();
+               // $("#preflangdiv").hide();
+                $("#timezonediv").hide();
+                //$("#advisorList").hide();
+                $('[id="{!$Component.fid:errorPanel}"]').hide();
+                $('[id$=d2]').val('');
+              //  $("#atsdiv").hide();
+           }         
+           function hideAvailable2() { 
+                //$("#errorForm").hide();
+                $("#atsdiv").hide();
+                //$("#advisorList").hide();
+                $('[id="{!$Component.fid:errorPanel}"]').hide();
+           }
+           function hideAvailable3() {
+                //$("#errorForm").hide();
+                $('[id="{!$Component.fid:errorPanel}"]').hide();
+                $("#atsdiv").hide();
+                $("#applendiv").hide();
+          //      $("#preflangdiv").hide();
+                $("#timezonediv").hide();
+           }
+           function disableButtonOne(component) {
+                document.getElementById(component).disabled = true;
+                document.getElementById(component).style.background = "red";
+                document.getElementById(component).className = "buttonOverlay";
+                getAppointmentLength();             
+           }
+        </script>
+<style>
+.overlay {
+    background-color: black;
+    opacity: 0.6;
+    /* Generic for Major browsers */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    /* IE 5-7 */
+    filter: alpha(opacity = 60);
+    /* Netscape */
+    -moz-opacity: 0.6;
+    /* Safari 1.x */
+    -khtml-opacity: 0.6;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    zIndex: 99;
+}
+
+.buttonOverlay {
+    background-color: red;
+    opacity: 0.6;
+    /* Generic for Major browsers */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    /* IE 5-7 */
+    filter: alpha(opacity = 60);
+    /* Netscape */
+    -moz-opacity: 0.6;
+    /* Safari 1.x */
+    -khtml-opacity: 0.6;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    zIndex: 9999;
+}
+
+.ui-datepicker {
+    height: 200px;
+    width: 175px;
+    font-size: 12px;
+    font: Bold
+}
+
+/*Font-Labels*/
+.formLabel {
+    color: #363636;
+    font-size: 15px;
+    font: Bold;
+    font-family: arial, verdana, geneva;
+    padding: 8px;
+    text-align: left;
+    text-transform: none;
+}
+
+.outputLabel {
+    color: #666362;
+    font-family: arial, verdana, geneva;
+    font-size: 17px;
+}
+
+.formLabel2 {
+    color: red;
+    font-size: 15px;
+    font: Bold;
+    font-family: arial, verdana, geneva;
+    padding: 8px;
+}
+
+.textMessage {
+    font-size: 20px;
+    font-family: arial, verdana, geneva;
+    color: cornflowerblue;
+}
+
+.upperdiv {
+    width: 100%;
+    height: 60px;
+    background-color: white;
+    height: 60px;
+    /*border: 1px solid black;*/
+    padding-left: 20px;
+    padding-right: 20px;
+    /* margin-left: 21%; */
+    box-shadow: 0px 0px 35px 5px lightgray inset;
+    border-radius: 10px 10px 0px 0px;
+}
+
+/*div style*/
+div.ex {
+    box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+    background: #f8f8f8;
+    /*border: 1px solid black;*/
+    border-radius: 0px 0px 10px 10px;
+    outline: none;
+    /* margin-left: 250px; */
+    width: 100%;
+    /* padding: 45px; */
+    padding: 20px;
+  /*  min-height: 270px !important;
+    height: auto; */
+
+}
+
+.formInputField {
+    color: #363636;
+    font: normal 13px/18px Arial;
+    padding: 1px;
+    padding-left: 5px;
+    text-transform: none;
+    width: 190px;
+    height: 20px;
+    outline: none;
+    border: solid 2px #999;
+    border-radius: 5px;
+}
+
+.formInputField2 {
+    color: #363636;
+    font: normal 13px/18px Arial;
+    padding: 1px;
+    padding-left: 5px;
+    text-align: center;
+    text-transform: none;
+    width: 200px;
+    outline: none;
+    border: solid 2px #999;
+    border-radius: 5px;
+}
+
+.msgPanelCls {
+    height: 30px;
+    width: auto;
+    border: 1px solid #3399FF;
+    padding: 2px;
+    background: #FFFFCC;
+    font-weight: bolder !important;
+    border-radius: 5px;
+}
+
+.btn {
+    margin: 0px !important;
+}
+
+.requiredfield {
+    width: 1px;
+    height: 21px;
+    background: #F00;
+    /*padding-top: 5px;
+            padding-bottom: 3px;*/
+    float: left;
+    margin-top: 0.5%;
+    margin-right: 2px;
+    padding: 1px;
+}
+
+.homePage {
+    position: absolute;
+    top: 35px;
+    left: 15px;
+    /*right: -55px;*/
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    z-index: 8040;
+    /*background-image: url('https://cs3.salesforce.com/resource/1375341882000/AppointmentScheduling.gif');*/
+}
+
+.fancybox-close {
+    position: absolute;
+    top: 8px;
+    right: -55px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    z-index: 8040;
+    background-image: url({!URLFOR($Resource.RCSupportPortal, 'supportPortal/img/fancybox_sprite.png')});
+}
+</style>
+<script>
+    function fngetPreferedLangMethod(){
+            getPreferedLangMethod();
+            //hideAvailableNew();
+    }
+</script>
+    </head>
+    <apex:detail subject="{!contactId}" relatedlist="false" />
+    <a href="/{!contactId}" style="cursor: wait;"><div class="overlay"></div></a>
+    <div
+        style="position: fixed; z-index: 99999; top: 2%; left: 20%; width: 59.5%;">
+        <div class="upperdiv" align="center">
+            <p style="font: Bold 25px arial; padding-top: 12px;">Welcome
+                {!brandDetails.Name}</p>
+        </div>
+        <div class="ex">
+            <apex:outputPanel id="masterPanel">
+                <apex:form rendered="{!dformdisabled}" id="fid">
+                <apex:actionFunction status="counterStatus" name="getPreferedLangMethod" action="{!getPreferedLangMethod}" rerender="ASlot" onComplete="hideAvailableNew();hideOverlay();"/>
+                    <div align="center" id="divex">
+                        <apex:outputpanel id="ASlot">
+                            <apex:outputpanel id="errorPanel"
+                                rendered="{!(OR(errorMsg1,errorMsg))}">
+                                <div style="width: 100%;">
+                                    <div class="msgPanelCls">
+                                        <div style="float: left;">
+                                            <apex:image style="vertical-align:middle; width:27px; height:26px;margin-top: 2px;background: url(https://c.cs3.visual.force.com/img/msg_icons/info24.png) no-repeat;"
+                                                url="/s.gif" rendered="{!(OR(errorMsg1,errorMsg))}" />
+                                        </div>
+                                        <div style="float: left; margin-top: 6px;">
+                                            <apex:outputpanel style="vertical-align:middle; color: red; font: 12px arial; padding:2px;"
+                                                id="errorForm" rendered="{!(OR(errorMsg1,errorMsg))}">{!errorMessage}</apex:outputpanel>
+                                        </div>
+                                    </div>
+                                    <div style="height: 10%;">&nbsp;</div>
+                                </div>
+                            </apex:outputpanel>
+                            <div>
+                                <span class="formLabel"
+                                    style="font-size: 18px; text-decoration: underline"> <b>Book
+                                        an Implementation Appointment</b>
+                                </span>
+                            </div>
+                            <div style="height: 20px"></div>
+                            <div style="margin-left: 5%; margin-right: 5%;">
+                                <div>
+                                    <div
+                                        style="float: left; width: 50%; text-align: center; margin-left: 60px;">
+                                        <b><apex:outputlabel styleClass="formLabel"
+                                                value="Brand Name" /></b>
+                                    </div>
+                                    <div class="outputLabel" style="text-align: left;">
+                                        <b><apex:outputfield value="{!brandDetails.Name}" /></b>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div
+                                        style="float: left; width: 50%; text-align: center; margin-left: 46px; margin-right: 14px;">
+                                        <b><apex:outputlabel styleClass="formLabel"
+                                                value="Brand Id" /></b>
+                                    </div>
+                                    <div class="outputLabel" style="text-align: left;">
+                                        <b><apex:outputfield styleClass="outputLabel"
+                                                value="{!brandDetails.Brand_Id__c}" /></b>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div
+                                        style="float: left; width: 50%; text-align: center; margin-left: 58px; margin-right: 3px;">
+                                        <b><apex:outputlabel styleClass="formLabel"
+                                                value="Buffer Days" /></b>
+                                    </div>
+                                    <div class="outputLabel" style="text-align: left;">
+                                        <b><apex:outputfield styleClass="outputLabel"
+                                                value="{!brandDetails.Buffer_Days__c}" /></b>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="height: 20px"></div>
+                            <div style="font: 12px Verdana; padding: 8px;">
+                                <apex:outputlabel >Please select an appointment date below for an implementation call with RingCentral.</apex:outputlabel>
+                            </div>
+                            <div></div>
+                           <!--  <div id="avbcontactsdiv"
+                                style="margin-left: 5%; margin-right: 5%;">
+                                <div style="width: 100%; height: 40px;">
+                                    <div
+                                        style="float: left; width: 30%; text-align: left; margin-left: 80px;">
+                                        <b><apex:outputlabel value="Associated Contact"
+                                                styleClass="formLabel" /></b>
+                                    </div>
+                                    <div style="float: left; text-align: left; width: 55%">
+                                        <div class="requiredfield"></div>
+                                        <div style="float: left; text-align: left;">
+                                            <apex:selectList value="{!associatedContact}" size="1"
+                                                styleClass="formInputField2"
+                                                onclick="hideAvailable();return false;"
+                                                style="width: 110% !important;">
+                                                <apex:selectOptions value="{!avbContacts}" />
+                                            </apex:selectList>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                           
+                             <div id="avbcontactsdiv"
+                                style="margin-left: 5%; margin-right: 5%;">
+                                <div style="width: 100%; height: 40px;">
+                                    <div
+                                        style="float: left; width: 30%; text-align: left; margin-left: 80px;">
+                                        <b><apex:outputlabel value="Associated Contact"
+                                                styleClass="formLabel" /></b>
+                                    </div>
+                                    <div style="float: left; text-align: left; width: 55%">
+                                        <div class="requiredfield"></div>
+                                        <div style="float: left; text-align: left;">
+                                            <apex:selectList value="{!associatedContact}" size="1" 
+                                                styleClass="formInputField2" onChange="fngetPreferedLangMethod();"
+                                                style="width: 110% !important;">
+                                                <apex:selectOptions value="{!avbContacts}"  />
+                                            </apex:selectList>
+                                            <apex:actionstatus id="counterStatus">
+                                            <apex:facet name="start">
+                                                <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb; height:100%;opacity:0.65;width:105%;">
+                                                    <div class="waitingHolder" style="top: 150px; width: 100px;margin-top:100px;">
+                                                    <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                                                    <span class="waitingDescription">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </apex:facet>
+                                        </apex:actionstatus>
+                                        </div> 
+                                    </div> 
+                                </div>
+                            </div>
+                            <!-- Start here for new language--- -->
+                                 <div id="preflangdiv" style="margin-left: 5%; margin-right: 5%;">
+                                    <apex:outputPanel id="Results" >
+                                         <div style="width: 100%; height: 40px;">
+                                            <div style="float: left; width: 30%; text-align: left; margin-left: 80px;">
+                                                <b><apex:outputlabel value="Preferred Language" styleClass="formLabel" /></b>
+                                            </div>
+                                            <div style="float: left; text-align: left; width: 55%">
+                                                <div class="requiredfield"></div> 
+                                                <div style="float: left; text-align: left;"  >
+                                                    <apex:selectList value="{!preferredLanguage}" size="1" disabled="{!isChangeContact}" id="prefLang"
+                                                        styleClass="formInputField2" ONCHANGE="hideAvailable();return false;">
+                                                        <apex:selectOptions value="{!avbPrefLanguage}" />
+                                                    </apex:selectList>
+                                                    
+                                                </div>  
+                                            </div>
+                                            
+                                        </div>
+                                    </apex:outputPanel>                            
+                                </div>
+<!--                                 <div id="timezonediv" style="margin-left: 5%; margin-right: 5%;">
+                                    <apex:outputPanel id="Results1">
+                                         <div style="width: 100%; height: 40px;">
+                                            <div style="float: left; width: 30%; text-align: left; margin-left: 80px;">
+                                                <b><apex:outputlabel value="Time Zone" styleClass="formLabel" /></b>
+                                            </div>
+                                            <div style="float: left; text-align: left; width: 55%">
+                                                <div class="requiredfield"></div> 
+                                                <div style="float: left;" rendered="{!isChangeContact}">
+                                                    <apex:selectList value="{!timeZone}" size="1"
+                                                        styleClass="formInputField2" >
+                                                        <apex:selectOptions value="{!avbTimeZone}" />
+                                                    </apex:selectList>
+                                                </div>  
+                                            </div> 
+                                            <div style="float: left; margin-left: -22.5%">
+                                                    <apex:actionStatus id="availableSlotStatus"
+                                                        style="align:center; padding: 1%;">
+                                                        <apex:facet name="start">
+                                                            <apex:commandButton style="width: 99px; height: 25px;"
+                                                                value="Processing...." rerender="ASlot"
+                                                                status="availableSlotStatus" disabled="true" />
+                                                        </apex:facet>
+                                                        <apex:facet name="stop">
+                                                            <apex:commandButton style="width: 99px; height: 25px;"
+                                                                value="Get Time Slots" action="{!AvailabletimeSlot}"
+                                                                rerender="ASlot" status="availableSlotStatus" />
+                                                        </apex:facet>
+                                                    </apex:actionStatus>
+                                                </div> 
+                                        </div>
+                                    </apex:outputPanel>                            
+                                </div> -->
+                                <!--new start end here ---- -->
+                            <div id="advisorList" style="margin-left: 5%; margin-right: 5%;">
+                                <apex:outputpanel rendered="{!isAdvisorAvailable}">
+                                    <!-- <apex:outputpanel > -->
+                                    <div style="width: 100%; height: 40px;">
+                                        <div
+                                            style="float: left; width: 30%; text-align: left; margin-left: 80px;">
+                                            <b><apex:outputlabel value="Available Advisors"
+                                                    styleClass="formLabel" /></b>
+                                        </div>
+                                        <div style="float: left; text-align: left; width: 55%">
+                                            <div
+                                                style="width: 3px; float: left; border: 1px solid white;"></div>
+                                            <div style="float: left; text-align: left;">
+                                                <apex:selectList value="{!selectedAdvisor}" size="1"
+                                                    styleClass="formInputField2"
+                                                    onclick="hideAvailable3();return false;">
+                                                    <apex:selectOptions value="{!avbAdvisors}" />
+                                                </apex:selectList>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </apex:outputpanel>
+                            </div>
+                            <div style="margin-left: 5%; margin-right: 5%;">
+                                <div style="width: 100%; height: 40px;">
+                                    <div
+                                        style="float: left; width: 30%; text-align: left; margin-left: 80px;">
+                                        <b><apex:outputlabel value="Appointment Date "
+                                                styleClass="formLabel" /></b>
+                                    </div>
+                                    <div style="float: left; text-align: left; width: 55%">
+                                        <div class="requiredfield"></div>
+                                        <div style="float: left; text-align: left;">
+                                            <apex:inputText value="{!stringobjDate}" id="d2"
+                                                styleClass="formInputField" onkeydown="return false;"
+                                                onclick="hideAvailable();return false;" />
+                                        </div>
+                                        <div style="margin-left: 59.5%">
+                                            <apex:actionStatus id="appointmentLengthStatus"
+                                                style="align:center; padding: 1%;">
+                                                <apex:facet name="start">
+                                                    <apex:commandButton style="width: 99px; height: 25px;"
+                                                        value="Processing...." rerender="ASlot"
+                                                        status="appointmentLengthStatus" disabled="true" />
+                                                </apex:facet>
+                                                <apex:facet name="stop">
+                                                    <apex:commandButton style="width: 99px; height: 25px;"
+                                                        value="Get Duration" action="{!AppointmentLength}"
+                                                        rerender="ASlot" status="appointmentLengthStatus" />
+                                                </apex:facet>
+                                            </apex:actionStatus>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <div id="applendiv" style="margin-left: 5%; margin-right: 5%;">
+                                    <apex:outputPanel rendered="{!iappLength}">
+                                        <div style="width: 100%; height: 40px;"> 
+                                            <div
+                                                style="float: left; width: 30%; text-align: left; margin-left: 80px;">
+                                                <b><apex:outputlabel value="Appointment Length"
+                                                        styleClass="formLabel" /></b>
+                                            </div>
+                                            <div style="float: left; text-align: left; width: 55%">
+                                                <div class="requiredfield"></div>
+                                                <div style="float: left; text-align: left;">
+                                                    <apex:selectList value="{!appointmentLength}" size="1"
+                                                        styleClass="formInputField2">
+                                                        <apex:selectOptions value="{!avbAppLength}" />
+                                                    </apex:selectList>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                </div>
+<!--                                 <div id="preflangdiv" style="margin-left: 5%; margin-right: 5%;">
+                                    <apex:outputPanel rendered="{!isPrefLang}">
+                                         <div style="width: 100%; height: 40px;">
+                                            <div style="float: left; width: 30%; text-align: left; margin-left: 80px;">
+                                                <b><apex:outputlabel value="Preferred Language" styleClass="formLabel" /></b>
+                                            </div>
+                                            <div style="float: left; text-align: left; width: 55%">
+                                                <div class="requiredfield"></div> 
+                                                <div style="float: left; text-align: left;">
+                                                    <apex:selectList value="{!preferredLanguage}" size="1"
+                                                        styleClass="formInputField2">
+                                                        <apex:selectOptions value="{!avbPrefLanguage}" />
+                                                    </apex:selectList>
+                                                </div>  
+                                            </div>  
+                                        </div>
+                                    </apex:outputPanel>                            
+                                </div> -->
+                                <div id="timezonediv" style="margin-left: 5%; margin-right: 5%;">
+                                    <apex:outputPanel rendered="{!isTimeZone}">
+                                         <div style="width: 100%; height: 40px;">
+                                            <div style="float: left; width: 30%; text-align: left; margin-left: 80px;">
+                                                <b><apex:outputlabel value="Time Zone" styleClass="formLabel" /></b>
+                                            </div>
+                                            <div style="float: left; text-align: left; width: 55%">
+                                                <div class="requiredfield"></div> 
+                                                <div style="float: left;">
+                                                    <apex:selectList value="{!timeZone}" size="1"
+                                                        styleClass="formInputField2" onclick="hideAvailable2();return false;">
+                                                        <apex:selectOptions value="{!avbTimeZone}" />
+                                                    </apex:selectList>
+                                                </div>  
+                                            </div> 
+                                            <div style="float: left; margin-left: -22.5%">
+                                                    <apex:actionStatus id="availableSlotStatus"
+                                                        style="align:center; padding: 1%;">
+                                                        <apex:facet name="start">
+                                                            <apex:commandButton style="width: 99px; height: 25px;"
+                                                                value="Processing...." rerender="ASlot"
+                                                                status="availableSlotStatus" disabled="true" />
+                                                        </apex:facet>
+                                                        <apex:facet name="stop">
+                                                            <apex:commandButton style="width: 99px; height: 25px;"
+                                                                value="Get Time Slots" action="{!AvailabletimeSlot}"
+                                                                rerender="ASlot" status="availableSlotStatus" />
+                                                        </apex:facet>
+                                                    </apex:actionStatus>
+                                                </div> 
+                                        </div>
+                                    </apex:outputPanel>                            
+                                </div>
+                                <div id="atsdiv" style="margin-left: 5%; margin-right: 5%;">
+                                    <apex:outputpanel rendered="{!iformdisabled}"
+                                        id="availbleTimeSlot">
+                                        <div style="width: 100%; height: 25px;">
+                                            <div
+                                                style="float: left; width: 30%; text-align: left; margin-left: 80px;">
+                                                <b><apex:outputlabel value="Available Slots"
+                                                        styleClass="formLabel" /></b>
+                                            </div>
+                                            <div style="float: left; text-align: left; width: 55%">
+                                                <div class="requiredfield"></div>
+                                                <div style="float: left; text-align: left;">
+                                                    <apex:selectList value="{!Times}" size="1"
+                                                        styleClass="formInputField2">
+                                                        <apex:selectOptions value="{!freeSlots}" />
+                                                    </apex:selectList>
+                                                </div>
+                                                <div style="margin-left: 59.5%;">
+                                                    <apex:actionStatus id="saveStatus"
+                                                        style="align:center; padding: 1%;">
+                                                        <apex:facet name="start">
+                                                            <apex:commandButton style="width: 99px; height: 25px;"
+                                                                value="Scheduling...." rerender="masterPanel"
+                                                                status="saveStatus" disabled="true" />
+                                                        </apex:facet>
+                                                        <apex:facet name="stop">
+                                                            <apex:commandButton style="width: 99px; height: 25px;"
+                                                                value="Schedule" action="{!Onsave}"
+                                                                rerender="masterPanel" status="saveStatus" />
+                                                        </apex:facet>
+                                                    </apex:actionStatus>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div style="width: 100%; float: left;">
+                                            <apex:outputlabel value="All times are in {!timeZone}" style="color:red; font-weight: bold;" />
+                                        </div> -->
+                                    </apex:outputpanel>
+                                </div>
+                            <script type="text/javascript">                           
+                             $(function () {
+                             	var array = ["22/06/2015","24/06/2015","26/06/2015"]
+                                 var date = new Date();
+                                 var currentMonth = date.getMonth();
+                                 var currentDate = date.getDate()+{!brandDetails.Buffer_Days__c};
+                                 var currentYear = date.getFullYear();
+                                 console.log('jquery Date setting--->'+new Date(currentYear, currentMonth, currentDate));
+                                 console.log('Custome Date setting--->'+ new Date('{!currentYear}', '{!currentMonth}', '{!currentDate}'));
+                                 console.log('jequery Date setting--->'+currentYear+', '+currentMonth+', '+currentDate);
+                                 console.log('j$.datepicker.noWeekends--->'+$.datepicker.noWeekends);
+                                 var myElement = document.getElementById("{!$Component.pid:fid:d2}"); 
+                                 $('[id="{!$Component.pid:fid:d2}"]').datepicker({                    
+                                    dateFormat: "mm/dd/yy",   
+                                    beforeShowDay: $.datepicker.noWeekends,  
+                                    //minDate: new Date(currentYear, currentMonth, currentDate)
+                                    //minDate:(new Date).getTime()
+                                    //minDate: new Date('{!currentYear}', '{!currentMonth}', '{!currentDate}')   
+                                     minDate: new Date(currentYear, currentMonth, '{!currentDate}')                   
+                                 });                    
+                             });
+                        </script> 
+                        </apex:outputpanel>
+                    </div>
+                    <apex:image styleClass="homePage"
+                        url="{!$Resource.AppointmentScheduling}" onclick="homePage();" />
+                    <apex:actionFunction name="homePage" action="{!HomePage}" />
+                </apex:form>
+                <apex:form style="text-align: center;" rendered="{!tformdisabled}">
+                    <apex:outputpanel styleclass="textMessage"> Thank you {!contactDetails.Name}!</apex:outputpanel>
+                    <br />
+                    <apex:outputpanel styleclass="textMessage"> An Implementation Event has been scheduled.</apex:outputpanel>
+                    <br />
+                    <apex:outputpanel styleclass="textMessage"> A confirmation email with more information is on its way.</apex:outputpanel>
+                </apex:form>
+                <apex:form style="text-align:center;" rendered="{!bookError}">
+                    <br />
+                    <apex:outputlabel styleclass="textMessage" value="{!errorMessage}" />
+                </apex:form>
+            </apex:outputPanel>
+        </div>
+        <apex:form >
+            <apex:image styleClass="homePage"
+                url="{!$Resource.AppointmentScheduling}" onclick="homePage();" />
+            <apex:actionFunction name="homePage" action="{!HomePage}" />
+            <a class="fancybox-item fancybox-close" href="/{!contactId}"
+                title="Close"></a>
+        </apex:form>
+    </div>
+</apex:page>

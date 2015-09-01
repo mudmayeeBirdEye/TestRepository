@@ -1,0 +1,114 @@
+<apex:page standardController="Account" extensions="customerlistController"  sidebar="false" showHeader="false">
+
+<!--<style type="text/css">
+            
+body {
+   font-family: Arial, Lucida Grande, Helvetica;
+   font-size: 13px;
+}
+.font_color {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    
+}
+.font_header {
+    color: black;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 12px;
+    text-align: center;
+}
+
+.font_headerTop {
+    color: white;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 16px;
+}
+</style>
+-->
+
+<apex:form >   
+<apex:pageBlock rendered="true">
+    <apex:pageBlockTable value="{!acountList}" var="acc" id="notesTable" >
+        <apex:column width="10%">
+            <apex:facet name="header">Account Name</apex:facet>
+            
+                <!--<apex:commandLink value="{!acc.Name}" action="https://na6.salesforce.com/{!acc.account.Id}" target="_top"></apex:commandLink>-->
+                <!--<apex:commandLink value="{!acc.Name}" action="{!$Label.Organization_Instance}{!acc.account.Id}" target="_top"></apex:commandLink>-->                
+                <apex:outputLink value="/{!acc.account.Id}" target="_top">{!acc.Name}</apex:outputLink>
+                         
+         </apex:column>
+        <apex:column width="10%">
+            <apex:facet name="header">RC USER ID</apex:facet>
+            <apex:outputText value="{!acc.strRCID}">                    
+            </apex:outputText>
+        </apex:column>
+        <apex:column width="10%">
+            <apex:facet name="header">RC Account Status</apex:facet>
+            <apex:outputText value="{!acc.Status}">                    
+            </apex:outputText>
+        </apex:column>
+         <apex:column width="10%">
+            <apex:facet name="header">Paid Date</apex:facet>
+            <apex:outputText value="{!acc.PaidDate}">                    
+            </apex:outputText>
+        </apex:column>
+        <apex:column width="10%">
+            <apex:facet name="header">Brand Name</apex:facet>
+            <apex:outputText value="{!acc.Brand}">                    
+            </apex:outputText>
+        </apex:column>
+         <apex:column width="10%">
+            <apex:facet name="header">Service</apex:facet>
+            <apex:outputText value="{!acc.Service}">                    
+            </apex:outputText>
+        </apex:column>
+         <apex:column width="10%">
+            <apex:facet name="header">Tier</apex:facet>
+            <apex:outputText value="{!acc.Tier}">                    
+            </apex:outputText>
+        </apex:column>
+        <apex:column width="10%">
+            <apex:facet name="header">MRR</apex:facet>
+            <apex:outputText value="{!acc.MRR}">                    
+            </apex:outputText>
+        </apex:column>
+        <apex:column width="10%">
+            <apex:facet name="header">Is Demo Account</apex:facet>
+            <apex:outputText value="{!acc.account.Is_Demo_Account__c}">                    
+            </apex:outputText>
+        </apex:column>
+   
+        
+   </apex:pageBlockTable>
+    
+    <!-- <table border="1" width="100%" id="table2" >
+    <tr>
+        <td align="center">
+        <b><font face="Arial">Account Name</font></b></td>
+        <td align="center"><b><font face="Arial">RC USER ID</font></b></td>        
+        <td align="center"><b><font face="Arial">RC Account Status</font></b></td>
+        <td align="center"><b><font face="Arial">Brand Name</font></b></td>
+        <td align="center"><b><font face="Arial">Service</font></b></td>
+        <td align="center"><b><font face="Arial">Tier</font></b></td>   
+        <td align="center"><b><font face="Arial">MRR</font></b></td>                    
+         </tr>
+         <apex:repeat value="{!acountList}" var="r" id="refundTable" >                    
+         
+            <td align="Center">{!r.Name}</td>                            
+            <td align="Center">{!r.strRCID}</td>
+            <td align="Center">{!r.Status}</td>                            
+            <td align="Center">{!r.Brand} </td>
+            <td align="Center">{!r.Service}</td>
+            <td align="Center">{!r.Tier}</td>
+            <td align="Center">{!r.MRR}</td>
+       
+    </apex:repeat>
+    </table> 
+     -->  
+       </apex:pageBlock>                          
+   </apex:form>    
+       
+</apex:page>

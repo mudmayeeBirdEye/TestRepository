@@ -1,0 +1,88 @@
+<apex:page controller="ATTControllerNew" showHeader="false" title="Public Knowledge Base" cache="true" expires="{!cacheMaxAge}">
+<style type="text/css">
+    ul li, ol li {
+        margin-left: 0px;
+        padding-left: 0;
+        //padding-bottom:10px;
+        font-size: 15px;
+        color: #0670B4;
+        padding-bottom:5px;
+     }
+    .videoText{
+      border-bottom: 1px solid rgb(204, 204, 204); 
+      padding-bottom: 8px;
+      margin-bottom:8px;
+     }
+    .rn_ProductCategoryList .rn_HierList{
+       width:95% !important;
+      
+     }
+     .rn_ProductCategoryList{ 
+       margin-left:36px;
+     }
+     li a{
+      color:#0670B4;
+     }
+     li a:hover{
+       text-decoration:underline !important;
+       color:#015BA7 !important;  
+      }
+      #ContentHeader {
+        text-align: center;
+        color: #B80000;
+        font-size: 30px;
+        font-weight: bold;
+      }
+      #Contentbody {
+        
+      }
+      #ContentbodyHeader {
+        font-weight: bold;
+        font-size: 18px;
+        text-align: center;
+        width: 100%;
+     }
+     #ContentBodyLinks {
+        //padding-left: 90px;
+        padding-left: 170px;
+     }
+     </style>
+     <apex:composition template="{!$Site.Template}">
+         <apex:define name="search">  
+            <div style='margin-bottom:15px;margin-top:10px;' >
+            <!-- <a href="{!$Site.CurrentSiteUrl}" class="rn_Selected rn_FilterItem" style='text-decoration:underline'>Support Home</a>->Videos-->
+            </div>
+            <table border="0" width="100%" cellspacing="0">
+              <tr>
+              <td valign="top">
+                    <div id="Div2" class="rn_ProductCategoryList" style="width: 100%;">
+                           <div id="ContentDiv" style="width: 100%;">
+                                <!--<div id="ContentHeader">Coming Soon !!!</div>
+                                --><br/><br/>
+                                <div id="Contentbody">
+                                    <div id="ContentbodyHeader">“User Guides” for RingCentral Office@Hand from AT&amp;T:</div>
+                                    <br/>
+                                    <div id="ContentBodyLinks">
+                                        <ul><!--style="list-style-type:decimal;"-->
+                                        <li><a href="http://netstorage.ringcentral.com/guides/office_at_hand_for_desktop.pdf">RingCentral Office@Hand from AT&amp;T Desktop App User Guide</a></li>
+                                           <br></br>
+                                           <li><a href="http://marketo.ringcentral.com/rs/ringcentral/images/Office%40Hand_from_ATT_Reference_Guide_r3.3.pdf">RingCentral Office@Hand from AT&amp;T Reference Guide for Admins and Users</a></li>
+                                           <br></br>
+                                           <li><a href="http://marketo.ringcentral.com/rs/ringcentral/images/ATT_Mobile_App_Guide_r3.3.pdf">RingCentral Office@Hand from AT&amp;T Mobile App Guide</a></li>
+                                           <br/>
+                                           <li><a href="http://netstorage.ringcentral.com/att/desktop_quick_reference_guide.pdf">Office@Hand Desktop App Quick Reference Guide</a></li>
+                                        </ul>
+                                    </div>
+                                    <br/>
+                                </div>
+                           </div>      
+                    </div>
+                </td>  
+                <td width="5%">
+                &nbsp;
+                </td>
+                </tr>
+          </table>
+         </apex:define>
+    </apex:composition>
+</apex:page>

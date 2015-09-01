@@ -1,0 +1,644 @@
+<apex:page showHeader="false" sidebar="false"  Controller="employeesearchdrill2012New" cache="false"   >
+<!--  
+<apex:stylesheet value="{!URLFOR($Resource.RCEmployee, 'employee/employee.css')}" />
+ <!-- <apex:stylesheet value="{!URLFOR($Resource.RCEmployee, 'employee/css.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.RCEmployee, 'employee/css_002.css')}" />
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.RCBlockUI, 'blockUI/js/jquery.blockUI.js')}" />
+    <!--
+<apex:page showHeader="false" sidebar="false"  standardController="Employee__c" extensions="employeesearch">
+saved from url=(0022)http://internet.e-mail --
+    <html>
+    <style type="text/css">
+.font_color {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+.font_header {
+    color: white;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 12px;
+}
+
+.font_headerTop {
+    color: white;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 16px;
+}
+.font_headerTop2 {
+    background-color: #4F98BF;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    height: 28px;
+    left: 1%;
+    margin-top: 5px;
+    padding-top: 5px;
+    position: relative;
+    text-indent: 5px;
+    width: 98.3%;
+}
+#list-panel ul li .conn-headline2 {
+    color: #666666;
+    display: block;
+    font-size: 110%;
+    font-weight: normal;
+
+}
+#abook-wrapper {
+    clear: left;
+    float: left;
+    position: relative;
+   /* width: 98.3%;*/
+    width:1274px;
+    left:1%;
+    margin-top:1px;
+}
+#detail-panel {
+    border-right: 2px solid #ECECEC;
+    overflow: hidden;
+    padding: 0 8px;
+    width: 58.45%;
+  /* width:53.7%;*/
+}
+#list-panel {
+    line-height: 1.3;
+    width: 319px;
+}
+#alpha-drop-down.dd-active{
+top:10%;
+}
+.cornerBox { 
+     position: relative; 
+      background-color: #4F98BF;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        height: 28px;
+       /* left: 1%;*/
+        margin-top: 3px;
+        padding-top: 5px;
+        text-indent: 5px;
+        width: 100%;
+        border-radius:6px 6px 6px 6px;
+    
+ }
+ 
+.corner { 
+    position: absolute; 
+    width: 10px; 
+    height: 10px; 
+    background: url('{!URLFOR($Resource.RCEmployee, 'employee/corners.png')}') no-repeat; 
+    font-size: 0%; 
+}
+ .cornerBoxInner { 
+   padding: 3px; 
+ }
+.TL { 
+    top: 0; 
+    left: 0; 
+    background-position: 0 0; 
+}
+.TR { 
+    top: 0; 
+    right: 0; 
+    background-position: -10px 0; 
+}
+.font_color{
+    color:white;
+    font-weight:bold;
+    font-size:12px;
+}
+.font_header{
+    color:white;
+    font-weight:bold;
+    background-color:#4F98BF;
+    font-size: 16px;
+    font-family:Arial;
+}
+.font_header_goback{
+    color:white;
+    font-weight:bold;
+    background-color:#4F98BF;
+    font-size: 12px;
+    font-family:Arial;
+}
+.font_label{
+/*color:Black;
+font-weight:bold;
+font-size:12px;
+font-family:Arial;*/
+}
+
+.font_text{
+    color:Black;
+    font-weight:normal;
+    font-size:12px;
+    font-family:Arial;
+}
+</style>
+    <head>
+    <style type="text/css">
+#div1 {
+    DISPLAY: none;
+}
+</style>
+    <script type="text/javascript">
+    $(function() {
+        $.blockUI({
+        message : '<div class="preloader"><img src="' + '{!URLFOR($Resource.RCBlockUI,"blockUI/js/loading.gif")}' + '" /><div align="center" id="block-ui-msg"><span id="firstmsg">Please wait</span></div></div>',
+        css : {
+        padding : '0',
+        margin : '0',
+        width: '500px',
+        border: 'none',
+        height: '200px',
+        left: '32%',
+        top: '30%',
+        background: 'none'
+        }
+     });
+     $(window).load(function() { $.unblockUI(); });
+     });
+    var oldDivId='';
+    function ShowTable(id) {
+        var e = document.getElementById(id);
+        if (e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+    }
+
+
+    function doSearchonChk(btnId)
+    {
+            var defaultmeassage="<p class='default-message'>"+
+                               " Quickly view Employee Details?"
+                               " <span>Select a category or individual to see employee details.</span>"+
+                               " </p>"
+             $("#detail-panel").empty().html(defaultmeassage);
+            var getFrmBtn = document.getElementById(btnId);
+          getFrmBtn .click();
+        //alert(getFrmBtn );
+
+    }
+     var timeoutID =null;
+    function doSearchonText(btnId,text,eventName)
+      {        
+            var defaultmeassage="<p class='default-message'>"+
+                               " Quickly view Employee Details?"
+                               " <span>Select a category or individual to see employee details.</span>"+
+                               " </p>"
+             $("#detail-panel").empty().html(defaultmeassage);
+            try {
+                   if(eventName== null || eventName== 'undefined') {
+                       eventName= window.event;
+                     }
+                    var enterKeyCode = -1;
+                    if(eventName.keyCode != 'undefined' && eventName.keyCode != null) {
+                        enterKeyCode =  eventName.keyCode;
+                    } else if(eventName.which != undefined && eventName.which != null ) {
+                        enterKeyCode = eventName.which;
+                    }
+              
+               if(enterKeyCode!=32 && enterKeyCode!=8 && enterKeyCode!=13 && ((enterKeyCode>64 
+                   && enterKeyCode<91)|| (enterKeyCode>47 && enterKeyCode<58))){
+                  var textValue=document.getElementById(text).value;
+                  clearTimeOut();
+                  timeoutID=window.setTimeout(function() {
+                       $("#searchEmpoyee").attr("disabled","disabled");
+                       showEmployeeList(textValue,'','','');
+                        },500);
+                 
+                  //showEmployeeList(textValue,'','','');
+                  }else if(enterKeyCode==13){
+                    clearTimeOut();
+                     $("#searchEmpoyee").attr("disabled","disabled");
+                    var textValue=document.getElementById(text).value;
+                    showEmployeeList(textValue,'','','');
+                  }
+                  
+         }catch(e){
+           alert(e);
+         }
+      }
+     function clearTimeOut(){
+            if(timeoutID != null) {
+                window.clearTimeout(timeoutID);
+            }
+    }
+     function enableInputBox(){
+          $("#searchEmpoyee").attr("disabled","");
+    }
+    
+    function toogleFilter(getId,getImgId)
+    {
+        var currentDiv='tag_'+getId;
+        if(oldDivId==''){
+           oldDivId=getId;
+             $("#"+currentDiv).removeClass("collapsed").addClass("expanded");
+            $('#'+oldDivId).show("slow");
+        }
+        var oldDivtest='tag_'+oldDivId;
+        if(oldDivId!=getId){
+          $('#'+oldDivId).hide("fast");
+          $("#"+oldDivtest).removeClass("expanded").addClass("collapsed");
+       }
+        if(document.getElementById(getId).style.display=="block"){
+             $("#"+currentDiv).removeClass("expanded").addClass("collapsed");
+             $('#'+getId).hide("fast");
+        }else{
+            $("#"+currentDiv).removeClass("collapsed").addClass("expanded");
+             $('#'+getId).show("slow");
+             document.getElementById(getId).style.display='block';
+        }
+       oldDivId=getId;
+
+    }
+    function HideEmployeeDetailsDiv(isAllValue,text){
+         var defaultmeassage="<p class='default-message'>"+
+                               " Quickly view Employee Details?"
+                               " <span>Select a category or individual to see employee details.</span>"+
+                               " </p>"
+             $("#detail-panel").empty().html(defaultmeassage);
+        if(isAllValue=='true'){
+          document.getElementById(text).value='';
+        }else{
+         document.getElementById('searchEmpoyee').value='';
+        }
+    }
+    $(document).ready(function()
+    {
+        $('#alphalink').hover(function()
+        {
+           $("#alpha-drop-down").addClass("dd-active");
+           //$(this).find('#alpha-drop-down').slideDown();
+        },
+        function()
+        {
+          $("#alpha-drop-down").removeClass("dd-active");
+       });
+       $('#alpha-drop-down').hover(function()
+        {
+           $("#alpha-drop-down").addClass("dd-active");
+           //$(this).find('#alpha-drop-down').slideDown();
+        },
+        function()
+        {
+          $("#alpha-drop-down").removeClass("dd-active");
+       });
+         /* $('.enabled').click(function()  {alert(1);
+             $("#alpha-drop-down").removeClass("dd-active");
+         });*/
+    });
+
+   function hideAbcDiv(){
+      $("#alpha-drop-down").removeClass("dd-active");
+   
+   }
+    
+    var checkOnlyOne;
+        $(document).ready(function() {
+        checkOnlyOne = function(checkbox,divId) {//alert(checkbox);
+        if(!checkbox.checked){
+              //checkbox.checked = true;
+           } else{
+             $("#"+divId).find("input[type=checkbox]").removeAttr('checked');
+             checkbox.checked = true;
+            //document.getElementById(checkbox).checked = true;
+           } 
+         };
+        });
+</script>
+    <title>Employee Directory</title>
+
+    </head>
+
+    <body>
+     <!-- <apex:image url="{!URLFOR($Resource.Style_Resources, 'images/logo.gif')}" /> --
+    <!-- this is true ip: {!trueIP}, auth error: {!AuthorizationError}, showdirectory: {!ShowDirectory} --
+     <apex:form rendered="{!AuthorizationError}">
+        <apex:pageBlock >
+        <apex:pagemessage severity="error" strength="3" summary="RingCentral employee directory is for internal use only."/>
+        </apex:pageBlock>
+    </apex:form>
+     <apex:outputPanel rendered="{!showdirectory}">
+    <!--  <apex:form rendered="{!showdirectory}">--
+        
+         <!-- <table width="100%" style="border-collapse: collapse;"
+            cellpadding="10" border="1" bgcolor="#4F98BF">
+            <tr>
+                <td class="font_headerTop">Employee Directory</td>
+            </tr>
+        </table> --
+       <!-- <div class="font_headerTop2">
+              Employee Directory
+        </div> --
+        
+    <div id="abook-wrapper"> 
+     <div class="cornerBox">
+           <!-- <div class="corner TL"></div>
+            <div class="corner TR"></div>--
+            <div class="cornerBoxInner">
+            <span>Employee Directory</span>
+        </div>
+     </div>
+     <div style='width:100%;'>
+     <apex:form onkeypress="if ((event.which? event.which : event.keyCode) == 13) return false;"> <!-- <c:searchLink /> --
+            
+        <div class="abook-column-headers"  style='border-radius:6px' >
+              <h3 class="filter-header" style='color:#4f98bf'><b>Filter Employee</b></h3>
+              <h3 class="list-header with-dropdown" style="visibility: visible;">
+                 <!--  <span class="select-controls">Select: <span class="select-all">All</span>,
+                      <span class="select-none">None</span></span>
+                       <span class="alpha-link">abc</span> --
+                 <span class="select-controls" style='color:#4f98bf'><b>Employee List </b></span>
+               
+                        <span class="alpha-link" id='alphalink'>ABC</span>
+                    
+               </h3>
+              
+           </div>
+
+              <div id="filter-list-panel" style='border-radius:6px'>
+                <div class="abook-column" id="filter-panel" style='border-radius:6px 0px 0px 6px;'>
+                   <div class="user-filter" >
+                        <div class="clear">&nbsp;</div>
+                           <label><span>Find Employee</span>
+                               <input type="text" value="{!strEmployee}" id="searchEmpoyee" onKeyUp="doSearchonText('{!$Component.btnSearch}','searchEmpoyee',event)" title="" /></label>
+                         </div>
+                      <div id="filter-list">
+                          <ul class="tall" id="abook-filter-accordion">
+                              <li datatypeahead="true" class="all-connections selection" id="allConns" style="margin-left: 0px;">
+                                     <div style="cursor:auto">
+                                          <apex:commandLink onClick="javaScript:HideEmployeeDetailsDiv('true','searchEmpoyee');"   
+                                                        action="{!doSearch1}" rerender="employeeList,keySet" status="status">
+                                                         <apex:param name="strEmployee" assignTo="{!strEmployee}" value="" />
+                                                        <apex:param name="seletedDepartment" assignTo="{!seletedDepartment}" value="" />
+                                                        <apex:param name="seletedTeam" assignTo="{!seletedTeam}" value="" />
+                                                        <apex:param name="seletedManager" assignTo="{!seletedManager}" value="" />
+                                              
+                                          All Employees<em>({!strTotalEmployee})</em>
+                                      </apex:commandLink>  
+                                     </div>
+                               </li>
+                                <li class="section collapsed" id="tag_divDep" style="margin-left: 0px;">
+                                    <div  onclick="javascript:toogleFilter('divDep','{!$Component.imgDep}');">
+                                            &nbsp;Department
+                                    </div>
+                                     <ul  id="divDep" style="display:none">
+                                        <apex:repeat value="{!department}" var="dept">
+                                           <li style="margin-left: 0px;">
+                                             <span>
+                                               <apex:commandLink onClick="javaScript:HideEmployeeDetailsDiv();"   
+                                                        action="{!doSearch1}" rerender="employeeList,keySet" status="status">{!dept}{!mapDepartmentValues[dept]}
+                                                        <apex:param name="seletedDepartment" assignTo="{!seletedDepartment}" value="{!dept}" />
+                                                        <apex:param name="seletedTeam" assignTo="{!seletedTeam}" value="" />
+                                                        <apex:param name="seletedManager" assignTo="{!seletedManager}" value="" />
+                                                        <apex:param name="strEmployee" assignTo="{!strEmployee}" value="" />
+                                               </apex:commandLink>  
+                                              </span>
+                                             </li>  
+                                        </apex:repeat>
+                                     </ul>
+                                </li>
+                                <li class="section collapsed" id="tag_divTeam" style="margin-left: 0px;">
+                                <div  onclick="javascript:toogleFilter('divTeam','{!$Component.imgTeam}');">
+                                  Team
+                                </div>
+                                 <ul datatype="tag" id="divTeam" style="display:none;height: 400px;">
+                                        <apex:repeat value="{!teamValues}" var="objTeam">
+                                           <li style="margin-left: 0px;">
+                                             <span>
+                                               <apex:commandLink onClick="javaScript:HideEmployeeDetailsDiv();"  
+                                                        action="{!doSearch1}" rerender="employeeList,keySet" status="status">{!objTeam}{!mapTeamValues[objTeam]}
+                                                        <apex:param name="seletedDepartment" assignTo="{!seletedDepartment}" value="" />
+                                                        <apex:param name="seletedTeam" assignTo="{!seletedTeam}" value="{!objTeam}" />
+                                                        <apex:param name="seletedManager" assignTo="{!seletedManager}" value="" />
+                                                         <apex:param name="strEmployee" assignTo="{!strEmployee}" value="" />
+                                              </apex:commandLink>  
+                                              </span>
+                                             </li>  
+                                        </apex:repeat>
+                                     </ul>
+                               
+                              </li>
+                             <li class="section collapsed" id="tag_divMng" style="margin-left: 0px;">
+                                <div onclick="javascript:toogleFilter('divMng','{!$Component.imgMng}');">
+                                 &nbsp;Manager
+                                </div>
+                               <ul datatype="tag" id="divMng" style="display:none;height: 400px;">
+                                        <apex:repeat value="{!managerAll}" var="objMnag">
+                                           <li style="margin-left: 0px;">
+                                             <span>
+                                               <apex:commandLink onClick="javaScript:HideEmployeeDetailsDiv();"   
+                                                        action="{!doSearch1}" rerender="employeeList,keySet" status="status">{!objMnag.First_Name__c} {!objMnag.Last_Name__c}
+                                                        <apex:param name="seletedDepartment" assignTo="{!seletedDepartment}" value="" />
+                                                        <apex:param name="seletedTeam" assignTo="{!seletedTeam}" value="" />
+                                                        <apex:param name="seletedManager" assignTo="{!seletedManager}" value="{!objMnag.EmpID__c}" />
+                                                       <apex:param name="strEmployee" assignTo="{!strEmployee}" value="" />
+                                               </apex:commandLink>  
+                                              </span>
+                                             </li>  
+                                      </apex:repeat>
+                                  </ul>
+                            </li>
+                       </ul>
+
+                      </div>
+                  </div>
+         <apex:outputPanel id="employeeList" >
+            
+           <div class="abook-column" id="list-panel" >
+            <c:actionstatus />
+             <apex:outputPanel rendered="{!isListExist}" >
+               
+                <ul  class="conx-list">
+                   <apex:repeat value="{!liKeySet}" var="d">
+                        <li class="letter-divider" >
+                            <span class="A" id='{!d}'>{!d}</span>
+                            </li>
+                           <apex:repeat value="{!mapEmployeeDetails[d]}" var="emp">
+                                   <li class="" id='{!emp.id}' >
+                                      <apex:outputPanel onClick="javaScript:showEmployeeDetails('{!emp.id}')">
+                                         <div class="conn-wrapper" style="width:100%">
+                                            <span class="conn-photo">
+                                                 <apex:outputtext rendered="{!IF($Site.Name!='',true,false)}"> 
+                                                   <apex:outputtext rendered="{!IF(ISBLANK(emp.ImageID__c),false,true)}">
+                                                           <apex:outputText rendered="{!IF(!ISBLANK(emp.Thumbnail_Id__c),true,false)}">
+                                                                  <apex:image styleClass="photo" height="65" width="65" url="{!$Site.CurrentSiteUrl}servlet/servlet.FileDownload?file={!emp.Thumbnail_Id__c}"  />
+                                                           </apex:outputtext>
+                                                           <apex:outputText rendered="{!IF(ISBLANK(emp.Thumbnail_Id__c),true,false)}">
+                                                                   <!-- <apex:image height="65" width="65" styleClass="photo" url="{!$Site.CurrentSiteUrl}servlet/servlet.FileDownload?file={!emp.ImageID__c}"  /> --
+                                                                   <apex:image height="65" width="65" styleClass="photo"  url="{!$Site.CurrentSiteUrl}servlet/servlet.FileDownload?file=01580000001Ciys"  />
+                                                            </apex:outputtext>
+                                                    </apex:outputtext>
+                                                     <apex:outputtext rendered="{!IF(ISBLANK(emp.ImageID__c),true,false)}">
+                                                       <apex:image height="65" width="65" styleClass="photo"  url="{!$Site.CurrentSiteUrl}servlet/servlet.FileDownload?file=01580000001CdMp"  />
+                                                    </apex:outputtext>
+                                                   </apex:outputtext>
+                                                   
+                                                   <apex:outputtext rendered="{!IF(ISBLANK($Site.Name),true,false)}"> 
+                                                   <apex:outputtext rendered="{!IF(ISBLANK(emp.ImageID__c),false,true)}">
+                                                         <apex:outputText rendered="{!IF(!ISBLANK(emp.Thumbnail_Id__c),true,false)}">
+                                                                  <apex:image styleClass="photo" url="/servlet/servlet.FileDownload?file={!emp.Thumbnail_Id__c}"  />
+                                                           </apex:outputtext>
+                                                           <apex:outputText rendered="{!IF(ISBLANK(emp.Thumbnail_Id__c),true,false)}">
+                                                                   <!-- <apex:image height="65" width="65" styleClass="photo" url="/servlet/servlet.FileDownload?file={!emp.ImageID__c}"  /> --
+                                                                    <apex:image styleClass="photo" height="65" width="65" url="/servlet/servlet.FileDownload?file=01580000001Ciys"  />
+                                                            </apex:outputtext>
+                                                    </apex:outputtext>
+                                                     <apex:outputtext rendered="{!IF(ISBLANK(emp.ImageID__c),true,false)}">
+                                                       <apex:image styleClass="photo" height="65" width="65" url="/servlet/servlet.FileDownload?file=01580000001CdMp"  />
+                                                    </apex:outputtext>
+                                                   </apex:outputtext>
+                                             </span>
+                                             <span class="conn-name">
+                                              {!emp.First_Name__c}&nbsp;
+                                                  {!emp.Last_Name__c}&nbsp;({!emp.Employee_Nick_Name__c})
+                                            </span>
+                                           
+                                           <span class="conn-headline">
+                                               <b>Phone Work:</b>
+                                               <span class="company-name">
+                                                    {!emp.Phone_Work__c}
+                                                </span>
+                                          </span>
+                                           <span class="conn-headline">
+                                                <b>Extension:</b>
+                                               <span class="company-name">
+                                                    {!emp.Extension__c}
+                                                </span>
+                                          </span>
+                                            <span class="conn-headline">
+                                              <b>Department:</b>
+                                               <span class="company-name">
+                                                    {!emp.Department__c}
+                                                </span>
+                                          </span>
+                                            <span class="conn-headline">
+                                               <b>Team:</b>
+                                               <span class="company-name">
+                                                    {!emp.Team__c}
+                                                </span>
+                                          </span><br/>
+                                            <span class="conn-headline2">
+                                               <b>Email:</b>
+                                               <span class="company-name">
+                                                    {!emp.Email__c}
+                                                </span>
+                                          </span>
+                                           <span class="conn-headline2">
+                                               <b>Manager Email:</b>
+                                               <span class="company-name" >
+                                                   {!emp.Manager_Employee_Number__r.Email__c}
+                                                </span>
+                                          </span>
+                                        </div>
+                                          </apex:outputPanel>
+                                    </li>
+                            </apex:repeat>
+
+                   </apex:repeat>
+               </ul>
+               </apex:outputPanel>
+                 <apex:outputPanel rendered="{!!isListExist}">
+                    <c:actionstatus />
+                     <p class="empty-search-results">No Record Found.</p>
+                  </apex:outputPanel>
+
+            </div>
+             
+             </apex:outputPanel>
+        </div>
+         
+     </apex:form>
+     </div>
+         <div class="abook-column" id="detail-panel" style='border-radius:0px 6px 6px 0px'>
+                   <p class="default-message" >
+                                 Quickly view Employee Details?
+                                 <span>Select a category or individual to see employee details.
+                                 </span>
+                  </p>    
+         </div>
+        
+        
+        <div>  
+            <ul id="alpha-drop-down" >
+              <apex:outputPanel id="keySet">
+                        <apex:repeat value="{!liKeySetClass}" var="obj">
+                          <apex:outputText rendered="{!obj.isExist}">
+                               <li class="enabled" ><a href='#{!obj.strKey}' onClick='hideAbcDiv();'>{!obj.strKey} </a></li>
+                           </apex:outputText>   
+                             <apex:outputText rendered="{!!obj.isExist}">
+                                <li >{!obj.strKey}</li>
+                             </apex:outputText>   
+                      </apex:repeat>
+             </apex:outputPanel>
+               </ul>
+       </div>  
+             
+              
+    </div>
+    </apex:outputPanel> 
+     <apex:form >
+   <apex:actionRegion >
+        <apex:actionFunction oncomplete="enableInputBox();" name="showEmployeeList" action="{!doSearch1}" rerender="employeeList,keySet" immediate="true" status="status">
+            <apex:param name="strEmployee" assignTo="{!strEmployee}" value="" />
+            <apex:param name="seletedDepartment" assignTo="{!seletedDepartment}" value="" />
+            <apex:param name="seletedTeam" assignTo="{!seletedTeam}" value="" />
+            <apex:param name="seletedManager" assignTo="{!seletedManager}" value="" />
+        </apex:actionFunction>
+    </apex:actionRegion>
+    </apex:form>   
+    </body>
+<script type="text/javascript">
+    jQuery.ajaxSetup({
+                xhr: function() {
+                        //return new window.XMLHttpRequest();
+                    try{
+                        if(window.ActiveXObject)
+                                return new window.ActiveXObject("Microsoft.XMLHTTP");
+                      } catch(e) { }
+    
+                        return new window.XMLHttpRequest();
+                    }
+            });
+  var oldId='';
+  function showEmployeeDetails(empId){
+  
+  if(oldId==''){
+    oldId=empId;
+  }
+    if(empId!=oldId){
+      $("#"+oldId).removeClass("selection");
+    }
+    oldId=empId;
+    if(empId!=''){
+      $("#"+empId).addClass("selection");
+    }
+    
+        var loadingContent="<div class='waitingSearchDiv' id='el_loading' style='background-color: #fbfbfb;"+
+                           " height: 100%;opacity:0.65;width:100%;'><div class='waitingHolder' ><img class='waitingImage' src='/img/loading.gif' title='Please Wait...' />"+
+                           " <span class='waitingDescription'>Loading...</span>"+
+                           " </div></div>";
+     $("#detail-panel").empty().html(loadingContent);
+       var url='{!$Site.CurrentSiteUrl}employeedetails2012?id='+empId;
+       $('#detail-panel').load(url)
+  }
+
+   function showTeamWiseDeatils(teamId){
+         var defaultmeassage="<p class='default-message'>"+
+                                       " Quickly view Employee Details?"
+                                       " <span>Select a category or individual to see employee details.</span>"+
+                                       " </p>"
+         $("#detail-panel").empty().html(defaultmeassage);
+        showEmployeeList(null,null,teamId,null);
+  }
+    
+</script>
+    </html> -->
+</apex:page>

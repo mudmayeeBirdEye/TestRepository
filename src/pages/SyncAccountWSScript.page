@@ -1,0 +1,174 @@
+<apex:page controller="SyncAccountWSScript">
+	<style>
+        div.pbHeader { 
+            background: #7593d7 !important;
+        } 
+        .btn { 
+            color: #084B8A !important;
+            border: 1px solid #A5A6A5 !important;
+            padding: 6px !important;
+        }
+        .mainTitle {
+            color: white !important;
+        }
+        .bPageBlock.brandSecondaryBrd.apexDefaultPageBlock.secondaryPalette {
+            border-top:none !important;
+        }
+        .msgpanel {
+            background: white;
+            height: 25px;
+            vertical-align: middle;
+            padding-top: 10px;
+            border: 1px solid lightgray;
+            border-radius: 6px;
+            padding-left: 5px;
+            box-shadow: 0px 0px 5px 0px lightblue inset;
+            font-weight: bolder;
+        }
+        #overlay {
+            background: no-repeat scroll top center gray;
+            border: 0px solid #000000;
+            bottom: 0;
+            left: 0;
+            opacity: 0.75;
+            position: absolute;
+            top: 0;
+            visibility: hidden;
+            width: 100%;
+            z-index: 1000;
+        }
+    </style>
+    <script>
+    	function showOverlay() {
+           	var o = document.getElementById('overlay');
+            o.style.visibility = 'visible';
+        }
+        
+       	function hideOverlay() {
+           	var o = document.getElementById('overlay');
+            o.style.visibility = 'hidden';
+        }
+    </script>
+	<apex:form >
+		<div id="overlay" style="text-align:center;padding-top:190px;">
+            <apex:image value="/img/loading.gif" ></apex:image>
+        </div>
+		<apex:outputPanel id="mainPanel">
+		<apex:outputPanel id="errorPanel">
+			<apex:PageMessages id="msgPanel"/>
+		</apex:outputPanel>
+		<apex:PageBlock title="Sync Account Script">
+			<apex:outPutPanel id="inputPanel">
+				<!-- <div style="background: #7593d7 !important;color:white">Input</div> -->
+				<!-- <apex:PageBlock title="Input"></apex:PageBlock> -->
+				<div style="background: #7593d7!important;color:white"> 
+					<table>
+						<tr><td style="color:white;font-size: 15px;">Input</td></tr>
+					</table>
+				</div>
+				<div style="margin-top: 5px;margin-bottom: 5px;">
+					<table style="width:70%">
+						<tr>
+							<td style="width:50%"><apex:outputtext value="RC User Id" /></td>
+							<td style="width:50%"><apex:Inputtext value="{!wrParameterObj.inRcUserId}" /></td>
+						</tr>
+						<tr><td style="width:50%"><apex:outputtext value="Contact Email" /></td>
+						<td style="width:50%"><apex:Inputtext value="{!wrParameterObj.inContactEmail}" /></td></tr>
+						<tr><td style="width:50%"><apex:outputtext value="Opportunity Id" /></td>
+						<td style="width:50%"><apex:Inputtext value="{!wrParameterObj.inOpportunityId}" /></td></tr>
+						<tr>
+							<td style="width:50%"><apex:outputtext value="Contact Phone" /></td>
+							<td style="width:50%"><apex:Inputtext value="{!wrParameterObj.inContactPhone}" /></td>
+						</tr>
+					</table>
+				</div>
+			</apex:outPutPanel>
+			<div></div>
+		    <apex:outPutPanel id="outputPanel">
+		    	<div style="background: #7593d7!important;color:white;"> 
+					<table>
+						<tr><td style="color:white;font-size: 15px;">Output</td></tr>
+					</table>
+				</div>
+		  		<div style="margin-top: 5px;margin-bottom: 5px;">
+					<table style="width:70%">
+						<tr><td style="width:50%"><apex:outputtext value="Account Id" /></td><td style="width:50%">
+						<apex:inputtext disabled="true" value="{!wrParameterObjOut.outAccountID}" /></td></tr>
+						<tr><td style="width:50%"><apex:outputtext value="User Id" /></td>
+						<td style="width:50%"><apex:inputtext disabled="true" value="{!wrParameterObjOut.outUserID}" /></td></tr>
+						<tr><td style="width:50%"><apex:outputtext value="Contact Id" /></td>
+						<td style="width:50%"><apex:inputtext disabled="true" value="{!wrParameterObjOut.outContactID}" /></td></tr>
+					</table>
+					<div style="margin-top: 5px;margin-bottom: 5px;">
+						<table style="width:100%"><tr>
+							<td style="color: red;font-size: 15px;">Flow: </td>
+							<td style="color: red;font-size: 15px;"><apex:outputtext value="{!strMsg}" escape="false" /></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</apex:outPutPanel>
+		</apex:PageBlock>
+       	<apex:commandButton action="{!callScript}" value="Submit" reRender="outputPanel,errorPanel" status="changetype"/>
+		</apex:outputPanel>
+		<apex:actionStatus id="changetype" onStart="showOverlay();" onstop="hideOverlay();"/>
+	</apex:form>
+</apex:page>
+
+
+<!-- <apex:PageBlock >
+			<apex:outPutPanel id="inputPanel">
+			<apex:pageBlockSection >
+			    <apex:outputtext value="RC User Id" />
+				<apex:Inputtext value="{!wrParameterObj.inRcUserId}" />
+				<apex:outputtext value="Contact Email" />
+				<apex:Inputtext value="{!wrParameterObj.inContactEmail}" />
+				<apex:outputtext value="Opportunity Id" />
+				<apex:Inputtext value="{!wrParameterObj.inOpportunityId}" />
+				<!-- <apex:outputtext value="RCPrimary Number" />
+				<apex:Inputtext value="{!wrParameterObj.inRcPrimaryNumber}" />
+				<apex:outputtext value="Company Name" />
+				<apex:Inputtext value="{!wrParameterObj.inCompanyName}" />
+				<apex:outputtext value="First Name" />
+				<apex:Inputtext value="{!wrParameterObj.inFirstName}" />
+				<apex:outputtext value="Last Name" />
+				<apex:Inputtext value="{!wrParameterObj.inLastName}" /> 
+				
+				<apex:outputtext value="Contact Phone" />
+				<apex:Inputtext value="{!wrParameterObj.inContactPhone}" />
+				<apex:outputtext value="RC Brand" />
+				<apex:Inputtext value="{!wrParameterObj.inRcBrand}" />
+				<apex:outputtext value="Signup Type" />
+				<apex:Inputtext value="{!wrParameterObj.inSignupType}" />
+				<apex:outputtext value="Signup Platform" />
+				<apex:Inputtext value="{!wrParameterObj.inSignupPlatform}" /> 
+			</apex:pageBlockSection>
+			</apex:outPutPanel>
+			<div></div>
+		    <apex:outPutPanel id="outputPanel">
+			<apex:pageBlockSection >
+				<apex:outputtext value="Account Id" />
+				<apex:outputtext value="{!wrParameterObj.outAccountID}" />
+				<apex:outputtext value="User Id" />
+				<apex:outputtext value="{!wrParameterObj.outUserID}" />
+				<!-- <apex:outputtext value="RCPrimary Number" />
+				<apex:Inputtext value="{!wrParameterObj.inRcPrimaryNumber}" />
+				<apex:outputtext value="Company Name" />
+				<apex:Inputtext value="{!wrParameterObj.inCompanyName}" />
+				<apex:outputtext value="First Name" />
+				<apex:Inputtext value="{!wrParameterObj.inFirstName}" />
+				<apex:outputtext value="Last Name" />
+				<apex:Inputtext value="{!wrParameterObj.inLastName}" /> 
+				<apex:outputtext value="Contact Id" />
+				<apex:outputtext value="{!wrParameterObj.outContactID}" />
+				<!-- <apex:outputtext value="Contact Phone" />
+				<apex:Inputtext value="{!wrParameterObj.inContactPhone}" />
+				<apex:outputtext value="RC Brand" />
+				<apex:Inputtext value="{!wrParameterObj.inRcBrand}" />
+				<apex:outputtext value="Signup Type" />
+				<apex:Inputtext value="{!wrParameterObj.inSignupType}" />
+				<apex:outputtext value="Signup Platform" />
+				<apex:Inputtext value="{!wrParameterObj.inSignupPlatform}" /> 
+			</apex:pageBlockSection>
+			</apex:outPutPanel>
+		</apex:PageBlock> -->

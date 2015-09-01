@@ -1,0 +1,81 @@
+<apex:page controller="RCCustomArticleListOrder" showHeader="false" cache="true" expires="{!cacheMaxAge}">
+  
+  
+   <apex:composition template="{!$Site.Template}">
+      <apex:define name="content">
+            <script type="text/javascript" src="http://ringcentral.force.com/rcsupport/resource/1318596446000/RCBlockUI/blockUI/js/jquery.blockUI.js"></script>
+      
+  <script type="text/javascript">
+    //showProcessing();
+      function showProcessing(){
+       $(function() {
+        $.blockUI({
+        message : '<div class="preloader"><img src="{!URLFOR($Resource.RCBlockUI,"blockUI/js/loading.gif")}" /><br/><div align="center" id="block-ui-msg"><span id="firstmsg" style="color:#64a4c7">Please wait.....</span></div></div>',
+        css : {
+        padding : '0',
+        margin : '0',
+        width: '500px',
+        border: 'none',
+        height: '200px',
+        left: '32%',
+        top: '30%',
+        background: 'none'
+        }
+     }); }); }
+      $(window).load(function() { $.unblockUI(); });
+    
+     </script>
+          <h2> 
+                <apex:outputPanel rendered="{!currentCategory!='All'}">
+                     {!currentCategoryName} 
+                </apex:outputPanel>
+           </h2>
+   <p class="subheader"></p> 
+      <apex:outputPanel layout="block">
+            <apex:outputPanel styleClass="pkbResultPanel" layout="block">
+                <apex:outputPanel styleClass="pkbResultTop" layout="block" />
+                <apex:outputPanel styleClass="pkbResultInner" layout="block">
+                   <apex:dataList value="{!searchResults}" var="article1">
+                                            
+                      <div class="info_line knowledge">
+                            <p class="il_header">
+                           <a href="{!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/{!article1.UrlName__c}?retURL={!currentURL}&Title={!article1.Title__c}" style='text-decoration:underline;'>{!article1.Title__c}</a></p>
+                          <p> {!article1.Summary__c}<br/>
+                            Date Updated:
+                            <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                <apex:param value="{!article1.LastModifiedDate__c}" /> 
+                            </apex:outputText>
+                            <br/></p>
+                        </div>
+                     </apex:dataList>
+                   <apex:form >
+                  <apex:outputPanel layout="block" styleClass="pSearchShowMore" id="otpNav3" rendered="{!NOT(ISNULL(searchResults))}" style="width:700px">
+                          Total Records Found: <apex:outputText rendered="{!IF(Con.resultSize==10000,true,false)}">10000 +</apex:outputText>
+                         <apex:outputText rendered="{!IF(Con.resultSize < 10000,true,false)}">{!Con.resultSize}</apex:outputText>
+                              <apex:image url="/img/search_prevarrow_disabled.gif" styleClass="prevArrow" rendered="{!NOT(Con.HasPrevious)}" />
+                              <apex:image url="/img/search_prevarrow.gif" title="Previous Page" styleClass="prevArrow" rendered="{!Con.HasPrevious}" />
+                              <apex:commandLink action="{!Previous}" title="Previous Page" onclick="showProcessing();" value="Previous Page" rendered="{!Con.HasPrevious}" >
+                                
+                              </apex:commandLink>
+                              <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(Con.HasPrevious)}">Previous Page</apex:outputPanel>
+                                   &nbsp;({!IF(Con.PageNumber == 1,IF(iRecordSize==0,0,1),((Con.PageNumber -1) * Con.PageSize)+1)}-{!IF((Con.PageNumber * Con.pageSize)>Con.resultSize,Con.resultSize,Con.PageNumber * Con.pageSize)})&nbsp;
+                             <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(Con.HasNext)}">Next Page</apex:outputPanel>
+                             
+                              <apex:commandLink title="Next Page" value="Next Page" onclick="showProcessing();" rendered="{!Con.HasNext}" action="{!next}"   >&nbsp;
+                                  
+                               </apex:commandLink>
+                               <apex:image url="/img/search_nextarrow.gif" title="Next Page" styleClass="nextArrow" rendered="{!Con.HasNext}" />
+                                <apex:image url="/img/search_nextarrow_disabled.gif" rendered="{!NOT(Con.HasNext)}" />
+                        
+          </apex:outputPanel>
+           </apex:form>      
+                
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </apex:outputPanel>  
+
+        </apex:define>
+    </apex:composition> 
+     
+      
+</apex:page>

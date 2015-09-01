@@ -1,0 +1,4 @@
+<apex:page standardController="Opportunity">
+   <c:AeSalesGuides objectType="Opportunity" objectId="{!Opportunity.Id}"  extraInfo="{!JSENCODE(Opportunity.Name)} ({!JSENCODE(Opportunity.Account.Name)})" 
+   					match="Role={!JSENCODE(SUBSTITUTE($UserRole.Name, ",", ""))},Stage={!JSENCODE(SUBSTITUTE(Opportunity.StageName, ",", ""))},Type={!JSENCODE(SUBSTITUTE(Opportunity.Type, ",", ""))}"/>
+</apex:page>

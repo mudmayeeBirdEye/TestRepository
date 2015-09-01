@@ -1,0 +1,39 @@
+<apex:page title="KnowledgeTree Settings" showHeader="true" sidebar="true" controller="ktree.ConfigurationController">
+    <apex:stylesheet value="{!URLFOR($Resource.ktree__vfresources, 'styles/visualforce.css')}" />
+    <img src="{!URLFOR($Resource.ktree__ktlogo)}" style="margin:20px 0"/>
+    <apex:Form >
+        <apex:pageMessages />
+        <apex:pageBlock title="Integration Settings" mode="edit">
+            <apex:pageBlockSection columns="1">
+                <apex:inputField value="{!configuration.ktree__curator_email__c}" styleClass="curator_emails"/>
+            </apex:pageBlockSection>
+
+            <a href="#" class="show_advanced">Show Advanced Settings...</a>
+            <div id="advanced_settings" style="display:none">
+                <apex:pageBlockSection title="Advanced Settings" columns="1">
+                    <apex:pageBlockSectionItem dataStyleClass="dataMixed">
+                        <apex:outputLabel value="KnowledgeTree API Hostname" for="ktmHostname" styleClass="customLabel"/>
+                        <apex:outputText >
+                            https://manager-api<apex:inputText value="{!apiHostname}" id="ktmHostname"/>.knowledgetree.com
+                        </apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="" />
+                        <apex:commandbutton action="{!createKTMAccount}" value="Create Account/User" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSection columns="1">
+                        <apex:pageBlockSectionItem helpText="Removes the cached user creation. May be needed if a user is having problems connecting to KnowledgeTree.">
+                        <apex:outputLabel value=""/>
+                        <apex:commandButton action="{!clearUserCache}" value="Clear User Cache" />
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                </apex:pageBlockSection>
+            </div>
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!modify}" value="Save"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:Form>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{!URLFOR($Resource.vfresources, 'src/config.js')}"></script>
+</apex:page>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>27.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Link to download a vCard for a Contact.
+      The direct link format:
+      https://&lt;your na.salesforce.com&gt;/apex/AeContactVCardDownload?id=&lt;contact_ob_id&gt;</description>
+    <label>Contact vCard Download</label>
+</ApexPage>

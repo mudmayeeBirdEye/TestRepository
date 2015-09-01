@@ -1,0 +1,36 @@
+<apex:page standardController="Case"  showHeader="true" sidebar="true" extensions="CloseCase">
+ <apex:form >
+ <!--  <apex:pageMessages ></apex:pageMessages> -->
+   <style type="text/css">   
+     .TopFont{
+       color:black;
+       font-weight:bold;   
+       font-size:15px;
+       width:110px;
+       padding-top:15px;
+       padding-bottom:5px;
+     }
+  </style>
+
+  
+ <apex:pageBlock mode="edit" >
+    <apex:pageBlockSection title="Close Case" columns="1" collapsible="false"  > </apex:pageBlockSection>
+   <table  width="100%" style="border:0px dotted;background-color:#F6F6F6;" border='0' >
+    <tr>
+       <td align="right"><b>Internal Comments</b>&#160;&#160;</td><td align="right" style="background-color:#C00;left: -4px;width: 2px;top: 1px;bottom: 1px;"></td>
+       <td valign="top"><apex:inputTextarea value="{!strClosingComments}"  id="internalCommentsId"  rows="10" cols="80" />
+        <apex:Messages style="color:red" ></apex:Messages>
+       </td> 
+     </tr>
+ </table>
+</apex:pageBlock>
+ 
+  <table width="100%" border="0">
+    <tr>
+      <td align="center" width="100%"><apex:commandButton action="{!save}" value="Save"/>
+        <apex:commandButton action="{!cancel}" value="Cancel"/></td>
+      <td> </td>
+    </tr>
+   </table>
+ </apex:form>
+</apex:page>

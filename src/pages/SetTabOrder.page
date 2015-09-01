@@ -1,0 +1,397 @@
+<apex:page standardController="Intranet_Main_Tab__c"  id="page1" sidebar="false" showHeader="false">
+   <!-- extensions="SetTabOrder"
+     <style>
+        #overlay
+        {
+            background: url("/img/loading.gif") no-repeat scroll center center gray;
+            border: 0px solid #000000;
+            bottom: 0;
+            left: 0;
+            opacity: 0.75;
+            filter: alpha(opacity=40); 
+            position: absolute;
+            top: 0;
+            visibility: hidden;
+            width: 100%;
+            z-index: 1000;
+            zIndex:1000;
+        }
+    </style>
+   
+   
+     <apex:pageMessages escape="false" />
+        <apex:form id="contentform1">
+            <div id="overlay" style="height:1000px; visibility:hidden;"></div> 
+             <apex:inputHidden id="hiddenElem" value="{!tabIdToOrderStr}" />
+             <apex:inputHidden id="hiddenElemMain" value="{!mainTabIdToOrderStr}" />
+             <apex:pageBlock title="Set Tab Order" id="pageBlk">
+                 <apex:actionStatus id="updownStatus" onStart="showOverlay();" onstop="hideOverlay();"/>
+                <apex:pageblockSection columns="1" id="pageBlkSec" title="Main Tabs">
+                    <apex:pageBlockSectionItem dataStyle="vertical-align:middle;" id="pageBlkSecItem1" dataTitle="Main Tab">
+                        <apex:panelgroup id="tabPanel1" rendered="{!IF(availableMainTabs.size > 0, true, false)}">
+                            <span id="mainSelectListPanel">
+                            <apex:selectList value="{!selectedMainTab}" multiselect="false" onclick="JExample();" id="selectMaiList" style="width:300px"> 
+                                <apex:actionSupport event="onchange" action="{!childTabs}" reRender="tabPanel,updownchild,hiddenElem" status="updownStatus" />
+                                <apex:selectOptions value="{!availableMainTabs}" />
+                            </apex:selectList>
+                            </span>
+                        </apex:panelgroup>
+                        
+                        <apex:PanelGrid >
+                            <apex:panelgroup rendered="{!IF(isSystemAdmin == true && availableMainTabs.size > 1, true, false)}" >
+                                <div class="text" style="margin-bottom:2px;text-align:center">Up</div>
+                                <div class="text" style="margin-bottom:2px;">
+                                    <apex:image alt="Up" title="Up" styleClass="upArrowIcon" url="/s.gif" onclick="changeChildTabOrder('UP', 'PARENT')" > 
+                                        <!-- <apex:actionSupport event="onclick" action="{!upOrder}" reRender="tabPanel" status="updownStatus" />  -->
+                                    <!--</apex:image>                       
+                                </div>
+                                <div class="text" style="margin-top:2px;">
+                                    <apex:image alt="Down" title="Down" styleClass="downArrowIcon" onclick="changeChildTabOrder('DOWN', 'PARENT')" url="/s.gif" > 
+                                        <!-- <apex:actionSupport event="onclick" action="{!downOrder}" reRender="tabPanel" status="updownStatus"/> -->
+                                    <!--</apex:image>                       
+                                </div>
+                                 <div class="text" style="margin-top:2px;text-align:center">Down</div>
+                                
+                                
+                            </apex:panelgroup>
+                        </apex:PanelGrid>
+                    </apex:pageBlockSectionItem>
+               </apex:pageblockSection>        
+               <apex:pageblockSection columns="1" id="pageBlkSec1" title="Child Tabs">
+                    <apex:pageBlockSectionItem dataStyle="vertical-align:middle" id="pageBlkSecItem">
+                        <apex:panelgroup id="tabPanel" >
+                            <span id="childSelectListPanel">
+                            <apex:selectList value="{!selectedTab}" multiselect="false" id="selectList" onclick="JExample();" style="width:300px"> 
+                                <apex:selectOptions value="{!availableTabs}"/>
+                            </apex:selectList>
+                            </span>
+                        </apex:panelgroup>
+                        
+                        <apex:PanelGrid id="updownchild" >
+                            <apex:panelgroup rendered="{!IF(availableTabs.size > 1, true, false)}">
+                                <div class="text" style="margin-bottom:2px;text-align:center">Up</div>
+                                <div class="text" style="margin-bottom:2px;">
+                                    <apex:image alt="Up" title="Up" styleClass="upArrowIcon" url="/s.gif" onclick="changeChildTabOrder('UP', 'CHILD');" > 
+                                        <!-- <apex:actionSupport event="onclick" action="{!upOrder}" reRender="tabPanel" status="updownStatus" /> -->
+                                    <!--</apex:image>                       
+                                </div>
+                                <div class="text" style="margin-top:2px;">
+                                    <apex:image alt="Down" title="Down" styleClass="downArrowIcon" url="/s.gif" onclick="changeChildTabOrder('DOWN', 'CHILD');" > 
+                                        <!-- <apex:actionSupport event="onclick" action="{!downOrder}" reRender="tabPanel" status="updownStatus"/> -->
+                                    <!--</apex:image>                       
+                                </div>
+                                 <div class="text" style="margin-top:2px;text-align:center">Down</div>
+                                
+                                
+                            </apex:panelgroup>
+                        </apex:PanelGrid>
+                    </apex:pageBlockSectionItem>
+                </apex:pageblockSection>
+                <apex:PageBlockButtons location="both">
+                    <apex:commandButton title="Save" value="Save" onclick="saveOrder();return false;"  />
+                        
+                   <apex:commandButton title="Cancel" value="Cancel" onclick="onSave()" />
+                </apex:PageBlockButtons>
+            </apex:pageBlock>
+            
+            <apex:actionFunction name="saveAction" action="{!saveTabOrder}">
+                      <apex:param value="" name="tabIdToOrderStr" assignTo="{!tabIdToOrderStr}"/>
+            </apex:actionFunction>
+            
+            
+        <script type="text/javascript">
+            function SetTabOrder (key, value) {
+                this.key = key;
+                this.value = value;
+            }
+            var objArray = [];
+            function setObjArray(objArray) {
+                this.objArray = objArray;
+            }
+            function getObjArray() {
+                return objArray;
+            }
+            function checkOptionList(selectListPanel, tabOrder) {
+                 try {
+                     if(selectListPanel != null) {
+                        var selectPanel = selectListPanel.getElementsByTagName("SELECT");
+                        if(selectPanel != null && selectPanel[0].options != null && selectPanel[0].options.length != 0) {
+                            if(tabOrder != '' && tabOrder != null) {
+                                for(var i = 0; i < selectPanel[0].options.length; i++) {
+                                    if(selectPanel[0].options[i].value.indexOf(tabOrder) != -1) {
+                                        // alert(123);
+                                        selectPanel[0].options[i].selected = "selected";
+                                    } 
+                                }
+                            } 
+                        } 
+                    }
+                 } catch(x) {alert(x)}
+            }
+            function getMainTabSelectElem() {
+                return document.getElementById("mainSelectListPanel");
+            }
+            function getChildTabSelectElem() {
+                return document.getElementById("childSelectListPanel");
+            }
+     function saveOrder() {
+            if(isOrderChanged == false) {
+                // alert('no change');
+                return;
+            }
+            try {
+                 var elemHidden = getHiddenElem();
+                 var arr = getObjArray();
+                if(elemHidden != null) {
+                    var str = '';
+                    for(var i = 0; i < arr.length; i++) {
+                        str += ',' + arr[i].key + '=' + arr[i].value;
+                    }
+                    elemHidden.value = str;
+                } else {
+                    alert(1213);
+            }
+            } catch(x) {alert(x)}
+             //alert(str);
+             //alert(1);
+             saveAction(str);
+             //alert(2);
+            //saveAction();
+        }
+        function onSave(){
+             window.close();
+             if (window.opener && !window.opener.closed) {
+                window.opener.location.reload();
+            } 
+         }
+         function onClose(){
+               window.close();
+         }
+        function getSelectElem(selectSpan) {
+            if(selectSpan != null) {
+                var selectElem = selectSpan.getElementsByTagName('SELECT');
+                if(selectElem != null && selectElem.length != 0) {
+                    if(selectElem[0].options != null && selectElem[0].options.length != 0) {
+                        return selectElem[0];
+                    }
+                    
+                }
+            }
+            return null;
+        }
+        var isOrderChanged = false;
+        function changeChildTabOrder(action, root) {
+            var selectSpan = (root =='CHILD' ? getChildTabSelectElem() : getMainTabSelectElem());
+            //alert(selectSpan);
+            var currentSelectElem = getSelectElem(selectSpan);
+            //alert(currentSelectElem.selectedIndex);
+            try {
+            if(action == 'UP') {
+                if(currentSelectElem != null) {
+                    var selectedTabIndex = currentSelectElem.selectedIndex;
+                    if(isNaN(selectedTabIndex) == true || selectedTabIndex == -1) {
+                        alert('Please select a tab first');
+                    } else {
+                        if(selectedTabIndex != 0 ) {
+                            /*if(selectedTabIndex < 2 && root != 'CHILD') {
+                                //return;
+                            }*/
+                            var currentKey = currentSelectElem.options[selectedTabIndex].value;
+                            //alert(currentKey);
+                            var nextKey = currentSelectElem.options[selectedTabIndex-1].value;
+                            //alert(nextKey);
+                            
+                            var currentOrder = searchElemIndex(currentKey);
+                            //alert(currentOrder);
+                            // alert(currentKey  + ' ### NEXT ORDER = '+nextKey );
+                            var nextOrder = searchElemIndex(nextKey);
+                            //alert(nextOrder);
+                             
+                            swapOption(currentOrder, nextOrder);
+                            
+                            var optionfield= currentSelectElem.options[currentSelectElem.selectedIndex];
+                            
+                            try {
+                                var selectedOptIndex = currentSelectElem.selectedIndex;
+                                currentSelectElem.add(optionfield,currentSelectElem.options[currentSelectElem.selectedIndex-1]);
+                                currentSelectElem.options[selectedOptIndex-1].selected = "selected";
+                            } catch (e) {
+                                    var selectedOptIndex = currentSelectElem.selectedIndex;
+                                    var newOption = new Option(optionfield.text, optionfield.value);
+                                    currentSelectElem.add(newOption,currentSelectElem.selectedIndex-1);
+                                    currentSelectElem.remove(currentSelectElem.selectedIndex);
+                                    // currentSelectElem.selectedIndex = selectedOptIndex-1; // optional line
+                                    currentSelectElem.options[selectedOptIndex-1].selected = "selected";
+                                /*try {
+                                    var selectedOptIndex = currentSelectElem.selectedIndex;
+                                    currentSelectElem.add(optionfield,currentSelectElem.selectedIndex-1);
+                                    currentSelectElem.options[selectedOptIndex-1].selected = "selected";
+                                } catch(u){
+                                    var selectedOptIndex = currentSelectElem.selectedIndex;
+                                    var newOption = new Option(optionfield.text, optionfield.value);
+                                    currentSelectElem.add(newOption,currentSelectElem.selectedIndex-1);
+                                    currentSelectElem.remove(currentSelectElem.selectedIndex);
+                                    // currentSelectElem.selectedIndex = selectedOptIndex-1; // optional line
+                                    currentSelectElem.options[selectedOptIndex-1].selected = "selected";
+                                } */
+                            }
+                        } else {
+                            // alert('Cant go beyond');
+                        }
+                    }
+                } 
+            } else if(action == 'DOWN') {
+                 if(currentSelectElem != null) {
+                    var selectedTabIndex = currentSelectElem.selectedIndex;
+                    // alert(selectedTabIndex );
+                    if(isNaN(selectedTabIndex) == true || selectedTabIndex == -1) {
+                        alert('Please select a tab first');
+                    } else {
+                         if(selectedTabIndex != currentSelectElem.options.length -1 ) {
+                            /*if(selectedTabIndex == 0 && root != 'CHILD') {
+                                //alert(1);
+                                //return;
+                            }
+                            */
+                            var currentKey = currentSelectElem.options[selectedTabIndex].value;
+                            var nextKey = currentSelectElem.options[selectedTabIndex+1].value;
+                            
+                            var currentOrder = searchElemIndex(currentKey);
+                            var nextOrder = searchElemIndex(nextKey);
+                            swapOption(currentOrder, nextOrder);
+                            
+                           /* var option= currentSelectElem.options[currentSelectElem.selectedIndex+1];
+                            try {
+                                // for IE earlier than version 8
+                                currentSelectElem.add(option,currentSelectElem.options[currentSelectElem.selectedIndex]);
+                            } catch (e) {
+                                try {
+                                    currentSelectElem.add(option,null);
+                                } catch(x){
+                                    currentSelectElem.add(option);
+                                    alert('==> '+x);
+                                }
+                            }
+                            */
+                            var optionfield = currentSelectElem.options[currentSelectElem.selectedIndex+1];
+                            try {
+                                var selectedOptIndex = currentSelectElem.selectedIndex;
+                                currentSelectElem.add(optionfield,currentSelectElem.options[currentSelectElem.selectedIndex]);
+                                currentSelectElem.options[selectedOptIndex+1].selected = "selected";
+                            } catch (e) {
+                                    var selectedOptIndex = currentSelectElem.selectedIndex;
+                                    var newOption = new Option(optionfield.text, optionfield.value);
+                                    currentSelectElem.add(newOption,currentSelectElem.selectedIndex);
+                                    currentSelectElem.remove(currentSelectElem.selectedIndex+1);
+                                    // currentSelectElem.selectedIndex = selectedOptIndex+1; // optional line
+                                    currentSelectElem.options[selectedOptIndex+1].selected = "selected";
+                            }
+                            
+                        } else {
+                            // alert('Cant go beyond');
+                        } 
+                    }
+                } 
+            }
+            } catch(x){
+                // alert('@@ '+x);
+            }
+        }
+        
+       function swapOption(currentOrder, nextOrder) {
+            var arr = getObjArray();
+            //alert(arr);
+            //alert(currentOrder);
+            // alert('CURRENT ORDER = ' + arr[currentOrder].value +', NEXT ORDER= ' +arr[nextOrder].value );
+            try {
+                if(currentOrder != -1 && nextOrder != -1) {
+                    isOrderChanged = true;
+                    var temp = arr[currentOrder].value;
+                    arr[currentOrder].value = arr[nextOrder].value;
+                    arr[nextOrder].value = temp;
+                    //alert(3);
+                    setObjArray(arr);
+                    //alert(1);
+                    setHiddenField();
+                    //alert(2);
+                }
+            } catch(y) {alert('error1 is here = ' + y)}
+       }
+       
+       function setHiddenField() {
+            var elemHidden = getHiddenElem();
+                var arr = getObjArray();
+                if(elemHidden != null) {
+                    var str = '';
+                    for(var i = 0; i < arr.length; i++) {
+                        str += ',' + arr[i].key + '=' + arr[i].value;
+                    }
+                    elemHidden.value = str;
+                } else {
+                    alert(1213);
+            }
+       }
+        
+       function getHiddenElem() {
+            var hiddenElem = document.getElementById("{!$Component.hiddenElem}");
+            try {
+            // alert(hiddenElem.id);
+            } catch(x){alert(x);}
+            return hiddenElem;
+        }
+        function searchElemIndex(tabId) {
+            var arr =getObjArray();
+            for(var i = 0; i < arr.length; i++ ) {
+                if(arr[i].key == tabId) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        
+        
+        function showOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'visible';
+        }
+        
+        function hideOverlay() {
+                var o = document.getElementById('overlay');
+                o.style.visibility = 'hidden';
+        }
+        function JExample() {
+            //alert(1);
+            var objTempArray = [];
+            try {
+                //alert(getHiddenElem());
+                var hiddenElemVal = (getHiddenElem() == null || getHiddenElem() == undefined ? '{!tabIdToOrderStr}' : getHiddenElem().value);
+                if(hiddenElemVal != '' && hiddenElemVal != null) {
+                    var keyValue = (hiddenElemVal).split(",");
+                    for(var i = 0; i < keyValue.length; i++) {
+                        if(keyValue[i].indexOf("=") != -1) {
+                            var key = (keyValue[i]).split('=')[0];
+                            var value = (keyValue[i]).split('=')[1];
+                            var obj = new SetTabOrder(key, value);
+                            objTempArray[objTempArray.length] = obj;
+                        }
+                    }
+                }
+                setObjArray(objTempArray);
+            } catch(x) {alert('== '+x);}
+        }
+        window.onload = new function() { 
+            if('{!recordId}' != ' ') {
+                init();
+            } else {
+                alert('Invalid Record Id');
+            }
+            JExample(); 
+        };
+        
+        function init() {
+            checkOptionList(getMainTabSelectElem(),'{!selectedMainTab}');
+            checkOptionList(getChildTabSelectElem(),'{!selectedTab}'); 
+        }
+    </script>
+     </apex:form>-->
+</apex:page>

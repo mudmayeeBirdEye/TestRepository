@@ -1,0 +1,17 @@
+<apex:page Controller="XmlParser">
+
+<apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Parse Xml" action="{!Parsexml}" />   
+                <apex:commandButton value="ParseXML File" action="{!Parsexmlfile}"/>
+            </apex:pageBlockButtons>
+            <apex:inputTextArea value="{!xmlstring}" style="width:336px;height:260px;"/> &nbsp;&nbsp;
+            <apex:inputTextArea value="{!outxmlstring}" style="width:336px;height:260px;" id="response"/><br/>
+
+            <apex:outputLabel value="Select Xml File" for="file"/>
+            <apex:inputFile fileName="{!fileName}" value="{!body}"/>
+        </apex:pageBlock>
+    </apex:form>
+   
+</apex:page>

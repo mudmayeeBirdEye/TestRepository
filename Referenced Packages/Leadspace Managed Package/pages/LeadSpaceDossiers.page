@@ -1,0 +1,24 @@
+<apex:page controller="leadspace.LeadSpaceApi" sidebar="false" tabStyle="LeadSpaceDossiersTab__tab" action="{!sendUserRegistration}">  
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+</head>
+     
+   <form action="{!leadspaceTabUrl}" name="redirectForm" method="post" style="display:none;" target="childframe">
+        <input type="text" name="sessionId" value="{!HTMLENCODE($Api.Session_ID)}" />
+        <input type="text" name="serverUrl" value="{!HTMLENCODE($Api.Partner_Server_URL_180)}" />
+        <input type="text" name="packageVersion" value="{!HTMLENCODE(packageVersion)}"/>
+        <input type="text" name="userId" value="{!HTMLENCODE($User.Id)}"/>
+        <input type="text" name="customerId" value="{!HTMLENCODE($Organization.Id)}"/>
+        <input type="text" name="projectId" value="{!HTMLENCODE(projectId)}"/>
+    </form>
+    
+    <apex:iframe id="childframe" scrolling="true" frameborder="false"/>
+    
+    <script>       
+        var childFrame = document.getElementById('childframe');
+        childFrame.height = document.body.parentNode.clientHeight * 0.77;
+    
+        document.forms['redirectForm'].submit();    
+    </script>
+
+</apex:page>

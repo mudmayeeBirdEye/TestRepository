@@ -1,0 +1,256 @@
+<apex:page controller="SurveyController" sidebar="false" showHeader="false" id="thePage" cache="false">
+<style>
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+ul {
+    margin: 0;
+}
+
+#contentWrap {
+    width: 700px;
+    margin: 0 auto;
+    height: auto;
+    overflow: hidden;
+}
+
+#contentTop {
+    width: 600px;
+    padding: 10px;
+    margin-left: 30px;
+}
+
+#contentLeft {
+    /*float: left;
+    width: 400px;
+    */
+    padding:10px;
+   // border:1px dotted lightgray;
+}
+
+#contentLeft li {
+    list-style: none;
+    margin: 0 0 4px 0;
+    padding: 10px;
+    /*background-color:lightgray;*/
+   // border-radius: 5px 5px 5px 5px;
+   // border: 1px solid darkgray;
+    color:#fff;
+    //cursor:move;
+}
+   
+
+#contentRight {
+    float: right;
+    width: 260px;
+    padding:10px;
+    background-color:#336600;
+    color:#FFFFFF;
+}
+#page {
+    background: none !important;
+    box-shadow: 0 0 92px 5px #DADADA inset;
+    -moz-box-shadow: 0 0 92px 5px #dadada inset;
+    -webkit-box-shadow: 0 0 92px 5px #DADADA inset;
+    min-width: 1004px;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    width: 90%;
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 0 9px 30px;
+    position: relative;
+}
+#overlay
+{
+    background: url("{!URLFOR($Resource.EmailValidation,'loading.gif')}") no-repeat scroll center center gray;
+    border: 0px solid #000000;
+    bottom: 0;
+    left: 0;
+    opacity: 0.75;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    width: 100%;
+    height : 200%;
+    z-index: 1000;
+    }
+.columnAlign{
+    width:255px;
+    float:right;
+}
+
+b {color:#798496;font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:14px; font-style:normal; line-height:20px;}
+#page{border: 1px solid lightgray; width: 655px; padding: 10px;border-radius: 5px 5px 5px 5px;}
+    
+    #UlLogo li {
+                display: block;
+                float: left;
+                width : 30%;
+                height:100px;
+                text-align:center;
+                vertical-Align:middle;
+       }
+       
+    #UlLogobtn li {
+            display: block;
+             float: left;
+             width : 30%;
+             height:100px;
+             text-align:center;
+             vertical-Align:middle;
+    }
+
+</style>
+
+<center>
+    <apex:outputText rendered="{!isAlreadyfilled}">
+        <b style="border: 1px solid lightgray; width: 655px; padding: 10px;border-radius: 5px 5px 5px 5px;box-shadow: 0 0 92px 5px #DADADA inset;-moz-box-shadow: 0 0 92px 5px #dadada inset; -webkit-box-shadow: 0 0 92px 5px #DADADA inset;">You have already filled this Survey.</b>
+    </apex:outputText>
+</center>
+
+<apex:form id="theForm" rendered="{!!isAlreadyfilled}">
+    <div id="page">
+        <div style="width:100%;height:100px;">
+            <ul id="UlLogo" style="width:100%;height:100px;">
+                <apex:variable value="{!0}" var="count"/>
+                <apex:repeat value="{!logoList}" var="varLogo"> 
+                    <apex:variable value="{!count+1}" var="count"/>
+                    <li id="{!ROUND(count,0)}">
+                        <apex:outPutPanel rendered="{!if(logoPosition==count,true,false)}">
+                            <table style="height:100px;text-align:center;vertical-Align:middle;width:100%">
+                                <tr>
+                                    <td><apex:Image value="{!$Resource.RcLogo}"></apex:Image></td>
+                                </tr>
+                            </table>
+                        </apex:outPutPanel>
+                        <apex:outPutPanel rendered="{!!if(logoPosition==count,true,false)}">
+                            <table style="height:100px;text-align:center;vertical-Align:middle;width:100%">
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </apex:outPutPanel>
+                    </li>
+                </apex:repeat>
+            </ul>
+        </div>
+        
+        <apex:pageMessages rendered="{!toshowErrorOrInfoMsg}"/>
+        
+        <apex:outputText rendered="{!toshowFilledMsg}"><b>Thank you for filling out our survey.</b></apex:outputText>
+        
+        <apex:outputPanel rendered="{!!isFilled}" id="qaPanel">
+        <div style="padding:10px;padding-left:60px"> 
+            <b><apex:outputText style="font-family: Arial, Helvetica, sans-serif;font-size: 13px;">
+            Thank you for taking the time for filling out our survey and helping us learn how to best help you.</apex:outputText></b>
+        </div>
+        <div id="contentLeft">
+            <ul>
+                   <apex:variable value="{!1}" var="rowNum"/>
+                   <apex:repeat value="{!wQesList}" var="varDraft"  id="theRepeat">
+                    <li> 
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td><b>Q<apex:outputText value="{!FLOOR(rowNum)}" id="qus"/><apex:outputPanel rendered="{!varDraft.IsMandatory }"><font color="red">*</font> </apex:outputPanel> : {!varDraft.questionsObj.Subject__c}</b></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    <apex:outputPanel rendered="{!IF(varDraft.questionsObj.Option_Type__c == 'Text', 'true', 'false')}" id="anstext">
+                                        <apex:inputText value="{!varDraft.theTextValue}" style="font-family: Arial, Sans-Serif; font-size: 13px; padding: 10px; width:600px;" onkeypress="return checkLength(this, 250,event);" maxlength="250" />
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!IF(varDraft.questionsObj.Option_Type__c == 'Radio', 'true', 'false')}" id="ansradio">
+                                             <apex:selectRadio layout="pageDirection" value="{!varDraft.theRadioValue}">
+                                                     <apex:selectOptions value="{!varDraft.values}"/> 
+                                             </apex:selectRadio>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!IF(varDraft.questionsObj.Option_Type__c == 'Checkbox', 'true', 'false')}" id="anscheckbox">
+                                          <apex:selectCheckboxes layout="pageDirection" value="{!varDraft.theCheckBoxValue}">
+                                                <apex:selectOptions value="{!varDraft.values}"/>
+                                        </apex:selectCheckboxes>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!IF(varDraft.questionsObj.Option_Type__c == 'Textarea', 'true', 'false')}" id="anslongtext">
+                                           <apex:inputTextArea value="{!varDraft.theLongTextValue}" style="font-family: Arial, Sans-Serif; font-size: 13px; width:600px;height: 100px;" onkeypress="return checkLength(this, 2000,event);" />
+                                    </apex:outputPanel>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                   </li>
+                   <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+               </apex:repeat>
+             </ul>
+        </div>
+       </apex:outputPanel> 
+        <div style="width:100%;height:70px;">
+            <ul id="UlLogobtn" style="width:100%;height:100px;">
+            <apex:variable value="{!0}" var="count"/>
+                <apex:repeat value="{!logoList}" var="varLogo">
+                    <apex:variable value="{!count+1}" var="count"/>
+                    <li id="{!Round(count,0)}">
+                        <apex:outPutPanel rendered="{!if(submitButtonPosition==count,true,false)}">
+                            <table style="height:100px;text-align:center;vertical-Align:middle;width:100%">
+                                <tr>
+                                    <td><apex:commandButton action="{!saveSurvey}" reRender="theForm" value="Submit" id="theButton" oncomplete="movescrollUp();"  status="onsave" rendered="{!!isFilled}">
+                                            <apex:actionStatus id="onsave" onstart="showOverlay();"  onstop="hideOverlay();"/>
+                                        </apex:commandButton></td>
+                                </tr>
+                            </table>
+                        </apex:outPutPanel>
+                        <apex:outPutPanel rendered="{!if(submitButtonPosition==count,true,false)}">
+                            <table style="height:100px;text-align:center;vertical-Align:middle;width:100%">
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </apex:outPutPanel>
+                    </li>
+                </apex:repeat>
+            </ul>
+        </div>
+        </div>
+    <div id="overlay"></div>      
+ </apex:form>
+   
+ <script type="text/javascript"> 
+
+    function showOverlay() {
+        var o = document.getElementById('overlay');
+        o.style.visibility = 'visible';
+    }
+    function hideOverlay() {
+        var o = document.getElementById('overlay');
+        o.style.visibility = 'hidden';
+        window.scroll(0,50);
+    }
+    
+    function movescrollUp() {
+        //alert(1);
+        window.scroll(0,50); 
+    }
+ 
+    function checkLength(control, maximum,e) {
+        var keycode;
+        if (window.event) keycode = window.event.keyCode;
+        else if (e) keycode = e.which;
+        //alert(keycode); 
+        if(keycode != 8) {
+            //alert(2);
+            var length = control.value.length;
+            if (length >= maximum) {
+                alert('Please limit your message to '+ maximum +' characters. There are currently ' + length + '.');
+                return false;
+            }
+            return true;
+        }
+    }
+
+ </script> 
+    
+</apex:page>

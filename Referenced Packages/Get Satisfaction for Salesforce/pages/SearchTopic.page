@@ -1,0 +1,61 @@
+<apex:page controller="GETSAT_TOPIC.SearchTopicController" cache="false" expires="-1" tabStyle="GETSAT_TOPIC__Topic__c">
+    <apex:form id="theform">
+    <apex:pageBlock tabStyle="Topic__c" >
+        <apex:pageMessages ></apex:pageMessages>
+        <apex:pageBlockSection title="Select Community">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Community"></apex:outputLabel>
+                <apex:selectList value="{!communityId}" size="1" id="course"  style="width:150px;" >
+                    <apex:selectOptions value="{!CommunityList}"></apex:selectOptions>
+                    <apex:actionSupport event="onchange" action="{!findTopicRecords}"  reRender="theform" status="buttonStatus"/>
+                </apex:selectList>
+            </apex:pageBlockSectionItem>
+              <apex:actionStatus id="buttonStatus" startText="processing...">
+                    <apex:facet name="start" >
+                    <img src="/apexpages/devmode/img/saveStatus.gif"/>
+                    </apex:facet>
+                </apex:actionStatus>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection columns="1" title="Import Topics to Salesforce" rendered="{!flag}">
+            
+            <apex:pageBlockTable value="{!pageTopicList}" var="t" id="topicform">
+                <apex:column headerValue="Topic Subject">
+                   <apex:outputText value="{!t.topicRecord.GETSAT_TOPIC__Subject__c}"/>
+                </apex:column>
+                 <apex:column headerValue="Topic Link">
+                   <apex:outputText value="{!t.topicRecord.GETSAT_TOPIC__topic_url__c}"/>
+                </apex:column>
+                
+                 <apex:column headerValue="Replies Count">
+                   <apex:outputText value="{!t.count}"/>
+                </apex:column>
+                 <apex:column headerValue="Import">
+                   <apex:outputPanel rendered="{!if(t.recordId == null, true, false)}">
+                       <apex:commandLink value="Import" action="{!save}" rendered="{!if(t.recordId == null, true, false)}">
+                           <apex:param value="{!t.topicRecord.GETSAT_TOPIC__Topic_ID__c}" name="name" assignTo="{!topicRecordId}"/>
+                       </apex:commandLink>
+                   </apex:outputPanel>
+                   
+                   <apex:outputPanel rendered="{!if(t.recordId != null, true, false)}">
+                       <a href="{!URLFOR($Action.Topic__c.View, t.recordId)}" target="_blank"> View Topic 
+                       </a><!--img src="/img/msg_icons/confirm32.png"/-->
+                   </apex:outputPanel>
+                   
+                </apex:column>
+            </apex:pageBlockTable>
+            <apex:panelGrid columns="8" style="margin-left:220px;">           
+                <apex:commandButton value="First" action="{!firstBtnClick}" rendered="{!IF(PageNumber>1,'true','false')}"/><!---->
+                <apex:commandButton value="Previous" action="{!previousBtnClick}" rendered="{!IF(PageNumber>1,'true','false')}"/><!---->
+                <apex:commandButton value="Next" action="{!nextBtnClick}" rendered="{!IF(PageNumber < totalPageNumber,'true','false')}"/><!---->
+                <apex:commandButton value="Last" action="{!lastBtnClick}" rendered="{!IF(PageNumber < totalPageNumber,'true','false')}"/><!---->
+            </apex:panelGrid>
+        </apex:pageBlockSection>
+        <apex:pageBlockButtons >
+            
+            <apex:commandButton action="{!URLFOR($Action.Topic__c.Tab, $ObjectType.Topic__c)}" value="Cancel"/>
+
+        </apex:pageBlockButtons>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

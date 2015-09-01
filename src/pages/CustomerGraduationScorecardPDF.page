@@ -1,0 +1,295 @@
+<apex:page standardController="Account_Metric__c" extensions="AccountMetricExtension" showheader="false" sidebar="false" 
+        docType="html-5.0" renderAS="PDF" standardstylesheets="false" cache="false">
+    <head>
+    <style>
+    @page {
+        /* Landscape orientation */
+        size: a4 landscape; 
+        width:100%;
+        margin:2%;
+        padding:0;
+        /*@top-right {
+         content: "Page " counter(page);
+        }*/
+    }
+    
+        h1 {color:black; font-weight:bold; font-size:11px; text-align:left; margin:0;padding:0;margin-left:10px;}
+        h2 {color:blue; font-weight:bold; font-size:11px; text-align:center; margin:0;padding:0;margin-left:10px;}
+        h3 {color:blue; font-weight:normal; font-size:11px; text-align:center; margin:0;padding:0;margin-left:10px;}
+        h4 {color:black; font-weight:bold; font-size:18px;margin:0;padding:0;margin:0;padding:0;margin-left:10px;}
+        h5 {color:white; font-weight:bold; font-size:16px; margin:0;padding:0;margin-left:10px;}
+        h6 {color:black; font-weight:bold; font-size:12px;margin:0;padding:0;margin-left:10px;}
+        
+               
+         div.blackdiv {
+            position: absolute;
+            top: -5px; 
+            width: 3px; 
+            /*left: 120px; */
+            height: 30px; 
+            float:left; 
+            z-index:3; 
+            background-color: black;
+         }
+         div.bluediv {
+             background-color:#336688;
+             border: 1px solid black;
+             border-top-left-radius:1em;
+             border-top-right-radius:1em;
+             height:40px;
+         }         
+       *{
+            margin:0;
+            padding:0;
+        }*
+        td {
+            text-align:left;
+        }
+        .tdSpacing {
+            padding-left:10px;
+        }
+    </style>
+    </head>
+    
+    <apex:form >
+    
+        <center>
+        <!-- Top Title -->
+        <table width="1070" border="0" cellspacing="0" cellpadding="0"><tr><td><h4>Customer Graduation Scorecard</h4></td></tr></table>
+        <br/><br/>
+        
+        <!-- Top Bar / Account Info -->
+        <table width="1070" border="0" cellspacing="0" cellpadding="0" >
+        <tr><td>
+            <div style="background-color:#336688; border: 1px solid black;">
+                <h5>&nbsp;&nbsp;&nbsp;Account Information</h5>
+            </div>
+            <div style="border: 1px solid black;">
+                <br/>
+                <table width="1070" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="250"><h6>&nbsp;&nbsp;&nbsp;&nbsp;Account Name:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:12px;">
+                            {!accObj.Name}<apex:OutputText rendered="{!ISNULL(accObj.Name)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td width="250"><h6>&nbsp;&nbsp;&nbsp;&nbsp;Activation Date:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:12px;">
+                        <apex:outputText value="{0,date,MMMM dd, yyyy}">
+                            <apex:param value="{!accObj.RC_Activation_Date__c }" />
+                        </apex:outputText>
+                        <apex:OutputText rendered="{!ISNULL(accObj.RC_Activation_Date__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="250"><h6>&nbsp;&nbsp;&nbsp;&nbsp;Brand:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:12px;">
+                            {!accObj.RC_Brand__c }<apex:OutputText rendered="{!ISNULL(accObj.RC_Brand__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td width="250"><h6>&nbsp;&nbsp;&nbsp;&nbsp;Contract Renewal Date:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:12px;">                 
+                            <apex:outputText value="{0,date,MMMM dd, yyyy}">
+                                <apex:param value="{!quoteObj.End_Date__c+1 }" />
+                            </apex:outputText>               
+                            <apex:OutputText rendered="{!ISNULL(quoteObj.End_Date__c)}" value="N/A"/>
+                        </div>
+                    </td>                
+                </tr>
+                <tr>
+                    <td width="250"><h6>&nbsp;&nbsp;&nbsp;&nbsp;Service:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:12px;">
+                            {!accObj.RC_Service_name__c }<apex:OutputText rendered="{!ISNULL(accObj.RC_Service_name__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td width="250"><h6>&nbsp;&nbsp;&nbsp;&nbsp;Contract Term:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:12px;">                 
+
+
+                            <apex:OutputText rendered="{!today() >=quoteObj.Start_Date__c && today() <=quoteObj.End_Date__c}" value="{!quoteObj.Initial_Term_months__c}"/>
+                           <apex:OutputText rendered="{!today() >quoteObj.End_Date__c }" value="{!quoteObj.Term_months__c}"/>
+
+
+
+
+                        </div>
+                    </td>                
+                </tr>
+                <tr>
+                    <td width="250"><h6>&nbsp;&nbsp;&nbsp;&nbsp;Number of Lines:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:12px;">
+                            <apex:outputText value="{0,number,integer}">
+                                <apex:param value="{!accObj.Number_of_DL_s__c}" />
+                            </apex:outputText>
+                        <apex:OutputText rendered="{!ISNULL(accObj.Number_of_DL_s__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td width="250"><h6>&nbsp;&nbsp;&nbsp;&nbsp;Peer Group:</h6></td>
+                    <td width="250">
+                         <div style="color:black; font-weight:normal; font-size:12px;">
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 1}" value="Fax"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 2}" value="Pro"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 3}" value="Pro1"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 4}" value="Office 2-19"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 5}" value="Office 20+ DLs"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 6}" value="ATT Premium Only"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 7}" value="ATT Virtual Only"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 8}" value="ATT Mix Users"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 101}" value="Other"/>
+                        <apex:OutputText rendered="{!ISNULL(accountMetricObj.Peer_Group_ID__c)}" value="N/A"/>
+                        </div>
+                    </td>                
+                </tr>
+                <tr>
+                    <td width="250"><h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6></td>
+                    <td width="250">                        
+                    </td>
+                    <td></td>
+                    <td width="250"><h6>&nbsp;&nbsp;&nbsp;&nbsp;Accounts in Peer Group:</h6></td>
+                    <td width="250">
+                         <div style="color:black; font-weight:normal; font-size:12px;">
+                            <apex:outputText value="{0,number,integer}">
+                                <apex:param value="{!peergroupMap[1000].Number_of_Accounts__c}" />
+                            </apex:outputText>                        
+                        <apex:OutputText rendered="{!ISNULL(peergroupMap[1000].Number_of_Accounts__c)}" value="N/A"/>
+                        </div>
+                    </td>                
+                </tr>
+                
+                </table>
+                <br/>
+            </div>        
+        </td></tr>
+        </table>
+        <br/>
+        
+        <!-- Metrics -->
+        <table width="1070" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <!-- Left -->
+            <td width="350" colspan="5">
+                <div style="background-color:#336688; border: 1px solid black;border-top-left-radius:1em;border-top-right-radius:1em;">
+                    <h5>&nbsp;&nbsp;&nbsp;Implementation Phase</h5>
+                </div> 
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="350" colspan="5">
+                <div style="background-color:#336688; border: 1px solid black;border-top-left-radius:1em;border-top-right-radius:1em;">
+                    <h5>&nbsp;&nbsp;&nbsp;Adoption / Maturity Phase</h5>
+                </div>
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="350" colspan="5">
+                <div style="background-color:#336688; border: 1px solid black;border-top-left-radius:1em;border-top-right-radius:1em;">
+                    <h5>&nbsp;&nbsp;&nbsp;Graduation Phase</h5>
+                </div>
+            </td>
+        </tr>
+        <!-- Roll up -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#d9d9d9; border: 1px solid black;height:80px;">
+                <table border="0" width="100%">
+                        <tr>
+                            <td align="center" colspan="2">
+                                Completion Rate - {!Completion30D}%
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td width="38">&nbsp;</td>
+                            <td>
+                                <DIV class="blackdiv" style="left:{!completion30d*3}px"></div>
+                                <DIV style="position: relative; top: 5px; width: 300px; height: 25px; float:left; background-color: Red">
+                                <img width="300" height="25" src="{!$Resource.CGBar_RAG}"></img>
+                                </DIV>
+
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2">
+                                Completion Date - {!accInfoObj.Account_Graduation_Date_0_30__c}
+                            </td>                            
+                        </tr>
+                        
+                </table>
+                </div> 
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#d9d9d9; border: 1px solid black;height:80px;">
+                <table border="0" width="100%">
+                        <tr>
+                            <td align="center" colspan="2">
+                                Completion Rate - {!Completion60D}%
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td width="38">&nbsp;</td>
+                            <td>
+
+
+                               
+
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2">
+                                Completion Date - {!accInfoObj.Account_Graduation_Date_31_60__c}
+                            </td>                            
+                        </tr>
+                        
+                </table>
+                </div> 
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#d9d9d9; border: 1px solid black;height:80px;">
+                <table border="0" width="100%">
+                        <tr>
+                            <td align="center" colspan="2">
+                                Completion Rate - {!Completion90D}%
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td width="38">&nbsp;</td>
+                            <td>
+
+
+                               
+
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2">
+                                Completion Date - {!accInfoObj.Account_Graduation_Date_61_90__c}
+                            </td>                            
+                        </tr>
+                        
+                </table>
+                </div> 
+            </td>
+        </tr>
+        
+        
+        </table>
+        </center>
+    
+    </apex:form>
+</apex:page>

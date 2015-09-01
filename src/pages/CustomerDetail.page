@@ -1,0 +1,109 @@
+<apex:page controller="OKTAHelper" showHeader="true" standardStylesheets="false" sidebar="true">
+    <link href="{!URLFOR($Resource.OKTA, 'OKTA/themes/redmond/jquery-ui-1.8.2.custom.css')}" type="text/css" rel="stylesheet"   />
+    <link href="{!URLFOR($Resource.OKTA, 'OKTA/themes/ui.jqgrid.css')}" type="text/css" rel="stylesheet"   />
+    <link href="{!URLFOR($Resource.OKTA, 'OKTA/themes/ui.multiselect.css')}" type="text/css" rel="stylesheet"   />
+    <script type="text/javascript" src="{!URLFOR($Resource.OKTA, 'OKTA/JS/jquery.min.js')}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.OKTA, 'OKTA/JS/jquery-ui-1.8.2.custom.min.js')}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.OKTA, 'OKTA/JS/grid.locale-en.js')}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.OKTA, 'OKTA/JS/jquery.jqGrid.min.js')}"></script>
+    <style>
+        .ui-jqgrid-bdiv{
+            overflow-x: hidden !important;
+        }
+        .infopanel {
+            margin: auto;
+            border: 1px solid #c5dbec;
+            min-height: 24px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+            box-shadow: 2px 0px 45px -8px #dfeffc inset;
+            -webkit-box-shadow: 2px 0px 45px -8px #dfeffc inset;
+            -moz-box-shadow: 2px 0px 45px -8px #dfeffc inset;
+            background: white;
+            padding: 10px;
+        }
+        .infoM3 {
+            border-color: #39f;
+        }
+        .message {
+            moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            background-color: #ffc;
+            border-style: solid;
+            border-width: 1px;
+            color: #000;
+            padding: 6px 8px 6px 6px;
+            margin: 4px 20px;
+        }
+    </style>
+    <apex:outputpanel rendered="{!isOktaUserIdFound}">
+        <body>
+            <!--<apex:pageMessages />
+            --><div style='display:none'>
+                <img src="{!objOKTASession.cookieTokenUrl}"></img>
+            </div>
+            <div style='margin-left:1%;'>
+                <table id="list2"></table>
+                <div id="pager2"></div>
+            </div>
+        </body>
+        <script type="text/javascript"> 
+            jQuery(document).ready(function(){
+                jQuery("#list2").jqGrid({
+                    data:{!strJSON},
+                    datatype: "local",
+                    height : 400,
+                    width : '500px',
+                    /*width:1000,*/
+                    colNames:['Account Name','User ID'],
+                    colModel:[
+                    /*{name:'appName',index:'linkUrl',formatter:linkFmatter, width:80, align:"Center"},*/
+                    {name:'appName',index:'appName',formatter:linkFmatter, width:50, align:"laft" , resizable: true},
+                    {name:'label',index:'label', width:50, align:"left", resizable: false}
+                    /*{name:'phone',index:'phone', width:50, align:"left", resizable: false},
+                    {name:'logoUrl',index:'logoUrl',formatter:imgFmatter, width:90,sortable:false, resizable: false},*/
+                    ],
+                    rowNum:10,
+                    rowList:[10,20,30],
+                    pager: '#pager2',
+                    viewrecords: true,
+                    sortorder: "desc",
+                    caption:"Customer Accounts",
+                    autowidth: true,
+                    forceFit: true
+                });
+                jQuery("#list2").jqGrid('navGrid','#pager2',{edit:false,add:false,del:false});
+            });
+            function linkFmatter (cellvalue, options, rowObject){
+                console.log(rowObject);
+                return "<a href="+rowObject.linkUrl+" target='_blank'>"+cellvalue+"</a>"
+            }
+            function imgFmatter (cellvalue, options, rowObject){
+                return "<img src="+cellvalue+"></img>"
+            }
+        </script>
+    </apex:outputpanel>
+    <apex:outputpanel rendered="{!!isOktaUserIdFound}">
+        {!strUserMessage}
+    </apex:outputpanel>
+    <apex:outputpanel rendered="{!showLink}">
+        <div class="infopanel" style="font-size:17px;">
+            <!--<div class="message infoM3">
+                <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+                    <tr>
+                        <td>
+                            <div>
+                                Please contact the RingCentral Partner Team at <a href="mailto:resellers@ringcentral.com" >resellers@ringcentral.com</a> to get access to this feature. 
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        -->
+        Please contact the RingCentral Partner Team at <a href="mailto:resellers@ringcentral.com" >resellers@ringcentral.com</a> to get access to this feature.
+        </div>
+        <!--You are also required to reset your password <a href='{!objUserPassword.resetPasswordUrl}' target='_blank'> here</a> .  -->
+    </apex:outputpanel>
+</apex:page>

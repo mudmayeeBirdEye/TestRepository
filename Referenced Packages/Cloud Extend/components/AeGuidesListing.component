@@ -1,0 +1,6 @@
+<apex:component controller="ce4sf20_001.AeGuidesListingController" access="global">
+  <apex:attribute name="entryIds" access="global" required="true" type="String" assignTo="{!entryIds1}" description="List of entry ids in csv format." />
+  <apex:repeat value="{!entries}" var="entry">
+    {!entry.asJSON}{!entry.separator}
+  </apex:repeat>
+</apex:component>

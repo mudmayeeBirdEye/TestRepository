@@ -1,0 +1,86 @@
+<apex:page controller="ATTController" showHeader="false" cache="true" expires="{!cacheMaxAge}">
+ 
+    <apex:variable var="currentKeywordVar" value="{!currentKeyword}" />
+    <apex:variable var="keywordParameterNameVar" value="{!keywordParameterName}" />
+    <apex:variable var="currentCategoryVar" value="{!currentCategory}" />
+    <apex:variable var="currentArticleTypeVar" value="{!currentArticleType}" />
+    <apex:variable var="categoryParameterNameVar" value="{!categoryParameterName}" />
+    <apex:variable var="articleTypeParameterNameVar" value="{!articleTypeParameterName}" />
+    <apex:variable var="searchUrlVar" value="{!searchUrl}" />
+    <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+    <apex:variable var="brandFilterVar" value="{!BrandFilter}" />      
+     
+      <apex:variable var="sortOrderDirection" value="{!StrSortOrderDirection}" />
+      <apex:composition template="{!$Site.Template}">
+        <apex:define name="content">
+            <div id="divShowAdvValueOnForm" style="display:none;">
+            <div class="rn_DisplaySearchFilters" id="rn_DisplaySearchFilters_12">
+            <span class="rn_Heading">Search filters applied</span>
+            <div id="rn_DisplaySearchFilters_12_Filter_0" class="rn_Filter"><div class="rn_Label">Category
+                <a title="Remove" href="javascript:void(0);" id="rn_DisplaySearchFilters_12_Remove_0">
+              <img src="{!$Site.CurrentSiteUrl}resource/13020827440000/ATTInclude/remove.png"  alt="Remove" 
+               onclick="javascript:closeAdvdetDiv('divShowAdvValueOnForm');"/>
+               <!-- <img src="{!URLFOR($Resource.ATTInclude, 'remove.png')}"  alt="Remove" 
+                    onclick="javascript:closeAdvdetDiv('divShowAdvValueOnForm');"/> -->
+               </a></div>
+               <a class="rn_Selected rn_FilterItem" href="#">{!HTMLENCODE(currentCategory)}</a>
+               <span class="rn_Separator rn_Selected"></span></div></div>
+            </div>
+        <!--<apex:outputPanel styleClass="pkbLeft" layout="block">
+            <c:knowledgeCategories />
+        </apex:outputPanel>-->
+      <apex:outputPanel styleClass="pkbMain" layout="block">
+            <apex:outputPanel styleClass="pkbResultPanel" layout="block">
+                <apex:outputPanel styleClass="pkbResultTop" layout="block" />
+                <apex:outputPanel styleClass="pkbResultInner" layout="block">
+                    <apex:outputPanel styleClass="pkbResultSummary" rendered="{!currentKeywordVar!=null}" layout="block">
+                        Search Results For: <i>{!HTMLENCODE(currentKeywordVar)}</i><br/><br/>
+                    </apex:outputPanel>
+                    <ul>
+                        <apex:variable var="anyDocument" value="false" />
+                        <apex:variable var="hasMore" value="" />
+                      
+                        <knowledge:articleList articleVar="article"  hasMoreVar="hasMore"
+                            pageSize="10"
+                            pageNumber="{!currentPageNumber}"
+                            keyword="{!currentKeyword}"
+                            categories="{!categoryGroupNameVar}:{!currentCategory},{!brandFilterVar}"
+                            sortBy="{!sortOrderDirection}">
+                         <a href="{!URLFOR($Action.KnowledgeArticle.View, article.id)}&Title={!article.title}" style='text-decoration:underline;'>{!article.title}</a>
+                            <div class="pkbResultArticleAbstract" >{!article.abstract}<br/>Date Updated:{!article.LastModifiedDate}</div><br/>
+                            <apex:variable var="anyDocument" value="true" />
+                        </knowledge:articleList>
+                    </ul>
+
+                    <c:knowledgePagination isNextAvailable="{!hasMore}" urlLink="{!searchPageUrl}" rendered="{!anyDocument!='false'}"/>
+
+                    <apex:outputText value="No Result found for '{!HTMLENCODE(currentCategoryVar)}' in the selected category</br></br>  <div class='rn_NoResults ' id='rn_ResultInfo2_13_NoResults'>
+                             <br/><br/>Suggestions:<br/><br/><ul>
+                               <li>&nbsp;&nbsp;Make sure all words are spelled correctly</li>
+                               <li>&nbsp;&nbsp;Use different words that mean the same thing</li>
+                               </ul>   
+                  </div>" rendered="{!anyDocument=='false'}"  escape="false"   />&nbsp;
+
+                
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </apex:outputPanel>
+
+        </apex:define>
+    </apex:composition>
+      <script type="text/javascript">  
+     
+     if('{!HTMLENCODE(currentCategoryVar)}' != null && '{!HTMLENCODE(currentCategoryVar)}' != "" && '{!HTMLENCODE(currentCategoryVar)}' != 'All'){   
+        var getdivShowAdvValueOnForm = document.getElementById("divShowAdvValueOnForm");       
+        getdivShowAdvValueOnForm.style.display = "block";
+    }
+    
+    function closeAdvdetDiv(divID){
+       var siteName='{!$Site.CurrentSiteUrl}';
+            var url=siteName+'{!searchUrl1}'+"?c=All&k="+'{!HTMLENCODE(currentKeyword)}'+'&action=SearchAnswer';
+                window.location.href=url;
+                 // location.href=url;
+        document.getElementById(divID).style.display = "none";
+         }
+    </script>
+</apex:page>

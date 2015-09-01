@@ -1,0 +1,71 @@
+<apex:page extensions="GETSAT_TOPIC.PostReplyController" standardController="GETSAT_TOPIC__Reply__c" action="{!init}"> 
+    <apex:sectionHeader title="Post Reply"/>
+
+<apex:form >
+    <apex:PageBlock >  
+        <apex:pageBlockButtons location="top">
+            <apex:commandButton value="Save" action="{!doSave}"  rendered="{!(showButton)&&(cancelButton)&&(NOT(showBody))}"/>
+            <apex:commandButton value="Save & Post to Get Sat" action="{!showPreview}" rendered="{!(showButton)&&(cancelButton)&&(NOT(showBody))}"/> 
+            <apex:commandButton value="Confirm Post to Get Sat" action="{!authorize}" rendered="{!showBody}"/>             
+            <apex:commandButton value="Cancel" action="{!doCancel}" immediate="true"/>
+            <apex:commandButton value="Post New Reply" action="{!doNewPost}" rendered="{!NOT(showButton)}"/>            
+            <!--apex:commandButton value="Edit"  style="margin-left:-560px;"/-->
+        </apex:pageBlockButtons>
+        <apex:PageBlockSection columns="1" rendered="{!NOT(ISNULL(msgInfo))}">
+        <apex:pageMessage severity="error" strength="3" rendered="{!NOT(msgFlag)}" escape="false">
+            <apex:outputText value="{!$Label.getsat_topic__Error_Message}. "></apex:outputText>&nbsp;
+            <apex:outputLink rendered="{!link != null}" style="color:#015BA7;" title="" value="{!link}">{!$Label.getsat_topic__Enter_Credentials}</apex:outputLink>
+            <apex:outputLink rendered="{!link == null}" style="color:#015BA7;" title="" value="{!URLFOR($Action.Get_Sat_Configuration__c.New)}">{!$Label.getsat_topic__Enter_Credentials}</apex:outputLink>
+        </apex:pageMessage> 
+        <apex:pageMessage summary="{!msgInfo}" severity="Confirm" strength="3" rendered="{!msgFlag}" />              
+        </apex:PageBlockSection> 
+       
+        <apex:PageBlockSection columns="2" rendered="{!(showBlock)&&(showButton)&&(NOT(showBody))}">
+            <apex:outputField value="{!GETSAT_TOPIC__Reply__c.GETSAT_TOPIC__Topic__c}" />
+            <apex:outputField value="{!GETSAT_TOPIC__Reply__c.GETSAT_TOPIC__Delivery_Status__c}" />
+            <apex:outputField value="{!GETSAT_TOPIC__Reply__c.GETSAT_TOPIC__Case__c}" />
+            <apex:outputLabel value="" />
+            
+        </apex:PageBlockSection>
+         <apex:pageBlockSection columns="2" rendered="{!(showBlock)&&(showButton)&&(NOT(showBody))}">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Topic Description"></apex:outputLabel>
+                <apex:outputText value="{!JSENCODE(topicBody)}" escape="false"></apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        
+            <apex:pageBlockSection title="Replies" columns="1"  rendered="{!(showBlock)&&(showButton)&&(NOT(showBody))}">
+                
+                    <apex:repeat value="{!repliesList}" var="r">
+                       <apex:pageBlockSectionItem >
+                       <apex:outputField value="{!r.Name}"/>
+                       
+                       <apex:outputText value="{!JSENCODE(r.GETSAT_TOPIC__Body__c)}" escape="false"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:repeat>
+                
+            </apex:pageBlockSection>
+      
+        <apex:PageBlockSection title="New Reply" columns="1" rendered="{!(showBlock)&&(showButton)&&(NOT(showBody))}">
+            <apex:inputField value="{!GETSAT_TOPIC__Reply__c.GETSAT_TOPIC__Body__c}"/>
+            <!--apex:inputText size="50" style="height:150px;" value="{!strBody}"/-->
+        </apex:PageBlockSection>
+        <apex:PageBlockSection columns="2" rendered="{!(showBody)&&(showButton)}">
+            <apex:outputField value="{!rplBody.GETSAT_TOPIC__Body__c}"/>
+        </apex:PageBlockSection>
+        <apex:PageBlockSection columns="2" rendered="{!NOT(showButton)}">
+            <apex:outputField value="{!GETSAT_TOPIC__Reply__c.GETSAT_TOPIC__Topic__c}" />
+            <apex:outputField value="{!GETSAT_TOPIC__Reply__c.GETSAT_TOPIC__Delivery_Status__c}" />
+            <apex:outputField value="{!GETSAT_TOPIC__Reply__c.GETSAT_TOPIC__Case__c}" />
+            <apex:outputLabel value="" />
+            <apex:outputField value="{!GETSAT_TOPIC__Reply__c.GETSAT_TOPIC__Body__c}" />
+        </apex:PageBlockSection>
+        <apex:pageBlockSection columns="1"  rendered="{!(showButton)}">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="" />
+                <apex:outputText style="font-style:italic" value="Note: There is a known issue with the Salesforce text editor that does not allow uploaded images to be viewed outside of Salesforce.  If you are going to include an image in your reply, please be sure to specify a Web Address instead." />
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:Pageblock>  
+</apex:form>
+</apex:page>

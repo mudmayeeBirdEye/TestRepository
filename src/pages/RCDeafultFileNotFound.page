@@ -1,0 +1,9 @@
+<apex:page showHeader="false" title="{!$Label.site.error2}">  
+ <apex:pageBlock mode="maindetail">
+                
+                   <apex:pageMessage escape="false" strength="3" severity="INFO"  detail="">
+                   Authorization Required. Click <a href='javascript:history.back();' style='color: #015BA7;'>here</a> to go back to previous page.
+                   
+        </apex:pageMessage>
+          </apex:pageBlock>           
+</apex:page>

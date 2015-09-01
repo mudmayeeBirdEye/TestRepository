@@ -1,0 +1,7 @@
+<apex:page standardController="Lead" extensions="FakeLeadController" >
+  
+  <apex:form >    
+    <apex:commandButton action="{!save}" value="Test Fake"/>
+    </apex:form>  
+  
+</apex:page>

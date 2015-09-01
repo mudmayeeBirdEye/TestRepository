@@ -1,0 +1,11 @@
+<apex:page contentType="text/plain">
+#
+# robots.txt for help.ringcentral.com.
+#
+# For use by help.ringcentral
+#
+User-agent: *    # applies to all robots
+Disallow:       # disallow indexing of all pages
+Allow: /
+Sitemap: http://success.ringcentral.com/SupportPortalSitemap
+</apex:page>

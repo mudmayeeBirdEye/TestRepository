@@ -1,0 +1,1664 @@
+<apex:page standardController="Account_Metric__c" extensions="AccountMetricExtension" cache="false">
+     <style>
+         .btnDiv {
+            /*width: 100%;*/
+            margin: auto;
+            padding-top:3px;
+            padding-bottom:3px;
+           /* border: 1px solid #A5A6A5;*/
+            margin-top: 5px; 
+            margin-bottom: 5px;
+           /* background: #FFF !important;*/
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+           /* -webkit-box-shadow: 0px -71px 101px -19px #DEEBEF inset;*/ 
+            -moz-box-shadow: 0px -71px 101px -19px #DEEBEF inset;
+            text-align: center;
+            }
+            .btn {
+            color:#084B8A !important;
+            background-color:#E16222!important;
+            border: 1px solid #A5A6A5 !important;
+           
+            padding: 9px !important;
+            vertical-align: center;
+        }
+     .btnDivNew {
+        /*width: 95%;*/
+        margin: auto;
+        border: 1px solid skyblue;
+        /* min-height: 100px; */
+        margin-top: 5px;
+        //margin-bottom: 5px;
+        background: #FFF !important;
+        
+        /*-moz-border-radius: 11px;
+        -webkit-border-radius: 11px;
+        border-radius: 11px;*/
+        
+        /*behavior: url({!$Resource.BorderRadiusHTC});
+        box-shadow: 0px 0px 20px 0px skyblue inset;
+        -webkit-box-shadow: 0px 0px 20px 0px skyblue inset;
+        -moz-box-shadow: 0px 0px 20px 0px skyblue inset;*/
+        text-align: center;
+        /*padding:10px;*/
+        padding-top : 3px;
+        padding-bottom : 3px;
+        margin-left:9px;
+    }
+        .bPageBlock .pbTitle {
+            width: auto !important;
+        }
+        
+        div.blackdiv {
+            position: absolute;
+            top: -5px; 
+            width: 3px; 
+            /*left: 120px; */
+            height: 30px; 
+            float:left; 
+            z-index:3; 
+            background-color: black;
+         }
+         
+         div.header {
+            background-color:#336688; border: 0px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;
+            background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+            background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: linear-gradient(to bottom, #336688 0%,#336688 50%,#336688 51%,#ffffff 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#bbffffff', GradientType=0 );
+            box-shadow: inset 0px 10px 30px #336688; ">
+        }
+        
+        div.header2 {
+            background-color:#E89619; border: 0px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;
+            background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+            background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: linear-gradient(to bottom, #E89619 0%,#E89619 50%,#336688 51%,#ffffff 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#bbffffff', GradientType=0 );
+            box-shadow: inset 0px 10px 30px #336688; ">
+        }
+        
+        h1 {color:black; font-weight:bold; font-size:12px; text-align:center; position:relative; top:0px;}
+        h2 {color:black; font-weight:bold; font-size:12px; text-align:center; position:relative; top:0px;}
+        h3 {color:blue; font-weight:normal; font-size:12px; text-align:center; position:relative; top:0px;}
+        h4 {color:black; font-weight:bold; font-size:20px;}
+        h5 {color:white; font-weight:bold; font-size:16px; position:relative; top:12px;}
+        h6 {color:black; font-weight:bold; font-size:16px;}
+        h7 {color:black; font-weight:normal; font-size:16px;}
+
+    </style >    
+
+<apex:form >
+
+    <apex:pageBlock title=""> 
+        <br/>            
+        <apex:pageMessage summary="No Peer Groups." severity="info" strength="1" rendered="{!peerGroupPerAccountMetricList.size == 0}" />          
+        <center>
+        <!-- Top Title -->
+        <table width="1200" border="0" cellspacing="0" cellpadding="0"><tr><td><h4>Account Health Scorecard</h4></td></tr></table>
+        <br/><br/>
+        
+        <!-- Top Bar / Account Info -->
+        <table width="1200" border="0" cellspacing="0" cellpadding="0">
+        <tr><td>
+            <div class="header" style="background-color:#336688; border: 1px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;">
+                <h5>&nbsp;&nbsp;&nbsp;Account Information</h5>
+            </div>
+            <div style="border: 1px solid black;">
+                <br/>
+                <table width="1100" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="250">&nbsp;&nbsp;&nbsp;&nbsp;<h6>Account Name:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                            {!accObj.Name}<apex:OutputText rendered="{!ISNULL(accObj.Name)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td width="250">&nbsp;<h6>Activation Date:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                        <apex:outputText value="{0,date,MMMM dd, yyyy}">
+                            <apex:param value="{!accObj.RC_Activation_Date__c }" />
+                        </apex:outputText>
+                        <apex:OutputText rendered="{!ISNULL(accObj.RC_Activation_Date__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="250">&nbsp;&nbsp;&nbsp;&nbsp;<h6>Brand:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                            {!accObj.RC_Brand__c }<apex:OutputText rendered="{!ISNULL(accObj.RC_Brand__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td width="250">&nbsp;<h6>Contract Renewal Date:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;"> 
+                                 <apex:outputText rendered="{!quoteObj != null && quoteObj.End_Date__c != null}" value="{0,date,MMMM dd, yyyy}">
+                                    <apex:param value="{!quoteObj.End_Date__c+1 }" /> 
+                                </apex:outputText>    
+                            <apex:OutputText rendered="{!quoteObj==null || ISNULL(quoteObj.End_Date__c)}" value="N/A"/>
+                        </div>
+                    </td>                
+                </tr>
+                <tr>
+                    <td width="250">&nbsp;&nbsp;&nbsp;&nbsp;<h6>Service:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                            {!accObj.RC_Service_name__c }<apex:OutputText rendered="{!ISNULL(accObj.RC_Service_name__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>                    
+                    <td width="250">&nbsp;<h6>Contract Term:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">       
+                            
+                            <apex:OutputText rendered="{!quoteObj==null || ISNULL(quoteObj.End_Date__c)}" value="N/A"/>
+                            <apex:OutputText rendered="{!quoteObj!=null && quoteObj.End_Date__c!=null && today() >=quoteObj.Start_Date__c && today() <=quoteObj.End_Date__c}" value="{!quoteObj.Initial_Term_months__c}"/>
+                            <apex:OutputText rendered="{!quoteObj!=null && quoteObj.End_Date__c!=null && today() >quoteObj.End_Date__c }" value="{!quoteObj.Term_months__c}"/>
+                            
+                        </div>
+                    </td>              
+                </tr>
+                <tr>
+                    <td width="250">&nbsp;&nbsp;&nbsp;&nbsp;<h6>Number of Lines:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                            <apex:outputText value="{0,number,integer}">
+                                <apex:param value="{!accObj.Number_of_DL_s__c}" />
+                            </apex:outputText>
+                        <apex:OutputText rendered="{!ISNULL(accObj.Number_of_DL_s__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td width="250">&nbsp;<h6>Peer Group:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 1}" value="Fax"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 2}" value="Pro"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 3}" value="Office 0-1"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 4}" value="Office 2-9"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 9}" value="Office 10-19"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 5}" value="Office 20+ DLs"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 6}" value="ATT Premium Only"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 7}" value="ATT Virtual Only"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 8}" value="ATT Mix Users"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 101}" value="Other"/>
+                        <apex:OutputText rendered="{!ISNULL(accountMetricObj.Peer_Group_ID__c)}" value="N/A"/>
+                        </div>
+                    </td>               
+                </tr>
+                <tr>
+                    <td width="250">&nbsp;<h6></h6></td>
+                    <td width="250">                        
+                    </td>
+                    <td></td>
+                    <td width="250">&nbsp;<h6>Accounts in Peer Group:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                            <apex:outputText value="{0,number,integer}">
+                                <apex:param value="{!peergroupMap[1000].Number_of_Accounts__c}" />
+                            </apex:outputText>                        
+                        <apex:OutputText rendered="{!ISNULL(peergroupMap[1000].Number_of_Accounts__c)}" value="N/A"/>
+                        </div>
+                    </td>               
+                </tr>
+                
+                </table>
+                <br/>
+            </div>        
+        </td></tr>
+        </table>
+        <br/>
+
+
+        
+        <!-- Metrics -->
+        <table width="1200" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5">
+                <div class="header" style="background-color:#336688; border: 1px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;">
+                    <h5>&nbsp;&nbsp;&nbsp;Configuration / Setup (22%)</h5>
+                </div> 
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div class="header" style="background-color:#336688; border: 1px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;">
+                    <h5>&nbsp;&nbsp;&nbsp;Usage (28%)</h5>
+                </div>
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div class="header" style="background-color:#336688; border: 1px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;">
+                    <h5>&nbsp;&nbsp;&nbsp;Service Health (50%)</h5>
+                </div>
+            </td>
+        </tr>
+        
+        <!-- Roll up -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#d9d9d9; border: 1px solid black;height:40px;">
+                <table border="0">
+                <tr>
+                    <td width="90"></td>
+                    <td width="45"><center><h3><DIV style="position: relative; top: 8px;">{!Floor((peergroupMap[101].Median_Value__c)*100)}%</div></h3></center></td>
+                    <td width="45"><center><h2><DIV style="position: relative; top: 8px;">{!Floor((accountMetricObj.Metric_101_value__c)*100)}%</div></h2></center></td>
+                    <td width="210">
+                    <DIV style="position: relative; top: 0px; width: 3px; left: {!Floor((accountMetricObj.Metric_101_Position__c)*2)}px; height: 30px; float:left; z-index:3; background-color: Black"></DIV>
+                    <DIV style="position: relative; top: 5px; width: {!floor(peergroupMap[101].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                    <DIV style="position: relative; top: 5px; width: {!floor(peergroupMap[101].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                    <DIV style="position: relative; top: 5px; width: {!floor(peergroupMap[101].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                    </td>                                    
+                </tr>
+                </table>
+                </div> 
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#d9d9d9; border: 1px solid black;height:40px;">
+                <table border="0">
+                <tr>
+                    <td width="90"></td>
+                    <td width="45"><center><h3><DIV style="position: relative; top: 8px;">{!Floor((peergroupMap[102].Median_Value__c)*100)}%</div></h3></center></td>
+                    <td width="45"><center><h2><DIV style="position: relative; top: 8px;">{!Floor((accountMetricObj.Metric_102_value__c)*100)}%</div></h2></center></td>
+                    <td width="210">
+                    <DIV style="position: relative; top: 0px; width: 3px; left: {!Floor((accountMetricObj.Metric_102_Position__c)*2)}px; height: 30px; float:left; z-index:3; background-color: Black"></DIV>
+                    <DIV style="position: relative; top: 5px; width: {!floor(peergroupMap[102].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                    <DIV style="position: relative; top: 5px; width: {!floor(peergroupMap[102].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                    <DIV style="position: relative; top: 5px; width: {!floor(peergroupMap[102].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                    </td>                                    
+                </tr>
+                </table>
+                </div> 
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#d9d9d9; border: 1px solid black;height:40px;">
+                <table border="0">
+                <tr>
+                    <td width="90"></td>
+                    <td width="45"><center><h3><DIV style="position: relative; top: 8px;">{!Floor((peergroupMap[103].Median_Value__c)*100)}%</div></h3></center></td>
+                    <td width="45"><center><h2><DIV style="position: relative; top: 8px;">{!Floor((accountMetricObj.Metric_103_value__c)*100)}%</div></h2></center></td>
+                    <td width="210">
+                    <DIV style="position: relative; top: 0px; width: 3px; left: {!Floor((accountMetricObj.Metric_103_Position__c)*2)}px; height: 30px; float:left; z-index:3; background-color: Black"></DIV>
+                    <DIV style="position: relative; top: 5px; width: {!floor(peergroupMap[103].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                    <DIV style="position: relative; top: 5px; width: {!floor(peergroupMap[103].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                    <DIV style="position: relative; top: 5px; width: {!floor(peergroupMap[103].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                    </td>                                    
+                </tr>
+                </table>
+                </div> 
+            </td>
+        </tr>
+
+        <!-- Header -->
+            <tr>
+            <!-- Left -->
+            <td style="background-color:#336688;border-left: 1px solid black;border-bottom: 1px solid black;">&nbsp;&nbsp;&nbsp;</td>
+            <td width="90" style="background-color:#336688;border-bottom: 1px solid black;"><div style="color:white; font-weight:bold; font-size:12px;">Metric Name</div></td>
+            <td width="45" style="background-color:#336688;border-bottom: 1px solid black;"><center><div style="color:white; font-weight:bold; font-size:12px;">Median</div></center></td>
+            <td width="45" style="background-color:#336688;border-bottom: 1px solid black;"><center><div style="color:white; font-weight:bold; font-size:12px;">Actual</div></center></td>
+            <td width="210" style="background-color:#336688;border-right: 1px solid black;border-bottom: 1px solid black;"><center><div style="color:white; font-weight:bold; font-size:12px;">Data Distribution</div></center></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="background-color:#336688;border-left: 1px solid black;border-bottom: 1px solid black;">&nbsp;&nbsp;&nbsp;</td>
+            <td width="90" style="background-color:#336688;border-bottom: 1px solid black;"><div style="color:white; font-weight:bold; font-size:12px;">Metric Name</div></td>
+            <td width="45" style="background-color:#336688;border-bottom: 1px solid black;"><center><div style="color:white; font-weight:bold; font-size:12px;">Median</div></center></td>
+            <td width="45" style="background-color:#336688;border-bottom: 1px solid black;"><center><div style="color:white; font-weight:bold; font-size:12px;">Actual</div></center></td>
+            <td width="210" style="background-color:#336688;border-right: 1px solid black;border-bottom: 1px solid black;"><center><div style="color:white; font-weight:bold; font-size:12px;">Data Distribution</div></center></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="background-color:#336688;border-left: 1px solid black;border-bottom: 1px solid black;">&nbsp;&nbsp;&nbsp;</td>
+            <td width="90" style="background-color:#336688;border-bottom: 1px solid black;"><div style="color:white; font-weight:bold; font-size:12px;">Metric Name</div></td>
+            <td width="45" style="background-color:#336688;border-bottom: 1px solid black;"><center><div style="color:white; font-weight:bold; font-size:12px;">Median</div></center></td>
+            <td width="45" style="background-color:#336688;border-bottom: 1px solid black;"><center><div style="color:white; font-weight:bold; font-size:12px;">Actual</div></center></td>
+            <td width="210" style="background-color:#336688;border-right: 1px solid black;border-bottom: 1px solid black;"><center><div style="color:white; font-weight:bold; font-size:12px;">Data Distribution</div></center></td>
+        </tr>
+     
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+      
+        <!-- 1st row -->
+        <tr>
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Is the implementation completed?">
+                Implementation Completed (6%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!peergroupMap[8].Median_Value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!peergroupMap[8].Median_Value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[8].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_8_value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_8_value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_8_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_8_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_8_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[8].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+
+                <DIV style="position: relative; width: {!floor(peergroupMap[8].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[8].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[8].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Usage from the last 60 days compared to the previous 60 days. Estimated from the calendar month totals. 100% means no change, 120% is 20% increase, 50% is drop in half.">
+                Minute Trend, Last 60 vs Previous 60 days (10%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[3].Median_Value__c))}" value="{!Floor((peergroupMap[3].Median_Value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[3].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_3_value__c))}" value="{!Floor((accountMetricObj.Metric_3_value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_3_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_3_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_3_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[3].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[3].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[3].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[3].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[3].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[3].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Number of Red account objects created in the past 180 days due to customer escalations.">
+                Red Account Object Created in the Past 180 Days (10%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[28].Median_Value__c))}" value="{!Floor((peergroupMap[28].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[28].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_28_value__c))}" value="{!Floor((accountMetricObj.Metric_28_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_28_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_28_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_28_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[28].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[28].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[28].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[28].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[28].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[28].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            
+        </tr>
+        
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        
+        <!-- 2ndrow -->
+        <tr>
+        
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Was an existing number ported-in?">
+                Ported In (6%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!peergroupMap[11].Median_Value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!peergroupMap[11].Median_Value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[11].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_11_value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_11_value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_11_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_11_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_11_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[11].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+
+                <DIV style="position: relative; width: {!floor(peergroupMap[11].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[11].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[11].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;&nbsp;&nbsp;</td>
+            <td width="90"><h1><span title="Last 30 days connected time of all call types divided by the number of users.">
+                # of Minutes Used, Last 30 Days per User (5%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[2].Median_Value__c))}" value="{!Floor((peergroupMap[2].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[2].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_2_value__c))}" value="{!Floor((accountMetricObj.Metric_2_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_2_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_2_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_2_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[2].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[2].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[2].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[2].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[2].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[2].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="# of support cases created in the last 30 days.">
+                # of Cases Created in the Last 30 Days (8%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[24].Median_Value__c))}" value="{!Floor((peergroupMap[24].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[24].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_24_value__c))}" value="{!Floor((accountMetricObj.Metric_24_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_24_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_24_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_24_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[24].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[24].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[24].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[24].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[24].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[24].Green_Bucket_Label__c}
+                </div>
+            </td>
+                                                                                                                                                                                                                                                                                                                                        
+            
+        </tr>
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        
+        
+        <!-- 3rd row -->
+        <tr>
+        
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;&nbsp;&nbsp;</td>
+            <td width="90"><h1><span title="% of users having RC hardphones compared to total users. User type extension are used on on-UBP accounts. Devices not connected to any extension considered as assigned to ext 0.">
+                % of Active Users with RC Hard Phone (4%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[1].Median_Value__c))}" value="{!Floor((peergroupMap[1].Median_Value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[1].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_1_value__c))}" value="{!Floor((accountMetricObj.Metric_1_value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_1_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_1_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_1_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[1].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[1].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[1].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[1].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[1].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[1].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Number of lines 30 days ago vs as of today.">
+                % of DLs canceled in 30 Days (2%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[4].Median_Value__c))}" value="{!Floor((peergroupMap[4].Median_Value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[4].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_4_value__c))}" value="{!Floor((accountMetricObj.Metric_4_value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_4_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_4_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_4_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[4].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[4].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[4].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[4].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[4].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[4].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="# of PortOut requests in the last 30 days.">
+                Port-out in the Last 30 Days (8%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[30].Median_Value__c))}" value="{!Floor((peergroupMap[30].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[30].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_30_value__c))}" value="{!Floor((accountMetricObj.Metric_30_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_30_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_30_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_30_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[30].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[30].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[30].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[30].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[30].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+        </tr>
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        </table>
+        
+    
+        
+        <div id="xDetails" style="display:none;"> 
+        <table width="1200" border="0" cellspacing="0" cellpadding="0">
+
+        
+
+        <!-- 4th row -->
+        <tr>
+        
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;&nbsp;&nbsp;</td>
+            <td width="95"><h1><span title="% of Users with custom name.">
+                % of Users with Custom Name in the Greeting (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[9].Median_Value__c))}" value="{!Floor((peergroupMap[9].Median_Value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[9].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_9_value__c))}" value="{!Floor((accountMetricObj.Metric_9_value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_9_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_9_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_9_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[9].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[9].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[9].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[9].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[9].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[9].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;&nbsp;&nbsp;</td>
+            <td width="93"><h1><span title="Average of the last 60 days over previous 60 days prior year.">
+                Minute Trend prior Year, 60 vs 60 Days (2%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[16].Median_Value__c))}" value="{!Floor((peergroupMap[16].Median_Value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[16].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_16_value__c))}" value="{!Floor((accountMetricObj.Metric_16_value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_16_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_16_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_16_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[16].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[16].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[16].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[16].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[16].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[16].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;&nbsp;&nbsp;</td>
+            <td width="87"><h1><span title="Is the customer under contract?">
+                Under contract (7%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!peergroupMap[7].Median_Value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!peergroupMap[7].Median_Value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[7].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_7_value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_7_value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_7_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_7_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_7_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[7].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                                <DIV style="position: relative; width: {!floor(peergroupMap[7].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[7].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[7].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            
+        </tr>
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        
+        
+        <!-- 5th row -->
+        <tr>
+        
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Is personalized voicemails greeting set up?">
+                Customized Company Auto Receptionist Greeting (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!peergroupMap[10].Median_Value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!peergroupMap[10].Median_Value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[10].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_10_value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_10_value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_10_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_10_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_10_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[10].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+
+                <DIV style="position: relative; width: {!floor(peergroupMap[10].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[10].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[10].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="# of Faxes sent / received successfully in the last 30 days per user.">
+                # of Faxes Completed, Last 30 Days per User (2%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[17].Median_Value__c))}" value="{!Floor((peergroupMap[17].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[17].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_17_value__c))}" value="{!Floor((accountMetricObj.Metric_17_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_17_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_17_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_17_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[17].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[17].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[17].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[17].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[17].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[17].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="87"><h1><span title="Lowest Customer Satisfaction Rating provided in Support Survey.">
+                Lowest CSAT, Last 30 Days (7%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[25].Median_Value__c))}" value="{!Floor((peergroupMap[25].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[25].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_25_value__c))}" value="{!Floor((accountMetricObj.Metric_25_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_25_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_25_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_25_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[25].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[25].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[25].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[25].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[25].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[25].Green_Bucket_Label__c}
+                </div>
+            </td>          
+            
+            
+            
+        </tr>
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        
+        
+        <!-- 6th row -->
+        <tr>
+        
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Are answering rules configured?">
+                Customized Company Answering rules (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!peergroupMap[12].Median_Value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!peergroupMap[12].Median_Value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[12].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_12_value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_12_value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_12_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_12_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_12_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[12].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[12].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[12].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[12].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[12].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Add–on Credits for the month.">
+                Calling Credits Last 30 Days (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[5].Median_Value__c))}" value="${!Floor((peergroupMap[5].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[5].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_5_value__c))}" value="${!Floor((accountMetricObj.Metric_5_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_5_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_5_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_5_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[5].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[5].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[5].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[5].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[5].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[5].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="87"><h1><span title="Lowest Transactional Net Promoter Score provided by Customer in the last 90 days.">
+                Lowest Transactional NPS, Last 90 Days (4%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[26].Median_Value__c))}" value="{!Floor((peergroupMap[26].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[26].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_26_value__c))}" value="{!Floor((accountMetricObj.Metric_26_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_26_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_26_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_26_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[26].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[26].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[26].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[26].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[26].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[26].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            
+        </tr>
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        
+        <!-- 7th row -->
+        <tr>
+        
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Number of departments configured.">
+                # of Configured Departments (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[13].Median_Value__c))}" value="{!Floor((peergroupMap[13].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[13].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_13_value__c))}" value="{!Floor((accountMetricObj.Metric_13_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_13_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_13_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_13_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[13].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[13].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[13].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[13].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[13].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[13].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="% of users active on any RC Mobile application in last 30 days.">
+                % of Users Active on Mobile App for the Last 30 Days (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[18].Median_Value__c))}" value="{!Floor((peergroupMap[18].Median_Value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[18].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_18_value__c))}" value="{!Floor((accountMetricObj.Metric_18_value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_18_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_18_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_18_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[18].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[18].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[18].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[18].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[18].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[18].Green_Bucket_Label__c}
+                </div>
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="87"><h1><span title="Days to suspend because of a billing failure. N/A for active paid accounts.">
+                Days to Suspend (2%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[6].Median_Value__c))}" value="{!Floor((peergroupMap[6].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[6].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_6_value__c))}" value="{!Floor((accountMetricObj.Metric_6_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_6_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_6_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_6_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[6].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[6].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[6].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[6].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[6].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[6].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+        </tr>
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        
+        
+        <!-- 8th row -->
+        <tr>
+        
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Is number listed in 411 directory?">
+                Published in Directory Listing (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!peergroupMap[14].Median_Value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!peergroupMap[14].Median_Value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[14].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_14_value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_14_value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_14_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_14_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_14_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[14].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[14].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[14].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[14].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="% of Users active on Call Controller in last 30 days.">
+                % of Users Active on Call Controller for the Last 30 Days (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[19].Median_Value__c))}" value="{!Floor((peergroupMap[19].Median_Value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[19].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_19_value__c))}" value="{!Floor((accountMetricObj.Metric_19_value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_19_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_19_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_19_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[19].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[19].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[19].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[19].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[19].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[19].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="87"><h1><span title="% of faxes successfully transmitted in the last 30 days.">
+                Fax Completion Rate, Last 30 Days (2%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[27].Median_Value__c))}" value="{!Floor((peergroupMap[27].Median_Value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[27].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_27_value__c))}" value="{!Floor((accountMetricObj.Metric_27_value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_27_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_27_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_27_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[27].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[27].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[27].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[27].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[27].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[27].Green_Bucket_Label__c}
+                </div>
+
+
+            </td>
+            
+        </tr>
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        
+        <!-- 9th row -->
+        <tr>
+        
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Is BLF/Presence Configured?">
+                Configured BLF/Presence (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!peergroupMap[15].Median_Value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!peergroupMap[15].Median_Value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[15].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_15_value__c == 0}" value="No"/>
+                <apex:OutputText rendered="{!accountMetricObj.Metric_15_value__c == 1}" value="Yes"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_15_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_15_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_15_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[15].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>               
+                <DIV style="position: relative; width: {!floor(peergroupMap[15].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[15].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[15].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Number of Conference calls per user per month.">
+                Conference Calling Usage, Calls Last 30 Days (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[20].Median_Value__c))}" value="{!Floor((peergroupMap[20].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[20].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_20_value__c))}" value="{!Floor((accountMetricObj.Metric_20_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_20_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_20_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_20_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[20].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[20].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[20].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[20].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[20].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[20].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="87"><h1><span title="# of cases open for more than 30 days.">
+                Cases Open for 31+ days (2%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[29].Median_Value__c))}" value="{!Floor((peergroupMap[29].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[29].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_29_value__c))}" value="{!Floor((accountMetricObj.Metric_29_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_29_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_29_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_29_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[29].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[29].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[29].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[29].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[29].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[29].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+        </tr>
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        
+        <!-- 10th row -->
+        <tr>
+        
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="">
+                &nbsp;
+                </span></h1>
+            </td>
+            <td width="45"><center><h2>
+                &nbsp;
+                </h2></center>
+            </td>
+            <td width="45"><center><h3>
+                &nbsp;
+                </h3></center>
+            </td>
+            <td width="210" style="border-right: 1px solid black;">
+                &nbsp;
+            </td>
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Number of Conference call mins per user per month.">
+                Conference Calling Usage, Minutes last 30 days (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[21].Median_Value__c))}" value="{!Floor((peergroupMap[21].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[21].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_21_value__c))}" value="{!Floor((accountMetricObj.Metric_21_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_21_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_21_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_21_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[21].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[21].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[21].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[21].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[21].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[21].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="87"><h1><span title="">
+                &nbsp;
+                </span></h1>
+            </td>
+            <td width="45"><center><h2>
+                &nbsp;
+                </h2></center>
+            </td>
+            <td width="45"><center><h3>
+                &nbsp;
+                </h3></center>
+            </td>
+            <td width="210" style="border-right: 1px solid black;">
+                &nbsp;
+            </td>
+        </tr>
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        
+        <!-- 11th row -->
+        <tr>
+        
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="">
+                &nbsp;
+                </span></h1>
+            </td>
+            <td width="45"><center><h2>
+                &nbsp;
+                </h2></center>
+            </td>
+            <td width="45"><center><h3>
+                &nbsp;
+                </h3></center>
+            </td>
+            <td width="210" style="border-right: 1px solid black;">
+                &nbsp;
+            </td>
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Average mins per conference call.">
+                Average Duration per Conference Call, Last 30 Days (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[22].Median_Value__c))}" value="{!Floor((peergroupMap[22].Median_Value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[22].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_22_value__c))}" value="{!Floor((accountMetricObj.Metric_22_value__c))}"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_22_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_22_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_22_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[22].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[22].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[22].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[22].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[22].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[22].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="87"><h1><span title="">
+                &nbsp;
+                </span></h1>
+            </td>
+            <td width="45"><center><h2>
+                &nbsp;
+                </h2></center>
+            </td>
+            <td width="45"><center><h3>
+                &nbsp;
+                </h3></center>
+            </td>
+            <td width="210" style="border-right: 1px solid black;">
+                &nbsp;
+            </td>
+        </tr>
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        
+        <!-- 12th row -->
+        <tr>
+        
+            <!-- Left -->
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="">
+                &nbsp;
+                </span></h1>
+            </td>
+            <td width="45"><center><h2>
+                &nbsp;
+                </h2></center>
+            </td>
+            <td width="45"><center><h3>
+                &nbsp;
+                </h3></center>
+            </td>
+            <td width="210" style="border-right: 1px solid black;">
+                &nbsp;
+            </td>
+            
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="90"><h1><span title="Average mins of the last 30 days to previous 30 days.">
+                Conference Calling Mins Trends, Last 30 vs Previous 30 Days (1%)
+                </span></h1>
+            </td>
+            <td width="45"><center><h3>
+                <apex:OutputText rendered="{!NOT(ISNULL(peergroupMap[23].Median_Value__c))}" value="{!Floor((peergroupMap[23].Median_Value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(peergroupMap[23].Median_Value__c)}" value="N/A"/>
+                </h3></center>
+            </td>
+            <td width="45"><center><h2>
+                <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_23_value__c))}" value="{!Floor((accountMetricObj.Metric_23_value__c)*100)}%"/>
+                <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_23_value__c)}" value="N/A"/>
+                </h2></center>
+            </td>
+            
+            <td width="210" style="border-right: 1px solid black;">
+                <apex:outputPanel layout="block" style="position: relative;" rendered="{!NOT(ISNULL(accountMetricObj.Metric_23_Position__c))}">
+                    <DIV class="blackdiv" style="left: {!Floor(accountMetricObj.Metric_23_Position__c)*2}px"></div>
+                </apex:outputPanel>
+                <DIV style="position: relative; width: {!floor(peergroupMap[23].Red_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Red"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[23].Yellow_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Yellow"></DIV>
+                <DIV style="position: relative; width: {!floor(peergroupMap[23].Green_Bucket_Percentage__c*200)}px; height: 25px; float:left; background-color: Green"></DIV>                                                                     
+                <br/><br/>
+                <DIV style="position: relative; width: 200px; height: 25px; float:left; color:black; float:left; font-weight:bold; font-size:10px; z-index:4; text-align:center">                            
+                R:{!peergroupMap[23].Red_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;Y:{!peergroupMap[23].Yellow_Bucket_Label__c}&nbsp;&nbsp;&nbsp;&nbsp;G:{!peergroupMap[23].Green_Bucket_Label__c}
+                </div>
+            </td>
+            
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td style="border-left: 1px solid black;">&nbsp;</td>
+            <td width="87"><h1><span title="">
+                &nbsp;
+                </span></h1>
+            </td>
+            <td width="45"><center><h2>
+                &nbsp;
+                </h2></center>
+            </td>
+            <td width="45"><center><h3>
+                &nbsp;
+                </h3></center>
+            </td>
+            <td width="210" style="border-right: 1px solid black;">
+                &nbsp;
+            </td>
+        </tr>
+        </table>
+        </div>
+        
+        
+        
+        
+        
+        <!-- Bottom -->
+        <table width="1200" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <!-- Left -->
+            <td width="391" valign="top" colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;">&nbsp;</div></td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="391" valign="top" colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;">&nbsp;</div></td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5"><div style="border-left: 1px solid black;border-right: 1px solid black;border-bottom: 1px solid black;">&nbsp;</div></td>
+        </tr>
+        </table>    
+        
+        </center>
+        <Br/>
+        <div  class="btnDivNew" >
+            <input type="button" class="btn" value="Show/Hide Metrics" onClick="showHide('xDetails');return false;" />
+            <input type="button" class="btn" value="Export as PDF" onClick="window.open('/apex/AccountHealthSummaryPDF?accid={!accObj.id}');" />&nbsp;
+            <input type="button" class="btn" value="Send Email" onClick="sendMailToCustomer();return false;" />
+            <!--<input type="button" class="btn" value="Send Mail" onClick="sendMail();return false;" />
+        --></div>
+        </apex:pageBlock>
+        
+        <apex:ActionFunction action="{!redirectToSendMailPage}" name="sendMailToCustomer"></apex:ActionFunction>
+    
+
+</apex:form>
+
+        
+        
+    <script>
+        function showHide(divId) {
+            var divObj = document.getElementById(divId);
+            divObj.style.display=( divObj.style.display=="block"?"none":"block");
+        }    
+        function sendMail() {
+            var emailId = '{!emailaddress}';
+            //alert(emailId);
+            var confirmChk = confirm("Are you sure you want to send mail to "+emailId);
+            //alert(confirmChk);
+            if(confirmChk) {
+                sendMailToCustomer();
+            }
+        }
+        
+        function mailsent() {
+            if('{!isMailSent}') {
+                alert('Mail Sent');
+            } else {
+                alert('Error Occured.');
+            }
+            
+        }
+    </script>    
+    
+</apex:page>

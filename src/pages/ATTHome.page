@@ -1,0 +1,127 @@
+<apex:page controller="ATTController" showHeader="false" title="Public Knowledge Base" cache="true" expires="{!cacheMaxAge}" >
+   <style type="text/css">
+    ul li, ol li {
+    margin-left: 0px;
+    padding-left: 0;
+     }
+     </style>
+    <apex:composition template="{!$Site.Template}">
+    <apex:define name="content">
+       <apex:variable var="productUrlVar" value="{!productUrl}" />
+       <apex:variable var="categoryParameterNameVar" value="{!categoryParameterName}" />
+       <apex:variable var="cpt" value="{!0}" />
+       <apex:variable var="categoryDescriptionsVar" value="{!categoryDescriptions}" />
+       <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+       <apex:variable var="brandFilterVar" value="{!BrandFilter}" />  
+        <apex:variable var="count" value="{!0}" />      
+          <table border="0" width="100%" cellspacing="0">
+              <!--
+              <tr>
+              <td valign="top" width="100%">
+               <h3 style="font-family:arial;color:red;">UPDATE ALERT - AUGUST 7, 2012 at 1:00PM PST</h3><p></p>
+               <h3 style="font-family:arial;color:red;">The AT&amp;T Office@Hand network is currently experiencing intermittent issues impacting some of our inbound phone numbers.               Some users may experience a message saying that their number is currently not activated. The AT&amp;T Office@Hand team is aware of the issue and is actively working to fix the problem. We will continue to update this website with additional information. We apologize for any service interruption to your business.</h3><p></p>
+              </td>
+              </tr> -->
+              <tr>
+              <td valign="top" width="45%">
+                    <div class="h2class">Featured Support Categories</div>
+                    <div id="Div2" class="rn_ProductCategoryList">
+                   
+                        <div class="rn_HierList rn_HierList_1068 rn_FloatLeft">
+                <h3><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Getting_Started&k=&action=SearchAnswer">Getting Started - New Users</a></h3>
+                        </div>
+                    <div class="rn_HierList rn_HierList_1067 rn_FloatRight">
+                <h3><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Calling_Features&k=&action=SearchAnswer">Calls</a></h3>
+                            <ul>
+                            <li><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=RingMe&k=&action=SearchAnswer">Incoming</a></li>
+                            <li><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=RingOut&k=&action=SearchAnswer">Dialing Out</a></li>
+                            <li><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Calling_Features&k=&action=SearchAnswer">Calling Features</a></li>
+                            </ul>
+                        </div>
+                    <div class="rn_HierList rn_HierList_1080 rn_FloatLeft">
+                <h3><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Faxing&k=&action=SearchAnswer">Faxes</a></h3>
+                            <ul>
+                            <li><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Sending_Faxes&k=&action=SearchAnswer">Sending</a></li>
+                            <li><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Receiving_Faxes&k=&action=SearchAnswer">Receiving</a></li>
+                            </ul>
+                        </div>
+                    <div class="rn_HierList rn_HierList_35 rn_FloatRight">
+                <h3><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Messages&k=&action=SearchAnswer">Messages</a></h3>
+                            <ul>
+                            <li><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Call_Settings&k=&action=SearchAnswer">Voice</a></li>
+                            <li><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Faxing&k=&action=SearchAnswer">Fax</a></li>
+                            </ul>
+                        </div>
+                    <div class="rn_HierList rn_HierList_1081 rn_FloatLeft">
+                <h3><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Greetings_Prompts&k=&action=SearchAnswer">Greetings</a></h3>
+                        </div>
+                    <div class="rn_HierList rn_HierList_1063 rn_FloatRight">
+                    <h3><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Smartphone_Apps&k=&action=SearchAnswer">Smartphone Apps</a></h3>
+                            <ul>
+                            <li><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=iPhone&k=&action=iPhone">iPhone</a></li>
+                            <li><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=BlackBerry&k=&action=SearchAnswer">Blackberry</a></li>
+                            <li><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Android&k=&action=SearchAnswer">Android</a></li>
+                            </ul>
+                        </div>
+                    <div class="rn_HierList rn_HierList_1075 rn_FloatLeft">
+                <h3><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Departments_Queues&k=&action=SearchAnswer">Managing Departments </a></h3>
+                        </div>
+                    <div class="rn_HierList rn_HierList_1076 rn_FloatRight">
+                <h3><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Adding_Custom_Rules&k=&action=SearchAnswer">Phone System Set Up (for Administrators)</a></h3>
+                        </div>
+                    <div class="rn_HierList rn_HierList_1077 rn_FloatLeft">
+                <h3><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Billing&k=&action=SearchAnswer">Billing/Payments</a></h3>
+                        </div>
+                 <div class="rn_HierList rn_HierList_1078 rn_FloatRight">
+                           <h3><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=All&k=user+guides&action=SearchAnswer&sortBy=mostViewed">User Guides</a></h3>
+                 </div>
+                 <div class="rn_HierList rn_HierList_1079 rn_FloatLeft">
+                     <h3><a href="{!$Site.CurrentSiteUrl}{!searchUrl1}?c=Number_Porting&k=&action=SearchAnswer">Number Transfer/Porting</a></h3>
+                  </div>
+                   <div class="rn_HierList rn_HierList_1075 rn_FloatRight">
+                    <h3>
+                        <a class="rn_SelectedTab" href="{!$Site.CurrentSiteUrl}AttVideoLink" target="_self"><span>Videos</span>
+                          </a>
+                     </h3>
+                  </div>  
+                  
+                </div>
+                   
+                </td>  
+                <td width="5%">
+                &nbsp;
+                </td>
+                <td valign="top" width="50%">
+                <apex:outputPanel layout="block">
+                    <div class="h2class">Most Popular Answers</div>
+                </apex:outputPanel>
+                <apex:outputPanel layout="block">
+                        <knowledge:articleList articleVar="article"
+                            categories="{!categoryGroupNameVar}:{!currentCategory},{!brandFilterVar}"
+                            sortBy="mostViewed"
+                            pageSize="10" >
+                              <apex:variable var="count" value="{!count+1}" /> 
+                             <span class="rn_Element1">
+                            <a href="{!URLFOR($Action.KnowledgeArticle.View, article.id)}&Title={!article.title}">{!article.title}</a>
+                            </span>
+                            <br/><br/>
+                        </knowledge:articleList>
+                </apex:outputPanel>
+                <br/>
+               <apex:outputPanel layout="block" rendered="{!count>9.0}">
+                <a href="{!$Site.CurrentSiteUrl}ATTAnswer?action=SearchAnswer" 
+                class="rn_AnswersLink"><b>See all popular answers</b></a>
+                 </apex:outputPanel>
+                  </td>       
+              </tr>
+          </table>
+          <div>
+           <h3>Promotions</h3>
+            <ul>
+            <li><a href="http://attifusion.rewardpromo.com/Register.aspx" target='_blank'>iFusion SmartStation Promo Form</a></li>
+            <li><a href="https://www.wireless.att.com/businesscenter/en_US/pdf/5010-2787_r2_FreeJambox_112011_022512.pdf">Samsung Captivate Glide / Jambox Promo Form </a></li>
+           </ul>
+          </div>
+               </apex:define>
+    </apex:composition>
+</apex:page>

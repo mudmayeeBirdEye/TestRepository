@@ -1,0 +1,8 @@
+<apex:page ></apex:page>
+<!--
+<apex:page controller="cleanchatterctr">
+  <apex:form >
+   <apex:commandButton action="{!save}" value="Clean Chatter"/>
+   </apex:form>
+</apex:page>
+-->

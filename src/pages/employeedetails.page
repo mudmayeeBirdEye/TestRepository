@@ -1,0 +1,245 @@
+<apex:page StandardController="Employee__c" extensions="employeedetails" showHeader="false" sidebar="false" title="Employee Details" wizard="false">
+<!--   
+<html>
+<style type="text/css">
+.font_color{
+color:white;
+font-weight:bold;
+font-size:12px;
+}
+.font_header{
+color:white;
+font-weight:bold;
+background-color:#4F98BF;
+font-size: 16px;
+font-family:Arial;
+}
+.font_header_goback{
+color:white;
+font-weight:bold;
+background-color:#4F98BF;
+font-size: 12px;
+font-family:Arial;
+}
+.font_label{
+color:Black;
+font-weight:bold;
+font-size:12px;
+font-family:Arial;
+}
+
+.font_text{
+color:Black;
+font-weight:normal;
+font-size:12px;
+font-family:Arial;
+}
+</style>
+
+<head>
+<style type="text/css"> 
+#div1
+{ 
+DISPLAY: none; 
+} 
+</style> 
+<script type="text/javascript">
+
+    function ShowTable(id) {
+        var e = document.getElementById(id);
+        if (e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+    }
+
+</script>
+
+<title>Employee Detail</title>
+
+</head>
+
+
+<body>
+
+<apex:form >
+ <apex:pageBlock >     
+ <apex:pagemessage rendered="{!AuthorizationError}" severity="error" strength="3" summary="RingCentral employee directory is for internal use only."/>
+ </apex:pageBlock>
+</apex:form> 
+
+<apex:form id="form1" rendered="{!showdirectory}">
+<table width="100%" style="border-collapse: collapse;" cellpadding="10" border="0" bgcolor="#4F98BF">
+    <tr >
+        <td class="font_header">
+            Employee Detail
+        </td>
+        <td align="right" ><a href="employeehomedrill" class="font_header_goback">Back to Employee Directory</a></td>
+    </tr>
+</table>
+<table border="1" width="100%" id="table2" bordercolorlight="#7F7F7F" style="border-collapse: collapse" bgcolor="#e0e0e0">
+     <tr>
+        <td align="left">
+            <table border="0" width="100%" id="table1">
+                <tr>
+                <td width="40%" valign="top" align="left" >
+                    <table cellspacing="5" cellpadding="1" width="100%" border="0"  >
+                    <tr>
+                        <td  align="left" class="font_label" style="width:30%"><b>Employee Number</b></td>
+                        <td align="center">:</td>
+                        <td class="font_text">{!EmpID}</td>
+                    </tr>
+                  <tr>
+                        <td class="font_label"><b>Employee Name</b></td>
+                        <td align="center">:</td>
+                        <td class="font_text">{!EmpName}</td>
+                    </tr>
+                    <tr>
+                        <td class="font_label"><b>Employee NickName</b></td>
+                        <td align="center">:</td>
+                        <td class="font_text">{!EmpNickName}</td>
+                    </tr>
+                    <tr>
+                        <td  class="font_label"><b>Title</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text">{!Title}</td>
+                    </tr>
+                                        
+                    <tr>
+                        <td class="font_label" ><b>Email</b></td>
+                        <td align="center">:</td>
+                        <!--<td  class="font_text"><apex:commandLink>{!Email}</apex:commandLink></td> 
+                        <td  class="font_text"><a href="mailto:{!EmpEmail}">{!EmpEmail}</a></td>
+                    </tr>
+                       
+                       
+                    
+                   <tr>
+                        <td class="font_label"><b>Phone Work</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text">{!PhoneWork}</td>
+                    </tr>
+                     <tr>
+                        <td  class="font_label"><b>Extension</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text">{!Extension}</td>
+                        <td ></td>
+                    </tr>
+                    <tr>
+                        <td class="font_label"><b>Phone Cell</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text">{!PhoneCell}</td>
+                    </tr>
+                     <tr>
+                        <td class="font_label" ><b>IM</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text">{!ImId}</td>
+                    </tr>
+                      
+                    <tr>
+                        <td class="font_label" ><b>Hire Date</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text">{!HireDate}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="font_label" ><b>Location</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text">{!Location}</td>
+                    </tr>
+                    <tr>
+                        <td class="font_label" ><b>Manager Name</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text"> <a
+                                href="employeedetails?empId={!ManagerId}">{!ManagerName}</a>                     
+                        
+                       
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font_label" ><b>Manager Email</b></td>
+                        <td align="center">:</td>
+                         <td  class="font_text"><a href="mailto:{!MgrEmail}">{!MgrEmail}</a></td>
+
+                    </tr>
+                      <tr>
+                        <td class="font_label" ><b>Department</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text">{!Department}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="font_label" ><b>Division</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text">{!Division}</td>
+                    </tr>
+                    <tr>
+                        <td class="font_label" ><b>Team</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text">{!Team}</td>
+                    </tr>
+                   
+                     <tr>
+                        <td class="font_label" ><b>Skills</b></td>
+                        <td align="center">:</td>
+                        <td  class="font_text">{!Skills}</td>
+                    </tr>
+                                       
+                    </table>
+                </td>
+                <td align="left" valign="top"><table border="1"><tr><td><apex:image url="/servlet/servlet.FileDownload?file={!ImageID}" width="325px" height="355px" /></td></tr></table></td>
+                </tr>
+           </table>
+                </td>
+    </tr>
+     <tr class="font_header">
+        <td style="background-color:#4F98BF;">
+        <b>Peers</b>
+        </td>
+    </tr>
+    <tr>
+        <td >
+        <table width="100%" class="text_size">
+            <tr align="center">
+            <td class="font_text">
+            <apex:repeat value="{!Peers}" var="pr" id="theList">
+                <span style="padding:10px 10px 10px 10px;"><a
+                                href="employeedetails?empId={!pr.EmpID__c}">{!pr.First_Name__c} {!pr.Last_Name__c} </a></span>
+            </apex:repeat>
+      
+                </td>
+            </tr>
+        </table>
+        </td>
+    </tr>
+    <tr class="font_header">
+        <td style="background-color:#4F98BF;color:white;"> 
+        <b>Team
+        </b>
+        </td>
+    </tr>
+    <tr>
+        <td >
+        <table width="100%" class="text_size">
+            <tr align="center">
+                     <td class="font_text">
+            <apex:repeat value="{!MgdTeams}" var="tm" id="theTeamList">
+                <span style="padding:10px 10px 10px 10px;"><a
+                                href="employeedetails?empId={!tm.EmpID__c}">{!tm.First_Name__c} {!tm.Last_Name__c} </a></span>
+            </apex:repeat>
+      
+                </td>
+
+
+
+            </tr>
+        </table>
+        </td>
+    </tr>
+</table>
+
+
+</apex:form>
+</body>
+</html> -->
+</apex:page>

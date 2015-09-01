@@ -1,0 +1,198 @@
+<apex:page controller="ProductCatalogControlPanelCTRL">
+    <style>
+        .display {
+            height:200px;border:1px solid gray;border-radius:5px;width:100%;margin-bottom:20px;background:bisque;
+        }
+        p {font-size:14px;}
+       
+        #overlayNew {
+            background: no-repeat scroll top center gray;
+            border: 0px solid #000000;
+            bottom: 0;
+            left: 0;
+            opacity: 0.75;
+            position: absolute;
+            top: 0;
+            display: none;
+            width: 100%;
+            z-index: 9999;
+            zIndex: 9999;
+            height:100%;
+        }
+        .ui-widget-overlay{
+            background: #aaaaaa !important;
+        }
+        .tdCSS {
+            width:50%;
+            height:300px;
+        }
+        .btnDiv {
+            /*width: 95%;*/
+            margin: auto;
+            border: 1px solid #A5A6A5;
+            /* min-height: 100px; */
+            margin-top: 5px;
+            //margin-bottom: 5px;
+            background: #FFF;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            /*behavior: url({!$Resource.BorderRadiusHTC});*/
+            box-shadow: 0px -40px 57px -14px #1797C0 inset;
+            -webkit-box-shadow: 0px -40px 57px -14px #1797C0 inset;
+            -moz-box-shadow: 0px -40px 57px -14px #1797C0 inset;
+            text-align: center;
+            /*padding:10px;*/
+            padding-top : 3px;
+            padding-bottom : 3px;
+            margin-bottom:10px;
+        }
+        select {
+            box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           /*width: 268px !important;*/
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+        }
+        .styled-select{
+           box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+           /*height: 34px !important;*/
+           /*-webkit-appearance: none !important;*/
+        }
+        input:focus, select:focus, textarea:focus {
+            outline-size: none;
+            outline-style: none;
+            outline-color: none;
+            border-radius: 10px;
+            border: 1px solid gray;
+        }
+        .btn {
+            padding: 8px !important;
+            text-decoration: none !important;
+        }
+       .homeTab .listViewport .subNav .linkBar, .homeTab .mComponent .cHeader, .homeTab .genericTable, .homeTab .bSubBlock, .homeTab .bPageBlock {
+            border-top: none !important;
+        }
+        .pbBody {
+            overflow: scroll !important;
+            height: 500px !important;
+        }
+   </style>
+   <apex:form >
+        <div>
+            <div style="width:100%;text-align:center;height: 35px;font-weight: bold;color: black;padding-top: 10px;font-size: 25px;" class="btnDiv">
+                Product Catalog Control Panel
+            </div>
+            <div style="width:100%;">
+                <table style="width:100%;" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td class="tdCSS styled-select">
+                            <div style="text-align: center;margin-top: 15px;margin-bottom:15px;">
+                                <apex:outputLink value="/apex/GenerateQuoteTemplate" id="theLink3" target="_blank" styleclass="btn">Add Template</apex:outputLink>
+                            </div>
+                            <div>
+                                <apex:pageBlock title="Templates">
+                                    <apex:pageBlocktable var="variable" value="{!templateList}">
+                                        <apex:column >
+                                            <apex:facet name="header">Action</apex:facet>
+                                            <apex:outputLink value="/apex/GenerateQuoteTemplate?id={!variable.Id}" target="_blank" >Edit</apex:outputLink> | 
+                                            <apex:commandlink value="Remove" action="{!removeTemplate}">
+                                                <apex:param assignTo="{!selectedTemplate}" value="{!variable.Id}" name="selectedTemplate"/>
+                                            </apex:commandlink>
+                                        </apex:column>
+                                        <apex:column >
+                                            <apex:facet name="header">Name</apex:facet>
+                                            <apex:outputLink value="/apex/GenerateQuoteTemplate?id={!variable.Id}" target="_blank" >{!variable.name}</apex:outputLink>
+                                        </apex:column>
+                                    </apex:pageBlocktable>
+                                </apex:pageBlock>
+                            </div>
+                        </td>
+                        <td class="tdCSS styled-select">
+                            <div style="text-align: center;margin-top: 15px;margin-bottom:15px;">
+                                <apex:outputLink value="/apex/AddTemplateSection?retURL=/apex/ProductCatalogControlPanel" id="theLink4" target="_blank" styleclass="btn">Add Section</apex:outputLink>
+                            </div>
+                            <div>
+                                <apex:pageBlock title="Sections">
+                                    <apex:pageBlocktable var="variable" value="{!sectionList}">
+                                        <apex:column >
+                                            <apex:facet name="header">Action</apex:facet>
+                                            <apex:outputLink value="/apex/AddTemplateSection?id={!variable.Id}&retURL=/apex/ProductCatalogControlPanel" target="_blank" >Edit</apex:outputLink><!--  | <a href="#">Remove</a> -->
+                                        </apex:column>
+                                        <apex:column >
+                                            <apex:facet name="header">Name</apex:facet>
+                                            <apex:outputLink value="/apex/AddTemplateSection?id={!variable.Id}&retURL=/apex/ProductCatalogControlPanel" target="_blank" >{!variable.name}</apex:outputLink>
+                                        </apex:column>
+                                    </apex:pageBlocktable>
+                                </apex:pageBlock>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdCSS styled-select">
+                            <div style="text-align: center;margin-top: 15px;margin-bottom:15px;">
+                                <apex:outputLink value="/a3d/e?retURL=apex/ProductCatalogControlPanel" id="theLink1" target="_blank" styleclass="btn">Add Product</apex:outputLink>
+                            </div>
+                            <div>
+                                <apex:pageBlock title="Products">
+                                    <apex:pageBlocktable var="variable" value="{!productList}">
+                                        <apex:column >
+                                            <apex:facet name="header">Action</apex:facet>
+                                            <apex:outputLink value="/{!variable.Id}/e?retURL={!variable.Id}" target="_blank" >Edit</apex:outputLink> <!-- | <a href="#">Remove</a> -->
+                                        </apex:column>
+                                        <apex:column >
+                                            <apex:facet name="header">Sub Category</apex:facet>
+                                            <apex:outputLink value="/{!variable.Id}" target="_blank" >{!variable.Sub_Category__c}</apex:outputLink>
+                                        </apex:column>
+                                        <apex:column >
+                                            <apex:facet name="header">Name</apex:facet>
+                                            <apex:outputLink value="/{!variable.Id}" target="_blank" >{!variable.name}</apex:outputLink>
+                                        </apex:column>
+                                    </apex:pageBlocktable>
+                                </apex:pageBlock>
+                            </div>
+                        </td>
+                        <td class="tdCSS styled-select">
+                            <div style="text-align: center;margin-top: 15px;margin-bottom:15px;">
+                                <apex:outputLink value="/a3e/e?retURL=apex/ProductCatalogControlPanel" id="theLink2" target="_blank" styleclass="btn">Add Product Line Item</apex:outputLink>
+                            </div>
+                            <div>
+                                <apex:pageBlock title="Product Line Items">
+                                    <apex:pageBlocktable var="variable" value="{!productLineItemList}">
+                                        <apex:column >
+                                            <apex:facet name="header">Action</apex:facet>
+                                            <apex:outputLink value="/{!variable.Id}/e?retURL={!variable.Id}" target="_blank" >Edit</apex:outputLink> <!-- | <a href="#">Remove</a> -->
+                                        </apex:column>
+                                        <apex:column >
+                                            <apex:facet name="header">Sub Category</apex:facet>
+                                            <apex:outputLink value="/{!variable.Id}" target="_blank" >{!variable.Sub_Category__c}</apex:outputLink>
+                                        </apex:column>
+                                        <apex:column >
+                                            <apex:facet name="header">Name</apex:facet>
+                                            <apex:outputLink value="/{!variable.Id}" target="_blank" >{!variable.name}</apex:outputLink>
+                                        </apex:column>
+                                    </apex:pageBlocktable>
+                                </apex:pageBlock>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </apex:form>    
+</apex:page>

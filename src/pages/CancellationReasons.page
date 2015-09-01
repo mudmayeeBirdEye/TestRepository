@@ -1,0 +1,627 @@
+<apex:page standardController="Cancel_Request__c"  extensions="CancellationReasonsController"  readonly="true" cache="false">
+ <apex:stylesheet value="{!URLFOR($Resource.Upsell_Style)}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.RCBlockUI, 'blockUI/js/jquery.blockUI.js')}" />
+     <style>
+         .btnDiv {
+            /*width: 100%;*/
+            margin: auto;
+            padding-top:3px;
+            padding-bottom:3px;
+           /* border: 1px solid #A5A6A5;*/
+            margin-top: 5px;
+            margin-bottom: 5px;
+           /* background: #FFF !important;*/
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+           /* -webkit-box-shadow: 0px -71px 101px -19px #DEEBEF inset;*/
+            -moz-box-shadow: 0px -71px 101px -19px #DEEBEF inset;
+            text-align: center;
+            }
+            .btn {
+            color:#084B8A !important;
+            background-color:#E16222!important;
+            border: 1px solid #A5A6A5 !important;
+           
+            padding: 9px !important;
+            vertical-align: center;
+        }
+     .btnDivNew {
+        /*width: 95%;*/
+        margin: auto;
+        border: 1px solid skyblue;
+        /* min-height: 100px; */
+        margin-top: 5px;
+        //margin-bottom: 5px;
+        background: #FFF !important;
+        
+        /*-moz-border-radius: 11px;
+        -webkit-border-radius: 11px;
+        border-radius: 11px;*/
+        
+        /*behavior: url({!$Resource.BorderRadiusHTC});
+        box-shadow: 0px 0px 20px 0px skyblue inset;
+        -webkit-box-shadow: 0px 0px 20px 0px skyblue inset;
+        -moz-box-shadow: 0px 0px 20px 0px skyblue inset;*/
+        text-align: center;
+        /*padding:10px;*/
+        padding-top : 3px;
+        padding-bottom : 3px;
+        margin-left:9px;
+    }
+        .bPageBlock .pbTitle {
+            width: auto !important;
+        }
+    </style >
+    <script type="text/javascript"> 
+        function showOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'visible';
+         }
+        
+        function hideOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'hidden';
+         }
+         $(function() {
+            $.blockUI({
+            message : '<div class="preloader"><img src="' + '{!URLFOR($Resource.loading)}' + '" /><div align="center" id="block-ui-msg"><span id="firstmsg">Please wait</span></div></div>',
+            css : {
+            padding : '0',
+            margin : '0',
+            width: '500px',
+            border: 'none',
+            height: '200px',
+            left: '32%',
+            top: '30%',
+            background: 'none'
+            }
+         });
+         $(window).load(function() { $.unblockUI(); });
+         }); 
+     </script>     
+         
+   <apex:pageMessages escape="false" id="error" /> 
+   <apex:form id="formcancellation">
+      <div id="overlay" style="text-align:center;padding-top:190px;">
+       <apex:image value="{!$Resource.loading}" ></apex:image>
+      </div>   
+       <apex:PageBlock id="pageBlock">
+       <div class="btnDivNew">
+            <!-- <apex:pageBlockButtons location="both" id="buttonSection" style="vertical-align: middle" >  -->
+                <apex:outputpanel id="btnsectiontop">    
+                	    <apex:commandButton action="{!back}" value="Back" rerender="mainpanel,btnsectiontop,btnsection"  
+                           status="Ajaxstatus5"  rendered="{!toShowCustomerSection}"/> 
+                           
+                       <apex:commandButton action="{!create}"  value="Create" rerender="mainpanel,btnsectiontop,btnsection"
+                            status="Ajaxstatus5" rendered="{!toShowCustomerSection}" style="margin-left: 5px;margin-right: 5px;"  />
+                       
+                       <apex:commandButton action="{!next}" value="Next" rerender="mainpanel,btnsectiontop,btnsection"
+                            status="Ajaxstatus5"  rendered="{!!toShowCustomerSection}"/>
+                        
+                       <apex:commandButton action="{!skip}" value="Skip" rerender="mainpanel,btnsectiontop,btnsection"
+                            status="Ajaxstatus5" rendered="{!!toShowCustomerSection}" style="margin-left: 5px;margin-right: 5px;" />
+                        
+                       <apex:commandButton action="{!cancel}" value="Cancel" id="btnCanceltop"/>
+                        
+                        <apex:actionStatus id="Ajaxstatus5" onStart="showOverlay();" onstop="hideOverlay();"/>
+                </apex:outputpanel>
+            <!--</apex:pageBlockButtons> -->
+            </div>
+             <apex:PageBlockSection id="cancellationreason" columns="1">
+                      <apex:outputpanel id="mainpanel"><!-- 
+                        --{!lstsectedCancReasons}--
+                        --><apex:outputPanel id="errorMsg1">
+                            <apex:dataTable value="{!tempList}" rendered="{!toshowerrorMsg}" var="a" id="theTable1" styleClass="centerAlign" style="width:100%;margin-bottom:5px;background-color: #FFFF99; font-family:TRebuchet MS;font-weight: bold;border:2.5px solid #32588E;-moz-border-radius:9px 9px 9px 9px;border-radius:9px 9px 9px 9px;vertical-align:middle;">
+                                   <apex:column id="thecolumn1" style="vertical-align:middle;width:15%;text-align:center;height:85px;">
+                                      <apex:image value="{!$Resource.WarningRed}"  width="48" height="40" style="padding:5px"  />  
+                                   </apex:column>
+                                   <apex:column id="thecolumn2" style="vertical-align:middle;padding-bottom: 5px;padding-top: 5px;">
+                                       <apex:repeat value="{!errorMsgList}" var="errorvalue">&bull;
+                                        <apex:outputText style="padding:5px;" escape="false" value="{!errorvalue}">
+                                        </apex:outputText><br/>
+                                       </apex:repeat>
+                                   </apex:column>
+                            </apex:dataTable>
+                        </apex:outputPanel>
+                        <apex:outputpanel rendered="{!!toShowCustomerSection}">
+                       <!--  <apex:PageBlock title="Select Churn Reason"> 
+                         <table width="100%"  border="0"  style="border:1px solid #F98400;"  cellpadding="5px" cellspacing="5px;"> -->
+                        
+                         <div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="pbTitle"><h2 class="mainTitle" style="font-size:20px;">Select Churn Reason</h2></td><td>&nbsp;</td></tr></tbody></table></div> 
+                         <table width="100%"  border="0"  style="border:1px solid #F98400;box-shadow: 0px 0px 20px 0px #F98400 inset;"  cellpadding="5px" cellspacing="5px;">
+                            <tr>
+                                <td rowspan="7" style="vertical-align: middle;">
+                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                        <tr>
+                                            <td style="border:1px solid #F98400;background:white;">
+                                               <table>
+                                                  <tr> 
+                                                    <td>
+                                                       <apex:OutputLabel style="font-weight:Bold;" value="Cancellation Reasons:" for=""></apex:OutputLabel>&nbsp;
+                                                     </td>
+                                                    </tr> 
+                                                  <tr>  
+                                                    <td>   
+                                                       <apex:selectCheckboxes value="{!lstsectedCancReasons}" layout="pageDirection" > 
+                                                        <apex:selectOptions value="{!CancellationReasonOption}"/>
+                                                        <apex:actionSupport event="onclick" reRender="mainpanel" action="{!showdetailCall}" status="Ajaxstatus4"/>
+                                                      </apex:selectCheckboxes>
+                                                     </td>
+                                                  </tr>
+                                                  <tr>  
+                                                    <td>
+                                                        <apex:outPutPanel rendered="{!toshowotherdetail}">
+                                                           <span style="Color:Red;margin-left:27px;">*</span>  <apex:InputText style="width:100%;margin-left:27px;" value="{!cancelObj.Other_details__c}">
+                                                            </apex:InputText><br/>&nbsp;
+                                                            
+                                                        </apex:outPutPanel>   
+                                                    </td>
+                                                  </tr>
+                                               </table>  
+                                            </td>
+                                         </tr>
+                                    </table> 
+                                </td>
+                                <td>
+                                    <apex:outputPanel rendered="{!if(toshowOutage || toshowcostdetail || toshowCouldnotworkingdetail ||toshowFax || toshowmissingfeature || toshowQOsdetail,true,false)}">
+                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                        <tr>
+                                            <td style="border:1px solid #F98400;background:white;">
+                                               <table>
+                                                  <tr>  
+                                                     <td>
+                                                       <apex:OutputLabel style="font-weight:Bold;" value="Details" for=""></apex:OutputLabel>&nbsp;
+                                                     </td>
+                                                  </tr>
+                                               </table> 
+                                            </td>
+                                         </tr>
+                                    </table>
+                                    </apex:outputPanel>  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel rendered="{!toshowcostdetail}">
+                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                        <tr>
+                                            <td style="border:1px solid #F98400;background:white;">
+                                               <table>
+                                                 <tr><th><u> Cost </u></th></tr>
+                                                  <tr>  
+                                                    <td>
+                                                       <apex:selectCheckboxes value="{!lstselectedcostDetail}" layout="pageDirection" > 
+                                                            <apex:selectOptions value="{!CostOption}"/>
+                                                       </apex:selectCheckboxes>
+                                                     </td>
+                                                  </tr>
+                                               </table>
+                                            </td>
+                                         </tr>
+                                    </table>
+                                   </apex:outputPanel>  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel rendered="{!toshowCouldnotworkingdetail}">
+                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                        <tr>
+                                            <td style="border:1px solid #F98400;background:white;">
+                                               <table>
+                                                 <tr><th><u> Couldn't get it working </u></th></tr>
+                                                  <tr>  
+                                                    <td>
+                                                       <apex:selectCheckboxes value="{!lstselectedCouldnotworkingdetail}" layout="pageDirection" > 
+                                                            <apex:selectOptions value="{!CouldnotworkingdetailOption}"/>
+                                                       </apex:selectCheckboxes>
+                                                     </td>
+                                                  </tr>
+                                               </table>
+                                            </td>
+                                         </tr>
+                                    </table>
+                                   </apex:outputPanel>  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel rendered="{!toshowmissingfeature}">   
+                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                        <tr>
+                                            <td style="border:1px solid #F98400;background:white;">
+                                               <table>
+                                               <tr><th><u>Missing critical feature</u></th></tr>
+                                                  <tr>  
+                                                    <td>
+                                                        <apex:selectCheckboxes value="{!lstsectedmissingfeature}" layout="pageDirection" > 
+                                                            <apex:selectOptions value="{!missingfeaturedetailOption}"/>
+                                                            <apex:actionSupport event="onclick" reRender="mainpanel" action="{!showdetailCall}" status="Ajaxstatus4"/>
+                                                        </apex:selectCheckboxes>
+                                                     </td>
+                                                  </tr>
+                                                  <tr>   <!-- specifyValue  --------------------------------------------->
+                                                    <td>
+                                                         <apex:outPutPanel rendered="{!toshowSpecifyValue}">
+                                                                   <b><span style="Color:Red;">*</span> Please Specify: </b><apex:InputText style="width:55%;margin-left:0px;" value="{!cancelObj.Specify_value__c}">
+                                                                    </apex:InputText><br/>&nbsp;
+                                                          </apex:outPutPanel>                          
+                                                    </td>
+                                                  </tr>
+                                               </table> 
+                                            </td>
+                                         </tr>
+                                    </table>
+                                   </apex:outputPanel> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel rendered="{!toshowOutage}">
+                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                        <tr>
+                                            <td style="border:1px solid #F98400;background:white;">
+                                               <table>
+                                                 <tr><th><u> Outage </u></th></tr>
+                                                  <tr>
+                                                    <td style="vertical-align: middle;">
+                                                      Enter the date of the outage: 
+                                                    </td>  
+                                                    <td>
+                                                      <apex:inputField value="{!cancelObj.Outage_Date__c}"></apex:inputField>
+                                                    </td>
+                                                  </tr>
+                                               </table>
+                                            </td>
+                                         </tr>
+                                    </table>
+                                   </apex:outputPanel>  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel rendered="{!toshowFax}">     
+                                        <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                            <tr>
+                                                <td style="border:1px solid #F98400;background:white;">
+                                                   <table>
+                                                   <tr><th><u> QoS Fax </u></th></tr>
+                                                    
+                                                      <tr>  
+                                                        <td>
+                                                            <apex:selectCheckboxes value="{!lstsectedFax}" layout="pageDirection" > 
+                                                                <apex:selectOptions value="{!FaxOption}"/>
+                                                            </apex:selectCheckboxes>
+                                                         </td>
+                                                      </tr>
+                                                   </table> 
+                                                </td>
+                                             </tr>
+                                        </table>
+                                    </apex:outputPanel> 
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                               <td>
+                                    <apex:outputPanel rendered="{!toshowQOsdetail}">    
+                                        <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                            <tr>
+                                                <td style="border:1px solid #F98400;background:white;">
+                                                   <table>
+                                                      <tr><th><u> QoS Voice </u></th></tr>
+                                                      <tr>  
+                                                        <td>
+                                                            <apex:selectCheckboxes value="{!lstsectedQOsdetail}" layout="pageDirection" > 
+                                                                <apex:selectOptions value="{!QOsdetailOption}"/>
+                                                            </apex:selectCheckboxes>
+                                                         </td>
+                                                      </tr>
+                                                   </table> 
+                                                </td>
+                                             </tr>
+                                        </table>
+                                    </apex:outputPanel> 
+                                </td>
+                            </tr>
+                        </table>
+                     
+                       <!--  </apex:PageBlock> -->
+                        </apex:outputpanel>
+                                       
+                        <apex:outputPanel rendered="{!toShowCustomerSection}">
+                        <!-- <div><h3>What will cx use instead?</h3></div>
+                             <table width="100%"  style="border:1px solid #F98400;"  cellpadding="5px" cellspacing="5px;"> -->
+                             <div><h2 class="mainTitle" style="font-size:20px;">Cancel Customer List</h2></div>
+                             <table width="100%"  style="border:1px solid #F98400;box-shadow: 0px 0px 20px 0px #F98400 inset;"  cellpadding="5px" cellspacing="5px;">
+                                <tr>
+                                   <td rowspan="5"  style="vertical-align: middle;">
+                                      <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                            <tr>
+                                                <td  style="vertical-align: middle;">
+                                                     <table width="100%" cellpadding="5px" cellspacing="5px;" style="border:1px solid #F98400;background:white;"  >
+                                                              <tr>
+                                                                  <td>
+                                                                      <apex:OutputLabel style="font-weight:Bold;" value="What will cx use for their phone system?" for=""></apex:OutputLabel>&nbsp;
+                                                                  </td>
+                                                             </tr> 
+                                                              <tr>  
+                                                                  <td>   
+                                                                       <apex:selectCheckboxes value="{!lstsectedCXDetaildetail}" layout="pageDirection" > 
+                                                                          <apex:selectOptions value="{!WhichCXDetailOption}"/>
+                                                                            <apex:actionSupport event="onclick" reRender="mainpanel" action="{!showcompanyCall}" status="Ajaxstatus4"/>
+                                                                       </apex:selectCheckboxes>
+                                                                 </td>
+                                                            </tr>
+                                                            
+                                                            <tr>  
+                                                                <td>
+                                                                    <apex:outPutPanel rendered="{!toshowSpecifyOthers}">
+                                                                        <b><span style="Color:Red;">*</span> Please Specify:</b><apex:InputText style="width:80%;margin-left:20px;" value="{!cancelObj.Specify_other__c}">
+                                                                        </apex:InputText><br/>&nbsp;
+                                                                        
+                                                                    </apex:outPutPanel>   
+                                                                </td>
+                                                          </tr>
+                                                   </table> 
+                                              </td>
+                                           
+                                         
+                                           <!--   <td style="border:1px solid #F98400;background:white;">
+                                            <table style="border-spacing:2em">
+                                               <tr>
+                                                 <td>
+                                                    <apex:OutputLabel style="font-weight:Bold;" value="Which company?" for=""></apex:OutputLabel>&nbsp;
+                                                  </td>
+                                                  </tr>
+                                                  <tr><td>
+                                                     <apex:selectCheckboxes value="{!lstsectedCompanyDetaildetail}" layout="pageDirection" > 
+                                                         <apex:selectOptions value="{!WhichCompanydetailOption}"/>
+                                                         <apex:actionSupport event="onclick" reRender="mainpanel" action="{!showspecifyOthers}" status="Ajaxstatus4"/>
+                                                      </apex:selectCheckboxes>
+                                                   </td></tr>
+                                                   <tr>  
+                                                    <td>
+                                                        <apex:outPutPanel rendered="{!toshowSpecifyOthers}">
+                                                            <apex:InputText style="width:100%;margin-left:27px;" value="{!cancelObj.Specify_other__c}">
+                                                            </apex:InputText><br/>&nbsp;
+                                                            <span style="Color:Red;margin-left:27px;">*</span> 
+                                                        </apex:outPutPanel>   
+                                                    </td>
+                                                  </tr>
+                                                 </table>
+                                               </td> -->
+                                     
+                                             <td>
+                                                 <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                   <tr>
+                                                     <td>
+                                                         <apex:outputPanel rendered="{!toshowHostedPBX}">
+                                                         <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                           <tr>
+                                                         
+                                                            <td style="border:1px solid #F98400;background:white;">
+                                                               <table>
+                                                                   <tr><th> <u>Hosted PBX </u> </th></tr>
+                                                                  <tr>  
+                                                                     <td>
+                                                                                             
+                                                                        <apex:selectCheckboxes value="{!lstsectedHostedPBXdetail}" layout="pageDirection" > 
+                                                                            <apex:selectOptions value="{!HostedPBXOption}"/>
+                                                                        </apex:selectCheckboxes>
+                                                                     </td>
+                                                                  </tr>
+                                                               </table> 
+                                                            </td>
+                                                         </tr>
+                                                    </table>
+                                                </apex:outputPanel>
+                                                </td>
+                                                </tr> 
+                                                <tr>                                              
+                                                  <td>
+                                                    <apex:outputPanel rendered="{!toshowOnPremisePBX}">
+                                                             <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                                 <tr>
+                                                                    <td style="border:1px solid #F98400;background:white;">
+                                                                       <table>
+                                                                        <tr><th><u>On-Premise PBX</u></th></tr>
+                                                                          <tr>  
+                                                                            <td>
+                                                                                <apex:selectCheckboxes value="{!lstsectedOnPremisePBXdetail}" layout="pageDirection" > 
+                                                                                    <apex:selectOptions value="{!OnPremisePBXOption}"/>
+                                                                                </apex:selectCheckboxes>
+                                                                             </td>
+                                                                          </tr>
+                                                                       </table> 
+                                                                    </td>
+                                                                </tr>
+                                                           </table>
+                                                    </apex:outputPanel> 
+                                                </td>
+                                             </tr>
+                                             <tr>   
+                                              <td>
+                                                <apex:outputPanel rendered="{!toshowCellPhoneOnly}">
+                                                        <table width="100%" cellpadding="5px" cellspacing="5px;">                                                         
+                                                          <tr>
+                                                            <td style="border:1px solid #F98400;background:white;">
+                                                               <table>
+                                                                  <tr><th> <u>Cell Phone only</u> </th></tr>
+                                                                  <tr>  
+                                                                    <td>
+                                                                        <apex:selectCheckboxes value="{!lstselectedCellPhoneOnly}" layout="pageDirection" > 
+                                                                            <apex:selectOptions value="{!CellPhoneOnlyOption}"/>
+                                                                        </apex:selectCheckboxes>
+                                                                     </td>
+                                                                  </tr>
+                                                               </table> 
+                                                            </td>
+                                                           </tr>
+                                                       </table>
+                                                </apex:outputPanel> 
+                                              </td>
+                                            </tr>
+                                            <tr>                                          
+                                             <td>
+                                                <apex:outputPanel rendered="{!toshowLandline}">
+                                                         <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                        <tr>
+                                                            <td style="border:1px solid #F98400;background:white;">
+                                                                   <table>
+                                                                           <tr><th> <u> Land Line </u> </th></tr>
+                                                                              <tr>  
+                                                                                <td>
+                                                                                    <apex:selectCheckboxes value="{!lstSelectedLandLine}" layout="pageDirection" > 
+                                                                                        <apex:selectOptions value="{!LandLineOption}"/>
+                                                                                    </apex:selectCheckboxes>
+                                                                               </td>
+                                                                          </tr>
+                                                                  </table> 
+                                                             </td>
+                                                         </tr>                                                              
+                                                    </table>
+                                                </apex:outputPanel> 
+                                            </td>
+                                           </tr>
+                                           <tr>
+                                             <td>
+                                                <apex:outputPanel rendered="{!toshowTraditional}">
+                                                      <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                             <tr>
+                                                                 <td style="border:1px solid #F98400;background:white;">
+                                                                    <table>
+                                                                          <tr><th><u> Traditional </u> </th></tr>
+                                                                          <tr>  
+                                                                              <td>
+                                                                                  <apex:selectCheckboxes value="{!lstSelectedTraditional}" layout="pageDirection" > 
+                                                                                       <apex:selectOptions value="{!TraditionalOption}"/>
+                                                                                   </apex:selectCheckboxes>
+                                                                               </td>
+                                                                          </tr>
+                                                                       </table> 
+                                                                    </td>
+                                                                </tr>  
+                                                       </table>
+                                                </apex:outputPanel> 
+                                             </td>
+                                           </tr>
+                                           <tr>                                              
+                                               <td>
+                                                    <apex:outputPanel rendered="{!toshowOtherCloudPBX}">
+                                                             <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                                 <tr>
+                                                                    <td style="border:1px solid #F98400;background:white;">
+                                                                       <table>
+                                                                        <tr><th><u>Other Cloud PBX</u></th></tr>
+                                                                          <tr>  
+                                                                            <td>
+                                                                                <!-- <b><span style="Color:Red;">*</span></b> --><apex:InputText style="width:80%;margin-left:20px;" value="{!cancelObj.Other_Cloud_PBX__c}">
+                                                                        		</apex:InputText>&nbsp;
+                                                                             </td>
+                                                                          </tr>
+                                                                           <tr>
+                                                                            <td style="padding-left:18px">
+                                                                              <apex:inputCheckbox value="{!cancelObj.OtherCloudPBX_Prefers_not_to_say__c}"/><span style="align:middle">Prefers not to say</span>
+                                                                            </td>
+                                                                          </tr>
+                                                                       </table> 
+                                                                    </td>
+                                                                </tr>
+                                                           </table>
+                                                    </apex:outputPanel> 
+                                                </td>
+                                            </tr>
+                                           <tr>                                              
+                                               <td>
+                                                    <apex:outputPanel rendered="{!toshowNothing}">
+                                                             <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                                 <tr>
+                                                                    <td style="border:1px solid #F98400;background:white;">
+                                                                       <table>
+                                                                        <tr><th><u>Nothing</u></th></tr>
+                                                                          <tr>  
+                                                                            <td>
+                                                                                <apex:selectCheckboxes value="{!lstselectedNothing}" layout="pageDirection" > 
+                                                                                    <apex:selectOptions value="{!NothingOption}"/>
+                                                                                </apex:selectCheckboxes>
+                                                                             </td>
+                                                                          </tr>
+                                                                       </table> 
+                                                                    </td>
+                                                                </tr>
+                                                           </table>
+                                                    </apex:outputPanel> 
+                                                </td>
+                                             </tr>
+	                                          <tr>                                              
+                                               <td>
+                                                    <apex:outputPanel rendered="{!toshowConsolidatingAccount}"><!-- Ringcentral-ConsAccount -->
+                                                             <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                                 <tr>
+                                                                    <td style="border:1px solid #F98400;background:white;">
+                                                                       <table>
+                                                                        <tr><th><u>RingCentral – Consolidating Account</u></th></tr>
+                                                                          <tr>  
+	                                                                          <tr>
+	                                                                            <td>
+	                                                                                <apex:selectCheckboxes value="{!lstConsolidatingAccount}" layout="pageDirection" > 
+	                                                                                    <apex:selectOptions value="{!ConsolidatingAccountOption}"/>
+	                                                                                    <apex:actionSupport event="onclick" reRender="mainpanel" action="{!showcompanyCall}" status="Ajaxstatus4"/>
+	                                                                                </apex:selectCheckboxes>
+	                                                                             </td>
+	                                                                             </tr>
+	                                                                             <tr>
+	                                                                              <td>
+							                                                        <apex:outPutPanel rendered="{!toshowOther_PDR}">
+							                                                           <apex:InputText style="width:60%;margin-left:27px;" value="{!cancelObj.Consolidating_Account__c}">
+							                                                            </apex:InputText><br/>&nbsp;							                                                            
+							                                                        </apex:outPutPanel>   
+	                                                    						  </td>
+                                                    						  </tr>
+                                                                          </tr>
+                                                                       </table> 
+                                                                    </td>
+                                                                </tr> 
+                                                           </table>
+                                                    </apex:outputPanel> 
+                                                </td>
+                                             </tr>
+                                      </table>
+                                   </td>
+                               </tr>
+                           </table>  
+                         </td>
+                      </tr>
+                  </table>
+               </apex:outputPanel>  
+                     </apex:outputpanel>
+              </apex:PageBlockSection>
+            
+                <div class="btnDivNew">
+            <!-- <apex:pageBlockButtons location="both" id="buttonSection" style="vertical-align: middle" >  -->
+                <apex:outputpanel id="btnsection">    
+					   <apex:commandButton action="{!back}" value="Back" rerender="mainpanel,btnsectiontop,btnsection"
+                            id="btnCrtOpp3" status="Ajaxstatus4"  rendered="{!toShowCustomerSection}"/>
+                            
+                       <apex:commandButton action="{!create}"  value="Create" rerender="mainpanel,btnsectiontop,btnsection"
+                            id="btnCrtOpp" status="Ajaxstatus4" rendered="{!toShowCustomerSection}" style="margin-left: 5px;margin-right: 5px;"  />
+                       
+                       <apex:commandButton action="{!next}" value="Next" rerender="mainpanel,btnsectiontop,btnsection"
+                            id="btnCrtOpp1" status="Ajaxstatus4"  rendered="{!!toShowCustomerSection}"/>
+                        
+                        <apex:commandButton action="{!skip}" value="Skip" rerender="mainpanel,btnsectiontop,btnsection"
+                            id="btnCrtOpp2" status="Ajaxstatus4" rendered="{!!toShowCustomerSection}" style="margin-left: 5px;margin-right: 5px;" />
+                        
+                        <apex:commandButton action="{!cancel}" value="Cancel" id="btnCancel"/>
+                        
+                        <apex:actionStatus id="Ajaxstatus4" onStart="showOverlay();" onstop="hideOverlay();"/>
+                </apex:outputpanel>
+            <!--</apex:pageBlockButtons> -->
+                    </div>    
+        </apex:PageBlock>
+        
+    </apex:form>
+ </apex:page>

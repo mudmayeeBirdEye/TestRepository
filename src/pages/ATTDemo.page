@@ -1,0 +1,17 @@
+<apex:page showHeader="false" sidebar="false" cache="false">
+  <!--<apex:composition template="{!$Site.Template}">
+     <apex:define name="search"> -->
+     <div style='height:100%'>
+      <apex:flash play="true" loop="true" src="{!URLFOR($Resource.ATTOnlineAccountSimulator, '/ATTOnlineAccountSimulator.swf')}" height="850px" width="100%"></apex:flash>
+      <!--<apex:iframe src="{!URLFOR($Resource.ATTOnlineAccountSimulator, '/ATTOnlineAccountSimulator.swf')}" height="690px;" width="100%" /> -->
+
+<!--<object width="1000" height="1000" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0">
+<param name="SRC" value="{!URLFOR($Resource.ATTOnlineAccountSimulator, '/ATTOnlineAccountSimulator.swf')}" />
+<embed src="{!URLFOR($Resource.ATTOnlineAccountSimulator, '/ATTOnlineAccountSimulator.swf')}" width="100%" height="1000">
+</embed>
+</object> -->
+
+</div>
+ <!-- </apex:define>
+    </apex:composition> -->
+</apex:page>

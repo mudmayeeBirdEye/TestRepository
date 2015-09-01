@@ -1,0 +1,33 @@
+<apex:page showheader="false" renderas="PDF">
+
+<apex:stylesheet value="{!$Resource.LP__LivePerson_CSS}" /> 
+
+<div class="header">
+    <img src="{!$Resource.LivePerson_Logo}"/>
+ <br/><br/>
+</div>
+
+<div class="text">
+<h2 class="exchangeTitle">Help - Mapping</h2>
+<div class="innerTxt">
+For each object in Salesforce that participates in the integration you should 
+map out the relevant Salesforce fields into the corresponding Liveperson fields.<br/><br/>
+Mapped fields are fields that can be used by the Integration to search for 
+records in Salesforce or create new ones based on Liveperson data.<br/><br/>
+Highlight a field from the list of object fields on the left and move it 
+to the Mapping table using the Add button. Insert the corresponding Liveperson 
+field name in the LP Field column and enter a Default Value if applicable.Date values should carry the following format: yyyy-mm-dd.<br/><br/>
+Notice that Salesforce fields that are required in order to create a record 
+in Salesforce database are automatically identified by the Integration and are 
+marked as such in the Mandatory column together with a default [Not Provided] value.<br/><br/>
+Check the "Searchable" checkboxes for the fields you wish to be included in the default "By Keywords" search. Fields that are not marked as Searchable will not be used for the default search by the Integration but you can add them manually in the search. 
+<br/><br/>
+To un-map fields, check the Select checkbox and hit the Remove button.<br/><br/> 
+It is recommended to complete mapping of all the Salesforce objects in which you
+ anticipate a Liveperson agent would like to search for records or add new ones.<br/> 
+ In addition, if greater the number of fields that are configured in the mapping, 
+ the higher is the probability to find existing records while searching via the Integration.<br/><br/>
+
+</div>
+</div>
+</apex:page>

@@ -1,0 +1,143 @@
+<apex:page sidebar="false" showHeader="false" controller="LinkedInController">
+	<style>   
+		.grant-access {
+			/*background: #333;*/
+			box-shadow: 0px -38px 157px 62px #C7D6E9 inset;
+        	-webkit-box-shadow: 0px -38px 157px 62px #C7D6E9 inset;
+        	-moz-box-shadow: 0px -38px 157px 62px #C7D6E9 inset;
+			padding-top: 5px;
+			padding-bottom: 20px;
+			padding-left: 20px;
+			padding-right: 20px;
+			width: 960px;
+			margin: 0px auto;
+			height:100%;
+			position:fixed;
+		}
+		.grant-access .description {
+			font-size: 16px;
+			font-weight: bold;
+			line-height: 18px;
+			color: #000;
+			padding-bottom: 10px;
+		}
+		.links {
+			font-size: 15px;
+			font-weight: bold;
+			line-height: 18px;
+			color: #084B8A;
+			padding-bottom: 10px;
+		}
+		#overlayNew {
+			background: no-repeat scroll top center gray;
+			border: 0px solid #000000;
+			bottom: 0;
+			left: 0;
+			opacity: 0.75;
+			position: absolute;
+			top: 0;
+			display: none;
+			width: 100%;
+			z-index: 9999;
+			zIndex: 9999;
+			height:100%;
+		}
+		.defaultText { 
+	        width: 275px;
+	        border-radius: 10px;
+	        padding-left: 7px;
+	        height: 22px;
+	        border : 1px solid #A5A6A5;
+	        color:#474747;
+	        font-weight:bolder;
+	        outline:0;
+	    } 
+	    
+	    .defaultTextActive { 
+	        color: #084B8A;  
+	        font-style: italic; 
+	        width: 275px;
+	        border-radius: 10px;
+	        padding-left: 7px;
+	        height: 22px;
+	        border : 1px solid #A5A6A5;
+	        font-weight:bolder;
+	    } 
+	    .btn {
+	        color: #084B8A !important;
+	        border: 1px solid #A5A6A5 !important;
+	        padding: 6px !important;
+	    }
+	</style>	
+	<apex:form id="frm">
+		<script>
+			function showOverlay() {
+				var o = document.getElementById('overlayNew');
+				o.style.display = 'block';
+			}		
+			function hideOverlay() {
+				var o = document.getElementById('overlayNew');
+				o.style.display = 'none';							
+			}
+			
+			window.onload = openCompanyPage();
+			
+			function openCompanyPage(){			
+				if({!searchLinks.size}==1){						
+					window.open('{!redirectUrl}');
+				}	
+			}		
+		</script>
+		<apex:outputpanel id="op1">
+			<script>
+				function openCompanyPage(){						
+					if({!searchLinks.size}==1){							
+						window.open('{!redirectUrl}');
+					}	
+				}
+			</script>
+			<div class="grant-access" style="text-align:left;width:100%;">	
+				<apex:actionStatus id="Ajaxstatus" onStart="showOverlay();"  onstop="hideOverlay();"/>
+				<apex:actionFunction name="callActionFunction" action="{!searchCompany}" reRender="frm" status="Ajaxstatus"/>
+				
+				<div id="overlayNew" style="text-align:center;padding-top:20px;">
+					<div class='overLay' style="display:block;z-index:99999;zIndex:99999;"></div>
+					<div class="loader-static" style='z-index:100000;zIndex:100000;'>
+					<div class="loader-static-panel">
+					<div style='margin-top:50px;font-weight:bold;'>
+					<img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+					<span class="waitingDescription" style="font-weight:bold; font-size:20px; position:absolute;z-index:10; color:white;">Please Wait...</span></div>
+					</div>
+					<div class="loader-fix"></div>
+					</div>
+				</div>
+				<div>
+					<apex:pageMessages />
+					<p class="description" style="font-size:20px;">Enter company name to search:</p>
+					<apex:inputText styleclass="defaultText defaultTextActive" value="{!companyName}" onkeypress="javascript:status = 1;if(event.keyCode == '13'){callSearch(event);return false;}else return true;" />
+					<apex:commandButton value="Search" action="{!searchCompany}" styleclass="btn" reRender="op1" status="Ajaxstatus" oncomplete="openCompanyPage(); return false;"/>						
+					<br/>
+					<div style="padding-top:30px;">
+						<apex:outputPanel rendered="{!showFrame}">
+								<!-- <apex:repeat var="link" value="{!searchLinks}" rows="5">
+											<a class="links" href="{!link}" target="_blank" >{!link}</a>
+								</apex:repeat> -->
+							<ul style="list-style:none;outline:none;padding:0px;margin:0px;">
+								<apex:repeat var="link" value="{!searchLinks}" rows="5">
+									<li style="margin:0px;">
+										<a class="links" href="{!link}" target="_blank" >{!link}</a>
+									</li>
+								</apex:repeat>
+							</ul>
+						</apex:outputPanel>	
+					</div>
+				</div>
+				<script>
+					function callSearch(){
+						callActionFunction();
+					}
+				</script>
+			</div>		
+		</apex:outputpanel>	
+	</apex:form>
+</apex:page>

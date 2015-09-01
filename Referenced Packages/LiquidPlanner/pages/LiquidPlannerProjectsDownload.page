@@ -1,0 +1,15 @@
+<apex:page controller="LiquidPlanner.LiquidPlannerProjectController" action="{!loadLiquidPlannerProjects}" contenttype="{!csvName}">
+Workspace,Project,Project Owner,Accounts (Clients),Opportunities,Expected Finish,Deadline,% Complete,Max Effort,Expected Total Effort,Total Logged,Done{!IF(DisplayCustomFieldDateStarted, ',Date Started', '')}{!IF(DisplayCustomFieldDelayUntil, ',Delay Until', '')}{!IF(DisplayCustomFieldOnHold, ',On Hold', '')}{!IF(DisplayCustomFieldExternalReference, ',Reference', '')}
+<apex:repeat value="{!LiquidPlannerProjects}" var="item">
+<apex:repeat value="{!item.accounts}" var="l">
+<apex:repeat value="{!l}" var="account">
+{!item.space.name},{!item.name},{!item.owner.Name},{!account.Name},,{!item.expected_finish_formatted},{!item.promise_by_formatted},<apex:outputText value="{0,number,0%}"><apex:param value="{!item.percent_complete}"/></apex:outputText>,{!item.max_effort},<apex:outputText value="{0,number,0.00}"><apex:param value="{!item.expected_total_effort}"/></apex:outputText>,{!item.work},{!item.is_done}{!IF(DisplayCustomFieldDateStarted, ','+item.started_on_formatted, '')}{!IF(DisplayCustomFieldDelayUntil, ','+item.delay_until_formatted, '')}{!IF(DisplayCustomFieldOnHold, ','+IF(item.is_on_hold,'true','false'), '')}{!IF(DisplayCustomFieldExternalReference, ','+item.external_reference, '')}
+</apex:repeat>
+</apex:repeat>
+<apex:repeat value="{!item.opportunities}" var="l">
+<apex:repeat value="{!l}" var="opportunity">
+{!item.space.name},{!item.name},{!item.owner.Name},{!opportunity.Account.Name},{!opportunity.Name},{!item.expected_finish_formatted},{!item.promise_by_formatted},<apex:outputText value="{0,number,0%}"><apex:param value="{!item.percent_complete}"/></apex:outputText>,{!item.max_effort},<apex:outputText value="{0,number,0.00}"><apex:param value="{!item.expected_total_effort}"/></apex:outputText>,{!item.work},{!item.is_done}{!IF(DisplayCustomFieldDateStarted, ','+item.started_on_formatted, '')}{!IF(DisplayCustomFieldDelayUntil, ','+item.delay_until_formatted, '')}{!IF(DisplayCustomFieldOnHold, ','+IF(item.is_on_hold,'true','false'), '')}{!IF(DisplayCustomFieldExternalReference, ','+item.external_reference, '')}
+</apex:repeat>
+</apex:repeat>
+</apex:repeat>
+</apex:page>

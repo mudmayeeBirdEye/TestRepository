@@ -1,0 +1,6 @@
+<apex:page controller="RCSupportControllerFax" showHeader="false" title="RC Support" cache="true" expires="{!cacheMaxAge}">
+<apex:composition template="{!$Site.Template}">
+
+
+</apex:composition>
+</apex:page>

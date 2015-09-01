@@ -1,0 +1,192 @@
+<apex:page controller="SystemStatusExt">
+	<link
+		href="{!URLFOR($Resource.RCPartnerResource, 'PartnerPortalSystemSts/style.css')}"
+		type="text/css" rel="stylesheet" media="screen" />
+	<style>
+.liNoIssue {
+	font-weight: bold;
+	list-style: none outside none ! important;
+}
+
+.liHeading {
+	font-size: 14px;
+	font-weight: bold;
+	list-style: none outside none ! important;
+	margin-left: -19px;
+	margin-top: 10px;
+}
+
+.status {
+	background-position: 2px -609px;
+	float: left;
+}
+
+.status .statusSpan {
+	margin-left: 10px;
+	font-weight: bold;
+	width: 130px;
+}
+
+.status .status-bg-left {
+	font-size: 12px;
+}
+
+.arrow_box {
+	position: relative;
+	background: #88b7d5;
+	border: 1px solid #c2e1f5;
+}
+
+.arrow_box:after,.arrow_box:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: #88b7d5;
+	border-width: 30px;
+	margin-left: -30px;
+}
+
+.arrow_box:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-bottom-color: #c2e1f5;
+	border-width: 31px;
+	margin-left: -31px;
+}
+
+.statusTable {
+	border: 0;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.statusTable td {
+	padding: 5px;
+}
+
+.recordsListUL {
+	margin-left: 20px;
+}
+
+.recordsListUL li {
+	list-style: disc;
+	padding: 5px;
+}
+
+.recordTable td {
+	padding: 5px;
+	font-size: 12px;
+}
+</style>
+	<table class="statusTable">
+		<tr>
+			<td colspan="2" style="text-align: center; font-family: Arial;"><h1
+					style="color: #666666;">RingCentral System Status</h1>
+			</td>
+		</tr>
+		<tr>
+			<td />
+		</tr>
+		<tr>
+			<td />
+		</tr>
+		<tr>
+			<td><div class="status">
+					<span class="{!us_class} statusSpan">RingCentral US</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<ul class="recordsListUL">
+					<apex:outputPanel rendered="{!hasUSOpenRecords}">
+						<li class="liHeading">Current Issue/s</li>
+						<apex:repeat value="{!usList_open}" var="rec">
+							<li>{!rec.Public_Description__c}</li>
+						</apex:repeat>
+					</apex:outputPanel>
+					<apex:outputPanel rendered="{!hasUSResolvedRecords}">
+						<li class="liHeading">Resolved Issue/s</li>
+						<apex:repeat value="{!usList_resolved}" var="rec">
+							<li>{!rec.Public_Description__c}</li>
+						</apex:repeat>
+					</apex:outputPanel>
+					<apex:outputPanel rendered="{!if(!hasUSOpenRecords && !hasUSResolvedRecords , true, false)}">
+						<li class="liNoIssue">No Open Issues.</li>
+					</apex:outputPanel>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td />
+		</tr>
+		<tr>
+			<td />
+		</tr>
+		<tr>
+			<td><div class="status">
+					<span class="{!can_class} statusSpan">RingCentral Canada</span>
+				</div></td>
+		</tr>
+		<tr>
+			<td>
+				<ul class="recordsListUL">
+					<apex:outputPanel rendered="{!hasCANOpenRecords}">
+						<li class="liHeading">Current Issue/s</li>
+						<apex:repeat value="{!canList_open}" var="rec">
+							<li>{!rec.Public_Description__c}</li>
+						</apex:repeat>
+					</apex:outputPanel>
+					<apex:outputPanel rendered="{!hasCANResolvedRecords}">
+						<li class="liHeading">Resolved Issue/s</li>
+						<apex:repeat value="{!canList_resolved}" var="rec">
+							<li>{!rec.Public_Description__c}</li>
+						</apex:repeat>
+					</apex:outputPanel>
+					<apex:outputPanel rendered="{!if(!hasCANOpenRecords && !hasCANResolvedRecords , true, false)}">
+						<li class="liNoIssue">No Open Issues.</li>
+					</apex:outputPanel>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td />
+		</tr>
+		<tr>
+			<td />
+		</tr>
+		<tr>
+			<td><div class="status">
+					<span class="{!uk_class} statusSpan">RingCentral UK</span>
+				</div></td>
+		</tr>
+		<tr>
+			<td>
+				<ul class="recordsListUL">
+					<apex:outputPanel rendered="{!hasUKOpenRecords}">
+						<li class="liHeading">Current Issue/s</li>
+						<apex:repeat value="{!ukList_open}" var="rec">
+							<li>{!rec.Public_Description__c}</li>
+						</apex:repeat>
+					</apex:outputPanel>
+					<apex:outputPanel rendered="{!hasUKResolvedRecords}">
+						<li class="liHeading">Resolved Issue/s</li>
+						<apex:repeat value="{!ukList_resolved}" var="rec">
+							<li>{!rec.Public_Description__c}</li>
+						</apex:repeat>
+					</apex:outputPanel>
+					<apex:outputPanel rendered="{!if(!hasUKOpenRecords && !hasUKResolvedRecords , true, false)}">
+						<li class="liNoIssue">No Open Issues.</li>
+					</apex:outputPanel>
+				</ul></td>
+		</tr>
+	</table>
+</apex:page>

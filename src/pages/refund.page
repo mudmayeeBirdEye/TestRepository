@@ -1,0 +1,81 @@
+<apex:page standardController="Refund__c" extensions="refundController" tabStyle="Account" standardStylesheets="true" showHeader="false" sidebar="false" >
+    <apex:sectionHeader title="Refunds" subtitle="User ID {!userID}"/>
+    <apex:pagemessage summary="This UserId was not found in SFDC." severity="error" strength="2" rendered="{!userIdNotFound}" />
+    <apex:form >    
+        <apex:pageBlock title="Existing Account Refunds" rendered="{!!userIdNotFound}" >
+        <apex:pageBlockTable value="{!refundList}" var="r" id="refundTable">   
+            <!-- <apex:column >
+                <apex:facet name="header">Refund #</apex:facet>
+                <apex:outputText value="{!r.Id}"/>                  
+            </apex:column> -->
+            <apex:column >
+                <apex:facet name="header">RightNow Incident #</apex:facet>
+                <apex:outputText value="{!r.incident}"/>                  
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Total</apex:facet>
+                <apex:outputText value="{!r.total}" />
+            </apex:column> 
+            <apex:column >
+                <apex:facet name="header">Category</apex:facet>
+                <apex:outputText value="{!r.category}" />
+            </apex:column> 
+            <apex:column >
+                <apex:facet name="header">Type</apex:facet>
+                <apex:outputText value="{!r.rtype}" />
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Admin Reference #</apex:facet>
+                <apex:outputText value="{!r.reference}" />
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Comment</apex:facet>
+                <apex:outputText value="{!r.comment}" />
+            </apex:column>
+            <apex:column >
+            	<apex:facet name="header">Edit</apex:facet>
+            	<a href="refund?userid={!userID}&incident={!r.incident}&id={!r.Id}">Edit</a>            	
+            </apex:column>
+                        
+        </apex:pageBlockTable>
+        </apex:pageBlock>
+    
+        <apex:pageBlock title="Refund for Incident {!newRefund.RN_Incident__c}" mode="detail" rendered="{!!userIdNotFound}">
+            <apex:pagemessage summary="Please select a refund Category." severity="error" strength="1" rendered="{!!isCategorySelected}" />
+            <apex:pagemessage summary="A comment must be entered for Category Other." severity="error" strength="1" rendered="{!isCommentRequired}" />
+            <apex:pagemessage summary="Please enter a reference #." severity="error" strength="1" rendered="{!!isReferenceFilled}" />
+            <apex:pagemessage summary="Please enter total amount refunded." severity="error" strength="1" rendered="{!!isTotalFilled}" />
+            <apex:pagemessage summary="Refund saved!" severity="confirm" strength="1" rendered="{!isRefundSaved}" />
+            <!-- <apex:pagemessage summary="This is the existing refund for this incident." severity="info" strength="1" rendered="{!didRefundExist}" /> -->
+            <apex:panelGrid columns="2">
+
+                <apex:outputLabel value="Refund Category: " for="category" />
+                <apex:inputfield id="category" value="{!newRefund.Refund_Category__c}"/>
+                <apex:outputLabel value="Refund Type: " for="type" /> 
+                <apex:inputfield id="type" value="{!newRefund.Refund_Type__c}"/>
+                <apex:outputLabel value="Admin Reference #: " for="reference" />   
+                <apex:inputText id="reference" value="{!newRefund.Reference__c}"/>             
+
+                <apex:outputLabel value="Total Refund $" for="total" />   
+                <apex:inputText id="total" value="{!newRefund.Total_Refund__c}"/>
+                
+                <apex:outputLabel value="Comment: " for="comment" />                 
+                <apex:inputtextarea id="comment" cols="50" rows="4" value="{!newRefund.Comment__c}" />
+
+                <apex:outputLabel value="Brand: " for="brand" />   
+                <apex:outputText id="brand" value="{!newRefund.Brand__c}"/>
+                <apex:outputLabel value="Service: " for="service" />   
+                <apex:outputText id="service" value="{!newRefund.Service__c}"/>
+                <apex:outputLabel value="Tier: " for="tier" />   
+                <apex:outputText id="tier" value="{!newRefund.Tier__c}"/>
+                
+
+            </apex:panelGrid>
+            <BR/>
+            <apex:commandButton action="{!save}" value="Save Refund"/>         
+ 
+        </apex:pageBlock>
+
+  
+    </apex:form>  
+</apex:page>

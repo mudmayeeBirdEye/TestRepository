@@ -1,0 +1,287 @@
+<apex:page standardController="Lead" extensions="LeadSpinner" >
+    <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.RCBlockUI, 'blockUI/js/jquery.blockUI.js')}" />
+    <style>
+         #overlay {
+             background: no-repeat scroll top center gray;
+             border: 0px solid #000000;
+             bottom: 0;
+             left: 0;
+             opacity: 0.75;
+             position: absolute;
+             top: 0;
+             visibility: hidden;
+             width: 100%;
+             z-index: 1000;
+         }
+         .popupTd:hover, .popupTd1:hover, .popupTd2:hover, .popupTd3:hover  {
+                 box-shadow:0 0 4px 2px gray;
+                 border-radius: 5px;
+           }
+          .active {
+             border: 1px solid gray;
+             box-shadow:0px 0px 0px 0px inset;
+             border-radius: 5px;
+          }
+          body .pbBody table.list tr.headerRow th {
+            background: #E3F3FF !important;
+          }
+          .controlPanel {
+            /*border:1px solid lightgray;
+            border-radius:5px 5px 5px 5px;
+            background:#E3F3FF; */
+          }
+     </style>
+    <script type="text/javascript"> 
+        function showOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'visible';
+         }
+        
+        function hideOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'hidden';
+         }
+         
+         $(function() {
+            $.blockUI({
+            message : '<div class="preloader"><img src="' + '{!URLFOR($Resource.loading)}' + '" /><div align="center" id="block-ui-msg"><span id="firstmsg">Please wait</span></div></div>',
+            css : {
+            padding : '0',
+            margin : '0',
+            width: '500px',
+            border: 'none',
+            height: '200px',
+            left: '32%',
+            top: '30%',
+            background: 'none'
+            }
+         });
+         $(window).load(function() { $.unblockUI(); });
+         }); 
+         
+    </script>
+<apex:form >
+    <div>
+        <apex:outputLink value="/{!Lead.Id}" style="color:#1468B6;" rendered="{!!isErrorOccured}" >&lt;&lt; Go Back</apex:outputLink> 
+        <!-- <a href="javascript:history.back()" style="color: #015BA7;">« Go Back </a>  -->
+        
+    </div>
+    <apex:outputPanel id="msgPanel">
+        <apex:pageMessages />
+    </apex:outputPanel>
+    <div id="overlay" style="text-align:center;padding-top:190px;">
+        <apex:image value="{!$Resource.loading}" ></apex:image>
+    </div>
+    <apex:pageBlock title="Lead Owner Spinning Tool" mode="detail" rendered="{!!isErrorOccured}">
+        <div id="leadDetail" >
+            <apex:outputPanel id="highlightPanel">
+            <table class="list" border="0" cellpadding="0" cellspacing="0">
+                <colgroup span="1"></colgroup>
+                <thead class="rich-table-thead">
+                    <tr class="headerRow ">
+                        <th class="headerRow  " scope="col" colspan="2">
+                            <div>
+                                 <font style="font-size: 12px">Lead Highlights</font>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="dataRow even  first">
+                        <td class="dataCell  " style="border-right:1px solid #EDEDED;font-weight:bolder;">
+                            Name
+                        </td>
+                        <td class="dataCell  " style="font-size:15px;">
+                            <apex:outputLink value="/{!leadObj.Id}" >{!leadObj.Name}</apex:outputLink>
+                        </td>
+                    </tr>
+                    <tr class="dataRow even  first">
+                        <td class="dataCell  " style="border-right:1px solid #EDEDED;font-weight:bolder;">
+                            Email
+                        </td>
+                        <td class="dataCell  ">
+                            {!leadObj.Email}
+                        </td>
+                    </tr>
+                    <tr class="dataRow even  first">
+                        <td class="dataCell  " style="border-right:1px solid #EDEDED;font-weight:bolder;">
+                            Phone
+                        </td>
+                        <td class="dataCell  ">
+                            {!leadObj.Phone}
+                        </td>
+                    </tr>
+                    <tr class="dataRow even  first">
+                        <td class="dataCell  " style="border-right:1px solid #EDEDED;font-weight:bolder;">
+                            Company Name
+                        </td>
+                        <td class="dataCell  ">
+                            {!leadObj.Company}
+                        </td>
+                    </tr>
+                    <tr class="dataRow even  first">
+                        <td class="dataCell  " style="border-right:1px solid #EDEDED;font-weight:bolder;">
+                            Lead Source
+                        </td>
+                        <td class="dataCell  ">
+                            {!leadObj.LeadSource}
+                        </td>
+                    </tr>
+                    <tr class="dataRow even  first">
+                        <td class="dataCell  " style="border-right:1px solid #EDEDED;font-weight:bolder;">
+                            Current Lead Owner
+                        </td>
+                        <td class="dataCell  ">
+                            <apex:outputLink value="/{!leadObj.OwnerId}" id="ownerPanel" style="font-weight: bolder;font-size: 15px;">{!leadObj.Owner.Name}</apex:outputLink>
+                        </td>
+                    </tr>
+                    <tr class="dataRow even  first">
+                        <td class="dataCell  " style="border-right:1px solid #EDEDED;font-weight:bolder;">
+                            Primary Campaign
+                        </td>
+                        <td class="dataCell  ">
+                            <apex:outputLink value="/{!campaignObj.Id}" >{!campaignObj.Name}</apex:outputLink>
+                        </td>
+                    </tr>
+                    <tr class="dataRow even  first">
+                        <td class="dataCell  " style="border-right:1px solid #EDEDED;font-weight:bolder;">
+                            Lead Status
+                        </td>
+                        <td class="dataCell  ">
+                            {!leadObj.Status}
+                        </td>
+                    </tr>
+                    <tr class="dataRow even  first">
+                        <td class="dataCell  " style="border-right:1px solid #EDEDED;font-weight:bolder;">
+                            SDR Agent
+                        </td>
+                        <td class="dataCell  ">
+                            <!-- <apex:inputField value="{!leadObj.SDR_Agents__c}" />  -->
+                           <apex:outputLink value="/{!leadObj.SDR_Agents__c}">{!leadObj.SDR_Agents__r.Name}</apex:outputLink>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </apex:outputPanel>
+        </div>
+        <div id="closedDiv" style="padding-top:10px;">
+            <apex:outputPanel id="userPanel">
+               <apex:PageBlockTable value="{!avaialbleUserSkills}" var="userSkill">
+                   <apex:column >
+                        <apex:facet name="header">
+                             <font style="font-size: 12px">Available User</font>
+                         </apex:facet>
+                        <apex:outputLink value="/{!userSkill.User__c}" style="font-weight: bolder;font-size: 15px;color:#015BA7;">{!userSkill.User__r.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                             <font style="font-size: 12px">Email</font>
+                         </apex:facet>
+                        {!userSkill.User__r.Email}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                             <font style="font-size: 12px">Department</font>
+                         </apex:facet>
+                        {!userSkill.User__r.Department}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                             <font style="font-size: 12px">Phone</font>
+                         </apex:facet>
+                        {!userSkill.User__r.Phone}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                             <font style="font-size: 12px">Skill</font>
+                         </apex:facet>
+                        <apex:outputLink value="/{!userSkill.Skill__c}" >{!userSkill.Skill__r.Name}</apex:outputLink>
+                    </apex:column>
+               </apex:PageBlockTable>
+           </apex:outputPanel>
+        </div>
+        <div id="closedDivNew" style="text-align:center !important;width:100%;padding-top:10px;">
+            <div style="padding-left:358px;" >
+                <apex:outputPanel rendered="{!IF(avaialbleUserSkills == null || avaialbleUserSkills.size == 0, false, true)}">
+                <table class="controlPanel" >
+                    <tr>
+                        <td class="popupTd">
+                            <apex:outputPanel id="nextPrev" style="cursor:pointer;">
+                                <apex:actionSupport event="onclick" action="{!getPreviousUser}" status="ajaxStatusPre" rerender="userPanel, msgPanel" />
+                                <apex:actionStatus id="ajaxStatusPre" onStart="showOverlay();" onstop="hideOverlay();"/>    
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <apex:Image title="Previuos" url="{!URLFor($Resource.LEADSPINNER, 'previous.png')}" height="32px" width="32px" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Previous User
+                                        </td>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                        </td>
+                        <td class="popupTd">
+                            <apex:outputPanel id="conf" style="cursor:pointer;">
+                                <apex:actionSupport event="onclick" action="{!assignToSelectedUser}" status="ajaxStatusCnf" rerender="highlightPanel, userPanel, msgPanel"/>
+                                <apex:actionStatus id="ajaxStatusCnf" onStart="showOverlay();" onstop="hideOverlay();"/>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <apex:Image title="Confirm" url="{!URLFor($Resource.LEADSPINNER, 'confirm.png')}" height="32px" width="32px"  />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Confirm
+                                        </td>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                        </td>
+                        <td class="popupTd">
+                            <apex:outputPanel id="cancel" style="cursor:pointer;">
+                                <apex:actionSupport event="onclick" action="{!goToLead}" status="ajaxStatusNext" />
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <apex:Image title="Cancel" url="{!URLFor($Resource.LEADSPINNER, 'cancel.png')}" height="32px" width="32px"  />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Cancel
+                                        </td>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                        </td>
+                        <td class="popupTd">
+                            <apex:outputPanel id="nextUser" style="cursor:pointer;">
+                                <apex:actionSupport event="onclick" action="{!getNextUser}" status="ajaxStatusNext" rerender="userPanel, msgPanel"/>
+                                <apex:actionStatus id="ajaxStatusNext" onStart="showOverlay();" onstop="hideOverlay();"/>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <apex:Image title="Next" url="{!URLFor($Resource.LEADSPINNER, 'next.png')}" height="32px" width="32px" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Next User
+                                        </td>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                        </td>
+                    </tr>
+                </table>
+                </apex:outputPanel>
+            </div>
+        </div>
+     </apex:pageBlock>
+    </apex:form>    
+</apex:page>

@@ -1,0 +1,27 @@
+<apex:component >
+      
+      <script type="text/javascript" src="{!URLFOR($Resource.SimpleModal,'js/jquery.js')}" />
+    <script>
+     var $j = jQuery.noConflict();
+     </script>
+      <script type="text/javascript" src="{!URLFOR($Resource.SimpleModal,'js/jquery.simplemodal.js')}" />  
+    <apex:stylesheet value="{!URLFOR($Resource.LP__SimpleModal,'css/wait.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.LP__CollapsingButtonsAndWaitingGif, 'CollapsingButtonsAndWaitingGif/PAMbuttons.css')}"/> 
+      <apex:attribute name="id" type="string" description="id" required="true"/>
+
+ <style >
+ 	#simplemodal-overlay {
+    	background-color: silver !important;
+    }
+ </style>
+ <div id="{!id}" style='display: none;'>
+      <img src="{!URLFOR($Resource.LoaderBR)}"/>
+    <!--  
+     <div style="font-family:Arial;font-weight:bold;font-size:12px;background-color:#FEFB81;padding-top:10px;padding-left:20px;padding-right:20px;padding-bottom:10px;text-align:center;border:1px solid black;">
+      Loading...
+      
+      </div>
+     -->
+ </div>
+    
+</apex:component>

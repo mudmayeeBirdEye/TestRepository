@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>27.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>This page creates an &lt;apex:iframe&gt; with the proper parameters to launch the Sales Call Follow-up guide from a custom button on the Contacts page.</description>
+    <label>Sales Call Follow-up</label>
+</ApexPage>

@@ -1,0 +1,37 @@
+<apex:page >
+        <script type="text/javascript">
+             var __sfdcSessionId = '{!GETSESSIONID()}';
+         </script>
+         <script src="../../soap/ajax/24.0/connection.js" type="text/javascript"></script>
+       <div id="output"> </div>
+     
+     <script type="text/javascript">
+         var result=sforce.connection.query("SELECT id FROM RecordType where Name='Partner Account' limit 1");
+         var recordType=result.getArray("records");
+         
+         if(recordType!='' && recordType.size!=0){
+             var recordId=recordType[0];
+                       
+             result = sforce.connection.query("Select id from Account where Partner_ID__c='{!$CurrentPage.parameters.partnerId}' and RecordTypeId='"+recordId.Id+"' limit 1");
+             var records = result.getArray("records");
+      
+             if(records!='' && records.size!=0){
+                 window.location='/'+records[0].Id;
+             }else{
+                 //document.getElementById('output').innerHTML='Account id Not Found';
+                 alert('This partner account could not found.Please contact to your system administrator');
+                self.close();
+             }
+             
+        }else{
+           //document.getElementById('output').innerHTML='Partner Account id Not Found';
+            alert('This partner account could not found.Please contact to your system administrator');
+           self.close();
+        }
+     
+     
+     </script>
+  
+  
+  
+</apex:page>

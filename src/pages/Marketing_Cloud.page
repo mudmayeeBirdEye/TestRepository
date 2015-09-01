@@ -1,0 +1,15 @@
+<apex:page showHeader="false" sidebar="false" controller="MarketingCloud" >
+	<script src="{!URLFOR($Resource.Jtreeview,'tree/jquery18.js')}" type="text/javascript"></script>
+	 <c:OverLay description="Please wait.."></c:OverLay>
+	 <apex:form >
+		<apex:Pagemessages />
+		<apex:actionFunction action="{!loginToVAarPortal}" name="callAction"/>  
+		 <script>
+		 	showOverLay();
+		 	$(document).ready(function(){
+		 	     callAction();
+		 	});
+		</script>
+		
+	</apex:form> 
+</apex:page>

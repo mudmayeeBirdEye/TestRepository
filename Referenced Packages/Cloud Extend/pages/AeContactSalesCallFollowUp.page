@@ -1,0 +1,8 @@
+<apex:page standardController="Contact"   sidebar="false"  showHeader="false">
+   <apex:form >
+       <script type="text/javascript">
+          window.top.resizeTo(1024, 625);
+       </script>
+   </apex:form>
+   <c:AeSalesGuides objectType="Contact" objectId="{!Contact.Id}"  extraInfo="{!Contact.Name} ({!Contact.Account.Name})" guideName="Sales Call Follow-up" closeOnDone="true" height="475px"/>
+</apex:page>

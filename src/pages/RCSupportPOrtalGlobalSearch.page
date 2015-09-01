@@ -1,0 +1,187 @@
+<apex:page showHeader="false" sidebar="false" docType="html-5.0" standardStylesheets="false">
+<apex:composition template="RCSupportPortalHomeTemplate">
+     <apex:define name="content">
+          <!--  <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>-->
+          <script src="{!URLFOR($Resource.RCSupportPortal, 'supportPortal/js/libs/jquery.tmpl.min.js')}"></script>
+        <style>
+          .rc-result .page_navigation .next_link, .rc-result-Article .page_navigation .previous_link {
+            color: #000;
+            margin: 10px;
+         }
+        .rc-result .page_navigation a {
+          font-size: 12px;
+          margin: 0 10px;
+        }
+        .rc-result .active_page {
+            background: url({!URLFOR($Resource.RCSupportPortal, 'supportPortal/img/sprite.png')}) 0 -477px no-repeat;
+            color: #333333;
+        }
+       .rc-result .page_link {
+            width: 23px;
+            height: 23px;
+            display: inline-block;
+            line-height: 23px;
+            text-align: center;
+            margin-left: 5px;
+        }
+        .rc-result- .page_navigation {
+             margin-top: 30px;
+        }
+        .rc-result .no_more {
+            color: #cecece !important;
+            cursor: default !important;
+            text-decoration: none !important;
+            margin-left: 5px;
+        }
+        .LinkColor{
+           color:#f8981d !important;
+           margin-left: 5px;
+        }
+        .totalResult{
+          float: right;
+          margin-top: 21px;
+          margin-right: 35px;
+        }   
+        </style>
+       
+       
+        <script>
+        var totalResult=0;
+        var currentResult=0; 
+        var currentPage=1;
+          function hndlr(response){
+           $('.rc-result').show();
+             console.log(response);
+             //console.log(response.searchInformation.totalResults);
+         try{
+          if(response.error.code==403){
+             $('.rc-result h3').html(response.error.message);
+             return ;
+          }
+           if(response.error.code==400){
+               $('.rc-result h3').html('<h3>No matches found for <i>{!HTMLENCODE($CurrentPage.parameters.globalquery)}</i></h3>');
+             return ;
+          }    
+         }catch(e){
+           
+         }    
+         if(response.searchInformation.totalResults>0){    
+             //totalResult=response.searchInformation.totalResults;
+             //currentResult=(isNaN('{!$CurrentPage.parameters.start}') ? 1 : parseInt('{!$CurrentPage.parameters.start}'))*10;
+             //currentPage=(isNaN('{!$CurrentPage.parameters.start}') ? 1 : parseInt('{!$CurrentPage.parameters.start}'));
+             totalResult = response.searchInformation.totalResults;
+             currentResult =  response.queries.request[0].count;
+             if(response.queries.request[0].startIndex > 10) {
+                 currentPage = parseInt((response.queries.request[0].startIndex)/10) + 1;
+             }
+           //if(response.searchInformation.totalResults>0){
+            
+           
+             $.each(response.items, function(i,obj){
+             $("#resultTableRowTemplate").tmpl(obj).appendTo("#paginate");
+           });
+           // $('div.rc-result:contains("Ringcentral")').wrap("<strong>");
+            $("div.rc-result a:contains('Ringcentral')").html(function (i, oldHtml) {//console.log(oldHtml);
+                return oldHtml.replace('Ringcentral', '<strong>Ringcentral</strong>');
+              });
+            
+            ResultPagination();
+            
+            var firstIndex = response.queries.request[0].startIndex;   //(currentPage == 1 ? 1 : (((currentPage - 1)) + 1));
+            var totalResultPrint = totalResult;
+            totalResultPrint = (response.queries.request[0].startIndex + currentResult) - 1;
+            
+            //var firstIndex=(currentPage==1?1:(((currentPage-1)*10)+1));
+            //var totalResultPrint=totalResult;
+           
+           /*if(totalResult<currentResult){
+              totalResultPrint=totalResult;
+           }else if(currentPage==1){
+             totalResultPrint=((currentPage*10));
+           }else{
+              totalResultPrint=((currentPage*10));
+           }*/
+            
+            /*$('.totalResult').html('Results '+firstIndex+'-'+totalResultPrint+' of about '+totalResult);
+            
+            if(currentPage>1){
+                $('.firstLink').removeClass('no_more').addClass('LinkColor');
+            }
+            if(totalResult>currentResult){
+               $('.lastLink').removeClass('no_more').addClass('LinkColor');
+            }*/
+            
+            $('.totalResult').html('Results ' + firstIndex + '-' + totalResultPrint + ' of about ' + totalResult);
+        
+            if(currentPage > 1) {
+                $('.firstLink').removeClass('no_more').addClass('LinkColor');
+            }
+            if(totalResult > (currentPage * 10)) {
+                $('.lastLink').removeClass('no_more').addClass('LinkColor');
+            }
+            
+        }else{
+            $('.rc-result h3').html('<h3>No matches found for <i>{!HTMLENCODE($CurrentPage.parameters.globalquery)}</i></h3>');
+          }
+        }
+      function ResultPagination(){
+         $('.rc-result').pajinate({
+            num_page_links_to_display : 0,
+            items_per_page :10,
+            show_first_last: false
+           });
+      }
+      
+      $('.lastLink').live('click',function(){
+           if(totalResult>currentResult){
+              var pageURL='{!JSENCODE($CurrentPage.URL)}';
+              var newPageNo = (isNaN('{!$CurrentPage.parameters.start}') ? 0 : parseInt('{!$CurrentPage.parameters.start}'))+10;
+                    var newPageURL = pageURL.replace(/(start=).*?(&)/,'$1' + newPageNo + '$2');
+              window.location=newPageURL;
+             } 
+            });
+        $('.firstLink').live('click',function(){
+          if(currentPage>1){
+               var pageURL='{!JSENCODE($CurrentPage.URL)}';
+               var newPageNo = (isNaN('{!$CurrentPage.parameters.start}') ? 0 : parseInt('{!$CurrentPage.parameters.start}'))-10;
+                    var newPageURL = pageURL.replace(/(start=).*?(&)/,'$1' + newPageNo + '$2');
+           window.location=newPageURL;
+        }  
+        });
+      
+     </script> 
+     
+     
+     
+      <section class="search-result">
+        <div class="left-container rc-result" >
+              <h3>Search Results</h3>
+         <div class='totalResult'></div>
+        <img src="{!URLFOR($Resource.RCSupportPortal, 'supportPortal/img/LC-DD-three-column.png')}"></img>
+          <section class="paginate" id='paginate'>
+          
+          </section>
+               
+                <div class="page_navigation"></div>
+           </div>
+   </section>
+   
+     <script id="resultTableRowTemplate" type="text/x-jquery-tmpl">
+          <article>
+                    <h4> <a href=${link} target="_blank" class='postHeading' title='${title}'>{{html htmlTitle}}
+                      </a></h4>
+                    <p> {{html htmlSnippet}}</p>
+                </article>
+                  
+         </script>
+         <!--Kanishk email id  http://www.google.co.in/cse-->
+     <!--  <script src="https://www.googleapis.com/customsearch/v1?key=AIzaSyC0pwd4KdakZn-rs7Hsd2mAuWqSSSXulDM&cx=005250872373647411132:mj_rf6ix64y&q={!$CurrentPage.parameters.globalquery}&num=10&start={!$CurrentPage.parameters.start}&callback=hndlr"> -->
+      
+      <!-- rccommonemail@gmail.com http://www.google.co.in/cse-->
+      <script src="https://www.googleapis.com/customsearch/v1?key=AIzaSyDptLM9A5ubdid0OPb6D9UdJ31aGZwKzQA&cx=018004933555923316314:h5ture2kiks&q={!$CurrentPage.parameters.globalquery}&num=10&start={!$CurrentPage.parameters.start}&callback=hndlr">
+    </script> 
+     
+     
+     </apex:define>
+     </apex:composition>
+</apex:page>

@@ -1,0 +1,5 @@
+<!------------ Created by indiaTeam --
+for the Reseller REquest Updation -->
+
+<apex:page controller="PartnerRequestRedirect" action="{!redirectToPartnerRequest}">
+</apex:page>

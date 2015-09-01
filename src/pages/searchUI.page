@@ -1,0 +1,308 @@
+<apex:page StandardController="Lead" extensions="LeadSearchExtension" tabStyle="Lead">
+<!-- StandardController="Lead" extensions="searchUI"
+ 
+ --> 
+<script>
+function confirmCancel() {
+    var isCancel = confirm("Are you sure you wish to cancel?");
+    if (isCancel) {
+        return true;
+    } 
+    return false;
+} 
+
+</script>
+<script type="text/javascript">
+    window.captureEvents(Event.KEYPRESS);
+    window.onkeypress = Ausgabe;
+    function Ausgabe(Ereignis) {
+        if(Ereignis.which == 13){
+            SonE();
+        }
+    }
+</script>
+
+<apex:sectionHeader title="New Lead" subtitle="Search and Create"/>
+<apex:form >
+	<!-- <apex:actionFunction action="{!callCount}"></apex:actionFunction> -->
+    <apex:actionFunction action="{!search}" name="SonE"></apex:actionFunction>
+    <apex:pageBlock title="Customer Information" mode="detail">
+        <apex:pageMessage summary="Please fill in at least Last Name, Company Name and Email to create a new lead." severity="warning" strength="1" rendered="{!emptyField}" />  
+        <apex:pageMessage summary="You must search first before creating a new lead." severity="error" strength="1" rendered="{!searchFirst}" />
+        <apex:pageMessage summary="You must search again as fields have changed after your previous search attempt." severity="error" strength="1" rendered="{!FieldsChangedAfterSearch}" /> 
+        <apex:outputPanel id="resultPanel2">
+        <apex:pageMessage summary="The email entered is not in a valid format." severity="error" strength="1" rendered="{!emailNotFormated}" />
+        <apex:pageMessage summary="The phone number should be entered as just 10 digits or 12 for UK numbers. i.e. 6504724066 or 441138680059" severity="error" strength="1" rendered="{!phoneNotFormated}" />
+        <apex:pageMessage summary="You must enter at least one of these fields to search: First & Last Name, Company Name, Email Address, Contact Phone Number" severity="warning" strength="1" rendered="{!emptySearch}" />
+        
+        </apex:outputPanel>
+
+        <apex:panelGrid columns="5">
+  
+	        	<apex:outputLabel value="First Name" for="firstName2" />
+		        <apex:inputText title="First Name" id="firstName2" value="{!newLead.FirstName}" />
+				<apex:outputText value=" "></apex:outputText>
+	            <apex:outputLabel value="Five9 DNIS:" for="DNIS" />	  
+				<apex:outputText id="DNIS" value="{!newLead.Five9_DNIS__c}"/>	
+						        
+   		        <apex:outputLabel value="Last Name" for="lastName2" />
+	            <apex:inputText title="Last Name" id="lastName2" value="{!newLead.LastName}"/>
+                <apex:outputText value=" "></apex:outputText>
+	            <apex:outputLabel value="Campaign Name:" for="CNAME" />	  
+				<apex:outputText id="CNAME" value="{!campaignName}"/>                  
+                      
+				<!-- <apex:outputText value="Five9 DNIS: {0}">
+					<apex:param value="{!newLead.Five9_DNIS__c}"/>
+				</apex:outputText>	            
+                -->	
+                <apex:outputLabel value="Company Name" for="companyName2" />
+                <apex:inputText title="Company Name" id="companyName2" value="{!newLead.Company}"/>
+                <apex:outputText value=" "></apex:outputText>
+	            <apex:outputLabel value="Campaign Description:" for="CDES" />	  
+				<apex:outputText id="CDES" value="{!campaignDescription}"/>
+              
+				<!-- <apex:outputText value="Campaign Name: {0}">
+					<apex:param value="{!campaignName}"/>
+				</apex:outputText>
+				 -->                
+                                        	
+                <apex:outputLabel value="Email Address" for="emailAddress2" />
+                <apex:inputText title="Email Address" id="emailAddress2" value="{!newLead.Email}"/>        	
+                <apex:outputText value=" "></apex:outputText>
+                <apex:outputText value=" "></apex:outputText>
+                <apex:outputText value=" "></apex:outputText>   
+                
+				<!-- <apex:outputText value="Campaign Description: {0}">
+					<apex:param value="{!campaignDescription}"/>
+				</apex:outputText>
+				 -->                
+                
+                <apex:outputLabel value="Contact Phone Number" for="contactPhoneNumber2" />
+                <apex:inputText title="Contact Phone Number" id="contactPhoneNumber2" value="{!newLead.Phone}"/>
+                <apex:outputText value="(eg: 4082343254)" style="padding-right:50px"></apex:outputText>
+                <apex:outputText value=" "></apex:outputText>
+                <apex:outputText value=" "></apex:outputText>              
+                                
+            	<apex:outputLabel value="Lead Source: " for="sourceSelector"/>
+            	<apex:inputField id="sourceSelector" value="{!newLead.LeadSource}"/>                
+                <apex:outputText value=" "></apex:outputText>  
+                <apex:outputText value=" "></apex:outputText>
+                <apex:outputText value=" "></apex:outputText> 
+                                                	
+
+	    </apex:panelGrid> 
+	    <!-- <BR/>
+
+		<BR/>     
+
+		<BR/>     
+		<apex:outputText value="Campaign Description: {0}">
+			<apex:param value="{!campaignDescription}"/>
+		</apex:outputText>     	 			
+      
+        <BR/>
+         -->        
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!search}" value="Search" />
+            <apex:commandButton action="{!URLFOR($Action.Lead.Tab,$ObjectType.Lead)}" value="Cancel" immediate="true"/>
+            <apex:commandButton action="{!createNew}" value="Create New Lead"/>
+            <!-- <apex:commandButton action="{!URLFOR($Action.Lead.Tab,$ObjectType.Lead)}" value="Done" onclick="return confirmCancel()" immediate="true"/> -->
+            
+        </apex:pageBlockButtons>
+       
+                
+       
+    </apex:pageBlock>
+        <apex:outputPanel id="resultPanel" layout="block">
+
+        <apex:pageBlock title="Protected Opportunities owned by other VistaPrint/Legalzoom Reps." rendered="{!partnerOppResults}">
+            <apex:pageBlockTable value="{!parterOpportunities}" var="o" id="oppTable" bgcolor="FF9966">
+                <apex:column >
+                    <apex:facet name="header"><b>Contact Name</b></apex:facet>
+                    <apex:outputLink value="{!urlFor($Action.Opportunity.View, o.Id)}" target="_blank">
+                    <apex:outputText value="{!o.Name}"/>    
+                    </apex:outputLink>                                                            
+                </apex:column>       
+                <apex:column >
+                    <apex:facet name="header"><b>Email</b></apex:facet>
+                    <apex:outputText value="{!o.Email}"/>
+                </apex:column>  
+                <apex:column >
+                    <apex:facet name="header"><b>Phone</b></apex:facet>
+                    <apex:outputText value="{!o.Phone}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header"><b>Stage</b></apex:facet>
+                    <apex:outputText value="{!o.Stage}"/>
+                </apex:column>                                                    
+                <apex:column >
+                    <apex:facet name="header"><b>Created Date</b></apex:facet>
+                    <apex:outputText value="{!o.dateCreated}"/>
+                </apex:column>                             
+                <apex:column >
+                    <apex:facet name="header"><b>Modified Date</b></apex:facet>
+                    <apex:outputText value="{!o.dateModified}"/>
+                </apex:column>                  
+                <apex:column >
+                    <apex:facet name="header"><b>Current Owner</b></apex:facet>
+                    <apex:outputText value="{!o.ownerName}"/>
+                </apex:column>                                                                  
+            </apex:pageBlockTable>             
+        </apex:pageBlock>
+
+        <apex:pageBlock title="Protected Opportunities with Current Owners">
+            <apex:pageBlockTable value="{!opportunities}" var="o" id="oppTable" bgcolor="FF9966">
+                <apex:column >
+                    <apex:facet name="header"><b>Contact Name</b></apex:facet>
+                    <apex:outputLink value="{!urlFor($Action.Opportunity.View, o.Id)}" target="_blank">
+                    <apex:outputText value="{!o.Name}"/>    
+                    </apex:outputLink>                                                            
+                </apex:column>       
+                <apex:column >
+                    <apex:facet name="header"><b>Email</b></apex:facet>
+                    <apex:outputText value="{!o.Email}"/>
+                </apex:column>  
+                <apex:column >
+                    <apex:facet name="header"><b>Phone</b></apex:facet>
+                    <apex:outputText value="{!o.Phone}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header"><b>Stage</b></apex:facet>
+                    <apex:outputText value="{!o.Stage}"/>
+                </apex:column>                                                    
+                <apex:column >
+                    <apex:facet name="header"><b>Created Date</b></apex:facet>
+                    <apex:outputText value="{!o.dateCreated}"/>
+                </apex:column>                             
+                <apex:column >
+                    <apex:facet name="header"><b>Modified Date</b></apex:facet>
+                    <apex:outputText value="{!o.dateModified}"/>
+                </apex:column>                  
+                <apex:column >
+                    <apex:facet name="header"><b>Current Owner</b></apex:facet>
+                    <apex:outputText value="{!o.ownerName}"/>
+                </apex:column>                                                                  
+            </apex:pageBlockTable>
+            <BR/>            
+            <apex:pageMessage summary="No Opportunities with Current Owner." severity="info" strength="1" rendered="{!oppResults}" />           
+            <BR/>              
+        </apex:pageBlock>   
+    
+        <apex:pageBlock title="Protected Opportunities (ActivePipe and 3 Days Closed)">
+            <apex:pageBlockTable value="{!OpportunitiesNoCO}" var="o" id="oppTable" bgcolor="FF9966">
+                <apex:column >
+                    <apex:facet name="header"><b>Contact Name</b></apex:facet>
+                    <apex:outputLink value="{!urlFor($Action.Opportunity.View, o.Id)}" target="_blank">
+                    <apex:outputText value="{!o.Name}"/>    
+                    </apex:outputLink>                                                            
+                </apex:column>       
+                <apex:column >
+                    <apex:facet name="header"><b>Email</b></apex:facet>
+                    <apex:outputText value="{!o.Email}"/>
+                </apex:column>  
+                <apex:column >
+                    <apex:facet name="header"><b>Phone</b></apex:facet>
+                    <apex:outputText value="{!o.Phone}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header"><b>Stage</b></apex:facet>
+                    <apex:outputText value="{!o.Stage}"/>
+                </apex:column>                                                    
+                <apex:column >
+                    <apex:facet name="header"><b>Created Date</b></apex:facet>
+                    <apex:outputText value="{!o.dateCreated}"/>
+                </apex:column>                             
+                <apex:column >
+                    <apex:facet name="header"><b>Modified Date</b></apex:facet>
+                    <apex:outputText value="{!o.dateModified}"/>
+                </apex:column>                  
+                <apex:column >
+                    <apex:facet name="header"><b>Opportunity Owner</b></apex:facet>
+                    <apex:outputText value="{!o.ownerName}"/>
+                </apex:column>                                                                  
+            </apex:pageBlockTable>
+            <BR/>            
+            <apex:pageMessage summary="No Opportunities in 3. ActivePipe." severity="info" strength="1" rendered="{!OppNoOCResults}" />           
+            <BR/>              
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="Unprotected Opportunities">
+            <apex:pageBlockTable value="{!unprotectedOpportunities}" var="o" id="unprotectedtable" >
+                <apex:column >
+                    <apex:facet name="header"><b>Contact Name</b></apex:facet>
+                    <apex:outputLink value="{!urlFor($Action.Opportunity.View, o.Id)}" target="_blank">
+                    <apex:outputText value="{!o.Name}"/>    
+                    </apex:outputLink>                                                            
+                </apex:column>       
+                <apex:column >
+                    <apex:facet name="header"><b>Email</b></apex:facet>
+                    <apex:outputText value="{!o.Email}"/>
+                </apex:column>  
+                <apex:column >
+                    <apex:facet name="header"><b>Phone</b></apex:facet>
+                    <apex:outputText value="{!o.Phone}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header"><b>Stage</b></apex:facet>
+                    <apex:outputText value="{!o.Stage}"/>
+                </apex:column>                                                    
+                <apex:column >
+                    <apex:facet name="header"><b>Created Date</b></apex:facet>
+                    <apex:outputText value="{!o.dateCreated}"/>
+                </apex:column>                             
+                <apex:column >
+                    <apex:facet name="header"><b>Modified Date</b></apex:facet>
+                    <apex:outputText value="{!o.dateModified}"/>
+                </apex:column>                  
+                <apex:column >
+                    <apex:facet name="header"><b>Opportunity Owner</b></apex:facet>
+                    <apex:outputText value="{!o.ownerName}"/>
+                </apex:column>                                                                  
+            </apex:pageBlockTable>
+            <BR/>            
+            <apex:pageMessage summary="No unprotected Opportunities." severity="info" strength="1" rendered="{!unprotectedResults}" />           
+            <BR/>              
+        </apex:pageBlock>       
+
+        <apex:pageBlock title="Unprotected Leads">
+            <apex:pageBlockTable value="{!leadList}" var="o" id="leads">
+                <apex:column >
+                    <apex:facet name="header"><b>Contact Name</b></apex:facet>
+                    <apex:outputLink value="{!urlFor($Action.Lead.View, o.Id)}" target="_blank">
+                    <apex:outputText value="{!o.Name}"/>    
+                    </apex:outputLink>                                                            
+                </apex:column>       
+                <apex:column >
+                    <apex:facet name="header"><b>Email</b></apex:facet>
+                    <apex:outputText value="{!o.Email}"/>
+                </apex:column>  
+                <apex:column >
+                    <apex:facet name="header"><b>Phone</b></apex:facet>
+                    <apex:outputText value="{!o.Phone}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header"><b>Stage</b></apex:facet>
+                    <apex:outputText value="{!o.Stage}"/>
+                </apex:column>                                                    
+                <apex:column >
+                    <apex:facet name="header"><b>Created Date</b></apex:facet>
+                    <apex:outputText value="{!o.dateCreated}"/>
+                </apex:column>                             
+                <apex:column >
+                    <apex:facet name="header"><b>Modified Date</b></apex:facet>
+                    <apex:outputText value="{!o.dateModified}"/>
+                </apex:column>                  
+                <apex:column >
+                    <apex:facet name="header"><b>Opportunity Owner</b></apex:facet>
+                    <apex:outputText value="{!o.ownerName}"/>
+                </apex:column>                                                                  
+            </apex:pageBlockTable>
+            <BR/>            
+            <apex:pageMessage summary="No Leads." severity="info" strength="1" rendered="{!leadResults}" />           
+            <BR/>              
+        </apex:pageBlock>   
+
+    </apex:outputPanel>    
+</apex:form>
+
+</apex:page>

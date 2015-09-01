@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>ShareRecipientData__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Information that can be used to help uniquely identify the recipients that perform actions on shared content. This field will be populated automatically for activities created by the KnowledgeTree integration.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Information that can be used to help uniquely identify the recipients that perform actions on shared content. This field will be populated automatically for activities created by the KnowledgeTree integration.</inlineHelpText>
+        <label>Share Recipient Data</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TaskShareActivity__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Activity of shared document. Created by KnowledgeTree.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Activity of shared document. Created by KnowledgeTree.</inlineHelpText>
+        <label>Share Activity</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Create Share</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Download Asset</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>View Asset</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+</CustomObject>

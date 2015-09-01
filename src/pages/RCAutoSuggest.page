@@ -1,0 +1,33 @@
+<apex:page controller="RCSupportController" showHeader="false"  cache="false" standardStylesheets="false" >
+      
+    <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+    <apex:variable var="brandFilterVar" value="{!BrandFilter}" /> 
+    <apex:variable var="serviceFilterVar" value="{!ServiceFilter}" /> 
+    <apex:variable var="anyDocument" value="false" />
+     
+      <knowledge:articleList articleVar="article"  hasMoreVar="hasMore"
+                            pageSize="1"
+                            pageNumber="{!currentPageNumber}"
+                            keyword="{!currentKeyword}"
+                            categories="{!categoryGroupNameVar}:{!currentCategory},{!brandFilterVar},{!serviceFilterVar}"
+                            >
+                             <apex:variable var="anyDocument" value="true" />
+       </knowledge:articleList>
+
+     <apex:outputPanel rendered="{!anyDocument}">
+     <ul id="articleSugestId">
+      <knowledge:articleList articleVar="article"  hasMoreVar="hasMore"
+                         pageSize="5"
+                         pageNumber="{!currentPageNumber}"
+                         keyword="{!currentKeyword}"
+                         categories="{!categoryGroupNameVar}:{!currentCategory},{!brandFilterVar},{!serviceFilterVar}"
+                            sortBy="mostViewed" >
+                      
+                       <li onClick="fill('{!article.title}','suggestions','suggestionsList');">{!article.title}</li>
+                       
+                        </knowledge:articleList></ul>
+                        
+       </apex:outputPanel>
+    
+    
+</apex:page>

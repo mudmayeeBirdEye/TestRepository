@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>24.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>use below code for set default list view
+action=&quot;/a0r/o?save_new=1&amp;sfdc.override=1&amp;j_id0%3Aj_id3%3Afcf=00B80000007kEMg&amp;&amp;rolodexIndex=-1&amp;p​age=1&quot;</description>
+    <label>dealRegistrationListView</label>
+</ApexPage>

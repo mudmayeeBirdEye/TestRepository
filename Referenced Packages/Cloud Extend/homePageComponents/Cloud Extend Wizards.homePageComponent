@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HomePageComponent xmlns="http://soap.sforce.com/2006/04/metadata">
+    <body>&lt;div id=&quot;ae_pb_guideframe_home&quot; style=&quot;padding: 0; border: 0&quot;&gt;&lt;script&gt;var iframeEl = document.getElementById(&apos;ae_pb_guideframe_home&apos;);var headerDiv=iframeEl .parentNode.previousSibling;headerDiv.setAttribute(&apos;class&apos;, &apos;pbTitle&apos;);headerDiv.parentNode.setAttribute(&apos;class&apos;,&apos;bPageBlock secondaryPalette&apos;);&lt;/script&gt;&lt;iframe src=&quot;/apex/ce4sf20_001__aehomepageguides?core.apexpages.devmode.url=1&quot; width=&quot;100%&quot; height=&quot;500px&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;</body>
+    <pageComponentType>htmlArea</pageComponentType>
+    <width>wide</width>
+</HomePageComponent>

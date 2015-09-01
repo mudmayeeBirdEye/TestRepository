@@ -1,0 +1,48 @@
+<apex:page standardController="Partner_Request__c">
+ <apex:form >   
+     <table width="100%">
+    <tr>             
+    <td align="right" width="28%"><apex:commandButton action="{!save}" value="Submit"/>
+    <apex:commandButton action="{!cancel}" value="Cancel"/></td>
+    <td></td>
+    </tr>
+    </table>
+ 
+<apex:pageBlock >
+ <apex:pagemessages />
+<apex:actionRegion >
+  <apex:pageBlockSection columns="1"> 
+  <apex:inputField required="true" value="{!Partner_Request__c.Partner_Request_Source__c}" style="width:200px"/>
+
+ <apex:inputField required="true" value="{!Partner_Request__c.Partner_First_Name__c}" style="width:250px"/>
+ <apex:inputField required="true" value="{!Partner_Request__c.Partner_Last_Name__c}" style="width:250px"/>
+ <apex:inputField value="{!Partner_Request__c.Partner_Title__c}" style="width:250px"/>
+ <apex:inputField required="true" value="{!Partner_Request__c.Partner_Company_Name__c}" style="width:250px"/>
+ <apex:inputField required="true" value="{!Partner_Request__c.Partner_Address1__c}" style="width:250px"/>
+ <apex:inputField required="true" value="{!Partner_Request__c.Partner_City__c}" style="width:250px"/>
+ <apex:inputField required="true" value="{!Partner_Request__c.Partner_State__c}" style="width:257px"/>
+ <apex:inputField value="{!Partner_Request__c.Partner_Zip__c}" style="width:250px"/>
+ <apex:inputField required="true" value="{!Partner_Request__c.Partner_Country__c}" style="width:257px"/>
+ <apex:inputField required="true" value="{!Partner_Request__c.Partner_Phone__c}" style="width:250px"/>
+ <apex:inputField required="true" value="{!Partner_Request__c.Partner_Email_Address__c}" style="width:250px"/>
+ <apex:inputField value="{!Partner_Request__c.How_did_you_hear_about_the_RC_Part_Prog__c}" style="width:250px"/>
+ <apex:inputField required="true" value="{!Partner_Request__c.Partner_Description_of_Your_Business__c}" style="width:250px"/>
+ <apex:inputField required="true" value="{!Partner_Request__c.Current_Telephone_System_Solution_s__c}" style="width:250px"/>
+ <apex:inputField value="{!Partner_Request__c.Partner_Currently_resell__c}" style="width:250px"/>
+ <apex:inputField value="{!Partner_Request__c.Partner_Cisco_Reseller__c}" style="width:257px"/>
+ <apex:inputField required="true" value="{!Partner_Request__c.Partner_Average_Customer_Size__c}" style="width:257px"/>
+
+
+</apex:pageBlockSection>
+</apex:actionRegion>
+</apex:pageBlock>
+    <table width="100%">
+    <tr>             
+    <td align="right" width="28%"><apex:commandButton action="{!save}" value="Submit"/>
+    <apex:commandButton action="{!cancel}" value="Cancel"/></td>
+    <td></td>
+    </tr>
+    </table>
+
+</apex:form>              
+</apex:page>

@@ -1,0 +1,139 @@
+<!-- vim: set filetype=html : -->
+<apex:page standardController="primest__Company_Countdown__c" extensions="primest.editCountdownCtrl" tabStyle="Countdown__tab">
+  <apex:includeScript value="{!URLFOR($Resource.primest__Countdown, '/js/jquery.js')}"/>
+  <apex:stylesheet value="{!URLFOR($Resource.primest__Countdown, '/css/countdown-config.css')}"/>
+  <div id="countdown-config">
+    <div class="branding">
+      <img src="{!URLFOR($Resource.Countdown, '/img/countdownAdminTitle.png')}" alt="hoopla" />
+    </div>
+
+    <apex:pageMessages />
+
+    <div id="display-choices">
+      <h2>Countdown Display</h2>
+      <p>Select the items to be viewed when the user clicks on the countdown clock.</p>
+      <apex:form styleClass="interaction">
+        <p>
+          <apex:inputCheckbox styleClass="checkbox" value="{!config.primest__Include_Month__c}" id="end_of_month"/>
+          <apex:outputLabel value="End of Month" for="end_of_month"/>
+        </p>
+        <p>
+          <apex:inputCheckbox styleClass="checkbox" value="{!config.primest__Include_Quarter__c}" id="end_of_quarter"/>
+          <apex:outputLabel value="End of Quarter" for="end_of_quarter"/>
+        </p>
+        <p>
+          <apex:inputCheckbox styleClass="checkbox" value="{!config.primest__Include_Year__c}" id="end_of_year"/>
+          <apex:outputLabel value="End of Year" for="end_of_year"/>
+        </p>
+        <p>
+          <apex:inputCheckbox styleClass="checkbox" value="{!config.primest__Include_Custom_Period__c}" id="custom-period"/>
+          <apex:outputLabel value="Custom Date" for="custom-period"/>
+        </p>
+
+        <div class="exclusion exclusion-name">
+          <apex:outputLabel value="Text to Display" for="custom-period-text" />
+          <span><apex:inputField value="{!config.primest__Custom_Period_Label__c}" id="custom-period-text" /></span>
+        </div>
+
+        <div class="exclusion exclusion-date">
+          <apex:outputLabel value="Date" for="custom-period-date" />
+          <apex:inputField value="{!config.primest__Custom_Period_Date__c}" id="custom-period-date" />
+        </div>
+
+        <apex:commandButton styleClass="save" value="Save" action="{!save}" />
+      </apex:form>
+    </div>
+    
+    <hr />
+    <div id="workdays">
+      <h2>Workdays</h2>
+      <p>Select days of the week you'd like included in the countdown.</p>
+
+      <apex:form styleClass="interaction">
+        <p>
+          <apex:inputCheckbox styleClass="checkbox" value="{!config.primest__Include_Monday__c}" id="monday"/>
+          <apex:outputLabel value="Monday" for="monday"/>
+        </p>
+        <p>
+          <apex:inputCheckbox styleClass="checkbox" value="{!config.primest__Include_Tuesday__c}" id="tuesday"/>
+          <apex:outputLabel value="Tuesday" for="tuesday"/>
+        </p>
+        <p>
+          <apex:inputCheckbox styleClass="checkbox" value="{!config.primest__Include_Wednesday__c}" id="wednesday"/>
+          <apex:outputLabel value="Wednesday" for="wednesday"/>
+        </p>
+        <p>
+          <apex:inputCheckbox styleClass="checkbox" value="{!config.primest__Include_Thursday__c}" id="thursday"/>
+          <apex:outputLabel value="Thursday" for="thursday"/>
+        </p>
+        <p>
+          <apex:inputCheckbox styleClass="checkbox" value="{!config.primest__Include_Friday__c}" id="friday"/>
+          <apex:outputLabel value="Friday" for="friday"/>
+        </p>
+        <p>
+          <apex:inputCheckbox styleClass="checkbox" value="{!config.primest__Include_Saturday__c}" id="saturday"/>
+          <apex:outputLabel value="Saturday" for="saturday"/>
+        </p>
+        <p>
+          <apex:inputCheckbox styleClass="checkbox" value="{!config.primest__Include_Sunday__c}" id="sunday"/>
+          <apex:outputLabel value="Sunday" for="sunday"/>
+        </p>
+        <apex:commandButton styleClass="save" value="Save" action="{!save}" />
+      </apex:form>
+    </div>
+
+    <hr />
+
+    <div id="days-to-exclude">
+      <h2>Days to Exclude</h2>
+      <p>Set custom days that the countdown will exclude. You can set company holidays, etc.</p>
+
+      <h3>Current Exclusions</h3>
+      <ul class="interaction">
+        <apex:repeat value="{!exclusions}" var="exclusionVar">
+          <li>
+            <span class="date">
+              <apex:outputText value="{0,date,MM/dd/yy}">
+                <apex:param value="{!exclusionVar.Date}" />
+              </apex:outputText>
+            </span>
+            <span>- {!exclusionVar.DisplayName}</span>
+            <apex:form >
+            <apex:commandButton styleClass="delete" action="{!exclusionVar.deleteAction}" value=""
+              onclick="return confirm('Are you sure you want to delete \'{!JSENCODE(exclusionVar.DisplayName)}\'?');" />
+            </apex:form>
+            <div class="clear"></div>
+          </li>
+        </apex:repeat>
+      </ul>
+
+      <h3>Add New Exclusion</h3>
+
+      <div class="interaction">
+        <apex:form >
+          <div class="exclusion exclusion-name">
+            <apex:outputLabel value="Name" for="name" />
+            <apex:inputField value="{!exclusion.primest__DisplayName__c}" id="name" />
+          </div>
+
+          <div class="exclusion exclusion-date">
+            <apex:outputLabel value="Date" for="date" />
+            <apex:inputField value="{!exclusion.primest__Date__c}" id="date" />
+          </div>
+
+          <apex:commandButton action="{!createExclusion}" value="Add Exclusion" styleClass="add" />
+        </apex:form>
+      </div>
+    </div>
+    <hr />
+
+    <div id="cross-sell">
+      <img src="{!URLFOR($Resource.Countdown, '/img/Small_Hoopla_Logo.png')}" /><h2>Check out all of the sales performance tools from Hoopla Software.</h2>
+      <a target="_blank" href="http://hoopla.net" class="arrow-button"><span>Learn more at hoopla.net</span></a>
+    </div>
+  </div>
+  <apex:includeScript value="{!URLFOR($Resource.primest__Countdown, '/js/tracking.js')}"/>
+  <script type="text/javascript">
+    (new Hoopla.Tracker()).track();
+  </script>
+</apex:page>

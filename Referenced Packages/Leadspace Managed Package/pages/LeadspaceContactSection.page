@@ -1,0 +1,17 @@
+<apex:page standardController="Contact" extensions="leadspace.LeadSpaceApi">
+     <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+     </head> 
+     <form action="{!LeadspaceSectionUrl}" name="redirectForm" method="post" style="display:none;">
+        <input type="text" name="sessionId" value="{!HTMLENCODE($Api.Session_ID)}" />
+        <input type="text" name="serverUrl" value="{!HTMLENCODE($Api.Partner_Server_URL_180)}" />
+        <input type="text" name="packageVersion" value="{!HTMLENCODE(packageVersion)}"/>
+        <input type="text" name="view" value="{!HTMLENCODE(leadspaceComponent)}"/>
+        <input type="text" name="userId" value="{!HTMLENCODE($User.Id)}"/>
+        <input type="text" name="customerId" value="{!HTMLENCODE($Organization.Id)}"/>
+        <input type="text" name="contactsXml" value="{!HTMLENCODE(contactsXml)}"/>       
+    </form>
+    <script>
+        document.forms['redirectForm'].submit();        
+    </script>
+</apex:page>

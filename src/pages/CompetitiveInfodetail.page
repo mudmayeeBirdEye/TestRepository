@@ -1,0 +1,49 @@
+<apex:page standardController="Competitive_Info__c" extensions="competitiveInfoExt" tabStyle="Competitive_Info__c">
+    <apex:pageBlock >
+        <apex:pageBlockSection title="RC Competitive Info Detail" collapsible="false">
+            <apex:outputField value="{!RCCompInfo.Name}" /> 
+            <apex:outputField value="{!RCCompInfo.Strengths__c}"/>
+            <apex:outputField value="{!RCCompInfo.What_s_New_w_Competitor__c}"/>
+            <apex:outputField value="{!RCCompInfo.Competitor_Weakness__c}"/>
+            <apex:outputField value="{!RCCompInfo.Our_Strength_Detail__c}"/> 
+            <apex:outputField value="{!RCCompInfo.Resource_URL__c}"/>
+            <apex:outputField value="{!RCCompInfo.Competitor_s_Website__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Why RingCentral Wins" collapsible="false">
+            <apex:outputField value="{!RCCompInfo.RingCentral__c}"/>
+            <apex:outputField value="{!RCCompInfo.Competitor__c}"/>
+        </apex:pageBlockSection>
+        <!-- <apex:pageBlockSection title="Competitor's Strengths" collapsible="false">
+            <apex:outputField value="{!RCCompInfo.Our_Strength_Exp__c}"/>
+            <apex:outputField value="{!RCCompInfo.Overcome_Objections__c}"/>
+        </apex:pageBlockSection> -->
+        <apex:pageBlockSection title="Competitor's Strengths" collapsible="false">
+            <apex:outputField value="{!RCCompInfo.Competitor_s_Strengths__c}"/>
+            <apex:outputField value="{!RCCompInfo.Overcome_Objections__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Experience" collapsible="false">
+            <apex:outputField value="{!RCCompInfo.Weakness_Exp__c}"/>
+            <apex:outputField value="{!RCCompInfo.Our_Strength_Exp__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Pricing" collapsible="false">
+            <apex:outputField value="{!RCCompInfo.Weakness_Pricing__c}"/>
+            <apex:outputField value="{!RCCompInfo.Our_Strength_Pricing__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Setup & Ease of Use" collapsible="false">
+            <apex:outputField value="{!RCCompInfo.Weakness_Setup__c}"/>
+            <apex:outputField value="{!RCCompInfo.Our_Strength_Setup__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Support" collapsible="false">
+            <apex:outputField value="{!RCCompInfo.Weakness_Support__c}"/>
+            <apex:outputField value="{!RCCompInfo.Our_Strength_Support__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Contracts" collapsible="false">
+            <apex:outputField value="{!RCCompInfo.Weakness_Contracts__c}"/>
+            <apex:outputField value="{!RCCompInfo.Our_Strength_Contracts__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Phones & Numbers" collapsible="false">
+            <apex:outputField value="{!RCCompInfo.Weakness_Phones__c}"/>
+            <apex:outputField value="{!RCCompInfo.Our_Strength_Phones__c}"/>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

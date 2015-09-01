@@ -1,0 +1,3 @@
+<apex:page standardcontroller="Lead" extensions="ktree.ApplicationBootstrapController" action="{!bootstrapPage}" docType="html-5.0" showHeader="false" standardStylesheets="false">
+    <c:ApplicationBootstrap backingController="{!controller}"></c:ApplicationBootstrap>
+</apex:page>

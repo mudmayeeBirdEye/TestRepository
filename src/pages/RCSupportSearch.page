@@ -1,0 +1,155 @@
+<apex:page controller="RCSupportController" showHeader="false" cache="true" expires="{!cacheMaxAge}">
+ 
+    <apex:variable var="currentKeywordVar" value="{!currentKeyword}" />
+    <apex:variable var="keywordParameterNameVar" value="{!keywordParameterName}" />
+    <apex:variable var="currentCategoryVar" value="{!currentCategory}" />
+    <apex:variable var="currentArticleTypeVar" value="{!currentArticleType}" />
+    <apex:variable var="categoryParameterNameVar" value="{!categoryParameterName}" />
+    <apex:variable var="articleTypeParameterNameVar" value="{!articleTypeParameterName}" />
+    <apex:variable var="searchUrlVar" value="{!searchUrl}" />
+    <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+    <apex:variable var="brandFilterVar" value="{!BrandFilter}" /> 
+    <apex:variable var="serviceFilterVar" value="{!ServiceFilter}" />  
+     
+      <apex:variable var="sortOrderDirection" value="{!StrSortOrderDirection}" />
+      <apex:composition template="{!$Site.Template}">
+        <apex:define name="search">
+    
+      <apex:outputPanel layout="block">
+      <span   style="margin-left:5%;">
+           <a href="javascript:history.back()" style="color: #015BA7;">« Go Back </a>
+          </span>
+            <apex:outputPanel layout="block">
+                <apex:outputPanel layout="block" />
+                <apex:outputPanel layout="block">
+          
+                        <apex:variable var="anyDocument" value="false" />
+                        <apex:variable var="hasMore" value="" />
+               
+                    <knowledge:articleList articleVar="article"  hasMoreVar="hasMore"
+                            pageSize="1"
+                            pageNumber="{!currentPageNumber}"
+                            keyword="{!currentKeyword}"
+                            categories="{!categoryGroupNameVar}:{!currentCategory},{!brandFilterVar},{!serviceFilterVar}"
+                            sortBy="{!sortOrderDirection}">
+                             <apex:variable var="anyDocument" value="true" />
+                    </knowledge:articleList>
+                      <apex:outputPanel rendered="{!anyDocument=='true'}">
+                         <apex:outputPanel rendered="{!currentKeyword!=''}">
+                             <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  &nbsp;&nbsp;&nbsp;&nbsp;
+                                  Search Results For "{!currentKeyword}"</h3>
+                          </apex:outputPanel>
+                       <div class="tabs">
+                          <div class="tabs_left"></div>
+                        <div class="tabs_center">
+                            <ul class="tab_area">
+                                <li class="tab current">
+                                    <div class="tab_left"></div>
+                                    <p>Recent</p>
+                                    <div class="tab_right"></div>
+                                </li>
+                             <li class="tab">
+                                    <div class="tab_left"></div>
+                                    <p>Most Viewed</p>
+                                    <div class="tab_right"></div>
+                                </li>
+                             
+                         </ul> <div class="cb"></div>
+                    <div class="tab_content"> 
+                      <div class="box_tab visible" style="display: block;">
+                       <h2>
+                       <apex:outputPanel rendered="{!currentCategory!='All'}">
+                       {!currentCategoryName}
+                       </apex:outputPanel>
+                       
+                       </h2>
+                                    <p class="subheader"></p>
+                          <knowledge:articleList articleVar="article"  hasMoreVar="hasMore"
+                            pageSize="5"
+                            pageNumber="{!currentPageNumber}"
+                            keyword="{!currentKeyword}"
+                            categories="{!categoryGroupNameVar}:{!currentCategory},{!brandFilterVar},{!serviceFilterVar}"
+                            sortBy="lastUpdated">
+                   <div class="info_line knowledge">
+                            <p class="il_header">
+                         <a href="{!URLFOR($Action.KnowledgeArticle.View, article.id)}&Title={!article.title}" style='text-decoration:underline;'>{!article.title}</a></p>
+                       <!--  <p> {!article.abstract}<br/>Date Updated:{!article.LastModifiedDate}<br/></p> -->
+                        <p> {!article.abstract}<br/>
+                            Date Updated:
+                            <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                <apex:param value="{!article.LastModifiedDate}" /> 
+                            </apex:outputText>
+                            <br/></p>
+                       
+                         </div>
+                            <apex:variable var="anyDocument" value="true" />
+                           
+                        </knowledge:articleList>
+                           
+                       </div>
+                        <div class="box_tab" >
+                         <h2>
+                           <apex:outputPanel rendered="{!currentCategory!='All'}">
+                       {!currentCategoryName}
+                       </apex:outputPanel>
+                         </h2>
+                                    <p class="subheader"></p>
+                          <knowledge:articleList articleVar="article"  hasMoreVar="hasMore"
+                            pageSize="5"
+                            pageNumber="{!currentPageNumber}"
+                            keyword="{!currentKeyword}"
+                            categories="{!categoryGroupNameVar}:{!currentCategory},{!brandFilterVar},{!serviceFilterVar}"
+                            sortBy="mostViewed">
+                   <div class="info_line knowledge">
+                            <p class="il_header">
+                         <a href="{!URLFOR($Action.KnowledgeArticle.View, article.id)}&Title={!article.title}" style='text-decoration:underline;'>{!article.title}</a></p>
+                      
+                        <!-- <p> {!article.abstract}<br/>Date Updated:{!article.LastModifiedDate}<br/></p>-->
+                  
+                         <p> {!article.abstract}<br/>
+                            Date Updated:
+                            <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                <apex:param value="{!article.LastModifiedDate}" /> 
+                            </apex:outputText>
+                            <br/></p>
+                         </div>
+                            <apex:variable var="anyDocument" value="true" />
+                           
+                        </knowledge:articleList>
+        
+                       </div>
+                       
+                       
+                       
+                        </div>
+                            
+                            
+                        </div>
+                            <div class="tabs_right"></div>
+                        </div>
+              <script>
+                (function($) {
+                     $(function() {
+                   $('ul.tab_area').delegate('li:not(.current)', 'click', function() {
+                 $(this).addClass('current').siblings().removeClass('current')
+            .parents('div.tabs_center').find('div.box_tab').hide().eq($(this).index()).fadeIn(0);
+                  })})})(jQuery)
+               </script>
+              </apex:outputPanel>         
+                            <!-- <c:knowledgePagination isNextAvailable="{!hasMore}" urlLink="{!searchPageUrl}" rendered="{!anyDocument!='false'}"/>-->
+                             <c:RCKnowledgePagination isNextAvailable="{!hasMore}" urlLink="{!SupportSearchPageUrl}" rendered="{!anyDocument!='false'}"/>
+                  <h1> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <apex:outputText value="No Result found for '{!currentCategoryVar}' in the selected category" rendered="{!anyDocument=='false'}" />
+                         <apex:outputPanel rendered="{!serviceFilterVar!=''}">
+                            <apex:outputText value=" and {!serviceFilterVar} Service" rendered="{!anyDocument=='false'}" />
+                        </apex:outputPanel>
+                  </h1>&nbsp;
+                  
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </apex:outputPanel>
+
+        </apex:define>
+    </apex:composition>
+      
+</apex:page>

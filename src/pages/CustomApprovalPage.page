@@ -1,0 +1,28 @@
+<apex:page standardController="Approval__c" recordSetVar="Approval__c" extensions="CustomApprovalClass" >
+    <apex:form >
+        <apex:commandLink value="Go To List" action="{!GoToList}" />
+        <apex:dataTable var="acc" value="{!selectedApprovals}" border="1" cellpadding="5">
+            <apex:column headerValue="Submit">
+                <apex:commandLink value="Submit" action="{!Submit}">
+                    <apex:param name="AccountID" value="{!acc.ID}"/>
+                </apex:commandLink>
+            </apex:column>
+            <apex:column headerValue="Approve">
+                <apex:commandLink value="Approve" action="{!Approve}">
+                    <apex:param name="AccountID" value="{!acc.ID}"/>
+                </apex:commandLink>
+            </apex:column>
+            <apex:column headerValue="Reject">
+                <apex:commandLink value="Reject" action="{!Reject}">
+                    <apex:param name="AccountID" value="{!acc.ID}"/>
+                </apex:commandLink>
+            </apex:column>
+            <apex:column headerValue="View">
+                <apex:commandLink value="View" action="{!Navigate}" target="_blank">
+                    <apex:param name="AccountID" value="{!acc.ID}"/>
+                </apex:commandLink>
+            </apex:column>
+            <apex:column headerValue="Account" value="{!acc.Name}"/>
+        </apex:dataTable>
+    </apex:form>
+</apex:page>

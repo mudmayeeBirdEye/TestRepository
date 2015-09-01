@@ -1,0 +1,205 @@
+<apex:page controller="leadspace.LeadSpaceApi" sidebar="false">
+<head>
+ 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+</head>  
+  <apex:form >
+          
+      <apex:pageBlock >    
+          <!-- apex:pageBlockButtons location="bottom" -->
+          <script>
+        window.onload=function(){
+            var customerStatus="{!customerStatus}"; //ACTIVATED, NOT_ACTIVATED, ERROR     
+            showStatus(customerStatus);
+        }
+    
+        function showStatus(customerStatus)
+        {
+            if(false == customerStatus in {NOT_ACTIVATED:0 ,ACTIVATED:1, ERROR:2}){
+                  customerStatus="ERROR"; //no response = error
+            }
+            
+            document.getElementById("NOT_ACTIVATED").style.display="none";
+            document.getElementById("ACTIVATED").style.display="none";
+            document.getElementById("ERROR").style.display="none";
+           
+            document.getElementById(customerStatus).style.display="block";
+            
+            showAcceptWarning(false);
+        }
+    
+        function acceptClicked(checked)
+        {               
+             if(true==checked){
+                document.getElementById("buttonDisabled").style.display="none";
+                document.getElementById("buttonEnabled").style.display="block";
+             }
+             else{
+                 document.getElementById("buttonEnabled").style.display="none";
+                  document.getElementById("buttonDisabled").style.display="block";
+             }
+             
+             showAcceptWarning(false);
+        }
+        
+        function showAcceptWarning(show){
+       
+             if(true==show){
+                 document.getElementById("acceptWarning").style.display="block";
+             }
+             else{
+                 document.getElementById("acceptWarning").style.display="none";
+             }
+        }
+
+         function activateStarted(){
+             document.getElementById("buttonDisabled").style.display="none";
+             document.getElementById("buttonEnabled").style.display="none";
+             document.getElementById("buttonLoading").style.display="block";
+             document.getElementById("acceptTerms").disabled=true;
+         }
+         
+         function activateFinished(){
+            var leadspaceActivationStatus;
+            leadspaceActivationStatus = "ACTIVATED"; //todo - get real value
+            showStatus(leadspaceActivationStatus);
+         }
+         
+         
+          </script>
+             <style>
+             
+             /* this css exists as welcomeScreen.css
+             thus, when changing here, please change there too.
+             this duplication can be avoided only after SF pages are integrated into the eclipse
+             */
+              
+            .welcomeScreen{
+                width:auto;
+                background-color:#eeeae9;text-align:center;padding:30px;
+                font-family:arial;font-size:16px;color:#4c4c4c !important;
+            } 
+            
+            .title{
+                font-size:22px;font-weight:bold;
+            }
+            .actionBox{
+                width:850px;margin:auto;
+                padding:25px;
+                line-height:28px;
+                border-radius:8px;-moz-border-radius:8px;
+                font-size:15px;color:#e8e8e8;
+                background: #586675; /* Old browsers */ 
+                /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+                background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzU4NjY3NSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyNDMwM2IiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+                background: -moz-linear-gradient(top, #586675 0%, #24303b 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#586675), color-stop(100%,#24303b)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, #586675 0%,#24303b 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(top, #586675 0%,#24303b 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(top, #586675 0%,#24303b 100%); /* IE10+ */
+                background: linear-gradient(to bottom, #586675 0%,#24303b 100%); /* W3C */
+                
+                behavior:url(script/pie.htc);
+            }   
+            
+            .actionBoxNote{
+                font-size:14px;color:#9fb4c1;
+            }
+             
+            .actionBoxLink, .actionBoxLink:visited{
+                text-decoration:none !important;
+                color:#4ab6f7 !important;
+            }
+            
+            .actionBoxLink:hover{
+                text-decoration:underline !important
+            }
+             </style>
+             
+          <div style="height:500px" class="welcomeScreen">
+          
+                    <apex:image value="{!$Resource.leadspace__logo}" style="float:left"/>
+                    <br/><br/><hr/><br/>
+
+                    <div id="NOT_ACTIVATED" style="display:none">
+                       <span class="title">Welcome to Leadspace!</span><br/><br/>
+                       Leadspace has been installed to your Salesforce account.<br/><br/>
+                       <div class="actionBox">
+                      
+                           Indicate that you accept the 
+                           <a class="actionBoxLink" href="http://www.leadspace.com/leadspace-terms-of-service" target="_blank">terms of use</a>
+                           and then click the button<br/>
+                           to activate the Leadspace app.
+                           <br/> 
+                           
+                           <div style="margin:auto;margin-top:8px;margin-bottom:8px;width:430px;border-top: 1px solid #5d6873;line-height:1"></div>
+                         
+                           <input type="checkbox" id="acceptTerms" style="cursor:pointer" onclick="acceptClicked(this.checked)"/>
+                           <label for="acceptTerms">I accept the terms of use on behalf of my orginization</label><br/>
+                    
+                           <div id="buttonDisabled">  
+                                <apex:image value="{!$Resource.leadspace__LeadSpaceCustomerActivateImage}" 
+                                       style="cursor:pointer;background-color: transparent; border-radius:0 !important; border:0;padding:0 !important;margin: 0 !important"
+                                    onclick="showAcceptWarning(true)"/>
+                           </div>
+                          
+                           <div id="buttonEnabled" style="display:none">
+                                   <apex:commandButton id="activateButton" image="{!$Resource.leadspace__LeadSpaceCustomerActivateImage}" 
+                                       style="cursor:pointer;background-color: transparent; border-radius:0 !important; border:0;padding:0 !important;margin: 0 !important"
+                                   action="{!sendCompanyRegistration}" onclick="activateStarted()" oncomplete="activateFinished()">
+                                  <apex:param name="apiSessionId" assignTo="{!apiSessionId}" value="{!$Api.Session_ID}" />
+                                  <apex:param name="apiServerURL" assignTo="{!apiServerURL}" value="{!$Api.Partner_Server_URL_180}" />                  
+                              </apex:commandButton>
+                          </div> 
+                          
+                           <div id="buttonLoading" style="display:none;cursor:pointer">  
+                                <apex:image value="{!$Resource.leadspace__LeadSpaceCustomerActivateImageLoading}"/>
+                           </div>                              
+                       </div>
+                       
+                       <div id="acceptWarning" style="color:red;display:none">You must accept the terms of use in order to activate Leadspace.</div>
+           
+                    </div>
+                   
+                   
+                   <div id="ACTIVATED" style="display:none">
+                       <span class="title">Leadspace has been activated!</span><br/><br/>
+                        <div class="actionBox">
+                           Leadspace is now creating an Ideal Buyer Profile for your<br/>
+                           company. This will yield customized and highly-targeted<br/>
+                           prospecting search results for your company’s Leadspace users.<br/>
+                           This process can take up to two business days to complete.
+                       </div>
+                   </div>
+                   
+                   
+                    <div id="ERROR" style="display:none">
+                       <span class="title">Unable to Activate Leadspace.</span><br/><br/>
+                        <div class="actionBox">
+                        Leadspace was unable to automatically retrieve the data it needs<br/>
+                        to create an Ideal Buyer Profile for your company. You should have<br/>
+                        received an email with instructions to provide this data to us<br/>
+                        manually. If you did not receive this email, please contact your<br/>
+                        Leadspace representative at your earliest convenience.<br/>
+                        </div>
+                   </div>
+
+           </div> <!--end of welcomeScreen-->
+          
+      </apex:pageBlock>
+      
+      <apex:pageBlock > 
+      <!--
+       <apex:pageBlock title="user admin page - should be replaced by the ui ops"> 
+          <apex:pageBlockButtons location="bottom">
+              <apex:outputLabel >access token key:</apex:outputLabel>
+              <apex:inputText value="{!user_access_token_key}"/> 
+              <apex:outputLabel >access token secret:</apex:outputLabel>
+              <apex:inputText value="{!user_access_token_secret}"/> 
+              <apex:commandButton value="Register User" action="{!sendUserRegistration}"/>           
+          </apex:pageBlockButtons>
+       -->
+      </apex:pageBlock>
+      
+  </apex:form>
+  
+</apex:page>

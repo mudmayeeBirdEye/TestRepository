@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <customSettingsVisibility>Protected</customSettingsVisibility>
+    <description>Variables required for integration with the Knowledgetree API and account.</description>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>apiKey__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Shared secret between the KnowledgeTree application and Salesforce application that proves that this org has permission to access the KnowledgeTree API on behalf of the customer.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This will be provided during the installation process. A shared secret between the KnowledgeTree application and Salesforce application that proves that this org has permission to access the KnowledgeTree API on behalf of the customer.</inlineHelpText>
+        <label>API Key</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>curator_email__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Comma-separated list of curator email addresses.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Comma-separated list of curator email addresses. Used when a Sales rep is shown a view with no content.</inlineHelpText>
+        <label>Curator Email Addresses</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>domain__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Specifies which KnowledgeTree instance to use.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies which KnowledgeTree instance to use. This should be the same as the &apos;domain&apos; portion of this url: http://&lt;domain&gt;.knowledgetree.com that you use to log in to the KnowledgeTree application.</inlineHelpText>
+        <label>KnowledgeTree Domain</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>token__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Shared secret between the KnowledgeTree application and Salesforce application that proves that this org has permission to access the KnowledgeTree API on behalf of the customer.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This will be provided during the installation process. A shared secret between the KnowledgeTree application and Salesforce application that proves that this org has permission to access the KnowledgeTree API on behalf of the customer.</inlineHelpText>
+        <label>Authentication Token</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Integration Configuration</label>
+</CustomObject>

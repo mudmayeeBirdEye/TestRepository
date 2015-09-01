@@ -1,0 +1,103 @@
+<apex:page controller="RCSupportController" showHeader="false" standardStylesheets="false" cache="true" expires="{!cacheMaxAge}">
+      
+      <apex:variable var="productUrlVar" value="{!productUrl}"  />
+       <apex:variable var="categoryParameterNameVar" value="{!categoryParameterName}" />
+       <apex:variable var="cpt" value="{!0}" />
+       <apex:variable var="categoryDescriptionsVar" value="{!categoryDescriptions}" />
+       <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+       <apex:variable var="securityOK" value="False" />
+       <apex:variable var="currentCategoryVar" value="{!currentCategory}" />
+       <apex:variable var="categoryGroupNameVar" value="{!categoryGroupName}" />
+       <apex:variable var="sortOrderDirection" value="{!StrSortOrderDirection}" />
+       <apex:variable var="currentCategoryVar" value="{!currentCategory}" />
+       <apex:variable var="FramedParamVar" value="{!FramedParam}" />
+       <apex:variable var="CaseURLVar" value="{!CaseURL}" />
+       <apex:variable var="serviceFilterVar" value="{!ServiceFilter}" /> 
+ 
+ <div id="showDiv"  style="display:none;background: #fff;z-index: 99999;height:300px;width:500px;"  >
+   <form>
+     <div id="rnDialog1_c"  style="visibility: visible;background-color: #efefef; height:300px;width:500px; left: 25%; top: 20%; z-index: 9999; position:fixed;border:2px solid;"> 
+        <table width="100%" border='0px'><tr><td align="right"><a href="#" onClick="hideDiv('showDiv')" >[x]</a></td></tr></table>
+        <table width="100%" cellpadding="10px" cellspacing="10px">
+             <tr>
+                 <td align="right">
+                  <b> Search Text</b>
+                 </td>
+                  <td >
+                  <div class="rc_InputTypeTextWrapper">
+                      <input type="text"  id="advanceSearchText" onBlur="setTextValue('advanceSearchText','searchText');" value="{!currentKeyword}"/>
+                      </div>
+                 </td>
+              </tr>
+               <tr>
+                   <td align="right">
+                         <b>Service</b>
+                    </td>
+                    <td> 
+                    <div class="selectarea list-off">
+                           <select id="serviceSelect1"  name="strSearchCategory" size="1" >
+                                <option value="None" >-- Select a Service--</option>
+                                        <knowledge:categoryList categoryGroup="Service" rootCategory="All_Services" categoryVar="category" level="-1" >
+                                                       <apex:outputPanel rendered="{!serviceFilterVar=category.name}">
+                                                            <option value="{!category.name}" selected="selected">
+                                                              <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                       </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!serviceFilterVar!=category.name}">
+                                                           <option value="{!category.name}" >
+                                                             <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                       </apex:outputPanel>
+                                            </knowledge:categoryList>
+                                          
+                                        </select>
+                                     </div>
+                                 </td>
+                       </tr>
+                      <tr>
+                          <td align="right">
+                              <b> Topic</b>
+                         </td>
+                        <td>
+                       
+                                <select id="categorySelect"  name="strSearchCategory" size="1"   >
+                                            <apex:outputpanel layout="none" rendered="true">
+                                                <apex:outputPanel layout="none" rendered="{!currentCategoryVar=rootCategoryName}" >
+                                                    <option value="{!rootCategoryName}" >-- Select a category --</option>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="none" rendered="{!currentCategoryVar!=rootCategoryName}" >
+                                                    <option value="{!rootCategoryName}">-- Select a category --</option>
+                                                </apex:outputPanel>
+                                                <knowledge:categoryList categoryGroup="{!categoryGroupNameVar}" rootCategory="{!rootCategoryName}" categoryVar="category" level="-1" >
+                                                    <apex:outputPanel layout="none" rendered="{!currentCategoryVar=category.name}" >
+                                                        <option value="{!category.name}" selected="selected">
+                                                        <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="none" rendered="{!currentCategoryVar!=category.name}">
+                                                        <option value="{!category.name}">
+                                                        <apex:outputText escape="false" value="{!IF(category.depth=1, '', IF(category.depth=2, '&nbsp;&nbsp;', IF(category.depth=3, '&nbsp;&nbsp;&nbsp;&nbsp;', IF(category.depth=4, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'))))}" />
+                                                        {!category.label}
+                                                        </option>
+                                                    </apex:outputPanel>
+                                                </knowledge:categoryList>
+                                            </apex:outputpanel>
+                                        </select>
+
+                           </td>
+              </tr>
+               <tr>
+                     <td colspan="2" align='Center'>
+                     <input type="button" value="Search" onClick="AdvanceSerach('advanceSearchText','serviceSelect1','categorySelect');" />
+                     </td>
+              </tr>
+              </table>
+   </div>
+   </form>
+</div>
+
+
+</apex:page>

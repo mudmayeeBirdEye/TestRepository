@@ -1,0 +1,36 @@
+<apex:page showHeader="false" title="{!$Label.site.in_maintenance}" >
+  <apex:composition template="StdExceptionTemplate">
+    <apex:define name="icon">
+     <script type="text/javascript" src="http://ringcentral.force.com/rcsupport/resource/1286257412000/jquery/js/jquery-1.4.2.min.js"></script>
+     <c:OverLay description="Please wait.."></c:OverLay>
+    
+      <img src="http://marketo.ringcentral.com/rs/ringcentral/images/logo.gif" alt="RC Logo" />
+      <!--<apex:image url="{!URLFOR($Resource.SiteSamples, 'img/warning.gif')}"/>-->
+    </apex:define>
+    <apex:define name="error">
+       <script>
+        var urlDeatil=window.location.href;
+       if(urlDeatil.indexOf('articles/RC_Knowledge_Article')>-1){
+           showOverLay();
+           var urlDeatil=window.location.pathname;
+           urlDeatil=urlDeatil.replace('/rcsupport','');
+           window.location.href='http://success.ringcentral.com'+urlDeatil+'?retURL=';
+    
+      }  
+  </script>
+    
+       <apex:outputText escape="false" styleClass="title" value="{!$Label.site.down_for_maintenance}">
+        <apex:param value="{!$Site.CurrentSiteUrl}"/>
+      </apex:outputText>
+      <br/>
+      <br/>
+      <apex:outputText value="{!$Label.site.sorry_for_inconvenience_back_shortly}"/>
+      <apex:outputText escape="false" value=" {!$Label.site.get_in_touch}">
+      <apex:param value="mailto:partnerportalfeedback@ringcentral.com"/>
+      <apex:param value="{!$Label.site.email_us}"/>
+      <br/>
+      <br/>
+    </apex:outputText>
+   </apex:define>
+  </apex:composition>
+</apex:page>

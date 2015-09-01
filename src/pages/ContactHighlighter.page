@@ -1,0 +1,79 @@
+<apex:page standardController="Contact" extensions="contactHighlighter">
+
+<style>
+    .MessageLeadSource {
+        left: 1px;
+        right: 1px;
+        margin-top: 15px;
+        max-height: 130px;
+        overflow: auto;
+        border: 1px solid rgb(51, 153, 255);
+        background-color: rgb(252, 252, 204);
+        border-radius: 4px;
+        padding: 6px 8px 6px 6px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .backCss {
+        background-color: #fffcce !important;
+        border: 1px solid #cd9e5a !important;
+        border-radius: 5px;
+        -moz-border-radius: 5px !important;
+        -webkit-border-radius: 5px !important;  
+    }
+
+    .panelgridClass {
+        vertical-align: top;
+    }
+</style>
+
+    <apex:form id="ContForm" rendered="{!isBTApproved || isHasOptedOutOfEmail}" >
+        <div class="backCss">
+            <apex:outputPanel id="message">
+                
+                <apex:outputpanel rendered="{!isBTApproved }">
+                    <apex:panelGrid columns="2" id="Paneltable">
+                        <apex:image id="warning" value="{!imgPathRed}" width="48.7"
+                            height="48.7" style="padding:5px;" />
+                        <apex:outputpanel >
+                            <apex:outputLabel escape="false">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false">
+                                <font style="font-size: 15px; font-weight: bold;"> 
+                                    <B>T</B>his record is being managed by BT. Only the Carrier Sales Team should engage with this record.
+                                </font>
+                            </apex:outputText>
+                        </apex:outputpanel>
+                    </apex:panelGrid>
+                </apex:outputpanel>
+
+                <apex:dataTable value="{!tempList}" var="a" id="theTable">
+                    
+                    <apex:column id="thecolumn1">
+                        <apex:outputPanel rendered="{!!bRedAccount}">
+                            <apex:image id="warning" value="{!imgPath}" width="53"
+                                height="48.7" style="padding:5px;"
+                                rendered="{!isHasOptedOutOfEmail}" />
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!bRedAccount}">
+                            <apex:image id="warningred" value="{!imgPathRed}"
+                                width="53" height="48.7" style="padding:5px;"
+                                rendered="{!isHasOptedOutOfEmail}" />
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                    <apex:column id="thecolumn2">
+                        <apex:panelGrid columns="2" columnClasses="panelgridClass" id="Paneltable">
+                            <apex:outputLabel escape="false" rendered="{!isHasOptedOutOfEmail}">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false" rendered="{!isHasOptedOutOfEmail}">
+                                <B>DO NOT EMAIL THIS PROSPECT:</B> This person has unsubscribed from Marketing emails and it is a violation of CAN-SPAM laws (i.e. it's illegal) to send them promotional messages. 
+                            </apex:outputText>
+                        </apex:panelGrid>
+                    </apex:column>
+
+                </apex:dataTable>
+
+            </apex:outputPanel>
+        </div>
+    </apex:form>
+</apex:page>

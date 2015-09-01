@@ -1,0 +1,86 @@
+<apex:page standardController="Case"  extensions="OpsReAssignCaseController" showHeader="true" sidebar="true"> 
+ <script>
+   function getValue(){
+    var myTxtField = document.getElementById('j_id0:j_id2:j_id30:AssTo').value;
+       if(myTxtField=='Business Unit'){
+            document.getElementById("j_id0:j_id2:j_id30:AssignedUser").value='';
+            document.getElementById("userId").style.display='none';
+             //document.getElementById("bussinessId").style.display='block';
+       }else if(myTxtField=='User'){
+             document.getElementById("userId").style.display='block';
+              //document.getElementById("bussinessId").style.display='none';
+            }
+  }
+   function onSubmitPage(){
+      //if(document.getElementById('j_id0:j_id2:j_id30:AssTo').value=='User'&& document.getElementById('j_id0:j_id2:j_id30:AssignedUser').value=='None' ){
+       if(document.getElementById('j_id0:j_id2:j_id30:AssTo').value=='User'&& (document.getElementById('j_id0:j_id2:j_id30:AssignedUser').value=='' || document.getElementById('j_id0:j_id2:j_id3:AssignedUser').value==null)){
+        //alert('You must enter a user');
+       return false;
+      }else if(document.getElementById("j_id0:j_id2:j_id30:internalcommentid").value =='') {
+     // alert('You must enter Comments');
+     return false;
+  }
+ }
+   </script>
+  <apex:form >
+   <apex:pageMessages />
+     <apex:pageBlock title="" mode="edit"> 
+      <apex:pageBlockSection title="Select Business Unit / User" columns="1"></apex:pageBlockSection>
+
+        <table border="0" width="100%" cellspacing='5' cellpadding='5' style="border:0px dotted;" >
+          <tr>
+           <td  align="right" width="10%" ><b>Reassign</b></td> 
+           <td  colspan='2'>
+               <apex:outputtext value="{!status}"/>
+           </td>
+         </tr>
+         <tr>
+          <td  align="right"><b>Assign To</b></td> 
+          <td width="5%">   
+           <apex:inputField value="{!objCase.Assign_To__c}" required="true" id="AssTo" onChange="getValue();"/>
+          </td> 
+ 
+          <td><table id='userId' ><tr >
+           <td  align="center"><b>Assigned OPS User</b></td>
+           <td>
+            <apex:inputField value="{!objCase.Assigned_OPS_User__c}" id="AssignedUser"/>
+         </td>
+         </tr></table>
+          </td>
+         </tr>
+   
+        <tr id='bussinessId'>
+         <td align="right" ><b>Business Unit</b></td>
+           <td  colspan='2'><apex:inputField value="{!objCase.Ops_Bussiness_Units__c}" required="true"/></td></tr>
+        <tr><td align="right" ><b>Department</b></td>
+           <td width="40%"  colspan='2'><apex:inputField value="{!objCase.Ops_Department__c}"/></td></tr>
+      </table> 
+
+  <apex:pageBlockSection title="Reason for Reassign" columns="1"></apex:pageBlockSection>
+    <table border="0" width="100%" cellspacing='0' cellpadding='0' style="border:0px dotted;" >
+     <tr>
+        <td align="right" ><b>Internal Comments</b>&#160;&#160;</td>
+         <td align="right" style="background-color:#C00;left: -4px;width:3px;top: 1px;bottom: 1px;"></td>
+        <td ><apex:inputTextarea value="{!strClosingComments}" id="internalcommentid"  rows="5" cols="80"/>
+        </td>
+    </tr>
+ </table>
+</apex:pageblock>
+ 
+  <table width="100%" >
+           <tr>
+              <td align="center" width="90%">
+                <apex:commandButton action="{!save}" value="Save" />
+                 <apex:commandButton action="{!cancel}" value="Cancel"/></td>
+              <td></td>
+           </tr>
+ </table>
+               <!--  <apex:actionFunction name="updateAssignment" action="{!save}"/> -->
+      </apex:form>
+ 
+   <script>
+     if(document.getElementById('j_id0:j_id2:j_id30:AssTo').value=='Business Unit'){
+      document.getElementById("userId").style.display='none';
+      }
+  </script>
+</apex:page>

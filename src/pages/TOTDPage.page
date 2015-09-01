@@ -1,0 +1,164 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" controller="TOTD">
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.jquery_postmessage, 'jquery_postmessage/postmessage.js')}" />
+
+<style type="text/css">
+a.five:link {
+font-family: Arial, Lucida Grande, Helvetica;
+font-weight: bold;
+font-size: 13px;
+font-style:underline;
+color:#0059A5;
+text-decoration:none;
+}
+a.five:visited {
+font-family: Arial, Lucida Grande, Helvetica;
+font-weight: bold;
+font-size: 13px;
+font-style:underline;
+color:#0059A5;
+text-decoration:none;
+}
+a.five:hover {color:#0059A5;font-weight:bold;text-decoration:underline;}
+#cboxTitle {
+    bottom: 4px;
+    color: #949494;
+    left: 0;
+    position: absolute;
+    text-align: left;
+    width: 100%;
+}
+#cboxTitle {
+    margin: 0;
+}
+#cboxContent {
+    background: none repeat scroll 0 0 #FFFFFF;
+    overflow: hidden;
+}
+#cboxContent {
+    position: relative;
+}
+#cboxLoadedContent {
+    margin-bottom: 28px;
+}
+#cboxLoadedContent {
+    overflow: auto;
+}
+head { height: 100%; }
+body { min-height: 100%; }
+
+</style>
+<script language="JavaScript">
+ function resize(){
+$(function(){
+  // Get the parent page URL as it was passed in, for browsers that don't support
+  // window.postMessage (this URL could be hard-coded).
+  var parent_url = decodeURIComponent( document.location.hash.replace( /^#/, '' ) ),link;
+  
+  // The first param is serialized using $.param (if not a string) and passed to the
+  // parent window. If window.postMessage exists, the param is passed using that,
+  // otherwise it is passed in the location hash (that's why parent_url is required).
+  // The second param is the targetOrigin.
+   function setHeight() {//alert($('#test')[0].scrollHeight);
+    //$.postMessage({ if_height: $('#test').outerHeight( true ) }, parent_url, parent );
+    $.postMessage({ if_height: document.getElementById('test').clientHeight}, parent_url, parent );
+    
+  };
+  
+ 
+  
+  // Now that the DOM has been set up (and the height should be set) invoke setHeight.
+  setHeight();
+  
+  
+});
+
+  
+    
+ // alert($('#test').parent());
+      //alert(document.documentElement.clientHeight);
+        document.body.parentNode.clientHeight='200px';
+       //parent.window.document.getElementById("frameId").height = document.body.offsetHeight ;
+      // parent.show();
+      //alert( parent.window.document.getElementById("frameId").height );
+     //alert(document.getElementById('test').offsetHeight);
+   }
+   </script>
+<html>
+<body onload='resize();'>
+   <div style="overflow:auto" id='test'>
+   <apex:outputPanel rendered="{!isExist}">
+      <apex:outputPanel rendered="{!IF(strContentType=='HTML',true,false)}">
+        <table cellpadding="0" cellspacing="5" border="0" width='100%'>
+            <tr>
+                <td style="font:arial;font-family:Arial;font-size:medium;" valign="top" width="150px">
+                      <apex:outputText rendered="{!IF((strImage==null || strImage==''),true,false)}" escape="false">
+                           <img src="/resource/1284552471000/TOTDSource/monday.jpg" width="150px"/>   
+                       </apex:outputText>
+                       <apex:outputText rendered="{!IF((strImage!=null && strImage!=''),true,false)}" escape="false" value="{!strImage}" >
+                      </apex:outputText>
+                 </td>
+                 <td style="font:arial;font-family:Arial;font-size:14px;font-weight:normal;" align="left" valign="top">
+                     <apex:outputText escape="false" value="{!strContent}"></apex:outputText>
+                 </td>
+           </tr>
+     </table>
+   </apex:outputPanel>
+  
+    <apex:outputPanel rendered="{!IF(strContentType=='Video And Text',true,false)}">
+       <div style="clear: left;height:100%;" >
+           <div id="cboxContent" style="float: left; width: 100%; height: 100%;">
+               <div id="cboxLoadedContent" style="display: block; width: 100%; overflow: auto; height: 80%;">
+                    <iframe src='{!strVideoLink}'  height='250px' width='100%' id='frameId' scrolling='no' frameborder='0' />
+               </div>
+              <!-- <div id="cboxTitle" style="float: left; display: block;">-->
+                   <div style='height:20%; width: 100%;'><apex:outputText escape="false" value="{!strContent}" /></div>
+             
+           </div>
+       </div>
+   </apex:outputPanel>
+
+    <apex:outputPanel rendered="{!IF(strContentType=='Only Video',true,false)}">
+            <!-- <table cellpadding="0" cellspacing="0" border="0" width='100%' >
+                        <tr>
+                            <td style="font:arial;font-family:Arial;font-size:medium;" valign="top" width="100%">
+                                  <iframe src="{!strVideoLink}" allowfullscreen="" width="100%" frameborder="0" height="100%" scrolling='no' ></iframe> 
+                            </td>
+                       </tr>
+            </table> -->
+             <div style="clear: left;height:275px;">
+                <div id="cboxContent" style="float: left; width: 100%; height: 100%;">
+                    <div id="cboxLoadedContent" style="display: block; width: 100%; overflow: auto; height: 100%;">
+                      <iframe class="youtube-player" id="player" type="text/html" src="{!strVideoLink}" allowfullscreen="" width="100%" frameborder="0" height="100%" scrolling='no' ></iframe>
+                   </div>
+           </div>
+       </div>
+           
+     </apex:outputPanel>
+
+    <apex:outputPanel rendered="{!IF(strContentType=='Flash',true,false)}">
+       <div style="clear: left;height:400px;">
+           <div id="cboxContent" style="float: left; width: 100%; height: 100%;">
+                <div id="cboxLoadedContent" style="display: block; width: 100%; overflow: auto; height: 100%;">
+                      <iframe src="{!strFlashLink}" allowfullscreen="" width="100%" frameborder="0" height="100%" scrolling='no' ></iframe> 
+               </div>
+           </div>
+       </div>
+        <!-- <table cellpadding="0" cellspacing="0" border="0" width='100%' >
+                    <tr>
+                        <td style="font:arial;font-family:Arial;font-size:medium;" valign="top" width="100%">
+                              <iframe src="{!strFlashLink}" allowfullscreen="" width="100%" frameborder="0" height="100%" scrolling='no' ></iframe> 
+                           
+                        </td>
+                    </tr>
+        </table>-->
+    </apex:outputPanel>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!!isExist}">
+    {!strContent}
+     </apex:outputPanel>
+  </div>  
+</body>
+</html>
+
+</apex:page>

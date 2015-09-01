@@ -1,0 +1,88 @@
+<apex:component controller="ce4sf20_001.AeSetupController" access="public">
+  <apex:attribute name="objectType"  access="public" required="false"  type="String" description="The type of record the sales guides will be used with for example Account when used with accounts. Note that this is a required parameter."/>
+  <apex:attribute name="objectId"    access="public" required="false"  type="String" description="The id of the object to be used as the context of the guides.  For example Account.Id for use accounts. Note that this is a required parameter."/>
+  <apex:attribute name="organizationType"   access="public" required="true" type="String" description="The type of organization"/>  
+  <script type="text/javascript">
+     var ce4sf_auth_verified = false;
+  </script>
+  <script src="{!authorizationScriptUrl}?aepToken={!securityToken}&host-SessionId={!$Api.Session_ID}&host-SessionURL={!$Api.Enterprise_Server_URL_270}" type="text/javascript"></script>
+  <script type="text/javascript">
+    // this function creates the url for the frame so extra info and guide names can be properly encoded
+    function aeSetGuideFrameURL() {
+    	if(ce4sf_auth_verified) {
+	        var frameUrl = '{!provisioningGuideUrl}'
+	               + '&aepToken={!securityToken}'
+	               + '&host-ObjectType={!objectType}'
+	               + '&host-ObjectId={!objectId}'
+	               + '&host-OrganizationId={!$Organization.Id}'
+	               + '&host-OrganizationName=' + encodeURIComponent("{!$Organization.Name}")
+	               + '&host-OrganizationType=' + encodeURIComponent("{!organizationType}")
+	               + '&host-SessionId={!$Api.Session_ID}'
+	               + '&host-SessionURL={!$Api.Enterprise_Server_URL_270}'
+	               + '&host-UserId={!$User.Id}'
+                   + '&aever={!versionNumber}';
+            // note: iframe with id 'ae_pb_guideframe' will not exist for connectedApps.      
+            var iframeEl = document.getElementById('ae_pb_guideframe');
+            if (iframeEl) {
+               iframeEl.src = frameUrl;
+            }
+         } else {
+            // Error
+            alert("Unable to verify the Cloud Extend Host information please verify and correct it");
+            doBadHostError();
+         }
+    }
+    // this function binds to the window event listener for messages looking for callbacks from the guide navigator
+    function aeCallbackReceiveMessage(evt) {
+        // if the event is a screen flow done then refresh the page through ajax call
+        var msg = ("" + evt.data);
+        if (msg.indexOf("aesf-done") === 0) {
+            var loc = window.location;
+            window.parent.location.href = "https://" + loc.host + "/apex/AeCloudExtendSetup";
+        } else if (msg.indexOf("aesf-unauthorized") === 0) {
+            var title = document.getElementById('ae_pb_setuptitle');
+            title.innerHTML = "<h1>Cloud Extend for Salesforce Registration Verification</h1>";
+        }
+    }
+    // Subscribe to window message events.
+    // IE 8 doesn't support addEventListener method; use attachEvent method instead if
+    // addEventListener method is unavailable.
+    if (window.addEventListener){ 
+      // IE9,FF,Webkit
+      window.addEventListener('message', aeCallbackReceiveMessage, false); 
+    } else if (window.attachEvent){ 
+      // IE7/8
+      window.attachEvent('onmessage', aeCallbackReceiveMessage); 
+    }    
+  </script>
+        <div id="ae_pb_setuptitle"><h1>Cloud Extend Setup</h1></div>
+        <apex:form >
+            <apex:actionFunction name="doBadHostError" action="{!doBadHostError}"/>
+            <apex:pageBlock rendered="{!useConnectedApp}">
+               <apex:canvasApp developerName="CloudExtendConnApp" namespacePrefix="ce4sf20_001"
+                         onCanvasAppLoad="aeSetGuideFrameURL"
+                         id="ae_pb_guideframe"
+                         canvasId="ae_pb_guideframe_canvas"
+                         scrolling="no"
+                         border="0"
+                         width="100%"
+                         height="496"  
+                         parameters="{url: '{!provisioningGuideUrl}',
+                         'aepToken' : '{!securityToken}',
+                         'aever' : '{!versionNumber}',
+                          redirDelay : 25,
+                         'host-ObjectType': '{!objectType}',
+                         'host-ObjectId': '{!objectId}',
+                         'host-OrganizationName': '{!$Organization.Name}' 
+                         }" />
+            </apex:pageBlock>        
+            <apex:pageBlock rendered="{!NOT(useConnectedApp)}">       
+                  <iframe id="ae_pb_guideframe" style="border:none;" frameborder="false" scrolling="false" width="100%" height="496px" src=""/>
+                  <script>
+                     // set iframe url
+                     aeSetGuideFrameURL();    
+                  </script>                           
+         </apex:pageBlock> 
+      </apex:form>         
+    
+</apex:component>

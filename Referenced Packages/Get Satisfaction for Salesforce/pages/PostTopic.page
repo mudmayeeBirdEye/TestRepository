@@ -1,0 +1,40 @@
+<apex:page standardController="GETSAT_TOPIC__Topic__c" extensions="GETSAT_TOPIC.PostTopicController">
+  <apex:sectionHeader title="Post Topic"/>
+  <apex:form >
+    <apex:pageMessage summary="{!msgInfo}" severity="error" strength="3" rendered="{!msgFlag}" />
+       
+    <apex:PageBlock > 
+     <apex:pageMessages ></apex:pageMessages>  
+        <apex:pageMessage summary="{!msgSuccess}" severity="Confirm" strength="3" rendered="{!sucessFlag}">
+            
+        </apex:pageMessage>
+       
+        <apex:commandButton value="Ok" action="{!URLFOR($Action.Topic__c.Tab, $ObjectType.Topic__c)}" rendered="{!sucessFlag}"/>                        
+        <apex:pageBlockButtons location="top" rendered="{!NOT(sucessFlag)}">
+            <apex:commandButton value="Save" action="{!authorize}"/>
+            <apex:commandButton value="Cancel" immediate="true" action="{!URLFOR($Action.Topic__c.Tab, $ObjectType.Topic__c)}"/>
+        </apex:pageBlockButtons>
+        <apex:PageBlockSection columns="1" rendered="{!NOT(sucessFlag)}" title="Topic Detail">
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Community"></apex:outputLabel>
+            <apex:selectList value="{!record.GETSAT_TOPIC__Company_ID__c}" size="1" id="course"  style="width:150px;" required="true">
+                    <apex:selectOptions value="{!CommunityList}" ></apex:selectOptions>
+            </apex:selectList>
+        </apex:pageBlockSectionItem>
+            <apex:inputField value="{!record.GETSAT_TOPIC__Style__c}" required="true"/>
+      <!--  <apex:inputField value="{!record.Source__c}"/> -->      
+             <apex:inputField value="{!record.GETSAT_TOPIC__Subject__c}" required="true"/>
+            <apex:inputField value="{!record.GETSAT_TOPIC__Description__c}"/>
+            <!--  <apex:inputField value="{!record.Products__c}"/> -->
+        </apex:pageBlockSection>
+      
+         <apex:PageBlockSection columns="1" rendered="{!NOT(sucessFlag)}" title="Product and Tags">
+             <!--   <apex:inputField value="{!record.Products__c}"/>   -->
+            <apex:inputField value="{!record.GETSAT_TOPIC__Tags__c}"/>
+            <!--   <apex:inputField value="{!record.User_Defined_codes__c}"/>  -->
+           
+            
+        </apex:pageBlockSection>
+    </apex:PageBlock> 
+    </apex:form>
+</apex:page>

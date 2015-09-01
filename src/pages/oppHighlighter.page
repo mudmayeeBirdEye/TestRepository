@@ -1,0 +1,65 @@
+<apex:page standardController="Opportunity" extensions="OppHighlighter">
+
+	<style>
+.MessageLeadSource {
+	left: 1px;
+	right: 1px;
+	margin-top: 15px;
+	max-height: 130px;
+	overflow: auto;
+	border: 1px solid rgb(51, 153, 255);
+	background-color: rgb(252, 252, 204);
+	border-radius: 4px;
+	padding: 6px 8px 6px 6px;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+</style>
+
+	<apex:pageMessages escape="false"></apex:pageMessages>
+	<div class="MessageLeadSource">
+		<apex:outputpanel rendered="{!isBTApproved }">
+			<apex:panelGrid columns="2" id="Paneltable">
+				<apex:image id="warning" value="/resource/WarningRed" width="48.7"
+					height="48.7" style="padding:5px;" />
+				<apex:outputpanel >
+					<apex:outputLabel escape="false">&#9830;&#160;</apex:outputLabel>
+					<apex:outputText escape="false">
+						<font style="font-size: 15px; font-weight: bold;"> This
+							record is being managed by BT. Only the Carrier Sales Team should
+							engage with this record.</font>
+					</apex:outputText>
+				</apex:outputpanel>
+			</apex:panelGrid>
+		</apex:outputpanel>
+		<div style="float: left; width: 50%">
+			<table style="width: 100%; vertical-align: top;">
+				<tr style="vertical-align: top;">
+					<td style="width: 145px;"><b>Lead Source:</b>
+					</td>
+					<td>{!objOpp.LeadSource}</td>
+				</tr>
+				<tr style="vertical-align: top;">
+					<td style="width: 145px;"><b>Lead Source Description:</b>
+					</td>
+					<td>{!strLeadSourceDescription}</td>
+				</tr>
+
+			</table>
+		</div>
+		<div style="float: right; width: 50%">
+			<table style="width: 100%; vertical-align: top;">
+				<tr style="vertical-align: top;">
+					<td style="width: 140px;"><b>Campaign:</b>
+					</td>
+					<td>{!objOpp.Campaign.Name}</td>
+				</tr>
+				<tr style="vertical-align: top;">
+					<td style="width: 140px;"><b>Campaign Description:</b>
+					</td>
+					<td>{!strCampaignDiscription}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</apex:page>

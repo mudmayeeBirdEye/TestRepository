@@ -1,0 +1,24 @@
+<apex:page controller="cas.ConnectAndSellSetupController" label="Setup | ConnectAndSell for Salesforce" title="Setup | ConnectAndSell for Salesforce">
+<apex:sectionHeader title="Setup | ConnectAndSell Insights for Salesforce" subtitle="Setup" 
+                    description="Use this page to setup various parameters for connecting to the ConnectAndSell Insights web services. Administrators should release this page only to the appropriate profiles."
+/>
+
+<apex:form >
+    <apex:pageBlock title="Default Settings">
+    
+    <apex:pageBlockButtons >
+        <apex:commandButton action="{!SaveSettings}" value="Save" reRender="pbs"/>        
+    </apex:pageBlockButtons>
+    
+    <apex:pageBlockSection id="pbs" columns="2" >
+        <apex:pageMessages /><br/>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Default Labor Rate" />
+            <apex:inputField value="{!PS.cas__LaborRate__c}" />
+        </apex:pageBlockSectionItem>
+        <br/>        
+    </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:form>
+
+</apex:page>

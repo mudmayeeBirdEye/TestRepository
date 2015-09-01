@@ -1,0 +1,79 @@
+<apex:page title="Lead" label="Lead" tabStyle="Partner_Leads__tab">
+ 
+ <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+   <style>
+       /*.x-grid3-hd.x-grid3-cell.x-grid3-td-ACTION_COLUMN{
+         display: none;
+       }
+       .x-grid3-col.x-grid3-cell.x-grid3-td-ACTION_COLUMN{
+         display: none;
+        }*/
+        .listHeader .btn {
+           font-size: 100%;
+           background:orange;
+           border-radius:6px;
+        }
+        .pbHeader .btn {
+           /*display: none;*/
+        }
+        . tab td {
+            height: 35px !important;
+        }
+        
+   </style> 
+    <div class="bPageTitle">
+        <div class="ptBody secondaryPalette">
+            <div class="content">
+                <img title="Lead" class="pageTitleIcon" alt="Lead" src="/s.gif" />
+                <h1 class="pageType">
+                    Leads<span class="titleSeparatingColon">:</span>
+                </h1>
+                <h2 class="pageDescription"> Home</h2>
+                <div class="blank">&nbsp;</div>
+            </div>
+            <div class="links"></div>
+        </div>
+        <div class="ptBreadcrumb"></div>
+    </div>
+    <div id="listView">
+        <apex:listViews type="Lead" /> 
+    </div>
+    <script type="text/javascript">
+       $(document).ready(function(){
+        try{
+             var selectedlabel=$('div.bFilterView select option:selected').text();
+             if(selectedlabel=='Recently Viewed Leads'){
+                $('div.bFilterView select option:selected').remove();
+                $('div.bFilterView select').change();
+             }else{
+              $('div.bFilterView select option:contains("Recently Viewed Leads")').remove();
+             }
+          }catch(ex){}   
+       });
+    
+       
+        $('.actionColumn ').each(function(index) {
+          try {
+                $(this).html($(this).html().replace('|',''));
+                var checkboxes = $(this).find(':checkbox');
+                checkboxes.remove();
+          } catch(x) {}
+      });
+      
+       $('.pbHeader .btn').each(function(index) {
+            //alert(1);
+             if ($(this)[0].title != 'New Lead') {
+                $(this).hide();
+            }
+      });
+      
+      if('{!$Profile.Name}' == 'RC Partner Express' && '{!$UserRole.Name}'.indexOf('Executive') != -1) {
+        $('.pbHeader .btn').each(function(index) {
+            if ($(this)[0].title == 'New Lead') {
+                $(this).hide();
+            }
+        });
+      }
+      
+    </script>
+</apex:page>

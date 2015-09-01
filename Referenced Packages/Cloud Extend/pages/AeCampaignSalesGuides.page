@@ -1,0 +1,4 @@
+<apex:page standardController="Campaign">
+   <c:AeSalesGuides objectType="Campaign" objectId="{!Campaign.Id}" extraInfo="{!JSENCODE(Campaign.Name)}" 
+                    match="Role={!JSENCODE(SUBSTITUTE($UserRole.Name, ",", ""))},Status={!JSENCODE(SUBSTITUTE(Campaign.Status, ",", ""))}"/>
+</apex:page>

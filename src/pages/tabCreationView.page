@@ -1,0 +1,6 @@
+<apex:page standardController="Intranet_Main_Tab__c"  sidebar="false"  extensions="TabViewCtrl" id="thePage">
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+<apex:pageMessages />
+   <!--<apex:detail subject="{!Intranet_Main_Tab__c}" relatedList="false" title="false" relatedListHover="true"/>
+   <apex:relatedList list="Intranet_Main_Tabs__r" rendered="{!relatedListView}"  id="related_list"/>-->
+</apex:page>

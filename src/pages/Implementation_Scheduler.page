@@ -1,0 +1,226 @@
+<!-----------------------------------------------------------------------------
+* Project Name..........: RingCentral - Self Serve Scheduling                 * 
+* File..................: Implementation_Scheduler.Page                       *
+* Version...............: 1.0                                                 *
+* Created by............: Simplion Technologies                               *
+* Last Modified by......: Simplion Technologies                               *
+* Description...........: This page is used to let Customer and Sales Support *
+*                          User to Book Implementation Appointment.           *
+*----------------------------------------------------------------------------->
+<apex:page controller="extAppointment" id="pageId" showHeader="true" standardStylesheets="true" docType="html-5.0" cache="false">
+<apex:pageMessages />
+<head>
+    <title>Implementation Scheduler</title>
+    <style>
+        .overlay {
+            background-color: black;
+            opacity: 0.6;
+            /* Generic for Major browsers */
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+            /* IE 5-7 */
+            filter: alpha(opacity=60);
+            /* Netscape */
+            -moz-opacity: 0.6;
+            /* Safari 1.x */
+            -khtml-opacity: 0.6;            
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 99;
+            zIndex: 99;
+        }
+        
+        .formLabel {
+            font: Bold 16px arial;
+            text-align: left;
+            /*border: 2px solid steelblue;*/
+            float: left;
+            width: 30%;
+            margin-left: 25%;
+            margin-right: -10%;
+        }
+        
+        .upperdiv {
+            width: 100%;
+            height: 60px;
+            background-color: white;
+            height: 60px;
+            /*border: 1px solid black;*/
+            padding-left: 20px;
+            padding-right: 20px;
+            /* margin-left: 21%; */
+            box-shadow: 0px 0px 35px 5px lightgray inset;
+            border-radius: 10px 10px 0px 0px;
+        }
+    
+        .lowerdiv {
+            box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+            background: #f8f8f8;
+            outline: none;
+            width: 100%;
+            padding: 20px;
+            border-radius: 0px 0px 10px 10px;
+        }
+
+        .menuOption {
+            border: 1px solid steelblue;
+            width: 60%;
+            height: 30px;
+            font: Bold 16px arial;
+            padding-top: 10px;
+            border-radius: 10px;
+            box-shadow: 0px -4px 50px -2px lightblue inset;
+            cursor: pointer;
+            background-color: white;
+        }
+        
+        .menuOption:hover {
+            background-color: white;
+            text-decoration: underline;
+            box-shadow: 0px -4px 50px -2px orange inset;
+            cursor: pointer;
+        }
+        
+        .inputBox {
+            border: 2px solid steelblue;
+            width: 25%;
+            height: 25px;
+            border-radius: 5px;
+            /*text-align: center;*/
+            padding-left: 1%;
+        }
+
+        .fancybox-close { 
+            position: absolute; 
+            top: 8px; 
+            right: -55px; 
+            width: 36px; 
+            height: 36px; 
+            cursor: pointer; 
+            z-index: 8040; 
+            background-image: url('http://ringcentral.box5.cs12.force.com/RCSupportPortal/resource/1365653662000/RCSupportPortal/supportPortal/img/fancybox_sprite.png');
+        }
+        
+        .requiredfield {
+            width: 3px;
+            height: 28px;
+            background: #F00;
+            /*padding-top: 8px;*/
+            float: left;
+            margin-top: 1px;
+            margin-right: 2px;
+        }
+        
+        .msgPanelCls {
+            height: 30px;
+            width: auto;
+            border: 1px solid #3399FF;
+            padding: 2px;
+            background: #FFFFCC;
+            font-weight: bolder !important;
+            border-radius: 5px;
+        }
+        div.ex {
+            box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+            background: #f8f8f8;
+            /*border: 1px solid black;*/
+            /*border-radius: 10px;*/
+            outline: none;
+            /* margin-left: 250px; */
+            width: 100%;
+            /* padding: 45px; */
+            padding: 20px;
+        }
+        .textMessage {
+            font-size: 20px;
+            font: Bold;
+            font-family: arial, verdana, geneva;
+            color: rgb(255, 67, 0);
+        }
+    </style>    
+    <script language="JavaScript" type="text/javascript">
+        
+    </script>
+</head> 
+    <apex:detail subject="{!contactId}" relatedlist="false"/>
+    <a href="/{!contactId}" style="cursor:wait;"><div class="overlay"></div></a>
+    <div style="position: fixed;z-index: 99999;top: 15%;left: 20%;width: 55%;">
+        <div class="upperdiv" align="center">
+            <p style="font:Bold 25px arial; padding-top:12px;">Implementation Scheduler</p>
+        </div>
+        <apex:outputpanel rendered="{!iSchedulerError}">
+            <div class="ex" align="center">
+                <apex:outputpanel styleclass="textMessage" >
+                    {!errorMessage}
+                </apex:outputpanel>
+            </div>
+        </apex:outputpanel>
+        <!-- <apex:form rendered="{!appointmentToShow}">
+            <div class="lowerdiv">Do you wish to schedule an Appointment?</div>
+            <div>
+                <apex:commandButton style="width: 100px; height: 25px;" value="Yes" action="{!ToSchedule}" />
+                <apex:commandButton style="width: 100px; height: 25px;" value="No"  onclick="window.top.location = '/{!contactId}';" />
+            </div>
+        </apex:form> -->
+        <apex:form id="formId" rendered="{!menuFlag}">
+            <div class="lowerdiv" align="center" id="menu">
+                <div style="width:100%;">
+                    <div class="msgPanelCls">
+                        <div style="float:left;">
+                            <apex:image style="vertical-align:middle; width:27px; height:26px;margin-top: 2px;background: url(https://c.cs3.visual.force.com/img/msg_icons/info24.png) no-repeat;" url="/s.gif"/>
+                        </div>
+                        <div style="float:left;margin-top:6px;">
+                            <apex:outputpanel style="vertical-align:middle; color: red; font: 12px arial; padding:2px;" id="errorForm" >
+                                {!impErrorMsg}
+                            </apex:outputpanel>
+                        </div>
+                    </div>
+                </div>
+                <p/>
+                <div class="formLabel">User Id</div>
+                <div style="text-align: left;">
+                    <div class="requiredfield"/>
+                    <apex:inputText value="{!customerId}" styleClass="inputBox" id="userId" disabled="{!NOT(isBlank(customerId))}"/>
+                </div>
+                <p/>
+                <div class="formLabel">Brand</div>
+                <div style="text-align: left;">
+                    <div class="requiredfield"/>
+                    <apex:selectList value="{!brandId}" size="1" styleClass="inputBox" style="height: 30px;width: 26.5%;" id="brandName" disabled="{!NOT(isBlank(brandId))}">
+                        <apex:selectOptions value="{!avbBrands}" />
+                    </apex:selectList>
+                </div>
+                <p/>
+                <div class="formLabel">No. of DL's</div>
+                <div style="text-align: left;">
+                    <div class="requiredfield"/>
+                    <apex:inputText value="{!noOfUser}" styleClass="inputBox" id="noOfUserI" rendered="{!IF(noOfUser == NULL || noOfUser == 0 , TRUE, FALSE)}" />                    
+                    <apex:outputPanel rendered="{!IF(noOfUser != NULL && noOfUser != 0 , TRUE, FALSE)}">
+                        <div style="border: 2px solid steelblue;border-radius: 5px;width: 25%;height: 25px;margin-left: 46%;text-align: left;padding-left: 1%;" >
+                            <apex:outputText value="{!noOfUser}" id="noOfUserO" />
+                        </div>
+                    </apex:outputPanel>    
+                </div>
+                <p/>
+                <div> 
+                    <apex:commandButton style="width: 100px; height: 25px;" value="Go" action="{!checkMandatoryFields}" status="counterStatus" rerender="ASlot"/>
+                </div>
+            </div>
+        </apex:form>
+        <apex:form rendered="{!linkFlag}">
+            <div class="lowerdiv" align="center" id="menu">
+                <div class="menuOption" onclick="Schedule();">Schedule An Appointment</div>
+                <apex:actionFunction name="Schedule" action="{!ScheduleAppointment}"/>  
+                <p/>
+                <div class="menuOption" onclick="ReSchedule();">Re-Schedule An Appointment</div>
+                <apex:actionFunction name="ReSchedule" action="{!ReScheduleAppointment}"/>
+                <p/>
+                <div class="menuOption" onclick="cancel();">Cancel An Appointment</div>
+                <apex:actionFunction name="cancel" action="{!CancelAppointment}"/>
+            </div>
+        </apex:form>
+        <a class="fancybox-item fancybox-close" href="/{!contactId}" title="Close"></a> 
+    </div>
+</apex:page>

@@ -1,0 +1,74 @@
+<apex:page id="salescsat" controller="Surveyservice" standardStylesheets="false" showHeader="false" title="RingCentral Sales Customer Satisfaction" cache="false">
+<HEAD>
+<TITLE>---</TITLE>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+<META HTTP-EQUIV="Expires" CONTENT="-1"/>
+</HEAD>
+<style>
+    p {color:#798496;font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:11px; font-style:normal; line-height:20px;}
+    .content{border: 1px solid #000; width: 740px; padding: 10px;}
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.Style_Resources, 'default2.style.css')}">
+
+
+<table width="80">
+<tr>
+
+<td></td><td></td>
+<td>
+
+        
+  
+       <div  class="content"> 
+    <apex:image url="{!URLFOR($Resource.Style_Resources, 'images/logo.gif')}" /><br/><br/>
+    <apex:form id="myform1" rendered="{!IsEmpty}">
+        Hello {!contactName}.<br/><br/>Thank you for telling us how we are doing by answering these simple questions.   The questions below pertain to your experience transferring your phone number(s) to RingCentral..<br/>
+        <b><font color="red">*</font>1. My transfer request was processed and completed in a timely manner.</b> <br/>
+        <apex:selectRadio value="{!q1Value}" title="Porting Request timely" layout="pageDirection">
+             <apex:selectOptions value="{!values}"/>
+        </apex:selectRadio> <p/>     
+        
+        <b><font color="red">*</font>2. My transfer request was processed and completed accurately.</b> <br/>
+        <apex:selectRadio value="{!q2Value}" title="Porting request Accurately" layout="pageDirection">
+             <apex:selectOptions value="{!values}"/>
+        </apex:selectRadio> <p/>   
+        
+        
+        <b><font color="red">*</font>3. It was easy to submit my transfer request to RingCentral.</b> <br/>
+        <apex:selectRadio value="{!q3Value}" title="Submission" layout="pageDirection">
+             <apex:selectOptions value="{!values}"/>
+        </apex:selectRadio> <p/>     
+        
+        
+        <b><font color="red">*</font>4.I am completely satisfied with the overall number transfer process.</b> <br/>
+        <apex:selectRadio value="{!q4Value}" title="Satisfaction" layout="pageDirection">
+             <apex:selectOptions value="{!values1}"/>
+        </apex:selectRadio> <p/>   
+        
+        
+        <!--@@@@end of code-->
+        
+        <b>5.Comments/What could have we done to serve you better?</b> <br/>
+        <apex:inputTextarea value="{!comments}" title="Comments" rows="4" cols="100"/><p/>     
+
+        <apex:commandButton action="{!save}" value="Submit Your Answers"/>
+        <p/>
+    </apex:form>  
+    
+    
+    <apex:outputText rendered="{!Answered}">
+        <font color="red">Please answer all the required questions.</font></apex:outputText>  
+            <p/><apex:outputText rendered="{!IsFilled}">Thank you for filling out our survey.
+    </apex:outputText>   
+
+    </div>
+    
+    </td>
+    </tr>
+    </table>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+<META HTTP-EQUIV="Expires" CONTENT="-1"/>
+</HEAD>
+</apex:stylesheet>
+</apex:page>

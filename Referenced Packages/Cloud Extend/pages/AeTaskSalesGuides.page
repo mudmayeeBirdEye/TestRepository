@@ -1,0 +1,3 @@
+<apex:page standardController="Task">
+   <c:AeSalesGuides objectType="Task" objectId="{!Task.Id}" extraInfo="{!JSENCODE(Task.Subject)}" guideName="{!JSENCODE(Task.ce4sf20_001__AeGuide_Name__c)}"/>
+</apex:page>

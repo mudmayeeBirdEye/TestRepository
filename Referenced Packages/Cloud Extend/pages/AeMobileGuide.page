@@ -1,0 +1,13 @@
+<apex:page controller="ce4sf20_001.AeSecurityTokenCE" docType="html-5.0" sidebar="false" showHeader="false" standardStylesheets="false" 
+     cache="true" >
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no;" />    
+        <title>{!HTMLENCODE($CurrentPage.parameters.guideName)}</title>
+        <script>
+          // deprecating AeMobileGuide for 2.07. Use AeGuideList instead.
+          window.top.location = window.location.href.replace('AeMobileGuide', 'AeGuideList');
+        </script>
+    </head>   
+    <body>      
+    </body>
+</apex:page>

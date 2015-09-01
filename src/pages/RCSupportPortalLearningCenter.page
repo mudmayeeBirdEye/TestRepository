@@ -1,0 +1,179 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" docType="html-5.0" controller="RCSupportControllerHandler" >
+
+
+  <apex:composition template="RCSupportPortalHomeTemplate">
+     <apex:define name="content">
+     <style>
+       .last {
+            overflow: visible !important; 
+        }
+    
+     </style> 
+     <c:RCSystemStatus Text="Learning Center"/>
+     
+       <section class="learning-center">
+        <apex:form >
+        <apex:inputHidden value="{!strLCClassName}" id="selectedTabName"/>
+ 
+   
+      <c:RCSupportPortalLCNav tabName="{!strLCClassName}" />
+       
+            <c:RCSupportPortalGS rendered="{!IF(((strLCClassName=='' || strLCClassName=='getting_0')&& !UKPortal),true,false)}"/>  
+             <c:RCSupportPortalGSUK rendered="{!IF(((strLCClassName=='' || strLCClassName=='getting_0') && UKPortal),true,false)}"/> 
+            
+             <c:RCSupportPortalLearnBasics rendered="{!IF((strLCClassName=='getting_1' && !UKPortal),true,false)}"/>  
+             <c:RCSupportPortalLearnBasicsUK rendered="{!IF((strLCClassName=='getting_1' && UKPortal),true,false)}"/> 
+           
+            <c:RCSupportPortalCallQuality rendered="{!IF((strLCClassName=='call_0' && !UKPortal),true,false)}"/>  
+            <c:RCSupportPortalCallQualityUK rendered="{!IF((strLCClassName=='call_0'&& UKPortal),true,false)}"/>    
+         
+           <c:RCSupportPortalTPN rendered="{!IF((strLCClassName=='number_0' && !UKPortal),true,false)}"/> 
+           <c:RCSupportPortalTPNUK rendered="{!IF((strLCClassName=='number_0' && UKPortal),true,false)}" /> 
+         
+           <!-- Settings tab sub menu -->
+            <!-- COMPANY SETTINGS -->
+             <c:RCSupportPortalCompanySettigs rendered="{!IF((strLCClassName=='settings_21' && !UKPortal),true,false)}"/>   
+             <c:RCSupportPortalAddSetupUser rendered="{!IF((strLCClassName=='settings_0' && !UKPortal),true,false)}"/> 
+             <c:RCSupportPortalAddSetupDepartment rendered="{!IF((strLCClassName=='settings_1' && !UKPortal),true,false)}"/>  
+             <c:RCSupportPortalSetBusinessHours rendered="{!IF((strLCClassName=='settings_22' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalCallHandlingAuto rendered="{!IF((strLCClassName=='settings_2' && !UKPortal),true,false)}"/>   
+             <c:RCSupportPortalAdvCallHandling rendered="{!IF((strLCClassName=='settings_3' && !UKPortal),true,false)}"/>  
+             <c:RCSupportPortalOrderingConguringPhones rendered="{!IF((strLCClassName=='settings_4' && !UKPortal),true,false)}"/>  
+             <c:RCSupportPortalCallRecording rendered="{!IF((strLCClassName=='settings_5' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalCOMSETTINGSAPN rendered="{!IF((strLCClassName=='settings_6' && !UKPortal),true,false)}"/>      
+             
+              <!--  for UK --> 
+             <c:RCSupportPortalCompanySettigsUK rendered="{!IF((strLCClassName=='settings_21' && UKPortal),true,false)}"/>   
+             <c:RCSupportPortalAddSetupUserUK rendered="{!IF((strLCClassName=='settings_0' && UKPortal),true,false)}"/> 
+             <c:RCSupportPortalAddSetupDepartmentUK rendered="{!IF((strLCClassName=='settings_1' && UKPortal),true,false)}"/>  
+             <c:RCSupportPortalSetBusinessHoursUK rendered="{!IF((strLCClassName=='settings_22' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalCallHandlingAutoUK rendered="{!IF((strLCClassName=='settings_2' && UKPortal),true,false)}"/>   
+             <c:RCSupportPortalAdvCallHandlingUK rendered="{!IF((strLCClassName=='settings_3' && UKPortal),true,false)}"/>  
+             <c:RCSupportPortalOrderingConguringPhonesUK rendered="{!IF((strLCClassName=='settings_4' && UKPortal),true,false)}"/>  
+             <c:RCSupportPortalCallRecordingUK rendered="{!IF((strLCClassName=='settings_5' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalCOMSETTINGSAPNUK rendered="{!IF((strLCClassName=='settings_6' && UKPortal),true,false)}"/>   
+             
+             
+             <!-- DEPARTMENT SETTINGS -->
+             <c:RCSupportPortalDEPTSETTINGS rendered="{!IF((strLCClassName=='settings_7' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalDEPTSETTINGSSUBH rendered="{!IF((strLCClassName=='settings_8' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalDEPTSETTINGSGOHM rendered="{!IF((strLCClassName=='settings_9' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalDEPTSETTINGSADM rendered="{!IF((strLCClassName=='settings_10' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalLCSETTINGSCHF rendered="{!IF((strLCClassName=='settings_11' && !UKPortal),true,false)}"/> 
+             <c:RCSupportPortalLCSETTINGSACH rendered="{!IF((strLCClassName=='settings_12' && !UKPortal),true,false)}"/>
+             
+             <c:RCSupportPortalLCMESSAGENNOTIFICATION rendered="{!IF((strLCClassName=='settings_13' && !UKPortal),true,false)}"/>
+            
+             <!-- For UK Portal -->
+             <c:RCSupportPortalDEPTSETTINGSUK rendered="{!IF((strLCClassName=='settings_7' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalDEPTSETTINGSSUBHUK rendered="{!IF((strLCClassName=='settings_8' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalDEPTSETTINGSGOHMUK rendered="{!IF((strLCClassName=='settings_9' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalDEPTSETTINGSADMUK rendered="{!IF((strLCClassName=='settings_10' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalLCSETTINGSCHFUK rendered="{!IF((strLCClassName=='settings_11' && UKPortal),true,false)}"/> 
+             <c:RCSupportPortalLCSETTINGSACHUK rendered="{!IF((strLCClassName=='settings_12' && UKPortal),true,false)}"/>
+             
+             <c:RCSupportPortalLCMESSAGENNOTIFICATIONUK rendered="{!IF((strLCClassName=='settings_13' && UKPortal),true,false)}"/>
+            
+             <!-- USER SETTINGS -->
+             <c:RCSupportPortalLCUSERSETTINGS rendered="{!IF((strLCClassName=='settings_14' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSSETHOURS rendered="{!IF((strLCClassName=='settings_15' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSGAHMUSIC rendered="{!IF((strLCClassName=='settings_16' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSCALLHANDLING rendered="{!IF((strLCClassName=='settings_17' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSACH rendered="{!IF((strLCClassName=='settings_18' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSMANDNOTIF rendered="{!IF((strLCClassName=='settings_19' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSCALLERID rendered="{!IF((strLCClassName=='settings_20' && !UKPortal),true,false)}"/>
+             
+               <!-- For UK Portal -->
+             <c:RCSupportPortalLCUSERSETTINGSUK rendered="{!IF((strLCClassName=='settings_14' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSSETHOURSUK rendered="{!IF((strLCClassName=='settings_15' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSGAHMUSICUK rendered="{!IF((strLCClassName=='settings_16' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSCALLHANDLINGUK rendered="{!IF((strLCClassName=='settings_17' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSACHUK rendered="{!IF((strLCClassName=='settings_18' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSMANDNOTIFUK rendered="{!IF((strLCClassName=='settings_19' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalSETTINGSUSCALLERIDUK rendered="{!IF((strLCClassName=='settings_20' && UKPortal),true,false)}"/>
+                         
+             <!-- FAXING -->
+             <c:RCSupportPortalFAXING rendered="{!IF((strLCClassName=='Faxing_0' && !UKPortal),true,false)}"/>
+            <!-- For UK Portal -->
+             <c:RCSupportPortalFAXINGUK rendered="{!IF((strLCClassName=='Faxing_0' && UKPortal),true,false)}"/>
+           
+             <!-- DESKTOP PHONES -->
+                <c:RCSupportPortalDESKTOPPHONES rendered="{!IF((strLCClassName=='DeskPhones_0' && !UKPortal),true,false)}"/>
+              <!-- For UK Portal -->
+               <c:RCSupportPortalDESKTOPPHONESUK rendered="{!IF((strLCClassName=='DeskPhones_0' && UKPortal),true,false)}"/>    
+           
+             <!-- SMART PHONE APPS -->
+             <c:RCSupportPortalSMAPRTPAS rendered="{!IF((strLCClassName=='SmartphoneApps_0' && !UKPortal),true,false)}"/>
+                <!-- For UK Portal -->
+             <c:RCSupportPortalSMAPRTPASUK rendered="{!IF((strLCClassName=='SmartphoneApps_0' && UKPortal),true,false)}"/>
+           
+             <!-- SOFTPHONE -->
+            <!--  <c:RCSupportPortalSOFTPHONE rendered="{!IF((strLCClassName=='SoftPhone_0' && !UKPortal),true,false)}"/> -->
+             <!-- RingCentral for Desktop -->
+             <c:RingCentralforDesktop rendered="{!IF((strLCClassName=='Desktop_0' && !UKPortal),true,false)}"/>
+                <!-- For UK Portal -->
+                  <c:RCSupportPortalSOFTPHONEUK rendered="{!IF((strLCClassName=='SoftPhone_0' && UKPortal),true,false)}"/>
+            
+             <!-- BILLING -->
+             <c:RCSupportPortalBILLING rendered="{!IF((strLCClassName=='Billing_0' && !UKPortal),true,false)}"/>
+                <!-- For UK Portal -->
+                 <c:RCSupportPortalBILLINGUK rendered="{!IF((strLCClassName=='Billing_0' && UKPortal),true,false)}"/>
+            
+            
+             <!-- TOP FEATURES -->
+             <c:RCSupportPortalLCTF rendered="{!IF((strLCClassName=='TopFeatures_0' && !UKPortal),true,false)}"/>     
+             <c:RCSupportPortalLCTFBSB rendered="{!IF((strLCClassName=='TopFeatures_1' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalLCTFCONF rendered="{!IF((strLCClassName=='TopFeatures_2' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalSFINTEGRATION rendered="{!IF((strLCClassName=='TopFeatures_3' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalPRESENCE rendered="{!IF((strLCClassName=='TopFeatures_4' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalCALLFLIP rendered="{!IF((strLCClassName=='TopFeatures_5' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalCALLFWD rendered="{!IF((strLCClassName=='TopFeatures_6' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalRINGOUT rendered="{!IF((strLCClassName=='TopFeatures_7' && !UKPortal),true,false)}"/>
+             <c:RCSupportPortalMEETING rendered="{!IF((strLCClassName=='TopFeatures_8' && !UKPortal),true,false)}"/>
+             <c:TemplateUSCA rendered="{!IF((strLCClassName=='TopFeatures_9' && !UKPortal),true,false)}"/>
+             <c:ReportsUSCA rendered="{!IF((strLCClassName=='TopFeatures_10' && !UKPortal),true,false)}"/>
+             
+            <!-- For UK Portal -->
+             <c:RCSupportPortalLCTFUK rendered="{!IF((strLCClassName=='TopFeatures_0' && UKPortal),true,false)}"/>     
+             <!-- <c:RCSupportPortalLCTFBSBUK rendered="{!IF((strLCClassName=='TopFeatures_1' && UKPortal),true,false)}"/> -->
+             <c:RCSupportPortalLCTFCONFUK rendered="{!IF((strLCClassName=='TopFeatures_2' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalSFINTEGRATIONUK rendered="{!IF((strLCClassName=='TopFeatures_3' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalPRESENCEUK rendered="{!IF((strLCClassName=='TopFeatures_4' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalCALLFLIPUK rendered="{!IF((strLCClassName=='TopFeatures_5' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalCALLFWDUK rendered="{!IF((strLCClassName=='TopFeatures_6' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalRINGOUTUK rendered="{!IF((strLCClassName=='TopFeatures_7' && UKPortal),true,false)}"/>
+             <c:RCSupportPortalMEETINGUK rendered="{!IF((strLCClassName=='TopFeatures_8' && UKPortal),true,false)}"/>
+             <c:TemplatesUk rendered="{!IF((strLCClassName=='TopFeatures_9' && UKPortal),true,false)}"/>
+      
+       
+    <apex:actionFunction name="showTabsDetail" action="{!showTabsDetail}"  > 
+      </apex:actionFunction>   
+    <script>
+          $(".lc-nav li a").live("click", function(){//alert($("[id$=selectedTabName]").val());
+          $("[id$=selectedTabName]").val($(this).attr("id"));
+           showTabsDetail();
+     }); 
+   </script>
+    <script>
+       $(document).ready(function () {
+          var selectedTab='';
+           $('.lc-nav li.parent').hover(function() {
+               selectedTab=$(".lc-nav li a.selectedMenu");
+               selectedTab.removeClass('selectedMenu');  
+               $(this).children("a:first").addClass('hover');
+                 $('.LC-submenu',this).stop(true, true).fadeIn(500);
+               // $('.LC-submenu',this).show();
+               //alert(1);
+             },function(){
+                  $(this).children("a:first").removeClass('hover');
+                    $('.LC-submenu',this).stop(true, true).fadeOut(1000);
+                    // $('.LC-submenu',this).hide();
+                  $(selectedTab).addClass('selectedMenu');
+             });
+        });
+    </script>
+   </apex:form>    
+ </section>
+    </apex:define>
+  </apex:composition>
+</apex:page>

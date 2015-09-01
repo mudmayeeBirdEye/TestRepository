@@ -1,0 +1,181 @@
+<apex:page standardController="Opportunity" extensions="RCContractDetails" showHeader="false" sidebar="false" title="Ring Central Contract Detail" wizard="false">
+  <html>
+<style type="text/css">
+.font_color{
+color:white;
+font-weight:bold;
+font-size:12px;
+}
+.font_header{
+color:white;
+font-weight:bold;
+background-color:#4F98BF;
+font-size: 16px; 
+font-family:Arial;
+}
+.font_header2{
+color:white;
+font-weight:bold;
+background-color:#4F98BF;
+font-size: 13px; 
+font-family:Arial;
+}
+.font_header_goback{
+color:white;
+font-weight:bold;
+background-color:#4F98BF;
+font-size: 12px;
+font-family:Arial;
+}
+.font_label{
+color:Black;
+font-weight:bold;
+font-size:12px;
+font-family:Arial;
+}
+
+.font_text{
+color:Black;
+font-weight:normal;
+font-size:12px;
+font-family:Arial;
+}
+</style>
+
+<head>
+<style type="text/css"> 
+#div1
+{ 
+DISPLAY: none; 
+} 
+</style> 
+<script type="text/javascript">
+
+    function ShowTable(id) {
+        var e = document.getElementById(id);
+        if (e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+    }
+
+</script>
+
+<title>Ring Central Contract Detail</title>
+
+</head>
+
+
+<body>
+
+
+<apex:form id="form1" >
+<apex:PageMessage title="Field Error" severity="error" strength="2" rendered="{!FillError}" summary="Please make sure all fields are filled out."/>
+<apex:PageMessage title="Contact Not Found" severity="error" strength="2" rendered="{!ContactError}" summary="This opportunity is not tied to a Contact. Cancel and associate a Contact to your Opportunity."/>
+<apex:PageMessage title="Contact Has No Email" severity="error" strength="2" rendered="{!ContactEmailError}" summary="This Contact your Opportunity is tied to does not have an email address. Please correct before proceeding."/>
+<apex:PageMessage title="Number of Lines" severity="error" strength="2" rendered="{!NumLinesError}" summary="The total number of lines cannot be less than 20."/>
+<table width="100%" style="border-collapse: collapse;" cellpadding="10" border="0" bgcolor="#4F98BF">
+    <tr >
+        <td class="font_header">
+            Ring Central Contract Detail
+        </td>
+    </tr>
+</table>
+<table border="1" width="100%" id="table2" bordercolorlight="#7F7F7F" style="border-collapse: collapse" bgcolor="#e0e0e0">
+     <tr>
+        <td align="left">
+            <table border="0" width="100%" id="table1">
+                <tr>
+                <td width="40%" valign="top" align="left" >
+                    <table cellspacing="5" cellpadding="1" width="785" border="0"  >
+                    <tr>
+                        <td align="center" class="font_header2" style="width:18%">Customer Details</td>
+                    </tr>
+                    <tr>
+                        <td  align="left" class="font_label"><b>Name</b></td>
+                        <td align="left">:</td>
+                        <td class="font_text">{!strName}</td>
+                    </tr>
+                    <tr>
+                        <td  class="font_label"><b>Email</b></td>
+                        <td align="left">:</td>
+                        <td  class="font_text">{!strEmail}</td>
+                    </tr>
+                    
+                    <!-- <tr>
+                        <td class="font_label"><b>Contract Start Date</b></td>
+                        <td align="left">:</td>
+                        <td class="font_text">
+                        <apex:inputField value="{!contract.StartDate}" />
+                        </td>
+                    </tr>
+                     -->
+                    <tr>
+                        <td class="font_label"><b>Contract Term (Months)</b></td>
+                        <td align="left">:</td>
+                        <td class="font_text">
+                        <apex:selectList value="{!contract.ContractTerm}" multiselect="false" size="1">
+                            <apex:selectOptions value="{!items}"/>
+                        </apex:selectList>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td class="font_label"><b>Total Number of Lines</b></td>
+                        <td align="left">:</td>
+                        <td class="font_text">
+                        <apex:inputText id="txtNoAddLines"  value="{!contract.Total_Number_Of_Lines__c}" size="10" />
+                        </td>
+                        
+                    </tr>
+                    <!--<tr>
+                        <td class="font_label"><b>Initial Monthly Price $</b></td>
+                        <td align="left">:</td>
+                        <td class="font_text">
+                        <apex:inputText id="txtPrice" value="{!contract.Initial_Monthly__c}" size="10" />
+                        </td>
+                        
+                    </tr>
+                    -->
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td align="center" class="font_header2">Agent Details</td>
+                    </tr>
+                    <tr>
+                        <td align="left" class="font_label"><b>Email</b></td>
+                        <td align="left">:</td>
+                        <td class="font_text">{!User.Email}</td>
+                    </tr> 
+                    <tr>
+                        <td align="left" class="font_label"><b>Fax Number</b></td>
+                        <td align="left">:</td>
+                        <!-- <td class="font_text">{!user.Fax}</td> -->
+                        <td class="font_text"><apex:inputText id="AgentFax" value="{!AgentFax}" size="10" />
+                        </td>
+                    </tr>                                                              
+                    <tr>
+                        <td colspan='3' align='center'>
+                            <apex:commandButton id="btnSend"  value="Preview and Send" action="{!doSearch}"/>
+                            <apex:commandButton id="btnCancel" onclick="window.close();" value="Cancel"/>
+                        </td>
+                        
+                    </tr>                  
+                    </table>
+                </td>
+                </tr>
+           </table>
+                </td>
+    </tr>
+     
+</table>
+
+
+</apex:form>
+</body>
+</html>
+<!-- <apex:pageBlock title="Preview the Attachment for {!strName}">
+        <c:attachment />
+    </apex:pageBlock>
+ -->
+</apex:page>

@@ -1,0 +1,124 @@
+<apex:page standardController="QuestionAndAnswers__c" extensions="QuestionViewController" id="page1">
+	<apex:sectionHeader title="Question Detail" Subtitle="Question Detail View"/>
+	<style>
+        .headerClassDiv {
+            background: url('/img/alohaSkin/grid_headerbg.gif') repeat-x scroll 0 bottom #FFFFFF !important;
+            /*border:1px solid #D4DADC;
+            border-width: 1px 1px 1px 1px !important;*/
+            color: #000000 !important;
+            font-size: 0.9em !important;
+            font-weight: bold !important;
+            padding: 5px 2px 4px 5px !important;
+            width:20% !important;
+        }
+        .valueClassDiv {
+            background:#FFFFFF !important;
+           /*border:1px solid #D4DADC;
+            border-width: 1px 1px 1px 1px !important;*/
+            color: #000000 !important;
+            font-size: 0.9em !important;
+            padding: 5px 2px 4px 5px !important;
+            width:80% !important;
+        }
+        #overlay {
+            background: no-repeat scroll top center gray;
+            border: 0px solid #000000;
+            bottom: 0;
+            left: 0;
+            opacity: 0.75;
+            position: absolute;
+            top: 0;
+            visibility: hidden;
+            width: 100%;
+            z-index: 1000;
+        }
+        .pbSubheader first tertiaryPalette {
+        	background: url('/img/alohaSkin/grid_headerbg.gif') repeat-x scroll 0 bottom #FFFFFF !important;
+            border-bottom:1px solid #D4DADC;
+            border-width: 1px 1px 1px 1px !important;
+            color: #000000 !important;
+            font-size: 0.9em !important;
+            font-weight: bold !important;
+            padding: 5px 2px 4px 5px !important;
+            width:150px !important;
+            text-align:center !important;
+        }
+        .LeftAlignClass {
+        	//text-align:left;
+        	width:50%;
+        }
+        
+        .RightAlignClass {
+         	//text-align:right;
+         	width:50%; 
+        }
+    </style> 
+	<apex:form >
+		<apex:PageBlock title="Question Details" mode="Detail" id="pgB">
+			<apex:PageBlock >
+				
+				<table width="90%" style="border:1px solid lightgray;" border="1">
+					<tr>
+						<td  class="headerClassDiv" style="font-size:12px;font-weight:bold;width:5%">Subject:&nbsp;&nbsp;</td>
+						<td  class="valueClassDiv" style="width:80%"> <apex:outputtext value="{!QuestionAndAnswers__c.Subject__c}"></apex:outputtext></td>
+					</tr>
+				
+					<tr>
+						<td class="headerClassDiv" style="font-size:12px;font-weight:bold;width:10%;">Option Type:&nbsp;&nbsp;</td>
+						<td class="valueClassDiv" style="width:5%"><apex:outputtext value="{!QuestionAndAnswers__c.Option_Type__c}"></apex:outputtext></td>
+					</tr>
+					<apex:OutputPanel rendered="{!if(answerOption.size>0,true,false)}">
+					<tr>
+					  <td class="headerClassDiv">
+					  	<apex:outputLabel style="font-size:12px;font-weight:bold;" >Options:&nbsp;&nbsp;</apex:outputLabel>	
+					  </td>
+					  <td class="valueClassDiv">
+					  	<apex:Repeat value="{!answerOption}" var="answerOptionVar">
+								<apex:outputText escape="false" value="{!BulletChar}&nbsp;{!answerOptionVar}"></apex:outputText><br/> 
+						</apex:Repeat>
+					  </td>	
+					</tr>
+					</apex:OutputPanel>
+				</table>
+				<!--<apex:PanelGrid columns="2" width="100%" border="0" columnClasses="LeftAlignClass,RightAlignClass">
+					<apex:PanelGroup layout="block">
+						<apex:outputLabel style="font-size:12px;font-weight:bold;">Subject:&nbsp;&nbsp;</apex:outputLabel>
+						<apex:outputtext value="{!QuestionAndAnswers__c.Subject__c}"></apex:outputtext>
+					</apex:PanelGroup>
+					<apex:PanelGroup layout="block">
+						<apex:outputLabel style="font-size:12px;font-weight:bold;">Option Type:&nbsp;&nbsp;</apex:outputLabel>
+						<apex:outputtext value="{!QuestionAndAnswers__c.Option_Type__c}"></apex:outputtext>
+					</apex:PanelGroup>
+					<apex:PanelGroup >
+						<apex:OutputPanel rendered="{!if(answerOption.size>0,true,false)}">
+							<apex:outputLabel style="font-size:12px;font-weight:bold;" >Options:&nbsp;&nbsp;</apex:outputLabel>
+							<apex:PanelGrid columns="1" border="0" style="text-align:left;width:100%;">
+							<apex:Repeat value="{!answerOption}" var="answerOptionVar">
+								<apex:outputText escape="false" value="{!BulletChar}&nbsp;{!answerOptionVar}"></apex:outputText><br/> 
+							</apex:Repeat>
+						</apex:PanelGrid>
+						</apex:OutputPanel>
+					</apex:PanelGroup>
+				</apex:PanelGrid>-->
+			</apex:PageBlock>
+			<!--<apex:PanelGrid Summary="Question Information" columns="4" styleClass="headerClassDiv" width="100%">
+				<apex:outPutLabel >Subject</apex:outPutLabel>
+				<apex:outputfield value="{!QuestionAndAnswers__c.Subject__c}"></apex:outputfield>
+				<apex:outPutLabel >Option Type</apex:outPutLabel>
+				<apex:outputfield value="{!QuestionAndAnswers__c.Option_Type__c}"></apex:outputfield>
+			</apex:PanelGrid>-->
+			<!--<apex:PageBlockSection title="Question Information" id="pgBS" collapsible="false">
+				<apex:outputfield style="font-size:12px;font-weight:bold;" value="{!QuestionAndAnswers__c.Subject__c}"></apex:outputfield>
+				<apex:outputfield style="font-size:12px;font-weight:bold;" value="{!QuestionAndAnswers__c.Option_Type__c}"></apex:outputfield>
+			</apex:PageBlockSection>-->
+			<!--<apex:PageBlockSection title="Answer Option Information" columns="1" id="pgBS1" collapsible="false" rendered="{!if(answerOption.size>0,true,false)}"> 
+				<apex:Repeat value="{!answerOption}" var="answerOptionVar">
+					<apex:outputText escape="false" value="{!BulletChar}&nbsp;{!answerOptionVar}"></apex:outputText> 
+				</apex:Repeat>
+			</apex:PageBlockSection>-->
+			<apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Back" action="{!returnToBackPage}"/> 
+            </apex:pageBlockButtons>
+		</apex:PageBlock>
+	</apex:form>
+</apex:page>

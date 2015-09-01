@@ -1,0 +1,79 @@
+<apex:page controller="PriceCodesCsvhnadler">
+<style>
+
+.tableClass,tr,th{
+      border:#000 1px solid;
+}
+.fontClass{
+    font-size:18px;
+
+}
+</style>
+<apex:pageMessages ></apex:pageMessages>
+  <apex:repeat value="{!mapPriceCode}" var="mapdata">
+    <table  style="border-collapse:collapse" cellspacing="0" cellpadding="5" align='center' width='60%'>
+          <tr>
+              <td colspan="3" style="border:solid 1px #000;"  align='center' class='fontClass'><b> {!mapdata}</b></td>
+          </tr>   
+          <apex:repeat value="{!mapPriceCode[mapdata]}" var="mapdata1">
+        <tr >
+             
+             <td colspan="3" >
+             <b> {!mapdata1}</b>
+             </td>
+        </tr>
+           <!-- <apex:repeat value="{!mapPriceCode[mapdata][mapdata1]}" var="mapdata2">-->
+        <apex:repeat value="{!mapKeySet[mapdata][mapdata1]}" var="mapdata2">
+        <apex:outputText escape="false" rendered="{!IF((mapdata2=='Metered Toll Free Price Codes' || 
+                         mapdata2=='Metered Toll Free with Contract Price Codes'),true,false)}" value="<tr style=background-color:#16365c;color:#fff>" />
+         
+     
+        <apex:outputText escape="false" rendered="{!IF((mapdata2 =='Unlimited Toll Free Price Codes' || mapdata2=='Unlimited Toll Free with Contract Price Codes'),
+                                     true,false)}"  value="<tr style=background-color:#f57b17;color:#fff>"/>
+        
+        <apex:outputText escape="false" rendered="{!IF((mapdata2 =='US Office Editions Price Codes' || mapdata2 == 'UK Office Editions Price Codes'),true,false)}" 
+            value="<tr style=background-color:#05A82D;color:#fff>"/>                                
+                                     
+        <apex:outputText escape="false" rendered="{!IF((mapdata2!='Metered Toll Free Price Codes' && 
+                                                          mapdata2!='Metered Toll Free with Contract Price Codes' && mapdata2 !='Unlimited Toll Free Price Codes' && 
+                                                           mapdata2!='Unlimited Toll Free with Contract Price Codes' &&
+                                                           mapdata2!= 'UK Office Editions Price Codes' &&
+                                                           mapdata2 != 'US Office Editions Price Codes'),true,false)}" value="<tr style=background-color:#05A82D;color:#fff>" />                             
+                                     
+                    
+                            <th > {!mapdata2}</th>
+                             <th style="border:solid 1px #000;">Monthly price per line</th>
+                             <th style="border:solid 1px #000;">Price Code (OID=) </th>
+         
+         
+         <apex:outputText escape="false" value="</tr>" />
+         
+         <apex:repeat value="{!mapPriceCode[mapdata][mapdata1][mapdata2]}" var="objMeteredType">
+          
+         <tr>
+             <td >  {!objMeteredType.strPriceCode}</td>
+              <td style="border:solid 1px #000;">{!objMeteredType.strMonthelyPricePerLineValue}</td>
+              <td style="border:solid 1px #000;">
+            
+                <apex:outputText rendered="{!IF(objMeteredType.strPriceCodeValue=='None',false,true)}">
+                     {!objMeteredType.strPriceCodeValue}
+                </apex:outputText>
+               
+               
+               </td>
+         </tr>
+            
+         </apex:repeat>     
+         </apex:repeat> 
+                               
+         
+                        
+                        </apex:repeat>
+                 
+            
+ 
+    
+    </table>  <br/>  
+ </apex:repeat>
+ 
+</apex:page>

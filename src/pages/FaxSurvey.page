@@ -1,0 +1,312 @@
+<apex:page id="FS_page" tabstyle="Survey__c" controller="cls_FaxSurvey" sidebar="false" showHeader="false" standardStylesheets="true" cache="false">
+      <style>
+        .headertext{
+            font-size:23px;
+            font-weight:bold;
+            margin-top: 6px;
+        }
+        
+        .txtpara{
+            font-weight: bold;
+            font-size: 15px;
+        }
+        
+        .line {
+          position: absolute;
+          background-color: #FF0000;
+        }
+        
+       .horizontal1 {
+			width: 355px;
+			height: 2px;
+		}
+		
+		.horizontal2 {
+			width: 116px;
+			height: 2px;
+		}
+		
+		.horizontal3 {
+			width: 105px;
+			height: 2px;
+		}
+		        
+       #line1 {
+			top: 207px;
+			left: 46px;
+		}
+		
+		#line2 {
+			top: 207px;
+			left: 405px;
+		}
+		
+		#line3 {
+			top: 207px;
+			left: 525px;
+		}
+		        
+        .textarea{
+            margin-left: 18px;
+            width: 566px;
+            height: 65px;
+            margin-top: 2px;
+        }
+         .inputText {
+        	margin:0px !important;
+        }
+        .tdClass {
+        	text-align:center;
+        }
+    </style>
+    
+    <script type="text/javascript">
+          function checkMandatory()
+        {
+            if(document.getElementById('FS_page:OPS_frm:hdnRCRating').value == '')
+            {
+                alert('Please provide the Rating for Ring Central.');
+            }
+            else if(document.getElementById('FS_page:OPS_frm:hdnFF').value == '')
+            {
+                alert('Please rate the Features/Functionality.');
+            }
+            
+            else if(document.getElementById('FS_page:OPS_frm:hdnEI').value == '')
+            {
+                alert('Please rate the Ease of implementation/setup.');
+            }
+            else if(document.getElementById('FS_page:OPS_frm:hdnEU').value == '')
+            {
+                alert('Please rate the Ease of use.');
+            }
+            else if(document.getElementById('FS_page:OPS_frm:hdnCSR').value == '')
+            {
+                alert('Please rate customer support resolution.');
+            }
+            else if(document.getElementById('FS_page:OPS_frm:hdnCSup').value == '')
+            {
+                alert('Let us know if you have called Customer Support in the past 3 months.');    
+            }
+            else
+            {
+                callSubmitSurvey();
+            }
+        }
+        
+        function chkRecRating(val)
+        {
+            var ratingValue = val.value;
+            document.getElementById('FS_page:OPS_frm:hdnRCRating').value = ratingValue;               
+        }
+         
+        function chkCustomerSupport(val)
+        {
+            var custSupport = val.value;
+            document.getElementById('FS_page:OPS_frm:hdnCSup').value = custSupport;
+        }
+        
+        function chkFetFunctioanlity(val)
+        {
+            var FeatFunctval = val.value;
+            document.getElementById('FS_page:OPS_frm:hdnFF').value = FeatFunctval;
+        }
+        function chkEaseImp(val)
+        {
+            var easeImp = val.value;
+            document.getElementById('FS_page:OPS_frm:hdnEI').value = easeImp;
+        }
+        function chkEaseUse(val)
+        {
+            var easeUse = val.value;
+            document.getElementById('FS_page:OPS_frm:hdnEU').value = easeUse;
+        }
+        function chkCustSupRes(val)
+        {
+            var custSuppRes = val.value;
+            document.getElementById('FS_page:OPS_frm:hdnCSR').value = custSuppRes;
+        }
+        
+    </script>
+    
+    <apex:form id="OPS_frm">
+        <apex:inputhidden id="hdnRCRating" value="{!recomRCRating}"/>
+        <apex:inputhidden id="hdnCSup" value="{!custSupportValue}"/>
+        <apex:inputhidden id="hdnFF" value="{!FeatFunctValue}"/>
+        <apex:inputhidden id="hdnEI" value="{!easeImpValue}"/>
+        <apex:inputhidden id="hdnEU" value="{!easeUseValue}"/>
+        <apex:inputhidden id="hdnCSR" value="{!custSupResValue}"/>
+        <apex:actionFunction action="{!SubmitSurvey}" name="callSubmitSurvey"/>
+        
+        <apex:outputPanel id="OP_msgSubmitResponse" rendered="{!isSubmitResponse}">
+            <div style="margin-left: 20px;">
+                <div id="header1" style="background-color: #F8F8F8; height: 120px;">
+                    <apex:image id="RC_imglogo1" value="{!$Resource.RcLogo}" style="width:180px; height:65px;"/><br/>
+                    <p class="headertext">RingCentral Satisfaction Survey</p>       
+                </div>
+                
+                <div style="font-size: 16px; font-weight:bold; background-color: #F8F8F8; height: 25px; margin-top:15px; color:darkblue;">
+                    Thank you for participating in the survey.  Your response has been successfully submitted.  
+                </div>
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="OP_msgAlreadySubmitRes" rendered="{!isResAlreadyFilled}">
+            <div style="margin-left: 20px;">
+                <div id="header2" style="background-color: #F8F8F8; height: 120px;">
+                    <apex:image id="RC_imglogo2" value="{!$Resource.RcLogo}" style="width:180px; height:65px;"/><br/>
+                    <p class="headertext">RingCentral Satisfaction Survey</p>       
+                </div>
+                
+                <div style="font-size: 16px; font-weight:bold; background-color: #F8F8F8; height: 42px; margin-top:15px; color:darkblue;">
+                    Thank you for your participation. A response has been succesfully
+					submitted for your account.    
+                </div>
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="OP_msgSomeError" rendered="{!isError}">
+            <div style="margin-left: 20px;">
+                <div id="header3" style="background-color: #F8F8F8; height: 120px;">
+                    <apex:image id="RC_imglogo3" value="{!$Resource.RcLogo}" style="width:180px; height:65px;"/><br/>
+                    <p class="headertext">RingCentral Satisfaction Survey</p>       
+                </div>
+                
+                <div style="font-size: 16px; font-weight:bold; background-color: #F8F8F8; height: 25px; margin-top:15px; color:darkblue;">
+                    Some Problem has occured in the process. Please try after some time.  
+                </div>
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="OP_mainSection" rendered="{!isMainSection}">
+            <body style="margin-left: 20px;">
+                <div id="header4" style="background-color: #F8F8F8; height: 120px;">
+                    <apex:image id="RC_imglogo4" value="{!$Resource.RcLogo}" style="width:180px; height:65px;"/><br/>
+                    <p class="headertext">RingCentral Satisfaction Survey</p>       
+                </div>
+                
+                <div id="sur_ques1M" style="background-color: #F8F8F8; height: 50px; margin-top:20px">
+                    <p class="txtpara"><label style="color:red;">*</label> 1. How likely would you be to recommend RingCentral to a friend or colleague?</p>
+                    <p style="font-size: 13px; font-weight: bold; margin-left: 29px; margin-top: -11px;">(On a scale of 1-10: Let 1 be "Not at all likely" and let 10 be "Extremely likely")</p>
+                </div>
+                <div id="sur_ques1Mid" style="margin-top:10px;">
+                    <label style="margin-left: 170px; font-weight: bold;">Not at all likely</label>
+                    <label style="margin-left: 170px; font-weight: bold;">Neutral</label>
+                    <label style="margin-left: 45px; font-weight: bold;">Extremely likely</label>
+                </div>
+                <div id="sur_ques1S" style="background-color: #F8F8F8; height: 40px; margin-top:10px">
+                    <div id="line1" class="line horizontal1" style="margin-top: 14px;"></div>
+                    <div id="line2" class="line horizontal2" style="background-color: #FF9933; margin-top: 14px;"></div>
+                    <div id="line3" class="line horizontal3" style="background-color: #66FF66; margin-top: 14px;"></div>
+                    
+                   <table style="margin-left:22px;"  border="0" width="600px" cellspacing="0" cellpadding="0">
+	                    <tr>
+                        	<td class="tdClass">1</td>
+							<td class="tdClass" >2</td>
+							<td class="tdClass" >3</td>
+							<td class="tdClass" >4</td>
+							<td class="tdClass" >5</td>
+							<td class="tdClass" >6</td>
+							<td class="tdClass" >7</td>
+							<td class="tdClass" >8</td>
+							<td class="tdClass" >9</td>
+							<td class="tdClass" >10</td>
+	                    </tr>
+                    	<tr>
+                        
+				             <td class="tdClass"><input class="inputText" type="radio" id="rd1" value="1" name="recommneded"   onclick="chkRecRating(this);"/></td>
+				             <td class="tdClass"><input class="inputText" type="radio" id="rd2" value="2" name="recommneded"   onclick="chkRecRating(this);"/></td>
+				             <td class="tdClass"><input class="inputText" type="radio" id="rd3" value="3" name="recommneded"   onclick="chkRecRating(this);"/></td>
+				             <td class="tdClass"><input class="inputText" type="radio" id="rd4" value="4" name="recommneded"   onclick="chkRecRating(this);"/></td>
+				             <td class="tdClass"><input class="inputText" type="radio" id="rd5" value="5" name="recommneded"   onclick="chkRecRating(this);"/></td>
+				             <td class="tdClass"><input class="inputText" type="radio" id="rd6" value="6" name="recommneded"   onclick="chkRecRating(this);"/></td>
+				             <td class="tdClass"><input class="inputText" type="radio" id="rd7" value="7" name="recommneded"   onclick="chkRecRating(this);"/></td>
+				             <td class="tdClass"><input class="inputText" type="radio" id="rd8" value="8" name="recommneded"   onclick="chkRecRating(this);"/></td>
+				             <td class="tdClass"><input class="inputText" type="radio" id="rd9" value="9" name="recommneded"   onclick="chkRecRating(this);"/></td>
+				             <td class="tdClass"><input class="inputText" type="radio" id="rd10" value="10" name="recommneded" onclick="chkRecRating(this);"/></td>
+                      </tr>
+                  </table>
+                  </div>
+                <div id="sur_ques2M" style="background-color: #F8F8F8; height: 25px; margin-top:20px">
+                    <p class="txtpara">2. Please describe why you chose that rating:</p>
+                </div>
+                <div id="sur_ques2S">
+                    <apex:inputTextarea styleClass="textarea" value="{!ratingDescription}"/>
+                </div>
+                
+                <div id="sur_ques3M" style="background-color: #F8F8F8; height: 25px; margin-top:20px">
+                    <p class="txtpara"><label style="color:red;">*</label> 3. Please rate RingCentral on the following:</p>
+                </div>
+                <div id="sur_ques3S">
+                    <table id="tblrateMat" style="width: 600px;">
+                        <tr id="row1" style="height: 20px;">
+                            <td></td>
+                            <td style="width:45px; font-size: 13px;">Poor</td>
+                            <td style="width:45px; font-size: 13px;">Fair</td>
+                            <td style="width:55px; font-size: 13px;">Average</td>
+                            <td style="width:45px; font-size: 13px;">Good</td>
+                            <td style="width:55px; font-size: 13px;">Excellent</td>
+                        </tr>
+                        <tr id="row2" style="background-color: #F8F8F8; height: 30px;">
+                            <td style="width: 155px; font-size: 13px;">Features/Functionality</td>
+                            <td><input type="radio" id="rd2P" value="Poor" name="FF" onclick="chkFetFunctioanlity(this);"/></td>
+                            <td><input type="radio" id="rd2F" value="Fair" name="FF" onclick="chkFetFunctioanlity(this);"/></td>
+                            <td><input type="radio" id="rd2A" value="Average" name="FF" onclick="chkFetFunctioanlity(this);"/></td>
+                            <td><input type="radio" id="rd2G" value="Good" name="FF" onclick="chkFetFunctioanlity(this);"/></td>
+                            <td><input type="radio" id="rd2E" value="Excellent" name="FF" onclick="chkFetFunctioanlity(this);"/></td>
+                        </tr>
+                        <tr id="row4" style="background-color: #F8F8F8; height: 30px;">
+                            <td style="width: 155px; font-size: 13px;">Ease of implementation/setup</td>
+                            <td><input type="radio" id="rd4P" value="Poor" name="implemntation" onclick="chkEaseImp(this);"/></td>
+                            <td><input type="radio" id="rd4F" value="Fair" name="implemntation" onclick="chkEaseImp(this);"/></td>
+                            <td><input type="radio" id="rd4A" value="Average" name="implemntation" onclick="chkEaseImp(this);"/></td>
+                            <td><input type="radio" id="rd4G" value="Good" name="implemntation" onclick="chkEaseImp(this);"/></td>
+                            <td><input type="radio" id="rd4E" value="Excellent" name="implemntation" onclick="chkEaseImp(this);"/></td>
+                        </tr>
+                        <tr id="row5" style="height: 30px;">
+                            <td style="width: 155px; font-size: 13px;">Ease of use</td>
+                            <td><input type="radio" id="rd5P" value="Poor" name="use" onclick="chkEaseUse(this);"/></td>
+                            <td><input type="radio" id="rd5F" value="Fair" name="use" onclick="chkEaseUse(this);"/></td>
+                            <td><input type="radio" id="rd5A" value="Average" name="use" onclick="chkEaseUse(this);"/></td>
+                            <td><input type="radio" id="rd5G" value="Good" name="use" onclick="chkEaseUse(this);"/></td>
+                            <td><input type="radio" id="rd5E" value="Excellent" name="use" onclick="chkEaseUse(this);"/></td>
+                        </tr>
+                        <tr id="row6" style="background-color: #F8F8F8; height: 30px;">
+                            <td style="width: 155px; font-size: 13px;">Customer support resolution</td>
+                            <td><input type="radio" id="rd6P" value="Poor" name="supportRes" onclick="chkCustSupRes(this);"/></td>
+                            <td><input type="radio" id="rd6F" value="Fair" name="supportRes" onclick="chkCustSupRes(this);"/></td>
+                            <td><input type="radio" id="rd6A" value="Average" name="supportRes" onclick="chkCustSupRes(this);"/></td>
+                            <td><input type="radio" id="rd6G" value="Good" name="supportRes" onclick="chkCustSupRes(this);"/></td>
+                            <td><input type="radio" id="rd6E" value="Excellent" name="supportRes" onclick="chkCustSupRes(this);"/></td>
+                        </tr>
+                        
+                    </table>
+                </div>
+                
+                
+                <div id="sur_ques4M" style="background-color: #F8F8F8; height: 25px; margin-top:20px">
+                    <p class="txtpara"><label style="color:red;">*</label> 4. Have you called RingCentral Customer Support in the past 3 months?</p>
+                </div>
+                <div id="sur_ques4S" style="margin-top:-10px;">
+                    <p><input type="radio" id="rdY" value="Yes" name="supportVal" onclick="chkCustomerSupport(this);"/>Yes</p>
+                    <p style="margin-top:-10px;"><input type="radio" id="rdN" value="No" name="supportVal" onclick="chkCustomerSupport(this);"/>No</p>
+                </div>
+                
+                <div id="sur_ques5M" style="background-color: #F8F8F8; height: 25px; margin-top:20px">
+                    <p class="txtpara">5. Please give any additional comments here.</p>
+                </div>
+                <div id="sur_ques5S">
+                    <apex:inputTextarea styleClass="textarea" value="{!addCommentsValue}"/>
+                </div>
+                <div style="background-color: #F8F8F8; height: 25px; margin-top: 20px">
+				    <p class="txtpara">
+				    Have questions regarding your service or need additional
+					support? Please visit the <a href="http://success.ringcentral.com" style="text-decoration :none;color:#015BA7;" target="_blank">  
+						Customer Support Center </a>
+					</p>
+				</div>
+                <apex:commandButton value="Submit" onclick="checkMandatory(); return false;" style="margin-top: 30px; margin-left: 115px;"/>
+            </body>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

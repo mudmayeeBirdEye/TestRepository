@@ -1,0 +1,4 @@
+<apex:page standardController="Lead">
+   <c:AeSalesGuides objectType="Lead" objectId="{!Lead.Id}" extraInfo="{!JSENCODE(Lead.Name)}"
+   					match="Role={!JSENCODE(SUBSTITUTE($UserRole.Name, ",", ""))},Status={!JSENCODE(SUBSTITUTE(Lead.Status, ",", ""))},Industry={!JSENCODE(SUBSTITUTE(Lead.Industry, ",", ""))}"/>
+</apex:page>

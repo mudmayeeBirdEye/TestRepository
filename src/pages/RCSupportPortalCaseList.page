@@ -1,0 +1,5 @@
+<apex:page >
+    
+        <c:RCContactSuppUK />
+    
+</apex:page>

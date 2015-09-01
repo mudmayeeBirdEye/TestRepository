@@ -1,0 +1,1134 @@
+<!---------------------------------------------------------------------------------------------------------------
+* Project Name..........: Quoting Tool 3.0                                                                      *
+* File..................: ProductQuoteWizard.Page                                                               *
+* Version...............: 1.0                                                                                   *
+* Created by............: Simplion Technologies                                                                 *
+* Created Date..........: 3/7/2014                                                                              *
+* Last Modified by......: Simplion Technologies                                                                 *
+* Last Modified Date....: 06/26/2014                                                                            *
+* Description...........: Its been used for selecting products, adding to cart, creating, updating RC Quotes,-  *
+*                         Converting to Sales agreement, creating Approval Record for Non-Standard discounts etc*
+---------------------------------------------------------------------------------------------------------------->
+<apex:page controller="ProductQuoteWizardCls"  id="pg" sidebar="true">
+   <!--     <link rel="stylesheet" href="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery-ui.css')}" type="text/css" media="screen" />
+    <apex:includeScript value="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery.min.js')}"/>     
+    <apex:includeScript value="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery-ui.min.js')}"/> -->
+    
+    <!-- <link rel="stylesheet" href="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery-ui.css')}" type="text/css" media="screen" />
+    <apex:includeScript value="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery-1.10.2.js')}"/>     
+    <apex:includeScript value="{!URLFOR($Resource.ModelDialogBox, 'ModelDialogBox/jquery-ui.js')}"/> -->
+   
+    <script src="{!URLFOR($Resource.quoteTablesorter, 'tablesorter/jquery-1.10.2.min.js')}"></script>
+    <script src="{!URLFOR($Resource.quoteTablesorter, 'tablesorter/__jquery.tablesorter.min.js')}"></script>
+    <apex:stylesheet value="{!URLFOR($Resource.quoteTablesorter, 'tablesorter/themes/blue/style.css')}"/>
+    <style>
+        /* .activeTab {background-color: #236FBD; color:white; background-image:none;cursor:pointer;} */
+        /* .inactiveTab { background-color: lightgrey; color:black; background-image:none;cursor:pointer;} */
+        .activeTab {
+            box-shadow: 0px -48px 54px -20px #236FBD inset;
+            -moz-box-shadow: 0px -48px 54px -20px #236FBD inset;
+            -webkit-box-shadow: 0px -48px 54px -20px #236FBD inset;
+            color: black;
+            background-image: none;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 14px 14px 0px 0px;
+            -moz-border-radius: 14px 14px 0px 0px;
+            -webkit-border-radius: 14px 14px 0px 0px;
+            height: 30px;
+            padding-top: 8px !important;
+            cursor:pointer !important;
+            width:200px;
+        }
+        .inactiveTab {
+            background-color: white;
+            color: black;
+            background-image: none;
+            cursor: pointer;
+            border-radius: 14px 14px 0px 0px;
+            -moz-border-radius: 14px 14px 0px 0px;
+            -webkit-border-radius: 14px 14px 0px 0px;
+            box-shadow: 0px -48px 54px -20px orange inset;
+            -webkit-box-shadow: 0px -48px 54px -20px orange inset;
+            -moz-box-shadow: 0px -48px 54px -20px orange inset;
+            font-size: 19px;
+            cursor:pointer !important;
+            width:200px;
+        }
+
+        .requiredfield {
+            width: 3px;
+            background: #F00;
+            padding-top: 5px;
+            padding-bottom: 3px;
+            float: left;
+            margin-top: 2px;
+            margin-right: 2px;
+        }
+        .rich-tab-inactive {
+            background-color: none;
+            /* border-color: #fff; */
+            background-image: none;
+            /* border-width: 1px; */
+            /* border-style: solid; */
+            /* background-repeat: repeat-x; */
+            /* background-position: top; */
+            /* border-bottom-width: 0; */
+            cursor: default;
+        }
+        .rich-tab-active {
+            background-image: none;
+            /* background-color: #f1f1f1; */
+        }
+        .rich-tabhdr-side-border {
+            background:none;
+            border:none;
+            display:none;
+        }
+        .rich-tabhdr-side-cell {
+            border:none;
+        }
+        #overlayNew, #overlayNew1, #overlayNew2{
+            background: no-repeat scroll top center gray;
+            border: 0px solid #000000;
+            bottom: 0;  
+            left: 0;
+            opacity: 0.75;
+            position: absolute;
+            top: 0;  
+            display: none;
+            width: 100%;
+            z-index: 9999;
+            zIndex: 9999;
+            height:100%;
+        }
+        .upperdiv {
+            width: 100%;
+            height: 60px;
+            background-color: white;
+            height: 60px;
+            /*border: 1px solid black;*/
+            padding-left: 20px;
+            padding-right: 20px;
+            /* margin-left: 21%; */
+            box-shadow: 0px 0px 35px 5px lightgray inset;
+            -moz-box-shadow: 0px 0px 35px 5px lightgray inset;
+            -webkit-box-shadow: 0px 0px 35px 5px lightgray inset;
+            /*border-radius: 10px;*/
+        }
+    
+        .lowerdiv {
+            box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+            background: #f8f8f8;
+            outline: none;
+            width: 100%;
+            padding: 20px;
+        }
+        
+        .fancybox-close { 
+            position: absolute; 
+            top: 8px; 
+            right: -55px; 
+            width: 36px; 
+            height: 36px; 
+            cursor: pointer; 
+            z-index: 8040; 
+            zIndex:8040;
+            background-image:URL("{!URLFOR($Resource.RCSupportPortal, 'supportPortal/img/fancybox_sprite.png')}");
+        }   
+        
+        .requiredfield {
+            width: 1px;
+            height: 21px;
+            background: #F00;
+            /*padding-top: 5px;
+            padding-bottom: 3px;*/
+            float: left;
+            margin-top: 0.5%;
+            margin-right: 2px;
+            padding: 1px;
+        }
+        
+        tr.dataRow {
+           background-color:white;     
+        }
+        tr.dataRow:hover {
+           background-color: #e3f3ff;   
+        };
+        
+        table.tablesorter thead tr .headerSortUp {
+            /*background-image: https://c.cs1.visual.force.com/resource/1396265819000/quoteTablesorter/tablesorter/themes/blue/asc.gif;*/
+            background-image: url(https://c.cs1.visual.force.com/resource/1396265819000/quoteTablesorter/tablesorter/themes/blue/asc.gif) no-repeat !important;
+        }
+        
+        table.tablesorter thead tr .headerSortDown{
+            background-image: url(https://c.cs1.visual.force.com/resource/1396265819000/quoteTablesorter/tablesorter/themes/blue/desc.gif) no-repeat !important;
+            /*background-image: https://c.cs1.visual.force.com/resource/1396265819000/quoteTablesorter/tablesorter/themes/blue/desc.gif !important;*/
+        }
+        .btnDiv {
+            /*width: 95%;*/
+            margin: auto;
+            border: 1px solid #A5A6A5;
+            /* min-height: 100px; */
+            margin-top: 5px;
+            /*margin-bottom: 5px;*/
+            background: #FFF;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            /*behavior: url({!$Resource.BorderRadiusHTC});*/
+            box-shadow: 0px -48px 54px -20px #236FBD inset;
+            -webkit-box-shadow: 0px -48px 54px -20px #236FBD inset;
+            -moz-box-shadow: 0px -48px 54px -20px #236FBD inset;
+            text-align: center;
+            padding:10px;
+        }
+        select {
+            box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           /*min-width: 250px !important;*/
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+        }
+        .select-min-width {
+            width: 250px;
+        }
+        .styled-select{
+           box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           width: 245px;
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+           /*height: 34px !important;*/
+           /*-webkit-appearance: none !important;*/
+        }
+        input:focus, select:focus, textarea:focus {
+            outline-size: none;
+            outline-style: none;
+            outline-color: none;
+            border-radius: 10px;
+            border: 1px solid gray;
+        }
+        div.Header{
+            font-family:Arial;
+            font-size:15px;
+            font-weight:bold;
+            color:#000;
+        }
+        .pbSubheader h3 {
+            color: white;
+        }
+        .pbHeader {
+            /*background:#1797C0 !important;*/
+        }
+        .pbBottomButtons {
+            /*background:#1797C0 !important;*/
+        }
+        .bPageBlock.pbBody {
+            background-color: #F3F3EC !important;
+        }
+        .listwidth {
+            /*width:380px !important;*/
+            width:260px !important;
+        }
+        body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons {
+            background:#F3F3EC !important;
+        }
+        .btn {
+            color: #084B8A !important;
+            border: 1px solid #A5A6A5 !important;
+            padding: 8px !important;
+            font-size:11px !important;
+            /*background-position: right -28px !important;*/
+        }
+        .btn:hover {
+            background-position: right -28px !important;
+        }
+        .homeTab .tertiaryPalette, .individualPalette .homeBlock .tertiaryPalette, .layoutEdit .individualPalette .homeBlock .tertiaryPalette {
+            background:#1797C0 !important;
+            /*box-shadow: 0px 18px 13px 5px #1797C0 inset !important;*/
+            height: 20px;
+        }
+        .messageCell h4 {
+            display:none !important;
+        }
+        .homeTab .listViewport .subNav .linkBar, .homeTab .mComponent .cHeader, .homeTab .genericTable, .homeTab .bSubBlock, .homeTab .bPageBlock {
+            border-top: 0px solid #1797c0 !important;
+        }
+        a:link {text-decoration:none;}    /* unvisited link */
+        a:visited {text-decoration:none;} /* visited link */
+        a:hover {text-decoration:underline;}   /* mouse over link */
+        a:active {text-decoration:underline;}  /* selected link */
+        label {
+            font-weight:bolder;
+        }
+        .dataCell {
+            background:none !important;
+        }
+        tr.headerRow th {
+            background: white !important;
+            box-shadow: 0px -48px 54px -20px #1797C0 inset;
+            -moz-box-shadow: 0px -48px 54px -20px #1797C0 inset;
+            -webkit-box-shadow: 0px -48px 54px -20px #1797C0 inset;
+            height: 20px !important;
+            color: white !important;
+            font-weight: bolder !important;
+            font-size: 13px !important;
+        }
+        table.tablesorter {
+            margin:auto !important;
+        }
+        .datePicker {
+            z-index: 99999 !important;
+            zIndex:99999 !important;
+            position:fixed !important;
+        }
+        .msgPanelCls {
+            height: 30px;
+            width: auto;
+            border: 1px solid #3399FF;
+            padding: 2px;
+            background: #FFFFCC;
+            font-weight: bolder !important;
+            border-radius: 5px;
+        }
+        .message {
+            margin: 5px 0px 10px 0px;
+            font-weight: bolder;
+        }
+        .labelCol {
+            vertical-align: middle !important;
+        }
+       /* -- -------------------------------------As/Simplion/10/7/2014 starts--------------------------------------------- -- */
+        .term-styled-select{
+            min-height: 40px;
+            min-width: 80px;
+            
+            display: block;
+        }
+        span .term-styled-select:empty {
+           display: none;
+        }
+
+
+
+
+
+
+
+
+    </style>
+    <apex:form id="frm" >   
+        <script>    
+            $_JQUERY1 = $.noConflict();
+            //var $j = jQuery.noConflict();
+            //$_JQUERY = $.noConflict();        
+            function showOverlay(divId) {               
+                var divTag = document.getElementById(divId);
+                divTag.style.display = 'block';
+            }       
+            function hideOverlay(divId) {
+                var divTag = document.getElementById(divId);
+                divTag.style.display = 'none';                          
+            }   
+            
+            function closeTemplate(){
+                closeTemplateAction();
+            }
+            
+            function isNumberKey(evt) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;                               
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) 
+                    return false;               
+                return true;
+            } 
+
+            
+            function showDialog(maxDiscount,enteredDiscount,discountType,listPrice,parentProductId,childProductId,thisData){               
+               var discountAmount;               
+               if(discountType=='%'){                       
+                    discountAmount = (listPrice * enteredDiscount) / 100;
+               }else{
+                    discountAmount = enteredDiscount;
+               }
+               //alert('Discount = '+parseFloat(discountAmount));
+               //alert('listPrice = '+listPrice);
+               if(parseFloat(discountAmount) > listPrice){
+                    alert('Discount cant be greater than List Price for Product.');
+                    thisData.value = thisData.oldvalue;
+               }else{              
+                   if(maxDiscount!='' && discountAmount > maxDiscount){
+                       //alert('Given Discount is greater than Max Discount for Product.');                    
+                       onChangeActionFunction(parentProductId,childProductId);
+                   }else{
+                        onChangeActionFunction(parentProductId,childProductId);
+                   }
+               }
+            }   
+                
+            function renderContinueLink(obj, id) {
+                try {
+                    var linkObj = document.getElementById(id);
+                    var selectedTemplateId = obj.value;
+                    var text = '{!hrefText}'+"viewTemplate?id="+selectedTemplateId+"&opptyid="+'{!oppObj.Id}'+"&quoteid="+'{!quoteObj.id}';
+                    // alert(text);
+                    linkObj.href = text;
+                } catch(x){alert(x);}
+            }
+            
+            function onChangeQnty(maxDiscount,enteredDiscount,discountType,listPrice,parentProductId,childProductId,thisData){
+                onChangeActionFunction(parentProductId,childProductId);
+                var discountAmount;               
+                if(discountType=='%'){                      
+                    discountAmount = (listPrice * enteredDiscount) / 100;
+                }else{
+                    discountAmount = enteredDiscount;
+                }
+                //alert('Discount = '+parseFloat(discountAmount));
+                //alert('listPrice = '+listPrice);
+                if(parseFloat(discountAmount) > listPrice){
+                    alert('Discount cant be greater than List Price for Product.');
+                    thisData.value = thisData.oldvalue;
+                }else{              
+                   if(maxDiscount!='' && discountAmount > maxDiscount){
+                       //alert('Given Discount is greater than Max Discount for Product.');
+                   }
+                }
+            }
+                    
+            function renderContinueLink(obj, id) {
+                try {
+                    var linkObj = document.getElementById(id);
+                    var selectedTemplateId = obj.value;
+                    var text ='{!hrefText}'+"previewTemplate?id="+selectedTemplateId+"&opptyid="+'{!oppObj.Id}'+"&quoteid="+'{!quoteObj.id}';
+                    // alert(text);
+                    linkObj.href = text;
+                } catch(x){alert(x);}
+            }
+            function onChangeInitialTerm(initalTerm){
+                var renewalId = document.getElementsByClassName('renewalClassOnly');
+                console.log($('.renewalClassOnly'));
+                //alert(initalTerm);
+                for(var i = 0, j = renewalId[0].options.length; i < j; ++i) {
+                    if(renewalId[0].options[i].innerHTML === initalTerm) {
+                       renewalId[0].selectedIndex = i;
+                       break;
+                    }else if(renewalId[0].options[i].innerHTML == '' || renewalId[0].options[i].innerHTML == '--None--'){
+                        renewalId[0].selectedIndex = '';
+                    }
+                }
+                return false;
+            }
+            function hideZeroOfRenewal(){
+                var renewalId = document.getElementsByClassName('renewalClassOnly');
+                for(var i = 0, j = renewalId[0].options.length; i < j; ++i) {
+                    if(renewalId[0].options[i].innerHTML === 0) {
+                       renewalId[0].options[i].value = null;
+                       break;
+                    }
+                }
+                for(var i = 0, j = renewalId[0].options.length; i < j; ++i) {
+                    if(renewalId[0].options[i].value == '12' )
+                        renewalId[0].remove(i);
+                }
+                return false;   
+            }
+            window.onload = hideZeroOfRenewal();
+            
+        </script>
+<!--        <script>
+                         
+                    </script> -->
+        <apex:pageMessages id="pageMsgs" escape="false"/>
+        <div class="btnDiv">
+            <table style="width:100%">
+                <tr>
+                    <td style="width:50%;text-align:left;">
+                        <a href="{!hrefTextId}{!oppObj.Id}" target="_self" style="padding-left:20px;color: white !important;font-weight: bolder;font-size: 14px;">{!oppObj.Name}</a>
+                        <!-- <apex:commandLink value="{!oppObj.Name}" action="{!redirectToOpportunity}" style="padding-left:20px;color: white !important;font-weight: bolder;font-size: 14px;"/> -->
+                    </td>
+                    <td style="width:50%;text-align:right;">
+                        <a href="{!hrefTextId}{!oppObj.AccountId}" target="_self" style="color: white !important;font-weight: bolder;font-size: 14px;padding-right:20px;">{!oppObj.Account.Name}</a>
+                        <!-- <apex:commandLink value="{!oppObj.Account.Name}" action="{!redirectToAccount}" style="color: white !important;font-weight: bolder;font-size: 14px;padding-right:20px;"/> -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <apex:actionFunction name="closeTemplateAction" action="{!generatePdf}" status="Ajaxstatus" rerender="frm"/>
+        <apex:outputpanel id="templatetBlock" rendered="{!showTemplatePanel}">
+            <div style="background: black; opacity: 0.75; position: absolute;top: 0px;  width: 100%; left:0px;z-index: 9999; zIndex: 9999; height:100%;"></div>
+            <apex:outputPanel rendered="true" style="position: fixed;z-index: 99999;top: 15%;left: 20%;width: 55%;" id="mainPanel">
+                <div class="upperdiv" align="center">
+                    <p style="font:Bold 25px arial; padding-top:12px;">Select Template</p>
+                </div>
+                    <div class="lowerdiv" align="center" id="menu">
+                        <apex:outputpanel rendered="{!IF(templateRecordList != null && templateRecordList.size != 0, 'true', 'false')}">
+                            <div style="height:200px;overflow-y:scroll;">
+                                <table style="background:white;width:80%;" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr class="headerRow ">
+                                            <th style="width:60px;" class="headerRow ">Select</th>
+                                            <th >Name</th>
+                                            <th >Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <apex:repeat var="templateObj" value="{!templateRecordList}" >
+                                            <tr class="dataRow">
+                                                <td class="dataCell" style="width:60px;text-align:center;" >
+                                                    <apex:outputtext escape="false" rendered="{!IF(templateObj.Id == selectedTemplate , 'true', 'false')}" >
+                                                        <input type="radio" checked='checked' value="{!templateObj.Id}" name="templatepanel" onchange="renderContinueLink(this,'continueLink');"/>
+                                                    </apex:outputtext>
+                                                    <apex:outputtext escape="false" rendered="{!IF(templateObj.Id == selectedTemplate , 'false', 'true')}" >
+                                                        <input type="radio" value="{!templateObj.Id}" name="templatepanel" onchange="renderContinueLink(this,'continueLink');"/>
+                                                    </apex:outputtext>
+                                                </td>
+                                                <td class="dataCell" style="font-weight:bolder;">{!templateObj.Name}</td>
+                                                <td class="dataCell">{!templateObj.Description__c}</td>
+                                            </tr>
+                                        </apex:repeat>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="padding-top:20px;">
+                                <a id="continueLink" href="{!hrefText}previewTemplate?id={!selectedTemplate}&opptyid={!oppObj.Id}&quoteid={!quoteObj.id}" class="btn" target="_self">Continue</a>
+                            </div>
+                        </apex:outputpanel>
+                        <apex:outputpanel rendered="{!IF(templateRecordList == null || templateRecordList.size == 0, 'true', 'false')}">
+                            <div style="width:100%;padding-bottom:10px;">
+                                <div class="msgPanelCls">
+                                    <div style="float:left;"><img src="/s.gif" style="vertical-align:middle; width:27px; height:26px;margin-top: 2px;background: url(/img/msg_icons/info24.png) no-repeat;" />
+                                    </div>
+                                    <div style="float:left;margin-top:6px;">
+                                        <span id="pageId:formId:errorForm" style="vertical-align:middle; color: red; font: 12px arial; padding:2px;">
+                                            <apex:outputtext rendered="{!IF(quoteObj == null || quoteObj.id == null, true, false)}" >Please save the quote before generating PDF.</apex:outputtext>
+                                            <apex:outputtext rendered="{!IF(quoteObj != null && quoteObj.id != null, true, false)}" >No template found for this brand or quote type.</apex:outputtext>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>  
+                        </apex:outputpanel>
+                    </div>
+                <a class="fancybox-item fancybox-close" href="javascript:void(0)" onclick="closeTemplate();" title="Close"></a>
+            </apex:outputPanel>         
+       </apex:outputpanel>
+          
+        <apex:outputpanel id="convertBlock" rendered="{!menuFlag}">
+            <div style="background: lightslategray; opacity: 0.75; position: absolute;top: 0;  width: 100%; z-index: 9999; zIndex: 9999; height:100%;"></div>
+            <apex:outputPanel rendered="true" style="position: fixed;z-index: 99999;top: 15%;left: 20%;width: 55%;" id="main">
+                <div class="upperdiv" align="center">
+                    <p style="font:Bold 25px arial; padding-top:12px;">Convert to Sales Agreement</p>
+                </div>
+                <div class="lowerdiv" align="center" id="menu">
+                    <div style="width:100%;text-align:left;">
+                       <apex:outputPanel rendered="{!menuFlag}"> 
+                            <apex:pagemessages escape="false"/>
+                        </apex:outputPanel> 
+                    </div>
+                    <apex:pageBlock rendered="{!IF(menuFlag,true, false)}">
+                        <apex:pageBlockSection collapsible="false" columns="1">
+                            <!-- --------------------------------------------As/Simplion/8/20/2014--------------------------- -->
+                            <apex:pageblocksectionitem >
+                                <apex:outputlabel >Initial Term</apex:outputlabel>
+                                <apex:outputpanel layout="block" styleClass="requiredInput">
+                                    <apex:outputpanel layout="block" styleClass="requiredBlock" ></apex:outputpanel>
+                                   <!--  <apex:inputField value="{!quoteObj.Initial_Term__c}"  onchange="onChangeInitialTerm(this.value)">&nbsp;Months</apex:inputField> -->
+                                    <apex:selectList size="1" value="{!initialTerm}" multiselect="false" onchange="onChangeInitialTerm(this.value)">
+                                        <apex:selectOptions value="{!InitialTermValues}"/>
+                                    </apex:selectList>&nbsp;Months
+                                </apex:outputpanel>
+                            </apex:pageblocksectionitem>
+                            <apex:pageblocksectionitem >
+                                <apex:outputlabel >Renewal Term</apex:outputlabel>
+                                <apex:outputpanel layout="block" styleClass="requiredInput">
+                                    <apex:outputpanel layout="block" styleClass="requiredBlock" ></apex:outputpanel>
+                                    <!-- <apex:inputField value="{!quoteObj.Renewal_Term__c}" styleClass="inputBox renewalClassOnly" id="renewalTermId">&nbsp;Months</apex:inputField> -->
+                                    <apex:selectList size="1" value="{!renewalTerm}" multiselect="false" styleClass="inputBox renewalClassOnly" id="renewalTermId">
+                                        <apex:selectOptions value="{!RenewalTermValues}"/>
+                                    </apex:selectList>&nbsp;Months
+                                </apex:outputpanel>
+                            </apex:pageblocksectionitem> 
+                         <!-- --------------------------------------------As/Simplion/8/20/2014--------------------------- --> 
+                            <apex:inputField value="{!quoteObj.Start_Date__c}" styleClass="inputBox styled-select" id="startDateId" required="true"/>
+                            <apex:inputField value="{!quoteObj.Valid_Until_Date__c}" styleClass="inputBox styled-select" required="true"/>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                    <div class="internal" id="internal" style="display:{!IF(menuFlag,'none', '')}">
+                        <div class="internalmsg">Please wait...</div>
+                    </div>
+                    <div style="height: 1%;">&nbsp;</div>
+                    <div> 
+                        <apex:commandButton styleclass="btn" value="Continue" action="{!validateQuote}" status="counterStatus" rerender="frm" >
+                            <apex:actionStatus id="counterStatus" onStart="showOverlay('internal');" onstop="hideOverlay('internal');"/>
+                        </apex:commandButton> 
+                        <apex:commandButton styleclass="btn" value="Cancel" status="counterStatusNew" onclick="window.open('{!hrefText}productquoteWizard?response=quote&oppid={!oppObj.Id}&quoteId={!IF(quoteObj != null && quoteObj.Id != null, quoteObj.Id, null)}','_self');return false;"/>
+                    </div>
+                </div>
+                <a class="fancybox-item fancybox-close" href="{!hrefText}productquotewizard?response=quote&oppid={!oppObj.Id}&quoteId={!IF(quoteObj != null && quoteObj.Id != null, quoteObj.Id, null)}" title="Close"></a>
+                         
+            </apex:outputPanel>
+        </apex:outputpanel>
+        <apex:outputpanel id="justificationBlock" rendered="{!showJustificationBool}">
+            <div style="background: lightslategray; opacity: 0.75; position: absolute;top: 0;  width: 100%; z-index: 9999; zIndex: 9999; height:100%;"></div>
+            <apex:outputPanel rendered="true" style="position: fixed;z-index: 99999;top: 15%;left: 20%;width: 55%;" id="mainJus">
+                <div class="upperdiv" align="center">
+                    <p style="font:Bold 25px arial; padding-top:12px;">Create Discount Approval</p>
+                </div>
+                <div class="lowerdiv" align="center" id="menuJus">
+                    <div style="width:100%;text-align:left;">
+                       <apex:outputPanel rendered="{!showJustificationBool}"> 
+                            <apex:pagemessages escape="false"/>
+                        </apex:outputPanel> 
+                    </div>
+                    <apex:pageBlock rendered="{!IF(showJustificationBool,true, false)}">
+                        <apex:pageBlockSection collapsible="false" columns="1">
+                            <apex:outputlabel >Justification And Description</apex:outputlabel>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputpanel layout="block" styleClass="requiredInput" style="width:inherit;">
+                                    <apex:outputpanel layout="block" styleClass="requiredBlock"></apex:outputpanel>
+                                    <apex:inputTextArea value="{!JustificationandDescription}" styleClass="inputBox" id="initialTermIdJus" style="margin: 2px;width: 120%;height: 192px;position:relative;"/>
+                                </apex:outputpanel>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                    <div class="internal" id="internal" style="display:{!IF(showJustificationBool,'none', '')}">
+                        <div class="internalmsg">Please wait...</div>
+                    </div>
+                    <div style="height: 1%;">&nbsp;</div>
+                    <div> 
+                        <apex:actionStatus id="availableSlotStatus" style="align:center; padding: 1%;">
+                            <apex:facet name="start">
+                                <apex:commandButton styleclass="btn" value="Redirecting to Approval..." rerender="frm" status="availableSlotStatus" disabled="true" />
+                            </apex:facet>
+                            <apex:facet name="stop">
+                                <apex:commandButton styleclass="btn" value="Continue" action="{!createApproval}" rerender="frm" status="availableSlotStatus" />
+                            </apex:facet>
+                        </apex:actionStatus>
+                        
+                        <!-- <apex:commandButton styleclass="btn" value="Continue" action="{!createApproval}" status="counterStatus2" rerender="frm" >
+                            <apex:actionStatus id="counterStatus2" onStart="showOverlay('internal');" onstop="hideOverlay('internal');"/>
+                        </apex:commandButton>  -->
+                        <apex:commandButton styleclass="btn" value="Cancel" status="counterStatusNew" onclick="window.open('/apex/productquoteWizard?response=quote&oppid={!oppObj.Id}&quoteId={!IF(quoteObj != null && quoteObj.Id != null, quoteObj.Id, null)}','_self');return false;" reRender="frm,approvalPB,relatedListSection"/>
+                    </div>
+                </div>
+                <a class="fancybox-item fancybox-close" href="{!hrefText}productquotewizard?response=quote&oppid={!oppObj.Id}&quoteId={!IF(quoteObj != null && quoteObj.Id != null, quoteObj.Id, null)}" title="Close"></a>
+                         
+            </apex:outputPanel>
+        </apex:outputpanel>
+        
+        <apex:tabPanel switchType="client" value="{!openTab}" selectedTab="{!openTab}" id="theTabPanel" tabClass="activeTab" inactiveTabClass="inactiveTab" rendered="{!showPage}">
+            <apex:tab label="Products" name="productTab" id="productTab" switchType="client">                
+                <apex:actionStatus id="Ajaxstatus" onStart="showOverlay('overlayNew');"  onstop="hideOverlay('overlayNew');"/> 
+                <div id="overlayNew" style="text-align:center;padding-top:20px;">
+                    <div class='overLay' style="display:block;z-index:99999;zIndex:99999;"></div>
+                    <div class="loader-static" style='z-index:100000;zIndex:100000;'>
+                    <div class="loader-static-panel">
+                    <div style='margin-top:50px;font-weight:bold;'>
+                    <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                    <span class="waitingDescription" style="font-weight:bold; font-size:20px; position:absolute;z-index:10; color:white;">Please Wait...</span></div>
+                    </div>
+                    <div class="loader-fix"></div>   
+                    </div>
+                </div>
+                <apex:pageBlock >                   
+                    <!-- <apex:pageBlockSection columns="2"> -->
+                        <div>
+                        <apex:outputPanel >
+                            <apex:outputLabel value="Product Family : "/>
+                            <apex:selectList value="{!strProductFamily}" size="1" styleclass="select-min-width">
+                                <apex:selectOptions value="{!productFamilyLst}"/>                                
+                            </apex:selectList>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <apex:outputLabel value="Charge Term : "/>
+                            <apex:selectList value="{!strChargeTerm}" size="1" styleclass="select-min-width">
+                                <apex:selectOptions value="{!productChargeTermLst}"/>                                
+                            </apex:selectList>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <apex:outputLabel value="Service Type : "/>
+                            <apex:selectList value="{!strServiceType}" size="1" styleclass="select-min-width">
+                                <apex:selectOptions value="{!productServiceTypeLst}"/>                                
+                            </apex:selectList>
+                        </apex:outputPanel>
+                        </div>
+                        <div>
+                        <apex:outputPanel >
+                            <apex:outputLabel value="Product Name : "/>
+                            <apex:inputText value="{!strProductName}" styleclass="styled-select"/>
+                        </apex:outputPanel>
+                        <apex:outputPanel style="text-align: center;left: 66px;position: relative;">
+                            <apex:commandButton value="Search" action="{!searchProduct}" reRender="frm" status="Ajaxstatus" style="padding:10px;"/>
+                            <apex:commandButton value="Reset" reRender="frm" status="Ajaxstatus" action="{!resetSearchFilters}" style="padding:10px;"/>
+                            <apex:commandButton value="Add To Cart" rendered="{!$ObjectType.RC_Quote__c.Updateable}" action="{!addToCart}" reRender="frm" status="Ajaxstatus" style="padding:10px;"/>
+                            <apex:commandButton value="Cancel" reRender="frm" status="Ajaxstatus" action="{!redirectToOpportunity}" style="padding:10px;"/>
+                        </apex:outputPanel>   
+                        </div>                     
+                    <!-- </apex:pageBlockSection> -->
+                </apex:pageBlock>
+                <apex:pageBlock rendered="{!showProductBlock}">
+                    <script> 
+                        $_JQUERY1(document).ready(function(){
+                            try {
+                                $_JQUERY1("#myTable").tablesorter();
+                            } catch(x) {}
+                        });
+                    </script>
+                    <div style="overflow-y:scroll;height:400px;">
+                       <!--  <apex:pageBlockTable value="{!productWrapperLst}" var="prod" style="overflow-y:scroll;height:100px;">                      
+                            <apex:column width="15px" headerClass="head">                    
+                                <apex:inputCheckbox value="{!prod.bolSelectedProduct}" id="checks"/>   
+                            </apex:column>    
+                            <apex:column headerValue="Product Name" width="20%">
+                                <apex:outputText value="{!prod.productName}"/>
+                            </apex:column> 
+                                <apex:column headerValue="Charge Term" width="20%">
+                                <apex:outputText value="{!prod.productChargeTerm}"/>
+                            </apex:column> 
+                                <apex:column headerValue="Category" width="20%">
+                                <apex:outputText value="{!prod.productCategory}"/>
+                            </apex:column>                                      
+                        </apex:pageBlockTable>  -->
+                        <table width="100%" cellspacing="0" id="myTable" class="list tablesorter display">
+                            <thead>
+                                <tr class="headerRow">
+                                    <th class="header"></th>
+                                    <th class="header">Product Name</th>
+                                    <th class="header">Charge Term</th>
+                                    <th class="header">Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <apex:repeat value="{!productWrapperLst}" var="prod">                           
+                                    <tr class="dataRow">
+                                        <td class="dataCell">
+                                            <apex:inputCheckbox value="{!prod.bolSelectedProduct}" id="checks"/> 
+                                        </td>
+                                        <td class="dataCell">
+                                             <apex:outputText value="{!prod.productName}"/>
+                                        </td>
+                                        <td class="dataCell">
+                                            <apex:outputText value="{!prod.productChargeTerm}"/> 
+                                        </td>
+                                        <td class="dataCell">
+                                            <apex:outputText value="{!prod.productCategory}"/>
+                                        </td>
+                                    </tr>
+                                </apex:repeat>  
+                            </tbody>                        
+                        </table>
+                   </div>                  
+                </apex:pageBlock>
+                
+            </apex:tab>
+            
+            <apex:variable value="{!0}" var="rowNumber" />
+            
+            <apex:tab label="Cart - ({!cartSize})" name="cartTab" id="cartTab" switchType="client">
+                <!-- <apex:outputPanel id="hideOnPendingAppvl" rendered="{!IF(quoteObj.Approved_Status__c == 'Submitted',true,false)}" onclick="alert('Quote is Pending for Approval.')"> -->
+                <apex:outputPanel id="hideOnPendingAppvl" rendered="{!IF(quoteObj.Approved_Status__c == 'Submitted',true,false)}" onclick="alert('You cannot modify this Cart as there is an Approval In-Progress.')">
+                    <div style="background: lightslategray; opacity: 0.15; position: absolute;top: 0;  width: 100%; z-index: 9999; zIndex: 9999; height:100%;"></div>
+                </apex:outputPanel> 
+                <apex:actionFunction name="onChangeActionFunction" action="{!onChageQuantity}" status="Ajaxstatus1" reRender="frm,panelWithVar">
+                     <apex:param name="p1" value="" assignTo="{!parentProductId}"/>
+                     <apex:param name="p2" value="" assignTo="{!childProductId}"/>
+                </apex:actionFunction> 
+                <apex:actionStatus id="Ajaxstatus1" onStart="showOverlay('overlayNew1');"  onstop="hideOverlay('overlayNew1');"/> 
+                <div id="overlayNew1" style="text-align:center;padding-top:20px;" class="overlayNewClass">
+                    <div class='overLay' style="display:block;z-index:99999;zIndex:99999;"></div>
+                    <div class="loader-static" style='z-index:100000;zIndex:100000;'>
+                    <div class="loader-static-panel">
+                    <div style='margin-top:50px;font-weight:bold;'>
+                    <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                    <span class="waitingDescription" style="font-weight:bold; font-size:20px; position:absolute;z-index:10; color:white;">Please Wait...</span></div>
+                    </div>
+                    <div class="loader-fix"></div>
+                    </div>
+                </div>
+                
+                <!--  <div id="dialog-error" title="Message" style="display: none;">
+                    <p>Given Discount is greater than Max Discount for Product.</p>
+                 </div> -->
+                 
+                 <!-- <div id="popUpDiv" style="display:none;">
+                    <div style="background: lightslategray; opacity: 0.75; position: absolute;top: 0;  width: 100%; z-index: 9999; zIndex: 9999; height:100%;"></div>
+                    <apex:outputPanel rendered="true" style="position: fixed;z-index: 99999;top: 15%;left: 20%;width: 55%;" id="main">                      
+                        <div class="lowerdiv" align="center" id="menu">
+                            Given Discount is greater than Max Discount for Product.<br/>
+                            <apex:commandButton value="OK" onclick="submitDiv();"/>
+                        </div>
+                    </apex:outputPanel>  
+                </div> -->
+             
+               <apex:pageBlock > 
+                    <apex:variable value="{!0}" var="rowNumber"/> 
+                    <apex:outputPanel id="panelWithVar">
+                        <apex:variable value="{!0}" var="rowNumber" />
+                    </apex:outputPanel>
+                    <div class="pbBody" id="tempDiv">
+                        <table width="100%" cellspacing="0" id="myTable" class="list tablesorter display">
+                            <thead>
+                                <tr class="headerRow">                                  
+                                    <th class="headerRow"></th>
+                                    <th class="headerRow">Product Line Item Name</th>
+                                    <th class="headerRow">Product Name</th>
+                                    <th class="headerRow">Charge Term</th>
+                                    <th class="headerRow">Quantity</th>
+                                    <th class="headerRow" style="{!IF(isRCPartnerUser != null && isRCPartnerUser == true,'display:none','display:')}">List Price</th>
+                                    <th class="headerRow">Your Price</th>
+                                    <th class="headerRow" style="{!IF(isRCPartnerUser != null && isRCPartnerUser == true,'display:none','display:')}">Effective Discount</th>
+                                    <th class="headerRow" style="{!IF(isRCPartnerUser != null && isRCPartnerUser == true,'display:none;','display:')}">Discount</th>
+                                    <th class="headerRow">Total Price</th>
+                                    <!-- <th class="headerRow">Approval Required ?</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <apex:repeat value="{!wrapperObjMap}" var="productId">
+                                    <apex:repeat value="{!wrapperObjMap[productId]}" var="item">
+                                        <!-- <tr class="dataRow" style="background-color: {!IF(!NOT(item.disableMode),'white','gainsboro')};"> -->
+                                        <tr class="dataRow" style="background-color: {!IF(!NOT(item.disableMode),'#F7F7F5','')};">
+                                            <td class="dataCell">
+                                                <apex:commandButton action="{!removeProduct}" id="removeBtn" value=" X " rendered="{!NOT(item.disableMode) && $ObjectType.RC_Quote__c.Updateable}" reRender="frm,pbt,panelWithVar" title="Remove" status="Ajaxstatus1">                               
+                                                    <!-- <apex:param name="p1" value="{!rowNumber}" assignTo="{!numberOfRowToRemove}"/> -->
+                                                    <apex:param name="p1" value="{!productId}" assignTo="{!parentProductId}"/>
+                                                    <apex:param name="p2" value="{!item.productId}" assignTo="{!childProductId}"/>
+                                                </apex:commandButton>
+                                            </td>
+                                            <td class="dataCell">
+                                                <apex:outputText value="{!item.productLineItemName}"/>
+                                            </td>
+                                            <td class="dataCell">
+                                                <apex:outputText value="{!item.productName}"/>
+                                            </td>
+                                            <td class="dataCell">
+                                                <apex:outputText value="{!item.chargeTerm}"/>
+                                            </td>
+                                            <td class="dataCell">
+                                                <apex:inputText value="{!item.Quantity}" onkeypress="return isNumberKey(event);" onchange="onChangeQnty('{!item.maxDiscount}','{!item.discount}','{!item.selectedDiscountType}','{!item.listPrice}','{!productId}','{!item.productId}',this);" id="quantityInput" rendered="{!IF(item.productType=='DL-Fee' || item.productType=='Flat-Fee',false,true)}" styleclass="styled-select" style="width:80px;">                               
+                                                   <!--  <apex:actionsupport event="onchange" action="{!onChageQuantity}" status="Ajaxstatus1" reRender="frm,pbt,panelWithVar">
+                                                        <apex:param name="p1" value="{!productId}" assignTo="{!parentProductId}"/>
+                                                        <apex:param name="p2" value="{!item.productId}" assignTo="{!childProductId}"/>
+                                                    </apex:actionsupport> -->
+                                                </apex:inputText>
+                                                <apex:outputText value="{!item.Quantity}" id="quantityOutput" rendered="{!IF(item.productType=='DL-Fee' || item.productType=='Flat-Fee',true,false)}"/>
+                                            </td>
+                                            <td class="dataCell" style="{!IF(isRCPartnerUser != null && isRCPartnerUser == true,'display:none','display:')}">
+                                                <!-- <apex:outputText value="{!currencyCode} {!item.listPrice}"/> -->
+                                                <apex:outputText value="{!currencyCode} {0, number,###,###,###,###,##0.00}">
+                                                    <apex:param value="{!item.listPrice}"/>
+                                                </apex:outputText>
+                                            </td>
+                                            <td class="dataCell">
+                                                <!-- <apex:outputText value="{!currencyCode} {!item.effectivePrice}"/> -->
+                                                <apex:outputText value="{!currencyCode} {0, number,###,###,###,###,##0.00}">
+                                                    <apex:param value="{!item.effectivePrice}"/>
+                                                </apex:outputText>
+                                            </td>
+                                            <td class="dataCell" style="{!IF(isRCPartnerUser != null && isRCPartnerUser == true,'display:none','display:')}">
+                                                <apex:outputText value="{!currencyCode} {0, number,###,###,###,###,##0.00}">
+                                                    <apex:param value="{!item.effectiveDiscount}"/>
+                                                </apex:outputText>
+                                            </td>
+                                       <!--     <td class="dataCell">
+                                                 <apex:outputText value="{0, number,###,###,###,###,##0.00}">
+                                                    <apex:param value="{!item.maxDiscount}"/>
+                                                </apex:outputText>
+                                            </td> -->
+                                            <td class="dataCell" style="{!IF(isRCPartnerUser != null && isRCPartnerUser == true,'display:none','display:')}"> 
+                                                <apex:outputpanel rendered="{!IF(item.productType!='DL-Fee' && item.maxDiscount!=null,true,false)}">
+                                                    <table style="width:100%;">
+                                                        <tr>
+                                                            <td style="background: none !important;border: none !important;">
+                                                                <apex:inputText value="{!item.Discount}" id="discountInput" onfocus="this.oldvalue = this.value;" onchange="showDialog('{!item.maxDiscount}',this.value,'{!item.selectedDiscountType}','{!item.listPrice}','{!productId}','{!item.productId}',this);" rendered="{!IF(item.productType!='DL-Fee',true,false)}" styleclass="styled-select" style="width:80px;">                               
+                                                                   <!--  <apex:actionsupport event="oncomplete" action="{!onChageQuantity}" status="Ajaxstatus1" reRender="pbt,panelWithVar">
+                                                                        <apex:param name="p1" value="{!productId}" assignTo="{!parentProductId}"/>
+                                                                        <apex:param name="p2" value="{!item.productId}" assignTo="{!childProductId}"/>
+                                                                    </apex:actionsupport> -->
+                                                                </apex:inputText>
+                                                            </td>
+                                                            <td style="background: none !important;border: none !important;">   
+                                                                <apex:selectList styleclass="select-min-width" value="{!item.selectedDiscountType}" id="selectDiscountType" multiselect="false" size="1" onfocus="this.oldvalue = this.value;"  onchange="showDialog('{!item.maxDiscount}','{!item.Discount}',this.value,'{!item.listPrice}','{!productId}','{!item.productId}',this);" rendered="{!IF(item.productType!='DL-Fee',true,false)}"  style="width:80px;">                               
+                                                                    <!-- <apex:actionsupport event="onchange" action="{!onChageQuantity}" status="Ajaxstatus1" reRender="pbt,panelWithVar">
+                                                                        <apex:param name="p1" value="{!productId}" assignTo="{!parentProductId}"/>
+                                                                        <apex:param name="p2" value="{!item.productId}" assignTo="{!childProductId}"/>
+                                                                    </apex:actionsupport> -->
+                                                                    <apex:selectOptions value="{!discountTypeOptns}"/>
+                                                                </apex:selectList>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </apex:outputpanel>
+                                            </td>
+                                            <td class="dataCell">
+                                                <!-- <apex:outputText value="{!currencyCode} {!item.totalPrice}"/> -->
+                                                <apex:outputText value="{!currencyCode} {0, number,###,###,###,###,##0.00}">
+                                                    <apex:param value="{!item.totalPrice}"/>
+                                                </apex:outputText>
+                                                <apex:variable var="rowNumber" value="{!rowNumber + 1}" />
+                                            </td>
+                                            <!-- <td class="dataCell">
+                                                <apex:inputCheckbox value="{!item.approvalRequired}" disabled="true"/>
+                                            </td> -->
+                                        </tr>
+                                    </apex:repeat>
+                                </apex:repeat>
+                                <!-- <tr>
+                                    <td colspan="8"></td>
+                                    <td>TOTAL: </td>
+                                    <td>{!currencyCode} {!grandTotal}</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                        <!-- -----------------------------------As/Simplion/8/12/2014 starts----------------------------------- -->
+                        <div style="text-align: right;background: white;border: 1px solid lightgray;padding: 5px;font-size: 15px;font-weight: bolder;">
+                            Total: <apex:outputText value="{!currencyCode} {0, number,###,###,###,###,##0.00}">
+                                <apex:param value="{!grandTotal}"/>
+                            </apex:outputText>
+                             
+                        </div>
+                        <!-- -----------------------------------As/Simplion/8/12/2014 ends----------------------------------- -->
+                    </div>
+                    <apex:pageBlockButtons location="both">  
+                        <apex:commandButton value="Save To Cart" rendered="{!$ObjectType.Line_Item__c.Updateable}" action="{!saveUpdateLineItems}" status="Ajaxstatus1" reRender="frm,pbt,panelWithVar"/>
+                        <apex:commandButton value="Cancel" action="{!redirectToOpportunity}" status="Ajaxstatus1" reRender="frm,pbt,panelWithVar"/>
+                    </apex:pageBlockButtons>
+                    
+                   <!-- <apex:pageBlockTable value="{!lineItemWrapperList}" var="item" id="pbt">
+                        <apex:column width="5%">                            
+                            <apex:commandButton action="{!removeProduct}" id="removeBtn" value=" X " rendered="{!NOT(item.disableMode)}" reRender="frm,pbt,panelWithVar" title="Remove" status="Ajaxstatus1">                               
+                                <apex:param name="p1" value="{!rowNumber}" assignTo="{!numberOfRowToRemove}"/>
+                            </apex:commandButton>
+                        </apex:column>                        
+                        <apex:column headerValue="{!$ObjectType.RC_Product_Line_Item__c.fields.Name.label}">
+                            <apex:outputText value="{!item.productLineItemName}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.RC_Product__c.fields.Name.label}">
+                            <apex:outputText value="{!item.productName}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.Line_Item__c.fields.Quantity__c.label}" width="5%">
+                            <apex:inputText value="{!item.Quantity}" id="quantityInput" rendered="{!NOT(item.disableMode)}">                                
+                                <apex:actionsupport event="onchange" action="{!onChageQuantity}" status="Ajaxstatus1" reRender="frm,pbt,panelWithVar">
+                                    <apex:param name="p2" value="{!rowNumber}" assignTo="{!numberOfRowToQuantity}"/>
+                                </apex:actionsupport>
+                            </apex:inputText>
+                            <apex:outputText value="{!item.Quantity}" id="quantityOutput" rendered="{!item.disableMode}"/></apex:column>
+                        <apex:column headerValue="{!$ObjectType.Line_Item__c.fields.List_Price__c.label}">
+                            <apex:outputText value="{!currencyCode} {!item.listPrice}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.Line_Item__c.fields.Effective_Price__c.label}">
+                            <apex:outputText value="{!currencyCode} {!item.effectivePrice}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.RC_Product_Line_Item__c.fields.Max_Discount__c.label}">
+                            <apex:outputText value="{!item.maxDiscount}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.Line_Item__c.fields.Discount__c.label}">
+                            <apex:inputText value="{!item.Discount}" id="discountInput" onchange="showDialog('{!item.maxDiscount}',this.value,'{!rowNumber}');">                                
+                                <apex:actionsupport event="oncomplete" action="{!onChageQuantity}" status="Ajaxstatus1" reRender="pbt,panelWithVar">
+                                    <apex:param name="p3" value="{!rowNumber}" assignTo="{!numberOfRowToQuantity}"/>
+                                </apex:actionsupport>
+                            </apex:inputText>&nbsp;    
+                            <apex:selectList value="{!item.selectedDiscountType}" id="selectDiscountType" multiselect="false" size="1" onchange="showDialog('{!item.maxDiscount}',this.value,'{!rowNumber}');">                             
+                                <apex:actionsupport event="onchange" action="{!onChageQuantity}" status="Ajaxstatus1" reRender="pbt,panelWithVar">
+                                    <apex:param name="p4" value="{!rowNumber}" assignTo="{!numberOfRowToQuantity}"/>
+                                </apex:actionsupport>
+                                <apex:selectOptions value="{!discountTypeOptns}"/>
+                            </apex:selectList>
+                        </apex:column>     
+                        <apex:column headerValue="Total Price">
+                            <apex:outputText value="{!currencyCode} {!item.totalPrice}"/>
+                            <apex:variable var="rowNumber" value="{!rowNumber + 1}" />
+                        </apex:column>
+                        <apex:column headerValue="Approval Required ?">
+                            <apex:inputCheckbox value="{!item.approvalRequired}" disabled="true"/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <apex:pageBlockButtons location="both">
+                        <apex:commandButton value="Update" action="{!saveUpdateLineItems}" status="Ajaxstatus1" reRender="frm,pbt,panelWithVar"/>
+                        <apex:commandButton value="Cancel" action="{!redirectToOpportunity}" status="Ajaxstatus1" reRender="frm,pbt,panelWithVar"/>
+                    </apex:pageBlockButtons>---> 
+                                        
+                </apex:pageBlock>
+            </apex:tab>            
+            <apex:tab label="{!IF(quoteObj.Quote_Type__c=='Agreement','Agreement','Quote')}" name="quoteTab" id="quoteTab" switchType="client">  
+                <apex:outputPanel id="hideOnPendingAppvl1" rendered="{!IF(quoteObj.Approved_Status__c == 'Submitted',true,false)}" onclick="alert('You cannot modify this Quote as there is an Approval In-Progress.')">
+                    <div style="background: lightslategray; opacity: 0.15; position: absolute;top: 0;  width: 100%; z-index: 9999; zIndex: 9999; height:100%;"></div>
+                </apex:outputPanel>            
+                <apex:actionStatus id="Ajaxstatus2" onStart="showOverlay('overlayNew2');"  onstop="hideOverlay('overlayNew2');"/> 
+                <div id="overlayNew2" style="text-align:center;padding-top:20px;" class="overlayNewClass">
+                    <div class='overLay' style="display:block;z-index:99999;zIndex:99999;"></div>
+                    <div class="loader-static" style='z-index:100000;zIndex:100000;'>
+                    <div class="loader-static-panel">
+                    <div style='margin-top:50px;font-weight:bold;'>
+                    <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                    <span class="waitingDescription" style="font-weight:bold; font-size:20px; position:absolute;z-index:10; color:white;">Please Wait...</span></div>
+                    </div>
+                    <div class="loader-fix"></div>
+                    </div>
+                </div>
+                
+                <apex:pageBlock tabStyle="RC_Quote__c">
+                    <apex:outputpanel id="highlightPanel" rendered="{!IF((quoteObj.Approved_Status__c == 'Required' || quoteObj.Approved_Status__c == 'Rejected'),true,false)}">
+                        <div style="width:100%;padding-bottom:10px;">
+                            <div class="msgPanelCls">
+                                <div style="float:left;"><img src="/s.gif" style="vertical-align:middle; width:27px; height:26px;margin-top: 2px;background: url(/img/msg_icons/info24.png) no-repeat;" />
+                                </div>
+                                <div style="float:left;margin-top:6px;"><span id="pageId:formId:errorForm" style="vertical-align:middle; color: red; font: 12px arial; padding:2px;">This {!IF(quoteObj.Quote_Type__c=='Agreement','Agreement','Quote')} requires Approval for giving discount on one or more product or because of special terms. Please get approval by clicking <b>Create Approval</b> button.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </apex:outputpanel> 
+                    <apex:pageBlockButtons location="both">
+                            <apex:commandButton value="Create Approval" action="{!createApproval}" rendered="{!IF((quoteObj.Approved_Status__c == 'Required' || quoteObj.Approved_Status__c == 'Rejected') && $ObjectType.RC_Quote__c.Updateable,true,false)}" reRender="frm,approvalPB,relatedListSection" status="Ajaxstatus2"/>
+                            <apex:commandButton value="Generate PDF" rendered="{!showQuoteReadOnlyMode && $ObjectType.RC_Quote__c.Updateable}" action="{!generatePdf}" rerender="frm,templatepanel,approvalPB," status="Ajaxstatus2"/>
+                            <apex:commandButton value="Convert to Sales Agreement" rendered="{!IF(quoteObj.Quote_Type__c!='Agreement' && showQuoteReadOnlyMode && showQuoteReadOnlyMode && $ObjectType.RC_Quote__c.Updateable,true,false)}" action="{!validateQuote}" reRender="frm" status="Ajaxstatus2"/>
+                            <apex:commandButton value="Edit" rendered="{!showQuoteReadOnlyMode && $ObjectType.RC_Quote__c.Updateable}" action="{!editQuote}" reRender="frm,quoteTab" status="Ajaxstatus2"/>
+                            <apex:commandButton value="Save" rendered="{!showQuoteEditMode && $ObjectType.RC_Quote__c.Updateable}" action="{!saveQuote}" reRender="frm" status="Ajaxstatus2"/>
+                            <apex:commandButton value="Cancel" rendered="{!showQuoteEditMode}" action="{!cancelQuote}" reRender="frm,quoteTab" status="Ajaxstatus2"/> <!-- oncomplete="location.reload(true);"/> -->
+                    </apex:pageBlockButtons> 
+                    <apex:pageBlockSection collapsible="false" title="Quote Information" columns="2">
+                        <apex:outputField value="{!quoteObj.Opportunity__c}" rendered="{!!showQuoteReadOnlyMode}"/>
+                        <!-- <apex:inputField value="{!quoteObj.IsPrimary__c}" rendered="{!!showQuoteReadOnlyMode}"/> -->
+                        <apex:inputField value="{!quoteObj.IsPrimary__c}" rendered="{!IF(showQuoteReadOnlyMode==false && quoteObj.Id!=null && quoteObj.IsPrimary__c==false,true,false)}"/>
+                        <apex:outputField value="{!quoteObj.Opportunity__c}" rendered="{!showQuoteReadOnlyMode}"/>
+                        <apex:outputField value="{!quoteObj.IsPrimary__c}" rendered="{!IF(showQuoteReadOnlyMode==true || quoteObj.Id==null || quoteObj.IsPrimary__c==true,true,false)}"/>
+                        <apex:pageblocksectionitem rendered="{!!showQuoteReadOnlyMode}">
+                            <apex:outputlabel >Quote Name</apex:outputlabel>
+                            <apex:outputpanel layout="block" styleClass="requiredInput">
+                                <apex:outputpanel layout="block" styleClass="requiredBlock"></apex:outputpanel>
+                                <apex:inputField value="{!quoteObj.Name}" rendered="{!!showQuoteReadOnlyMode}" styleclass="styled-select"/>
+                            </apex:outputpanel>
+                        </apex:pageblocksectionitem>
+                        <apex:pageblocksectionitem rendered="{!!showQuoteReadOnlyMode}">
+                            <apex:outputlabel >Valid Until Date</apex:outputlabel>
+                            <apex:outputpanel layout="block" styleClass="requiredInput">
+                                <apex:outputpanel layout="block" styleClass="requiredBlock"></apex:outputpanel>
+                                <apex:inputfield value="{!quoteObj.Valid_Until_Date__c}" rendered="{!!showQuoteReadOnlyMode}" styleclass="styled-select"/>
+                            </apex:outputpanel>
+                        </apex:pageblocksectionitem>
+                        <apex:outputField value="{!quoteObj.Name}" rendered="{!showQuoteReadOnlyMode}"/>
+                        <apex:outputField value="{!quoteObj.Valid_Until_Date__c}" rendered="{!showQuoteReadOnlyMode}"/>
+                        <apex:pageblocksectionitem rendered="{!!showQuoteReadOnlyMode}">
+                            <apex:outputlabel >Contact</apex:outputlabel>
+                            <apex:outputpanel layout="block" styleClass="requiredInput">
+                                <apex:outputpanel layout="block" styleClass="requiredBlock"></apex:outputpanel>
+                                <apex:inputField value="{!quoteObj.Contact__c}" rendered="{!!showQuoteReadOnlyMode}" styleclass="styled-select"/>
+                            </apex:outputpanel>
+                        </apex:pageblocksectionitem>
+                        <apex:inputField value="{!quoteObj.Agreement_Status__c}" rendered="{!!showQuoteReadOnlyMode && !isRCPartnerUser && quoteObj.Quote_Type__c=='Agreement'}" />
+                        <apex:outputField value="{!quoteObj.Agreement_Status__c}" rendered="{!!showQuoteReadOnlyMode && isRCPartnerUser && quoteObj.Quote_Type__c=='Agreement'}" />
+                        <apex:outputField value="{!quoteObj.Agreement_Status__c}" rendered="{!!showQuoteReadOnlyMode && (quoteObj.Quote_Type__c=='Quote' || quoteObj.Quote_Type__c=='')}" />
+                        <apex:outputField value="{!quoteObj.Contact__c}" rendered="{!showQuoteReadOnlyMode}"/>
+                        <apex:outputField value="{!quoteObj.Agreement_Status__c}" rendered="{!showQuoteReadOnlyMode}"/>
+                        <apex:outputField value="{!quoteObj.Approved_Status__c}" rendered="{!!isRCPartnerUser}"/>
+                    </apex:pageBlockSection>
+                                       <!-- --------------------------------------------As/Simplion/8/20/2014--------------------------- -->
+                   <apex:pageBlockSection collapsible="false" title="Agreement Details" columns="2">
+                        <apex:inputField value="{!quoteObj.Start_Date__c}" rendered="{!!showQuoteReadOnlyMode}" styleclass="styled-select" />
+                        <apex:pageblocksectionitem rendered="{!!showQuoteReadOnlyMode}" >
+                            <apex:outputlabel >Initial Term</apex:outputlabel>
+                            <apex:outputpanel layout="block" styleClass="requiredInput">
+                                <apex:outputpanel layout="block" styleClass="requiredBlock" style="{!IF(quoteObj.Quote_Type__c == 'Agreement','Display:block;','Display:none;')}"></apex:outputpanel>
+                                <!-- <apex:inputField value="{!quoteObj.Initial_Term__c}" rendered="{!!showQuoteReadOnlyMode}" onchange="onChangeInitialTerm(this.value)">&nbsp;Months</apex:inputField> -->
+                                <apex:selectList size="1" value="{!initialTerm}" multiselect="false" rendered="{!!showQuoteReadOnlyMode && $ObjectType.RC_Quote__c.Updateable}" onchange="onChangeInitialTerm(this.value)">
+                                    <apex:selectOptions value="{!InitialTermValues}"/>
+                                </apex:selectList>&nbsp;Months
+                            </apex:outputpanel>
+                        </apex:pageblocksectionitem>
+                        <apex:outputField value="{!quoteObj.Start_Date__c}" rendered="{!showQuoteReadOnlyMode}"/>
+                        <apex:pageblocksectionitem rendered="{!showQuoteReadOnlyMode}" >
+                            <apex:outputlabel >Initial Term</apex:outputlabel>
+                            <apex:outputpanel layout="block" styleClass="requiredInput">
+                                <apex:outputField value="{!quoteObj.Initial_Term__c}"></apex:outputField>
+                                <apex:outputpanel rendered="{!!isBlank(quoteObj.Initial_Term__c)}">&nbsp;Months</apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:pageblocksectionitem>
+                        <apex:inputField value="{!quoteObj.End_Date__c}" rendered="{!!showQuoteReadOnlyMode}" styleclass="styled-select"/>
+                        <apex:pageblocksectionitem rendered="{!!showQuoteReadOnlyMode}" >
+                            <apex:outputlabel >Renewal Term</apex:outputlabel>
+                            <apex:outputpanel layout="block" styleClass="requiredInput">
+                                <apex:outputpanel id="renewOut">
+                                    <apex:outputpanel layout="block" styleClass="requiredBlock" rendered="{!quoteObj.Auto_Renewal__c && quoteObj.Quote_Type__c == 'Agreement'}" ></apex:outputpanel>
+                                </apex:outputpanel>
+                                <!-- <apex:outputpanel layout="block" styleClass="requiredBlock ttt " style="{!IF(quoteObj.Quote_Type__c == 'Agreement','Display:block;','Display:none;')}"></apex:outputpanel> -->
+                                <!-- <apex:inputField value="{!quoteObj.Renewal_Term__c}" rendered="{!!showQuoteReadOnlyMode}" styleclass="renewalClassOnly">&nbsp;Months</apex:inputField> -->
+                                <apex:selectList size="1" value="{!renewalTerm}" multiselect="false" rendered="{!!showQuoteReadOnlyMode && $ObjectType.RC_Quote__c.Updateable}" styleclass="renewalClassOnly">
+                                    <apex:selectOptions value="{!RenewalTermValues}"/>
+                                </apex:selectList>&nbsp;Months
+                            </apex:outputpanel>
+                        </apex:pageblocksectionitem>
+                        <apex:outputField value="{!quoteObj.End_Date__c}" rendered="{!showQuoteReadOnlyMode}"/>
+                        <apex:pageblocksectionitem rendered="{!showQuoteReadOnlyMode}" >
+                            <apex:outputlabel >Renewal Term</apex:outputlabel>
+                            <apex:outputpanel layout="block" styleClass="requiredInput">
+                                <apex:outputField value="{!quoteObj.Renewal_Term__c}" ></apex:outputField>
+                                <apex:outputpanel rendered="{!!isBlank(quoteObj.Renewal_Term__c)}">&nbsp;Months</apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:pageblocksectionitem>
+                        <!-- --------------------------------------------As/Simplion/8/20/2014--------------------------- -->
+                        <apex:pageblocksectionitem rendered="{!!showQuoteReadOnlyMode && !isRCPartnerUser}" >
+                            <apex:outputlabel >Auto Renewal</apex:outputlabel>
+                            <apex:actionRegion >
+                                <apex:inputField label="Auto Renewal1" value="{!quoteObj.Auto_Renewal__c}" rendered="{!!showQuoteReadOnlyMode && !isRCPartnerUser}">
+                                     <apex:actionSupport event="onchange" rerender="renewOut" status="Ajaxstatus"/>
+                                </apex:inputField>
+                            </apex:actionRegion>
+                        </apex:pageblocksectionitem>  
+                        <apex:outputField value="{!quoteObj.Total_12M_Amount__c}" rendered="{!!showQuoteReadOnlyMode}"/>
+                        <apex:outputField value="{!quoteObj.Auto_Renewal__c}" rendered="{!showQuoteReadOnlyMode && !isRCPartnerUser}"/>
+                        <apex:outputField value="{!quoteObj.Total_12M_Amount__c}" rendered="{!showQuoteReadOnlyMode}"/>
+                        <!-- <apex:inputField value="{!quoteObj.Special_Terms_and_Notes__c}" rendered="{!!showQuoteReadOnlyMode && !isRCPartnerUser}" styleclass="styled-select term-styled-select"/>
+                        <apex:outputField value="{!quoteObj.Special_Terms_and_Notes__c}" rendered="{!showQuoteReadOnlyMode && !isRCPartnerUser}"/> -->
+                        
+                        <apex:inputField value="{!quoteObj.Special_Terms_and_Notes_Picklist__c}" rendered="{!!showQuoteReadOnlyMode && !isRCPartnerUser}" styleclass="styled-select term-styled-select"/>
+                        <apex:outputField value="{!quoteObj.Special_Terms_and_Notes__c}" rendered="{!showQuoteReadOnlyMode && !isRCPartnerUser}"/>
+                        
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+                <apex:pageBlock title="Approvals" rendered="{!IF(approvalList.size > 0,true,false)}" id="approvalPB" tabStyle="Approval__c">
+                    <apex:pageBlockTable value="{!approvalList}" var="approve" >
+                        <apex:column headerValue="Name">
+                            <!-- <apex:commandLink value="{!approve.Name}" action="{!redirectToApprover}" style="padding-left:20px;"/> -->                          
+                            <a href="{!hrefTextId}{!approve.Id}" target="_self" style="padding-left:20px;">{!approve.Name}</a>
+                        </apex:column>
+                         <apex:column headerValue="Quote">
+                            <apex:outputText value="{!approve.RC_Quote__r.Name}"/>
+                        </apex:column>
+                        <apex:column headerValue="Initial Total Discount">
+                            <!-- <apex:outputText value="{!approve.Initial_Total_Discount__c}"/> -->
+                            <apex:outputText value="{!currencyCode} {0, number,###,###,###,###,##0.00}">
+                                <apex:param value="{!approve.Initial_Total_Discount__c}"/>
+                            </apex:outputText>
+                        </apex:column>
+                        <apex:column headerValue="Status">
+                            <apex:outputText value="{!approve.Status__c}"/>
+                        </apex:column>
+                       <apex:column headerValue="Created Date">
+                            <apex:outputText value="{0, date, MMMM d','  yyyy}">
+                                <apex:param value="{!approve.CreatedDate}" />
+                            </apex:outputText>
+                       </apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlock>
+               <!--  <apex:pageblock rendered="{!IF(showTemplatePanel, 'true', 'false')}" id="templatepanel">
+                    <apex:outputpanel >
+                        <c:QuoteTemplateSelector />
+                    </apex:outputpanel>
+                </apex:pageblock> -->
+            </apex:tab>
+        </apex:tabPanel>
+        <apex:pageMessages id="pageMsgs2" escape="false"/>
+    </apex:form>
+</apex:page>

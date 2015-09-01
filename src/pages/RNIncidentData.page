@@ -1,0 +1,85 @@
+<apex:page standardController="Account" extensions="RNIncidentData" showHeader="false" sidebar="false">
+<apex:form > 
+<style type="text/css">
+            
+body {
+   font-family: Arial, Lucida Grande, Helvetica;
+   font-size: 13px;
+}
+.font_color {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    
+}
+.font_header {
+    color: black;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 12px;
+    text-align: center;
+}
+
+.font_headerTop {
+    color: white;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 16px;
+}
+</style>
+ <apex:pageBlock title="Support Ticket">
+    <table border="1" width="100%" id="table2"  bordercolorlight="#7F7F7F" style="border-collapse: collapse">
+    <tr class="font_header">
+        <td align="center">
+        <b><font face="Arial">Ticket#</font></b></td>
+        <td align="center"><b><font face="Arial">Subject</font></b></td>        
+        <td align="center"><b><font face="Arial">Status</font></b></td>
+        <td align="center"><b><font face="Arial">Assigned To</font></b></td>
+        <td align="center"><b><font face="Arial">Created Date</font></b></td>
+        <td align="center"><b><font face="Arial">Date Last Updated </font></b></td>                       
+         </tr>                         
+      <apex:repeat value="{!data}" var="d" >                    
+        <tr id="{!d.id}" onmouseover="highlightRow({!d.id});" onmouseout="unhighlightRow({!d.id});">  
+           <td align="left"><a href="apex/RNIncidentdetails?IncidentId={!d.id}">{!d.ticket }</a> 
+            <td align="left">{!d.Subject}</td>                            
+            <td align="left">{!d.status}</td>                            
+            <td align="left">{!d.assignedto} </td>
+            <td align="left">{!d.createddate}</td>
+            <td align="left">{!d.DateLastUpdated }</td>
+            </td>
+        </tr>
+    </apex:repeat>
+    </table>   
+       </apex:pageBlock>
+    <script type="text/javascript">
+        var getRowCounter=0;
+        var storeOldColor;
+         <apex:repeat value="{!data}" var="d">         	
+             var getRowPrint = document.getElementById("{!d.id}");
+             if(getRowCounter%2 == 1){
+                 getRowPrint.style.backgroundColor="#ffffff";
+             }else{
+                 getRowPrint.style.backgroundColor="#efefef";
+             }     
+             getRowCounter++;   
+        </apex:repeat> 
+        
+          function highlightRow(getRId)
+          { 
+             var getRowPrint = document.getElementById(getRId);
+                 storeOldColor = getRowPrint.style.backgroundColor;
+             getRowPrint.style.backgroundColor="#FFFF88";  
+            
+          }
+          function unhighlightRow(getRId)
+          { 
+             var getRowPrint = document.getElementById(getRId);            
+             getRowPrint.style.backgroundColor=storeOldColor ;  
+            
+          }
+         
+    </script>                  
+             
+                      
+</apex:form>
+</apex:page>

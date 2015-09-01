@@ -1,0 +1,167 @@
+<!--****************************************************************************************************************
+Updated By: eugenebasianomutya
+Update details: Case # 03523403 - highlight on the account when a "Customer Success Manager" is flagged on the account
+                Case # 03531598 - Account Highlights for First Group Accounts     
+*****************************************************************************************************************-->
+
+<apex:page standardController="Account" extensions="AccInfo"
+    id="accountPopUpPage" showHeader="false" sidebar="false" action="{!PopulateATM}">
+    <!--<apex:pagemessage escape="false" summary="{!msg}" severity="warning" strength="1" rendered="{!warn1 || !warn2}"  />-->
+    <style>
+.backCss {
+    background-color: #fffcce !important;
+    border: 1px solid #cd9e5a !important;
+    border-radius: 5px;
+    -moz-border-radius: 5px !important;
+    -webkit-border-radius: 5px !important;  
+}
+  
+.panelgridClass {
+    vertical-align: top;
+}
+</style>
+    <apex:form rendered="{! isBTApproved || warnHighlighter || warn1 || warn2 || warn3 || warn4 || warn5 || warn6 || warn7 || preSupportFlag || boolTrailAccountMsg || bRedAccount}"
+        id="accountFom">
+        <div class="backCss">
+            <apex:outputPanel id="message">
+                <apex:outputpanel rendered="{!isBTApproved }">
+                    <apex:panelGrid columns="2" id="Paneltable">
+                        <apex:image id="warning" value="/resource/WarningRed" width="48.7"
+                            height="48.7" style="padding:5px;" />
+                        <apex:outputpanel >
+                            <apex:outputLabel escape="false">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false">
+                                <font style="font-size: 15px; font-weight: bold;"> This
+                                    record is being managed by BT. Only the Carrier Sales Team
+                                    should engage with this record.</font>
+                            </apex:outputText>
+                        </apex:outputpanel>
+                    </apex:panelGrid>
+                </apex:outputpanel>
+                <apex:dataTable value="{!tempList}" var="a" id="theTable">
+                    <apex:column id="thecolumn1">
+                        <apex:outputPanel rendered="{!!bRedAccount}">
+                            <apex:image id="warning" value="{!imgPath}" width="48.7"
+                                height="48.7" style="padding:5px;"
+                                rendered="{! warnHighlighter || warn1 || warn2 || warn3 || warn4 || preSupportFlag || boolTrailAccountMsg || bRedAccount}" />
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!bRedAccount}">
+                            <apex:image id="warningred" value="/resource/WarningRed"
+                                width="48.7" height="48.7" style="padding:5px;"
+                                rendered="{! warnHighlighter || warn1 || warn2 || warn3 || warn4 || preSupportFlag || boolTrailAccountMsg || bRedAccount}" />
+                        </apex:outputPanel>
+                    </apex:column>
+                    <apex:column id="thecolumn2">
+                        <!-- <apex:outputText value="{!msg}" rendered="{!warn1 || warn2 ||warn3}"
+                    escape="false"/>
+                    <apex:outputText escape="false" rendered="{!preSupportFlag}">
+                        <br/>&#9830;&#160;This account has premium support. Please refer support queries
+                        to
+                        <b>
+                            <a href='mailto:{!Account.Premium_Support_Agent__r.Email}'>{!Account.Premium_Support_Agent__r.Name}</a>
+                        </b>
+                    </apex:outputText>-->
+                        <apex:panelGrid columns="2" columnClasses="panelgridClass"
+                            id="Paneltable">
+                            <apex:outputLabel escape="false" rendered="{!warnHighlighter}">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false" rendered="{!warnHighlighter}">
+                                This Customer is participating in the Customer Advisory Board. <br />
+                                Customer Advisory Board Contact: <b> {!customerContactName}
+                                </b>&nbsp;RC Executive Contact: <b>{!RcExecutiveName}</b>
+                            </apex:outputText>
+                            <apex:outputLabel escape="false" rendered="{!bRedAccount}">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false" rendered="{!bRedAccount}"
+                                style="color:red">
+                                <font color='#FFF'
+                                    style="background: red; font-size: 15px; font-weight: bold;">
+                                    This is a Red Account. Handle with Care. Please see <a
+                                    href="/{!strRedAccountId}" target='_blank'
+                                    style="font-weight: normal;"><b>here</b> </a> for details. </font>
+                            </apex:outputText>
+
+                            <apex:outputLabel escape="false" rendered="{!warn1}">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false" rendered="{!warn1}">
+                                <B>T</B>he account is under a sales agreement until :
+                            <b>{!salsAgreeDate}</b>.
+                            </apex:outputText>
+                            
+                            <apex:outputLabel escape="false" rendered="{!warn2}">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false" rendered="{!warn2}">
+                                <!-- <B>T</B>his is a Reseller Account. Direct sales should not make any changes
+                                    to Reseller Accounts. Please request customer to contact the Reseller Support
+                                    team at <B>800-378-8110</B> or
+                                    <B><a href='mailto:resellers@ringcentral.com'>resellers@ringcentral.com</a>
+                                    </B>if they need help. -->
+                                <B>T</B>his is a Reseller Account. Direct sales should not make any changes to Reseller Accounts. 
+                                Please request reseller to contact the Reseller Support team at 800-595-8110 if they need help.<br />
+                                <B>Do not give 800-595-8110 to Customers with reseller
+                                accounts</B>, Tier 1 should assist for support and sales concerns.
+                                Please see 411 for more information on support boundaries for Customers with Reseller accounts.
+                            </apex:outputText>
+
+                            <apex:outputLabel escape="false" rendered="{!warn3}">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false" rendered="{!warn3}">
+                                <B>T</B>his is a National Account. Direct sales should not make any changes
+                            to National Accounts. Please request customer contact the National Account
+                            support team at
+                            <B>800-378-8110</B> or
+                            <B> <a> </a> </B>if they need help.</apex:outputText>
+                            <apex:outputLabel escape="false" rendered="{!warn4}">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false" rendered="{!warn4}">
+                                <B>T</B>his is a Free Trial Account. This Account should NOT be cancelled without the approval of the Account Manager.                            
+                            </apex:outputText>
+                                  
+                            <apex:outputLabel escape="false" rendered="{!warn5}">&#9830;&#160;</apex:outputLabel>                        
+                            <apex:outputText escape="false" rendered="{!warn5}">
+                                <B>T</B>his account is handled by a Technical Account Manager,&nbsp;<a href="#" onclick="window.top.location='/{!strTAMId}';">{!strTAM}</a>.                        
+                            </apex:outputText> 
+                            
+                            
+                            <!-- Case# 03523403 Start -->
+                            <apex:outputLabel escape="false" rendered="{!warn6}">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false" rendered="{!warn6}">
+                                <B>T</B>his account is handled by a Customer Success Manager (CSM),&nbsp;<a href="#" onclick="window.top.location='/{!strCSMId}';">{!strCSM}</a>.                        
+                            </apex:outputText>
+                            <!-- Case# 03523403 End -->
+                            
+                            
+                            <!-- Case# 03531598 Start -->
+                            <apex:outputLabel escape="false" rendered="{!warn7}">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false" rendered="{!warn7}">
+                                <B>T</B>his is an AT&amp;T Office@hand National Account. Please grant access to the following users from First Group help desk supported by GLS. 
+                                <br/>Password question:  “What City were born in” Answer: ”London”
+                                <br/>Authorized users from GLS are Wilmont Raymond Kinney lll, Robert Horton, Michael Brizendine and Jimmy Walls and First Group project management John Warf. 
+                                <br/>Internal GLS support number for anything non RingCentral Office@hand related please direct them to GLS HD :866-558-1920
+                                <br/><br/>Email domain @firstgroup.com, @Greyhound.com
+                            </apex:outputText>
+                            <!-- Case# 03531598 End -->
+                            
+                            <apex:outputLabel escape="false" rendered="{!preSupportFlag}">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false" rendered="{!preSupportFlag}">
+                                <B>T</B>his account has premium support. Please refer support queries to
+                            <b> <a
+                                    href='mailto:{!Account.Premium_Support_Agent__r.Email}'>{!Account.Premium_Support_Agent__r.Name}</a>
+                                </b>.
+                            </apex:outputText>
+                            <apex:outputLabel escape="false"
+                                rendered="{!boolTrailAccountMsg}">&#9830;&#160;</apex:outputLabel>
+                            <apex:outputText escape="false" rendered="{!boolTrailAccountMsg}">
+                                <B>T</B>his account is <b>Office 30-Day Free Trial</b> account. Remember to upsell 
+                                account to <b>Office 20+</b> before the end of the <b>30
+                                day trial</b> on <b>{!strPaidDate}</b>.
+                            </apex:outputText> 
+                            <apex:outputText value="{!Account.Technical_Account_Manager__c}" rendered="false" />
+                            <apex:outputText value="{!Account.Most_Recent_Implementation_Contact__c}" rendered="false" />
+                            <apex:outputText value="{!Account.Preferred_Language__c}" rendered="false" />
+                     <apex:outputPanel rendered="{!refreshBool}">
+                       <script>
+                          window.top.location='/{!Account.id}';
+                       </script>
+                    </apex:outputPanel>
+                        </apex:panelGrid>
+                    </apex:column>
+                </apex:dataTable>
+            </apex:outputPanel>
+        </div>
+    </apex:form>
+</apex:page>

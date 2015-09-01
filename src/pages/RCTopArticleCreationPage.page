@@ -1,0 +1,104 @@
+<apex:page standardController="RCNEW_Knowledge_Article__c" extensions="RCTopArticle" showHeader="true" sidebar="true">
+
+
+<apex:pageBlock title="RC Knowledge Article Search">
+ <apex:form >
+
+ <table style='margin-top:20px;'>
+     <tr>
+          <td>
+             Section <apex:selectList value="{!strSection}"  size="1" >
+                <apex:selectOption itemValue="Getting_Started" itemLabel="Getting Started"/>
+                <apex:selectOption itemValue="Calling_Features" itemLabel="Calling Features"/>
+                <apex:selectOption itemValue="Faxing" itemLabel="Faxing"/>
+                <apex:selectOption itemValue="Billing" itemLabel="Billing"/>
+                <apex:selectOption itemValue="Account_Administration" itemLabel="Managing Your Account"/>
+                 <apex:selectOption itemValue="Software_Downloads" itemLabel="Apps and Downloads"/>  
+             </apex:selectList>
+          </td>
+          <td>
+            Brand <apex:selectList id="brand"  value="{!strBrand}" size="1"   >
+                    <apex:selectOption itemValue="RC_US" itemLabel="RC US"/>
+                    <apex:selectOption itemValue="RC_UK" itemLabel="RC UK"/>
+                    <apex:selectOption itemValue="RC_CANADA" itemLabel="RC CANADA"/>
+                    <apex:selectOption itemValue="ATT_VIIPFR" itemLabel="ATT VIIPFR"/>
+                 </apex:selectList>
+          </td>
+           <td>
+              RCVersion <apex:selectList id="rcversion"  value="{!strRCVersion}" size="1"   >
+                    <apex:selectOption itemValue="RC_Legacy" itemLabel="RC_Legacy"/>
+                    <apex:selectOption itemValue="RC2012" itemLabel="RC2012"/>
+                    <apex:selectOption itemValue="RC2013" itemLabel="RC2013"/>
+              </apex:selectList>
+          </td>
+          <Td>
+          Article Number<apex:inputText value="{!strAricleId}" required="true" label="Article Number"/>        </td>
+             <Td><apex:commandButton action="{!getArticleDetails}" value="Get Article Details" reRender="resultsBlock,otpNav2,otpNav3" status="status"/></td>
+         </tr>
+   </table>
+   </apex:form> 
+   </apex:pageBlock>
+
+ <apex:form title="RC Knowledge Article Detail" >
+         <apex:outputPanel id="resultsBlock">
+          <c:actionstatus />
+           <apex:pageMessages escape="false"></apex:pageMessages>
+         <apex:pageBlock title="RC Knowledge Article Detail" mode="maindetail"  rendered="{!isRecordExist}">
+           
+           <apex:pageBlockSection columns="2" title="Article Order" collapsible="true" >
+                      <apex:inputfield value="{!objKnowledgeArticle.Article_List_Order__c}"  /> 
+                     
+                      <apex:inputField rendered="{!!isArticleExistINSelectedCatgory}" value="{!objKnowledgeArticle.Section__c}" required="true"/>
+                      <apex:outputField rendered="{!isArticleExistINSelectedCatgory}"  value="{!objKnowledgeArticle.Section__c}" />
+                    
+                      <apex:commandButton action="{!saveArticleOrder}" style="margin-left:45%" value="Save" reRender="resultsBlock,otpNav2,otpNav3" status="status"/>    
+                     <apex:outputField value="{!objKnowledgeArticle.ArticleNumber__c}"  /> 
+                     
+           
+            </apex:pageBlockSection> 
+          
+            <apex:pageBlockSection columns="2" title="Article Information" collapsible="true" >
+                 <apex:outputField value="{!objKnowledgeArticle.Title__c}" >
+                 <!-- <apex:inlineEditSupport/>-->
+                  </apex:outputField>
+                 <apex:outputField value="{!objKnowledgeArticle.Key_Words_c__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.UrlName__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.Legacy_Article_ID__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.KnowledgeArticleId__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.IsVisibleInPkb__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.IsVisibleInPrm__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.IsVisibleInApp__c}" />
+                  <apex:outputField value="{!objKnowledgeArticle.IsVisibleInCsp__c}" />
+                  <apex:outputField value="{!objKnowledgeArticle.IsDeleted__c}" />
+                   <apex:outputField value="{!objKnowledgeArticle.Summary__c}" />
+             </apex:pageBlockSection>
+          
+            <apex:pageBlockSection columns="2" title="User Defined Details" collapsible="true">
+                  <apex:outputField value="{!objKnowledgeArticle.Brand__c}" />
+                  <apex:outputField value="{!objKnowledgeArticle.Section__c}" />
+                  <apex:outputField value="{!objKnowledgeArticle.RCVersion__c}" />
+                   <apex:outputField value="{!objKnowledgeArticle.ArticleNumber__c}" />
+             </apex:pageBlockSection>
+             <apex:pageBlockSection columns="2" title="Data Categories" collapsible="true">
+                 <apex:outputField value="{!objKnowledgeArticle.Associated_Brands__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.Topic__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.Service__c}" />
+                
+                 <apex:outputField value="{!objKnowledgeArticle.Community__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.DataCategoryGroupName__c}" />
+                 <apex:outputPanel ></apex:outputPanel>
+                 <apex:outputField value="{!objKnowledgeArticle.DataCategoryName__c}" />
+                 
+             </apex:pageBlockSection>
+             <apex:pageBlockSection columns="2" title="Other Information" collapsible="true">
+                 <apex:outputField value="{!objKnowledgeArticle.PublishStatus__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.FirstPublishedDate__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.LastModifiedDate__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.LastPublishedDate__c}" />
+                 <apex:outputField value="{!objKnowledgeArticle.CreatedById__c}" />
+           </apex:pageBlockSection>
+          
+         </apex:pageBlock>
+          </apex:outputPanel>
+ </apex:form> 
+</apex:page>

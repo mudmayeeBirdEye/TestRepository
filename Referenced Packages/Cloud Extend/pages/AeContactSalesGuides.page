@@ -1,0 +1,4 @@
+<apex:page standardController="Contact">
+   <c:AeSalesGuides objectType="Contact" objectId="{!Contact.Id}"  extraInfo="{!JSENCODE(Contact.Name)} ({!JSENCODE(Contact.Account.Name)})" 
+					match="Role={!JSENCODE(SUBSTITUTE($UserRole.Name, ",", ""))}"/>
+</apex:page>

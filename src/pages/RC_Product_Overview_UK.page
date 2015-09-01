@@ -1,0 +1,349 @@
+<apex:page standardController="Opportunity" extensions="OpportunityController" renderAS="PDF"  showheader="false" standardStylesheets="false" docType="html-5.0">
+     <style>
+        @page {
+            @bottom-center {
+                content: element(footer) !important;
+            }
+            div.footer {
+                position:running(footer) !important;
+            }
+        }
+        .tableClass {
+            border: 1.0pt solid #7C7C7C;
+            width:100%;
+            background:#DDD;
+        }
+        .thClass{
+            min-height:15px;text-align:center;color:#7C7C7C;border-top: 1.0pt solid #7C7C7C;height:20px;
+        }
+        .tdClass{
+            /*border: 1.0pt solid #7C7C7C;*/
+            min-height:15px;
+            background:white;
+            height:20px;
+            font-size: 15px;
+            color: #7C7C7C;
+            border-top: 1.0pt solid #7C7C7C;
+        }
+        .headrClass {
+            color:#7C7C7C;
+            font-size:20px;
+        }
+        .MsoNoSpacing {
+            margin: 0in;
+            margin-bottom: .0001pt;
+            font-size: 11.0pt;
+            font-family: "Calibri","sans-serif";
+        }
+        .MsoNoSpacing{margin:0in;
+            margin-bottom:.0001pt;
+            font-size:11.0pt;
+            font-family:"Calibri","sans-serif";
+        }
+     </style>
+         <div id="divHeader" style="height: 100px;width:100%;font-family:'Arial','sans-serif';"> 
+            <table style="width:100%;">
+                <tr>
+                    <td style='text-align:left;height:50px;'>
+                        <!--<apex:image width="100%" height="40px" style="margin-left:-50px;" value="{!URLFOR($Resource.TopLeftImage)}" />
+                        --><div style="margin-top: -36px;margin-left:10px;text-align:left;color:#7C7C7C;">RingCentral Office UK <b style="color:#c1500a;">Proposal | {!oppObj.Name}</b></div>
+                    </td>
+                    <td style='text-align:right;margin-top: -26px'>&#160;</td>
+                </tr> 
+            </table>
+        </div>
+        <div>
+            <div>
+                <!--<apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-1.jpg')}" width="100%" />-->
+                <!--<span style="width:50%;font-size:40px;position:absolute;color:#636E80;">Learn what a cloud phone system can do for your business.</span>
+                --><apex:image value="{!URLFOR($Resource.OppFirstImage)}" width="100%" />
+                <table style="width:100%;margin-top:0px;">
+                    <tr>
+                        <td colspan="2" style='color:#595959;font-family:"Arial","sans-serif";font-size:10px'>
+                         Prepared by :
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style='color:black;font-family:"Arial","sans-serif";font-size:12px'>
+                         {!oppObj.Owner.Name}
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td colspan="2" style='color:black;font-family:"Arial","sans-serif";font-size:12px'>
+                         {!oppObj.Owner.Title}
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td colspan="2" style='color:black;font-family:"Arial","sans-serif";font-size:12px'>
+                         {!oppObj.Owner.Phone}
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td style='color:black;font-family:"Arial","sans-serif";font-size:12px'>
+                         {!oppObj.Owner.Email}
+                        </td>
+                        <td style="text-align:right;">
+                            <apex:image width="145px" height="22px" value="{!URLFOR($Resource.RC_LOGO_HIGH_RESO)}" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-2.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-3.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-4.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-5.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-6.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-7.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-8.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-9.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-10.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-11.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-12.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-13.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-14.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-15.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-16.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-17.jpg')}" width="100%" />
+            </div>
+            <div>
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-18.jpg')}" width="100%" />
+            </div>
+            <div style="page-break-after:always;">
+                <apex:image value="{!URLFOR($Resource.RC_Product_Overview_UK, 'image-19.jpg')}" width="100%" />
+            </div>
+            <div class="WordSection13">
+                <div id="divHeader" style="font-size:15px;width:100%;font-family:'Arial','sans-serif';">
+                    <table style="width:100%;">
+                        <tr>
+                            <td style='text-align:left;height:50px;width:100%;'>
+                                <!--<apex:image width="90%" height="40px" value="{!URLFOR($Resource.ProposalLeftImage)}" />
+                                -->
+                                <div style="margin-top: 0px;margin-left:0px;text-align:left;color:#7C7C7C;">RingCentral Office UK <b style="color:#c1500a;">Proposal | {!oppObj.Name}</b></div>
+                            </td>
+                             <td style='text-align:right;vertical-align:top;'>&nbsp;<!--<apex:image width="145px" height="22px" value="{!URLFOR($Resource.RC_LOGO_HIGH_RESO)}" /> --></td>
+                        </tr> 
+                    </table>
+                </div>  
+                           <p class="MsoNoSpacing" style="margin-left:70px;"><apex:image width="145px" height="22px" value="{!URLFOR($Resource.RC_LOGO_HIGH_RESO)}" /></p>
+                 <!-- <apex:outputPanel id="msgPanel">
+                    <apex:pageMessages ></apex:pageMessages>
+                </apex:outputPanel> 
+                 -->
+                <table class="MsoTableGrid" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border:none;width:100%;margin-left:70px;">
+                    <thead><tr><th style="text-align:left;height:40px;">{!oppObj.Name}</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td class="tdClass" style="min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;" nowrap="nowrap">
+                                {!IF(oppContactRole == NULL, 'Name:',oppContactRole.Contact.Name)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdClass" style="min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;" nowrap="nowrap">
+                                {!IF(oppContactRole == NULL, 'Phone:',oppContactRole.Contact.Phone)}
+                            </td>
+                        </tr>
+                        <tr>    
+                            <td class="tdClass" style="min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;" nowrap="nowrap">
+                                {!IF(oppContactRole == NULL, 'Email:',oppContactRole.Contact.Email)}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="padding-top:20px;margin-left:70px;">
+                    <apex:outputPanel styleClass="headrClass" style="color:#c1500a;font-size:14px;font-family: 'Arial','sans-serif';"><b style="font-size:17px;">Service Price</b> <i>(recurring)</i></apex:outputPanel>
+                    <table cellspacing="0" cellpadding="0" style="font-size:12px;color:#7C7C7C;width:100%;font-family: 'Arial','sans-serif';">
+                        <thead>
+                            <tr>
+                                <th class="thClass" style="padding-left: 15px;height:30px;background:#D9D9D9;border-top:1px solid #DDD;border-right:1px solid #FFFFFF;border-left:1px solid #D0D0D0;">Description</th>
+                                <th class="thClass" style="padding-left: 15px;height:30px;background:#D9D9D9;border-top:1px solid #DDD;border-right:1px solid #FFFFFF;">Quantity</th>
+                                <th class="thClass" style="padding-left: 15px;height:30px;background:#D9D9D9;border-top:1px solid #DDD;border-right:1px solid #FFFFFF;">Unit Price</th>
+                                <th class="thClass" style="padding-left: 15px;height:30px;background:#D9D9D9;border-top:1px solid #DDD;border-right:1px solid #D0D0D0;">Extended Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <apex:variable var="Index" value="1" />
+                            <apex:variable var="oddRow" value="padding-left: 15px;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border-right: 1px solid #D0D0D0;"/>
+                            <apex:variable var="evenRow" value="padding-left: 15px;min-height:15px;background:#F2F2F2;height:20px;font-size: 15px;color: #7C7C7C;border-right: 1px solid #D0D0D0;"/>
+                            <apex:variable var="lastRow" value="padding-left: 15px;border-right: 1px solid #D0D0D0;border-bottom:1px solid #D0D0D0;"/>
+                            <apex:repeat var="productObj" value="{!ProductServiceList}">
+                                <tr>
+                                    <td class="tdClass" style="border-left:1px solid #D0D0D0;{!IF(MOD(VALUE(Index),2) == 0, evenRow, oddRow)}{!IF(VALUE(Index) == ProductServiceList.size, lastRow, '')}">{!productObj.productName}</td>
+                                    <td class="tdClass" style="{!IF(MOD(VALUE(Index),2) == 0, evenRow, oddRow)}{!IF(VALUE(Index) == ProductServiceList.size, lastRow, '')}">{!productObj.Quantity}</td>
+                                    <td class="tdClass" style="{!IF(MOD(VALUE(Index),2) == 0, evenRow, oddRow)}{!IF(VALUE(Index) == ProductServiceList.size, lastRow, '')}">{!productObj.CurrencyISOCode} {!productObj.unitPrice}</td>
+                                    <td class="tdClass" style="{!IF(MOD(VALUE(Index),2) == 0, evenRow, oddRow)}{!IF(VALUE(Index) == ProductServiceList.size, lastRow, '')}">{!productObj.CurrencyISOCode} {!productObj.extendedPrice}</td>
+                                </tr>
+                                <apex:variable var="Index" value="{!VALUE(Index)+1}" />
+                            </apex:repeat>
+                            <apex:repeat var="productObj" value="{!isBlankServiceList}">
+                                <tr>
+                                    <td class="tdClass" style="padding-left: 15px;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border: 1px solid #D0D0D0;border-top:none;">&nbsp;</td>
+                                    <td class="tdClass" style="padding-left: 15px;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border-right: 1px solid #D0D0D0;border-bottom:1px solid #D0D0D0;">&nbsp;</td>
+                                    <td class="tdClass" style="padding-left: 15px;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border-right: 1px solid #D0D0D0;border-bottom:1px solid #D0D0D0;">&nbsp;</td>
+                                    <td class="tdClass" style="padding-left: 15px;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border-right: 1px solid #D0D0D0;border-bottom:1px solid #D0D0D0;">&nbsp;</td>
+                                </tr>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                    </div>
+                    <div style="padding-top:20px;margin-left:70px;">
+                        <apex:outputPanel styleClass="headrClass" style="color:#c1500a;font-size:14px;font-family: 'Arial','sans-serif';"><b style="font-size:17px;">Hardware Price</b> <i>(one-time)</i></apex:outputPanel>
+                        <table cellspacing="0" cellpadding="0" style="font-size:12px;color:#7C7C7C;width:100%;font-family: 'Arial','sans-serif';">
+                            <thead>
+                                <tr>
+                                    <th class="thClass" style="padding-left: 15px;height:30px;background:#D9D9D9;border-top:1px solid #DDD;border-right:1px solid #FFFFFF;border-left:1px solid #D0D0D0;">Description</th>
+                                    <th class="thClass" style="padding-left: 15px;height:30px;background:#D9D9D9;border-top:1px solid #DDD;border-right:1px solid #FFFFFF;">Quantity</th>
+                                    <th class="thClass" style="padding-left: 15px;height:30px;background:#D9D9D9;border-top:1px solid #DDD;border-right:1px solid #FFFFFF;">Unit Price</th>
+                                    <th class="thClass" style="padding-left: 15px;height:30px;background:#D9D9D9;border-top:1px solid #DDD;border-right:1px solid #D0D0D0;">Extended Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <apex:variable var="Index" value="1" />
+                                <apex:variable var="oddRow" value="padding-left: 15px;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border-right: 1px solid #D0D0D0;"/>
+                                <apex:variable var="evenRow" value="padding-left: 15px;min-height:15px;background:#F2F2F2;height:20px;font-size: 15px;color: #7C7C7C;border-right: 1px solid #D0D0D0;"/>
+                                <apex:variable var="lastRow" value="padding-left: 15px;border-right: 1px solid #D0D0D0;border-bottom:1px solid #D0D0D0;"/>
+                                <apex:repeat var="productObj" value="{!ProductHardwareList}">
+                                    <tr>
+                                        <td class="tdClass" style="border-left:1px solid #D0D0D0;{!IF(MOD(VALUE(Index),2) == 0, evenRow, oddRow)}{!IF(VALUE(Index) == ProductHardwareList.size, lastRow, '')}">{!productObj.productName}</td>
+                                        <td class="tdClass" style="{!IF(MOD(VALUE(Index),2) == 0, evenRow, oddRow)}{!IF(VALUE(Index) == ProductHardwareList.size, lastRow, '')}">{!productObj.Quantity}</td>
+                                        <td class="tdClass" style="{!IF(MOD(VALUE(Index),2) == 0, evenRow, oddRow)}{!IF(VALUE(Index) == ProductHardwareList.size, lastRow, '')}">{!productObj.CurrencyISOCode} {!productObj.unitPrice}</td>
+                                        <td class="tdClass" style="{!IF(MOD(VALUE(Index),2) == 0, evenRow, oddRow)}{!IF(VALUE(Index) == ProductHardwareList.size, lastRow, '')}">{!productObj.CurrencyISOCode} {!productObj.extendedPrice}</td>
+                                    </tr>
+                                    <apex:variable var="Index" value="{!VALUE(Index)+1}" />
+                                </apex:repeat>
+                                <apex:repeat var="productObj" value="{!isBlankHardwareList}">
+                                    <tr>
+                                        <td class="tdClass" style="padding-left: 15px;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border: 1px solid #D0D0D0;border-top:none;">&nbsp;</td>
+                                        <td class="tdClass" style="padding-left: 15px;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border-right: 1px solid #D0D0D0;border-bottom:1px solid #D0D0D0;">&nbsp;</td>
+                                        <td class="tdClass" style="padding-left: 15px;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border-right: 1px solid #D0D0D0;border-bottom:1px solid #D0D0D0;">&nbsp;</td>
+                                        <td class="tdClass" style="padding-left: 15px;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border-right: 1px solid #D0D0D0;border-bottom:1px solid #D0D0D0;">&nbsp;</td>
+                                    </tr>
+                                </apex:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                    <table style="padding-top:20px;width:100%;"  cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>    
+                                &nbsp;
+                            </td>
+                            <td style="width: 70%;">
+                                <table cellspacing="0" cellpadding="0" border="0" style="font-size:12px;width:100%;font-family: 'Arial','sans-serif';">
+                                    <tbody> 
+                                        <tr>
+                                            <td class="tdClass" style="padding-left: 15px;width:50%;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border:1px solid #D0D0D0;border-bottom: none;">Service total (monthly)</td>
+                                            <td class="tdClass" style="padding-left: 15px;width:50%;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border-top:1px solid #D0D0D0;border-right: 1px solid #D0D0D0;">{!oppObj.CurrencyISOCode} {!serviceTotalPrice}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tdClass" style="padding-left: 15px;width:50%;min-height:15px;background:#F2F2F2;height:20px;font-size: 15px;color: #7C7C7C;border-left: 1px solid #D0D0D0;border-right:1px solid #D0D0D0;">Hardware total (one-time)</td>
+                                            <td class="tdClass" style="padding-left: 15px;width:50%;min-height:15px;background:#F2F2F2;height:20px;font-size: 15px;color: #7C7C7C;border-right:1px solid #D0D0D0;">{!oppObj.CurrencyISOCode} {!hardwareTotalPrice}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tdClass" style="padding-left: 15px;width:50%;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border: 1px solid #D0D0D0;border-top:none;">Term</td>
+                                            <td class="tdClass" style="padding-left: 15px;width:50%;min-height:15px;background:white;height:20px;font-size: 15px;color: #7C7C7C;border:none;border-bottom:1px solid #D0D0D0;border-right: 1px solid #D0D0D0;">{!IF(oppObj.Term__c == NULL || TEXT(oppObj.Term__c) == '', '0', TEXT(oppObj.Term__c))} month(s)</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="text-align:right;color: #7C7C7C;">*Shipping charges will be calculated when place the order.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="margin-left:70px;">
+                    <table style='font-family:"Arial","sans-serif";'>
+                    <tr class="MsoNoSpacing"><td colspan="2" style='font-size:9.0pt;font-family:"Arial","sans-serif";
+                    color:#0075A3'>&nbsp;</td></tr>
+                    
+                    <tr class="MsoNoSpacing"><td colspan="2" style='font-size:9.0pt;font-family:"Arial","sans-serif";
+                    color:#595959'>&nbsp;</td></tr>
+                    
+                    <tr class="MsoNoSpacing"><td colspan="2" style='font-size:9.0pt;font-family:"Arial","sans-serif";
+                    color:#595959'>&nbsp;</td></tr>
+                    
+                    <tr class="MsoNoSpacing"><td colspan="2" style='font-size:9.0pt;font-family:"Arial","sans-serif";
+                    color:#595959'><b>30-Day Money Back Guarantee</b></td></tr>
+                    
+                    <tr class="MsoNoSpacing"><td colspan="2" style='font-size:9.0pt;font-family:"Arial","sans-serif";
+                    color:#595959'><b>This proposal expires at </b><span style='font-size:
+                    9.0pt;font-family:"Arial","sans-serif";color:#595959'><b>5pm PT on </b><b style="color:red;"><apex:outputtext value="{!proposalDate}" escape="false"/></b>.</span></td></tr>
+                     
+                    <tr class="MsoNoSpacing"><td colspan="2" style='font-size:9.0pt;font-family:"Arial","sans-serif";
+                    color:#595959'>&nbsp;</td></tr>
+                    
+                    <tr class="MsoNoSpacing"><td colspan="2" style='font-size:9.0pt;font-family:"Arial","sans-serif";
+                    color:#595959'>Thank you for your interest in RingCentral. Please contact me if
+                    you have any other questions.</td></tr>
+                    
+                    <tr class="MsoNoSpacing"><td colspan="2" style='font-size:9.0pt;font-family:"Arial","sans-serif";
+                    color:#595959'>&nbsp;</td></tr>
+                    
+                    <tr class="MsoNoSpacing"><td colspan="2" style='font-size:9.0pt;font-family:"Arial","sans-serif";
+                    color:#595959'>&nbsp;</td></tr>
+                    
+                    <tr class="BasicParagraph"><td colspan="2" style='color:#595959;margin-left:187px;width:348px;font-family:"Arial","sans-serif";'>
+                    <b>{!oppObj.Owner.Name}</b></td></tr>
+                    
+                    
+                    <tr class="BasicParagraph">
+                        <td colspan="2"  style='font-size:8.0pt;line-height:120%;font-family:"Arial","sans-serif";color:#595959;width:40%;'>{!oppObj.Owner.title}</td>
+                        <!--<td style="color:#595959;font-size:9.0pt;"><b>RingCentral, Inc</b></td>-->
+                    </tr>
+                    
+                    <tr class="BasicParagraph">
+                        <td colspan="2"  style='font-size:8.0pt;line-height:120%;font-family:"Arial","sans-serif";color:#595959;width:40%;'>{!oppObj.Owner.Phone}</td>
+                        <!--<td style="color:#595959;font-size:9.0pt;"><b>1400 Fashion Island Blvd., 7<sup>th</sup> Floor, San Mateo, CA 94404</b></td>-->
+                    </tr>
+                    
+                    <tr class="MsoNoSpacing">
+                        <td colspan="2" style='font-size:8.0pt;font-family:"Arial","sans-serif";color:#595959;width:40%;'>{!oppObj.Owner.email}</td>
+                        <!--<td style="color:#595959;font-size:9.0pt;"><b>www.ringcentral.com</b></td>-->
+                    </tr>
+                    <tr class="MsoNoSpacing">
+                        <td colspan="2" style='font-size:9.0pt;font-family:"Arial","sans-serif";color:#595959'>&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+        <div class="footer" style='clear: both;position: relative;bottom:0px;z-index: 10;height: 3em;margin-top:80px;text-align: center;line-height: 3em;margin-left:50px;width:643px;height:33px;font-size:7.0pt;font-family:"Arial","sans-serif";color:#595959;'>
+            <p style="margin:0px;line-height: normal;"><b>RingCentral UK, Ltd.  |  Siena Court, Broadway, Maidenhead, SL6 1NJ, UK   |  www.ringcentral.co.uk</b></p>
+            <p style="margin:0px;line-height: normal;text-align:center;color:#595959;">
+                © 2013 RingCentral, Inc. All Rights Reserved.  RingCentral and the RingCentral logo are trademarks of RingCentral, Inc.<br />
+                Other third party marks and logos displayed on this page are trademarks  of such respective third parties. 
+            </p>
+        </div>
+    </div>
+</apex:page>

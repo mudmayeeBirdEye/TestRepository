@@ -1,0 +1,67 @@
+<apex:page controller="ce4sf20_001.AeSecurityTokenCE" docType="html-5.0" sidebar="false" showHeader="false" standardStylesheets="false" 
+     cache="true" >
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />      
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />          
+        <link rel="apple-touch-icon" href="{!URLFOR($Resource.AeMobileStaticResources, 'images/ae_apple_touch_icon_57x57.png')}" />
+        <link rel="apple-touch-icon" sizes="72x72" href="{!URLFOR($Resource.AeMobileStaticResources, 'images/ae_apple_touch_icon_72x72.png')}" />
+        <link rel="apple-touch-icon" sizes="114x114" href="{!URLFOR($Resource.AeMobileStaticResources, 'images/ae_apple_touch_icon_114x114.png')}" />        
+        <title>{!IF($CurrentPage.parameters.objectType == '_any', 'Cloud Extend', IF(LEN($CurrentPage.parameters.extraInfo) > 0, 'Cloud Extend: ' + $CurrentPage.parameters.extraInfo, 'Cloud Extend: ' + $CurrentPage.parameters.objectType))}</title>
+        
+        <apex:includeScript value="{!URLFOR($Resource.ce4sf20_001__AeMobileStaticResources, 'js/jquery.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.ce4sf20_001__AeMobileStaticResources, 'js/bookmark_bubble.js')}"/>        
+        <script type="text/javascript">
+          // show mobile bookmark bubble for home page guide
+          if ('_any' === '{!JSENCODE($CurrentPage.parameters.objectType)}') {          
+             var $jq = jQuery.noConflict();
+              
+             // on mobile init, set up and init the mobile-bookmark-bubble 
+             $jq(document).bind("ready", function(){
+                 // show the bookmark bubble if needed after 2 secs
+                 window.setTimeout(function() {
+                 
+                     //
+                     // Show the bookmark bubble just once.
+                     // (implemented by setting NUMBER_OF_TIMES_TO_DISMISS=1 and updating the count 
+                     //  when setHashParameter() is called)  
+                     //
+                     google.bookmarkbubble.Bubble.prototype.NUMBER_OF_TIMES_TO_DISMISS=1;
+                     
+                     var bubble = new google.bookmarkbubble.Bubble();
+                     bubble.hasHashParameter = function() {
+                        // this fn is called by bookmarkbubble before showing the bubble.
+                        // if this fn returns true, the bubble is not show (i.e. assume already book marked)                     
+                         return false;
+                     };
+                     bubble.setHashParameter = function() {
+                       // this fn is called by bookmarkbubble each time the bubble
+                       // is shown. At this point, we increment the dismissal count
+                       // without having the user have to dismiss the bubble.
+                       // (which means, the count = 1 on first show, and bubble will not be show again
+                       //  since max count is 1.). See #13479.
+                       
+                        bubble.rememberDismissal_();
+                     
+                     };                  
+                     
+                     bubble.showIfAllowed();
+                 }, 
+                 2000);
+             }); // end document ready                    
+          } // end if '_any'
+        </script>
+    </head>   
+    <body>
+        <!--  note: openIfOne defaults to true if not given via query string -->       
+        <c:AeSalesGuides objectType="{!$CurrentPage.parameters.objectType}" 
+            objectId="{!$CurrentPage.parameters.objectId}" 
+            guideName="{!$CurrentPage.parameters.guideName}"
+            extraInfo="{!$CurrentPage.parameters.extraInfo}"
+            openIfOne="true"
+            alwaysNewGuide="false"
+            nothingOnDone="{!$CurrentPage.parameters.nothingOnDone}"
+            topLevelWindow="true" 
+            match="{!$CurrentPage.parameters.match}" />    
+            
+    </body>
+</apex:page>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>27.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>This page creates an &lt;apex:iframe&gt; with the proper parameters to display the guide navigator within a Salesforce Campaigns page.  The aepToken in the src query parameters requires the page controller extension AeSecurityTokenCE to function.</description>
+    <label>Campaign Sales Guides</label>
+</ApexPage>

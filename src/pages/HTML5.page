@@ -1,0 +1,33 @@
+<apex:page controller="SupportPortalSitemapController" showHeader="false" cache="false" readOnly="true">
+<!-- urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+<apex:repeat id="faqrepeat" var="d" value="{!FaqList}">
+    <url>
+          <loc>
+           {!siteurl}articles/RC_Knowledge_Article/{!d.UrlName}?retURL={!URLENCODE("/apex/RCSupportPortalSearchNew&type=FAQ&id=")}{!d.knowledgearticleid}{!URLENCODE("&Title=")}{!URLENCODE(d.Title)}
+         
+         </loc>
+        
+        <lastmod>{!(TEXT(YEAR(DATEVALUE(d.LastPublishedDate))) & "-" & IF(LEN(TEXT(MONTH(DATEVALUE(d.LastPublishedDate))))==2,TEXT(MONTH(DATEVALUE(d.LastPublishedDate))),"0" & TEXT(MONTH(DATEVALUE(d.LastPublishedDate)))) & "-" & IF(LEN(TEXT(DAY(DATEVALUE(d.LastPublishedDate))))==2,TEXT(DAY(DATEVALUE(d.LastPublishedDate))),"0" & TEXT(DAY(DATEVALUE(d.LastPublishedDate)))))}</lastmod>
+        <priority>0.5</priority>
+    </url></apex:repeat>
+</urlset -->
+
+  <knowledge:articleList articleVar="article"  hasMoreVar="hasMore"
+                                            pageSize="199" 
+                                            categories="Brand:RC_UK,RCProductVesion:RCUK2013" >
+          
+                                        <h4>
+                                          <a class='articleLink' href="{!$Site.CurrentSiteUrl}knowledge/TOCArticleRendererPkb.apexp?id={!article.id}&Title={!article.title}&urlName={!article.UrlName}&popup=true&retURL={!$CurrentPage.Name}"   title='{!article.title}'>{!article.title}</a>
+                                        </h4>
+                                        <p>{!article.abstract}<br/>
+                                        Date Updated:
+                                     <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                         <apex:param value="{!article.LastModifiedDate}" /> 
+                                     </apex:outputText>
+                                     <br/></p>
+                                                             
+                                            
+                                            </knowledge:articleList>
+
+
+</apex:page>

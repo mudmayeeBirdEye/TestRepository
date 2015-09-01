@@ -1,0 +1,26 @@
+<apex:page standardController="Contact" Extensions="NPSLandingController" action="{!initCheck}" sidebar="false" showHeader="false">
+  <apex:outputPanel id="OP_msgSomeError" rendered="{!isError}">
+            <div style="margin-left: 20px;">
+                <div id="header3" style="background-color: #F8F8F8; height: 120px;">
+                    <apex:image id="RC_imglogo3" value="{!$Resource.RcLogo}" style="width:180px; height:65px;"/><br/>
+                    <p class="headertext">RingCentral Satisfaction Survey</p>       
+                </div>
+                
+                <div style="font-size: 16px; font-weight:bold; background-color: #F8F8F8; height: 25px; margin-top:15px; color:darkblue;">
+                    Some Problem has occured in the process. Please try after some time.  
+                </div>
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel id="OP_msgValid" rendered="{!!isValid}">
+            <div style="margin-left: 20px;">
+                <div id="header3" style="background-color: #F8F8F8; height: 120px;">
+                    <apex:image id="RC_imglogo4" value="{!$Resource.RcLogo}" style="width:180px; height:65px;"/><br/>
+                    <p class="headertext">RingCentral Satisfaction Survey</p>       
+                </div>
+                
+                <div style="font-size: 16px; font-weight:bold; background-color: #F8F8F8; height: 25px; margin-top:15px; color:darkblue;">
+                    You are not Authorized to participate in this Survey.  
+                </div>
+            </div>
+        </apex:outputPanel>
+</apex:page>

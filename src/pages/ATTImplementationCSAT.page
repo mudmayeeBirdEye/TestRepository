@@ -1,0 +1,63 @@
+<apex:page id="ATTImplCSAT" controller="Survey" standardStylesheets="false" showHeader="false" title="Office@Hand Customer Satisfaction" cache="false">
+<HEAD>
+<TITLE>---</TITLE>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+<META HTTP-EQUIV="Expires" CONTENT="-1"/>
+</HEAD>
+<style>
+    p {color:#798496;font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:11px; font-style:normal; line-height:20px;}
+    .content{border: 0px solid #000; width: 500px; padding: 10px;}
+</style>
+<apex:stylesheet value="{!URLFOR($Resource.Style_Resources, 'default2.style.css')}">
+<table width="80">
+<tr>
+<td></td><td></td>
+<td>
+    <div class="content">
+    <apex:image url="{!$Resource.ATTSurveyHeader}" width="480px"/><br/><br/>
+    <apex:form id="myform" rendered="{!IsEmpty}">
+        Hello {!contactName}. Thank you for taking the time to fill out our simple survey and helping us learn how to best help you. <br/><br/>The questions below pertain to your implementation experience and the Advisior that helped you with that process.<p/>
+         <p/>  
+        <b><font color="red">*</font>1. The Implementation Advisor was knowledgeable concerning Office@Hand products and services.</b> <br/> 
+        <apex:selectRadio id="Q1" value="{!q1Value}" title="Agent Knowledge" border="0" layout="pageDirection">
+             <apex:selectOptions value="{!values}"/>
+        </apex:selectRadio> <p/>  
+        
+        <b><font color="red">*</font>2. The Implementation Advisor assisted me in setting up the right solution for my business needs.</b> <br/>
+        <apex:selectRadio value="{!q2Value}" title="Right Solution" layout="pageDirection">
+             <apex:selectOptions value="{!values}"/>
+        </apex:selectRadio> <p/>               
+
+        <b><font color="red">*</font>3. What is your satisfaction level with the Implementation process?</b> <br/>
+        <apex:selectRadio value="{!q3Value}" title="Satisfaction Level" layout="pageDirection">
+             <apex:selectOptions value="{!values2}"/>
+        </apex:selectRadio> <p/>
+        
+        <b><font color="red">*</font>4. The Implementation Advisor displayed a friendly and helpful attitude towards myself and my company.</b> <br/>
+        <apex:selectRadio value="{!q4Value}" title="Satisfaction Level" layout="pageDirection">
+             <apex:selectOptions value="{!values}"/>
+        </apex:selectRadio> <p/>               
+        
+        <b>5. Comments/What could have we done to serve you better?</b> <br/>
+        <apex:inputTextarea value="{!comments}" title="Comments" rows="4" cols="100"/><p/>     
+
+        <apex:commandButton action="{!save}" value="Submit Your Answers"/>    
+            
+            
+        <p/>
+         
+    </apex:form>  
+    <apex:outputText rendered="{!Answered}"><font color="red">Please answer all the required questions.</font></apex:outputText>  
+    <p/><apex:outputText rendered="{!IsFilled}">Thank you for filling out our survey.</apex:outputText>   
+
+    </div>
+    
+    </td>
+    </tr>
+    </table>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+<META HTTP-EQUIV="Expires" CONTENT="-1"/>
+</HEAD>
+</apex:stylesheet>
+</apex:page>

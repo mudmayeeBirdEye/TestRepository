@@ -1,0 +1,9 @@
+<apex:page controller="RCSupportController" showHeader="false" standardStylesheets="false" cache="true" expires="{!cacheMaxAge}" action="{!localeSetting}">    
+   <HTML>
+<BODY>
+
+<iframe src="http://ringcentral.force.com/rcsupport" frameBorder="no" scolling="no" height="4500" width="1000">You need a Frames Capable browser to view this content.</iframe> 
+</BODY>
+</HTML>
+
+</apex:page>

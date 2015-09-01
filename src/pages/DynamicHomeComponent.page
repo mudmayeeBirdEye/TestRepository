@@ -1,0 +1,310 @@
+<!-- /**************************************************************************************************
+ * Project Name................: Dynamic Component for Partner Portal                             *
+ * Class Name .................: DynamicHomeComponentctrl                                         *
+ * Created by..................: Simplion Technologies                                            *
+ * Last Modified by............: Simplion Technologies                                            *
+ * Last Modified Date..........: 10-12-2014                                                       *
+ * Description.................: This is VF page for the Partner Portal Home Component            *
+ * UPDATE:                                                                                        *
+ * By..........................: eugenebasianomutya                                               *
+ * Date........................: 05052015
+ * Details.....................: update Events and Webinar (csv)                                  *
+ *                               update Announcement                                              *
+ **************************************************************************************************/-->
+ 
+<apex:page controller="DynamicHomeComponentctrl">
+    <link href="{!URLFOR($Resource.RCPartnerResource, 'PartnerPortalSystemSts/style.css')}" type="text/css" rel="stylesheet" media="screen"/>
+    <script src="{!URLFOR($Resource.RCPartnerResource, 'PartnerPortalSystemSts/jquery-1.8.2.js')}"></script>
+<style>
+    .announcementDiv {
+        margin-top: 2px;
+    }
+    .announcementDiv .contentDiv {
+        width: auto;
+        margin-left: 19px;
+    }
+    .announcementDiv .headingDiv {
+        font-size: 21px;
+        color: #0d436a;
+        font-family: arial;
+        margin-left: 120px;
+        display: block;
+    }
+    .announcementDiv .subHeadingDiv {
+        display: block;
+        color: #0d436a;
+        font-size: 14px;
+        font-weight: bold;
+        margin-left: 250px;
+    }
+    .csvTable {
+        border: 1px solid rgb(13, 67, 106);
+        text-decoration-color: red;
+        border-collapse: collapse;
+        margin-top: -5px;
+        min-width: 802px;
+        Margin-top: 5px;
+    }
+    .csvTable td a {
+        color: #2c404e !important;
+        cursor: pointer;
+    }
+    .csvTable td,th {
+        padding: 5px;
+        color: #2c404e;
+    }
+    .webinarLink {
+        color: blue;
+    }
+    .webinarLink:HOVER {
+        color: blue;
+    }
+    th.headerRow {
+        background: #2c404e !important;
+        color: white !important;
+        text-align: center;
+    }
+    .webinarLink {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    h3.deal {
+        font-size: 30px; 
+        font-family: Lato, Arial; 
+        color: #0073ae;padding-top:8px;
+        text-align:center;
+        font-weight:300;
+        margin:0;
+        padding:22px 0 0;
+        line-height:1; 
+        text-transform:uppercase;
+    }
+    div.deal-msg span {
+        text-align:center;  
+        font-weight:300;    
+        font-family: Lato, Arial;   
+        color:#0073ae;  
+        font-size:21px; 
+        line-height:1.2;    
+    }
+    div.deal-claim {
+        text-align:left;  
+        margin: 5px 0 0 10px;
+    }
+    div.deal-claim span {
+        font-weight:300;    
+        font-family: Lato, Arial;   
+        color:##333333;  
+        font-size:16px; 
+        line-height:1.2;    
+    }
+    div.deal-claim a {
+        font-weight:300;    
+        font-family: Lato, Arial;   
+        color:#0073ae;  
+        font-size:16px; 
+        line-height:1.2;    
+    }
+    div.deal-container {
+        margin-right: 330px;
+    }
+    .center-text {
+        text-align: center;
+    }
+    div.deal-container div.deal-msg {
+        padding-bottom: 10px;
+    }
+    ul.deal-image-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        width: 730px;
+    }
+    ul.deal-image-list li {
+        float: left;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+    .clear {
+        clear: both;
+    }
+</style>
+
+    <apex:form >
+
+        <table style="display: block;" cellspacing="0" cellpadding="0" width="1000">
+            <tbody>
+
+                <tr>
+                    <td class="center-text">
+                        <div class="deal-container">
+                            <h3 class="deal">OFFER UNBEATABLE SAVINGS <br/> FOR YOUR CUSTOMERS. <br/> <br/>
+                            </h3>
+                            <div>
+                                <apex:image id="theImage001" value="{!$Resource.Announcement3}"/>
+                            </div>
+                            <div class="deal-msg">
+                                <span>
+                                    <br/>Three ways to save<br/>
+                                </span>
+                            </div>
+                            <div>
+                                <ul class="deal-image-list">
+                                    <li><apex:image id="theImage002" value="{!$Resource.Announcement4}"/></li>
+                                    <li><apex:image id="theImage003" value="{!$Resource.Announcement5}"/></li>
+                                    <li><apex:image id="theImage004" value="{!$Resource.Announcement6}"/></li>
+                                </ul>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="deal-claim">
+                                <span>
+                                    For more details <a style="color:#0071a6;" target="_blank" href ="http://marketo.ringcentral.com/rs/ringcentral/images/VAR_July_Promo_2015_final.pdf"> click here. </a> Terms and exclusions apply. <br/> <br/>
+                                    To claim these deals, contact <a href="mailto:partenrs@ringcentral.com">partners@ringcentral.com</a>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <!--**** Display CSV table stored in document on the Page in this column //***** -->
+                <tr> 
+                    <td>
+                        <div style="font-weight: bold; font-size: 25px; padding-top: 30px;">
+                            <h2>Upcoming Partner Events &amp; Webinars</h2>
+                        </div>
+                        <br/>
+
+                        <apex:outputpanel id="results">
+                        <table title="CSV Output" bgcolor="white" border="1" cellspacing="0" cellpadding="0" class="csvTable">
+                        <tr>
+                            <!-- Header of column in  CSV table  -->
+                            <th class="headerRow ">Day</th>
+                            <th class="headerRow ">Date</th>
+                            <th class="headerRow ">Time</th>
+                            <th class="headerRow ">Location</th>
+                            <th class="headerRow ">Webinar/Event</th>
+                        </tr>
+                        <!-- This repeat tag is used to read CSV table data on VF page    -->
+                        <apex:repeat value="{!results}" var="row">
+                        <tr>
+                            <td style="text-align: center;">{!row.eventDay}</td>
+                            <td style="text-align: center;">{!row.eventDate}</td>
+                            <td style="text-align: center;">{!row.eventTime}</td>
+                            <td style="text-align: center;">{!row.eventLocation}</td>
+                            <td style="text-align: center;">
+                                <a href="{!row.eventUrl}" target="_blank" class="webinarLink">{!row.webinar}</a>
+                            </td>
+                        </tr>
+                        </apex:repeat>
+                        </table>
+                        </apex:outputpanel>
+                    </td>
+                </tr>
+
+                <tr>
+                    <!--**************// Display Announcement HTML Table  stored in Document Page  //**********-->
+                    <td>
+                        <div class="announcementDiv2" style="padding-top: 10px;">
+                            <div style="width:680px;margin:20px 0 0 0px;left:30%;z-index:910;background:#fff;">
+                                <h3 style="font-size: 38px; font-family: Lato, Arial; color: #0073ae;padding-top:8px;text-align:center;
+                                    font-weight:300;margin:0;padding:22px 0 20px;line-height:1;">Trade in old phones and earn money
+                                </h3>
+                            </div>
+                            <br/>
+                            
+                            <div style="float:left;width:570px;margin:0 auto;padding:20px;border:1px solid #c1c1c1; border-radius:0px;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tbody>
+                                        <tr>
+                                            <td width="63%" align="left" valign="top" style="text-align:left; font-weight:500; font-family: Lato, Arial; color:#585858; font-size:18px; line-height:1.2; ">Leverage Polycoms Trade-in Program </td>
+                                            <td width="37%" rowspan="5" align="center" valign="middle">                                                
+                                                <apex:image id="theImage233" value="{!$Resource.Announcement2}" width="260" height="189" alt=""/>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr align="left" valign="top">
+                                            <td style="text-align:left; font-weight:300; font-family: Lato, Arial; color:#585858; font-size:14px; line-height:1.2; padding-top:10px;">
+                                                Replace 5 or more phones with new VVX models. 
+                                                Click <a style="color:#0071a6;"  target="_blank" href="http://marketo.ringcentral.com/rs/ringcentral/images/go2polycom-promo-17104-0315-enus-active%20%283%29.pdf?mkt_tok=3RkMMJWWfF9wsRomrfCcI63Em2iQPJWpsrB0B%2FDC18kX3RUsJ7ucbAfind1SFJk7a8C6XFJHRt1F9C4VTbHA">here</a> to see how much money they are worth. 
+                                            </td>
+                                        </tr>
+                                        <tr align="left" valign="top">
+                                            <td style="text-align:left; font-weight:500; font-family: Lato, Arial; color:#585858; font-size:18px; line-height:1.2;padding-top:20px; ">
+                                                Polycom Buy-Back Program
+                                            </td>
+                                        </tr>
+                                        <tr align="left" valign="top">
+                                            <td style="text-align:left; font-weight:300; font-family: Lato, Arial; color:#585858; font-size:14px; line-height:1.2;padding-top:10px; ">
+                                                Get a quote to receive maximum value for trade-in and displaced legacy Polycom and competitor's equipment. 
+                                                Click <a style="color:#0071a6;" target="_blank" href="http://marketo.ringcentral.com/rs/ringcentral/images/go2polycom-promo-17104-0315-enus-active%20%283%29.pdf?mkt_tok=3RkMMJWWfF9wsRomrfCcI63Em2iQPJWpsrB0B%2FDC18kX3RUsJ7ucbAfind1SFJk7a8C6XFJHRt1F9C4VTbHA">here</a> to learn how. 
+                                            </td>
+                                        </tr>
+                                        <tr align="left" valign="top">
+                                            <td style="text-align:left; font-weight:300; font-family: Lato, Arial; color:#585858; font-size:14px; line-height:1.2; padding-top:10px;">
+                                                Plus, eligible rebates for competitive displacement and legacy equipment.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            
+                            <div style="float:left">
+                            <p style="padding: 20px 40px 15px 0px; margin:0; text-align:left; font-weight:300; font-family: Lato, Arial; color:#585858; font-size:11px; line-height:1.2;padding-bottom:30px;">
+                                    Limit of 200 phones. Valid from March 16th, 2015-December 31, 2015. Valid only in North America. 
+                                    Other terms and <br/> conditions apply. Please read details and exclusions and limitations here.</p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <!--*************//  Two Sections For Partner Support with "Ring Me image " //******************* -->
+                    <td>
+                        <br/>
+                        <div style="font-weight: bold; font-size: 20px;">
+                            Partner Support
+                        </div>
+                        <br/>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <!-- This section  for the US/CANADA ,and we can change width and height of Ring Me image  here  -->
+                                    <td style="padding-top: 7px;" valign="top" rowspan="3" width="149">
+                                        <a onclick="win_Open('http://www.ringcentral.com/ringme/ringme.asp?uc=0389CC7D4F51967AF85FD91DFCE0589B847064075611,0,&amp;s=no&amp;v=2',true)" href="#">
+                                        <apex:image id="theImageringme" value="{!$Resource.PartnerRingme}" width="116" height="26"/>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <!-- we can change the written content in front of "Ring Me" image here    -->
+                                    <td style="color: rgb(13, 0, 0); font-family: Arial; font-size: 13px;">
+                                        <b> US/CANADA </b>Partner Support Line:1.800.595.8110&nbsp; <a style="color: rgb(0, 110, 170);" href="mailto:partners@ringcentral.com">partners@ringcentral.com</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    </tr>
+                                        <tr>
+                                            <!-- This section  for the UNITED KINGDOM,and we can change width and height of Ring Me image  here  -->
+                                            <td style="padding-top: 7px;" valign="top" rowspan="3" width="149">
+                                                <a onclick="win_Open('http://www.ringcentral.com/ringme/ringme.asp?uc=0389CC7D4F51967AF85FD91DFCE0589B847064075611,0,&amp;s=no&amp;v=2',true)" href="#">
+                                                <apex:image id="theImageringme1" value="{!$Resource.PartnerRingme}" width="116" height="26"/>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <!-- we can change the written content in front of "Ring Me" image here    -->
+                                            <td style="color: rgb(13, 0, 0); font-family: Arial; font-size: 13px;">
+                                                <b> UNITED KINGDOM </b>UK Partner Support Line: 0800.024.6777&nbsp; <a style="color: rgb(0, 110, 170);" href="mailto:partners@ringcentral.co.uk">partners@ringcentral.co.uk</a>
+                                            </td>
+                                        </tr>
+                                    <tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </apex:form>
+</apex:page>

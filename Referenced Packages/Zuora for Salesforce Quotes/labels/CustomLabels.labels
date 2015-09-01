@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>ADD_CHARGEGROUP_WARNING</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add ChargeGroup warning.</shortDescription>
+        <value>&apos;Please use ZQuoteUtil.getChargeGroup() to create zChargeGroup objects before calling ZQuoteUtil.addChargeGroup().&apos;</value>
+    </labels>
+    <labels>
+        <fullName>API_ERROR</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>API ERROR</shortDescription>
+        <value>API Error:</value>
+    </labels>
+    <labels>
+        <fullName>CHANGE_LOG_INVOICE_OWNER</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>CHANGE_LOG_INVOICE_OWNER</shortDescription>
+        <value>Changed Invoice Owner from {oldOwner} to {newOwner}</value>
+    </labels>
+    <labels>
+        <fullName>CHARGE_PROCESSING_ERROR</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>&quot;Charge processing&quot; Error</shortDescription>
+        <value>Errors occured while processing charges records.</value>
+    </labels>
+    <labels>
+        <fullName>CONFIG_OPTIONS</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>CONFIG_OPTIONS</shortDescription>
+        <value>Z-Force Quotes Configuration Settings</value>
+    </labels>
+    <labels>
+        <fullName>CREATED</fullName>
+        <categories>chatter</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>CREATED</shortDescription>
+        <value>created</value>
+    </labels>
+    <labels>
+        <fullName>DATABASE_OPERATION_ERROR</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>&quot;Database operation failed&quot; Error</shortDescription>
+        <value>Database operation failed.</value>
+    </labels>
+    <labels>
+        <fullName>DELETE_CHARGEGROUP_WARNING</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Delete ChargeGroup warning.</shortDescription>
+        <value>&apos;Please use ZQuoteUtil.getChargeGroups() to create zChargeGroup objects before calling ZQuoteUtil.deleteChargeGroup().&apos;</value>
+    </labels>
+    <labels>
+        <fullName>ERROR</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ERROR</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>ERROR_AMENDMENT_SEND_TO_ZBILLING</fullName>
+        <categories>error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ERROR_AMENDMENT_SEND_TO_ZBILLING</shortDescription>
+        <value>Error(s) occurred while sending the quote to Z-Billing.  {successCount} out of {totalCount} amendments have been created.</value>
+    </labels>
+    <labels>
+        <fullName>FORM_VALUE_REQUIRED</fullName>
+        <categories>error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FORM_VALUE_REQUIRED</shortDescription>
+        <value>You must enter a value.</value>
+    </labels>
+    <labels>
+        <fullName>INVALID_ARGUMENT_ERROR</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>&quot;Invalid argument&quot; Error</shortDescription>
+        <value>Invalid Argument.</value>
+    </labels>
+    <labels>
+        <fullName>INVOICE_OWNER_IS_CANCELLED</fullName>
+        <categories>error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>INVOICE_OWNER_IS_CANCELLED</shortDescription>
+        <value>Please choose an active billing account.</value>
+    </labels>
+    <labels>
+        <fullName>INVOICE_OWNER_NAME_MANUALLY_CHANGED</fullName>
+        <categories>error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>INVOICE_OWNER_NAME_MANUALLY_CHANGED</shortDescription>
+        <value>Please do not change the invoice owner name manually, and make sure the invoice owner name is consist with invoice owner id.</value>
+    </labels>
+    <labels>
+        <fullName>INVOICE_OWNER_NOT_CONSIST_WITH_CURRENCY</fullName>
+        <categories>error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>INVOICE_OWNER_NOT_CONSIST_WITH_CURRENCY</shortDescription>
+        <value>Please choose an invoice owner for the selected currency.</value>
+    </labels>
+    <labels>
+        <fullName>INVOICE_OWNER_NOT_ENABLED</fullName>
+        <categories>error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>NVOICE_OWNER_NOT_ENABLED</shortDescription>
+        <value>The invoice owner transfer functionality is not enabled.</value>
+    </labels>
+    <labels>
+        <fullName>INVOICE_OWNER_RESET</fullName>
+        <categories>warning</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>INVOICE_OWNER_RESET</shortDescription>
+        <value>The invoice owner has been cleared. Please choose a valid value for the selected currency.</value>
+    </labels>
+    <labels>
+        <fullName>INVOICE_OWNER_SET_DEFAULT</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>INVOICE_OWNER_SET_DEFAULT</shortDescription>
+        <value>The invoice owner will be defaulted to the subscription owner after it is sent to Z-Billing.</value>
+    </labels>
+    <labels>
+        <fullName>None</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>None</shortDescription>
+        <value>None</value>
+    </labels>
+    <labels>
+        <fullName>QUOTE_CURRENCY_REQUIRED</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>QUOTE_CURRENCY_REQUIRED</shortDescription>
+        <value>The currency is required for the quote.</value>
+    </labels>
+    <labels>
+        <fullName>QUOTE_TYPE_AMENDMENT</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>QUOTE_TYPE_AMENDMENT</shortDescription>
+        <value>Amendment Subscription</value>
+    </labels>
+    <labels>
+        <fullName>QUOTE_TYPE_NEW</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>QUOTE_TYPE_NEW</shortDescription>
+        <value>New Subscription</value>
+    </labels>
+    <labels>
+        <fullName>QUOTE_TYPE_RENEWAL</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>QUOTE_TYPE_RENEWAL</shortDescription>
+        <value>Renewal Subscription</value>
+    </labels>
+    <labels>
+        <fullName>SUBSCRIPTION_OWNER</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SUBSCRIPTION_OWNER</shortDescription>
+        <value>the Subscription Owner (&quot;{owner}&quot;)</value>
+    </labels>
+    <labels>
+        <fullName>UPDATED</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>UPDATED</shortDescription>
+        <value>updated</value>
+    </labels>
+    <labels>
+        <fullName>UPDATE_CHARGEGROUP_WARNING</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Update ChargeGroup warning.</shortDescription>
+        <value>&apos;Please use ZQuoteUtil.getChargeGroups() to create zChargeGroup objects before calling ZQuoteUtil.updateChargeGroup().&apos;</value>
+    </labels>
+    <labels>
+        <fullName>WARNING</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>WARNING</shortDescription>
+        <value>Warning</value>
+    </labels>
+</CustomLabels>

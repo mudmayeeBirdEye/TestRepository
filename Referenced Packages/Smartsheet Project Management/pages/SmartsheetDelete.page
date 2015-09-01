@@ -1,0 +1,30 @@
+<apex:page standardController="com_smartsheet__Smartsheet__c" extensions="com_smartsheet.SmartsheetEditExtension"
+           standardStylesheets="false" sidebar="true" showHeader="true" title="{!$Label.delete_title}: {!com_smartsheet__Smartsheet__c.Name}" tabStyle="com_smartsheet__Smartsheet__c">
+    <apex:form styleClass="smartsheetForm">
+        <apex:sectionHeader title="{!com_smartsheet__Smartsheet__c.Name}" help="{!HelpPageUrl}" />
+
+        <apex:pageBlock title="{!$Label.delete_heading_main}">
+            <!-- Show related object -->
+            <apex:pageBlockSection >
+				<apex:repeat value="{!referenceFieldList}" var="field">
+	            	<apex:pageBlockSectionItem rendered="{!NOT(ISBLANK(com_smartsheet__Smartsheet__c[field]))}">            
+	                	<apex:outputLabel value="{!$ObjectType.com_smartsheet__Smartsheet__c.fields[field].label}" />
+	                    <apex:outputField value="{!com_smartsheet__Smartsheet__c[field]}" />
+					</apex:pageBlockSectionItem>
+	            </apex:repeat>
+        	</apex:pageBlockSection>
+        	
+            <p>
+                {!$Label.delete_message_instructions}
+            </p>
+            
+            <p></p>
+
+            <apex:pageBlockButtons location="bottom" >
+                <apex:commandButton action="{!deleteRecord}" value="{!$Label.button_delete_link}" />
+                <apex:commandButton action="{!cancel}" value="{!$Label.button_cancel}" />
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+            
+</apex:page>

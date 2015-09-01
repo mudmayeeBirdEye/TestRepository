@@ -1,0 +1,80 @@
+<apex:page standardcontroller="RC_Quote_Template__c" extensions="ViewTemplateHelper" showheader="false" sidebar="false">
+    <style>
+        #basic-modal-content {
+            height:550px;
+            width:1100px;
+        }
+        #simplemodal-container{
+           border-left: 1px solid lightgray;
+           border-right: 1px solid lightgray;
+           box-shadow: 0 0 92px 5px #DADADA inset;
+           background-color:#FFF;   
+           border:0px;
+           border-radius:6px;
+           height:550px;
+           width:1100px;
+           color: #000;
+           z-index: 20;
+           left: 109.5px !important;
+        }
+        .simplemodal-wrap {
+            height:550px !important;
+            width:800px !important;
+        }
+        .btnDiv {
+            padding: 4px;
+            border: 1px solid #A5A6A5;
+            /* min-height: 100px; */
+            margin-top: 5px;
+            margin-bottom: 5px;
+            background: #FFF !important;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+            -webkit-box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+            -moz-box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+            text-align: center;
+            /*padding:10px;*/
+        }
+        #CustomInfo {
+            margin: auto;
+            border: 1px solid #A5A6A5;
+            min-height: 100px;
+            height:500px;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            /*padding-left:15%;*/
+            box-shadow: 0px -38px 157px 62px #C7D6E9 inset;
+            -webkit-box-shadow: 0px -38px 157px 62px #C7D6E9 inset;
+            -moz-box-shadow: 0px -38px 157px 62px #C7D6E9 inset;
+            background: white !important;
+        }
+        
+    </style>
+<apex:form >
+	<!-- <div style="background: lightslategray; opacity: 0.75; position: absolute;top: 0px;  width: 100%; left:0px;z-index: 9999; zIndex: 9999; height:100%;"></div> -->
+	    <apex:pageBlock >
+	            <div class="btnDiv" id="topBtnLevel1" >
+	                 <a class="btn" href="{!hrefTextId}{!opptyId}" style="height:30px;padding: 7px;text-decoration: none;">Back to Opportunity</a>
+	                 <apex:commandButton value="Attach to Opportunity" action="{!attachContent}" style="height:30px;"/>
+	            </div>
+	            <div style="border-top:1px solid #A5A6A5;border-bottom:1px solid #A5A6A5;padding-top: 10px;padding-bottom: 10px;width:100%;">
+	                <div id="CustomInfo">
+	                    <table style="width:100%;height:100%;text-align:center;padding-left:10%;padding-right:10%;">
+	                        <tr>
+	                            <td style="height:100%;">
+	                                 <apex:iframe height="90%" src="{!hrefText}viewTemplate?id={!RC_Quote_Template__c.Id}&opptyid={!opptyId}&quoteid={!quoteId}"  scrolling="true" />
+	                            </td>
+	                        </tr>
+	                    </table>
+	                </div>
+	            </div>
+	            <div class="btnDiv" id="topBtnLevel1" >
+	                 <a class="btn" href="{!hrefTextId}{!opptyId}" style="height:30px;padding: 7px;text-decoration: none;">Back to Opportunity</a>
+	                 <apex:commandButton value="Attach to Opportunity" action="{!attachContent}" style="height:30px;"/>
+	            </div>
+	    </apex:pageBlock>
+    </apex:form>
+</apex:page>

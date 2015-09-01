@@ -1,0 +1,148 @@
+<apex:page standardController="case"   extensions="CaseCommentDetails" sidebar="true" showHeader="true" >
+
+<script type="text/javascript" src="/js/functions.js"> var __sfdcSessionId = '{!GETSESSIONID()}';</script> 
+
+<script src="/soap/ajax/21.0/connection.js"></script> 
+
+<script> 
+
+
+//Run Query for particular Title
+var name;
+
+function getValue(){
+
+var Id = document.getElementById('j_id0:j_id2:j_id5:j_id6:j_id7:values').value;
+//alert('your selection is ' + Id);  
+
+if(Id == "Null"||Id == ""){
+   document.getElementById('j_id0:j_id2:j_id5:j_id6:j_id9:casecommentcontent').value=null;
+   return false;
+ }
+      
+if(confirm("Are you want to use this template?")){ 
+
+try{
+//alert(5);
+sforce.connection.sessionId = "{!$Api.Session_ID}";
+result = sforce.connection.query("Select Case_Comment_Templates__c.Content__c from Case_Comment_Templates__c where Case_Comment_Templates__c.Id ='"+Id+"'");
+records = result.getArray("records");
+  for (var i=0; i< records.length; i++) {
+  var record = records[i];
+ // alert(Id);
+  document.getElementById('j_id0:j_id2:j_id5:j_id6:j_id9:casecommentcontent').value=record.Content__c;
+  }
+}catch(exception){alert('You do not have the level of access necessary to perform the operation you requested.');}
+}else{return false;}
+
+}
+
+function confirm1(){
+//alert(document.getElementById('j_id0:j_id2:j_id5:j_id6:j_id9:casecommentcontent').value);
+var Id = document.getElementById('j_id0:j_id2:j_id5:j_id6:j_id7:values').value;
+//  alert('ID '+Id);  
+ 
+     if(Id =="" ||Id == "Null"){
+
+    alert("Please Select Tempalet First!");
+    return false;
+    }
+    else{
+     setup(Id);
+          }
+    
+}
+
+
+function setup(Id){
+//alert(4+Id);
+if(document.getElementById('j_id0:j_id2:j_id5:j_id6:j_id9:casecommentcontent').value==""||document.getElementById('j_id0:j_id2:j_id5:j_id6:j_id9:casecommentcontent').value==null){
+alert("Please Enter Some Comments!");
+return false;
+}
+
+
+if (document.getElementById('j_id0:j_id2:j_id5:j_id6:j_id9:casecommentcontent').value.length > 4000) {
+var n = document.getElementById('j_id0:j_id2:j_id5:j_id6:j_id9:casecommentcontent').value.length;
+n = n - 4000;
+alert("Size Of This Comment Should be 4000 or Less! over charecters "+ n); 
+return false; 
+}; 
+
+//if(confirm("Are you want to use this template?")){
+
+/*-------------Not In Use-----------var result;
+try{
+//alert(5);
+sforce.connection.sessionId = "{!$Api.Session_ID}";
+result = sforce.connection.query("Select Case_Comment_Templates__c.Content__c from Case_Comment_Templates__c where Case_Comment_Templates__c.Id ='"+Id+"'");
+records = result.getArray("records");
+  for (var i=0; i< records.length; i++) {
+  var record = records[i];
+  //alert(6);
+  //navigateToUrl('/00a/e?parent_id={!Case.Id}&retURL=%2F{!Case.Id}&CommentBody=' + record.Content__c); 
+  //document.getElementById('j_id0:j_id2:j_id5:j_id6:j_id9:casecommentcontent').value=record.Content__c;
+  }
+}catch(exception){alert(exception);}----------------------*/
+
+
+try{
+var CaseComment = new sforce.SObject("CaseComment");
+//alert(CaseComment);
+CaseComment.ParentId ='{!Case.Id}' ;
+CaseComment.CommentBody = document.getElementById('j_id0:j_id2:j_id5:j_id6:j_id9:casecommentcontent').value ;
+// this will insert an account  
+    
+var result = sforce.connection.upsert("Id",[CaseComment]);
+
+/*Exception checking*/
+/*
+if(result[0].getBoolean("success")) {
+alert("upsert updated the CaseComment as expected");
+}
+else {
+alert("upsert failed!");
+}*/
+
+/*navigateToUrl('https://na6.salesforce.com/{!Case.Id}');*/
+navigateToUrl('{!$Label.Organization_Instance}{!Case.Id}');
+}catch(exception){alert(exception);}
+
+  
+}
+
+
+</script> 
+<apex:form >
+<apex:message />
+<apex:sectionHeader title="Case Comment Templates" subtitle="Reusable Templates"/>
+<apex:pageblock >
+<apex:pageBlockSection title="Case Comment Templates" columns="1" collapsible="false" >
+      <apex:pageblocksectionItem >
+          <apex:outputlabel value="Case Comment Title" for="values"/>
+                    <apex:selectList value="{!CaseTempName}" size="1" id="values" title="Select any title to use" onchange="getValue();" required="true">
+                                     
+              <apex:selectOptions value="{!CaseTemp}" id="cct" />
+                                              </apex:selectList>
+                   </apex:pageblocksectionItem>   
+                   
+                   <apex:pageblocksectionItem >
+                    <apex:outputlabel value="Case Comment Content"/>
+               <apex:inputTextarea id="casecommentcontent" value="{!CaseTempName}" rows="15" cols="80" rendered="true" required="true"/>
+                    </apex:pageblocksectionItem>
+                   
+          </apex:pageblocksection>
+          <apex:pageBlockButtons location="both">
+                 
+                <input type="Button" value="Save Comments" onclick="confirm1();"/>
+                <!-- <apex:commandButton value="Ok" onclick="confirm1();"/>-->
+                <!--   <apex:commandButton action="{!cancel}" value="Cancel"/>--> 
+                  <!-- <input type="Button" value="Cancel" onclick="navigateToUrl('https://na6.salesforce.com/{!Case.Id}');"/> -->
+                  <input type="Button" value="Cancel" onclick="navigateToUrl('{!$Label.Organization_Instance}{!Case.Id}');"/>  
+                   </apex:pageBlockButtons>                 
+</apex:pageblock>
+                  
+</apex:form>
+
+ 
+</apex:page>

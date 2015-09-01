@@ -1,0 +1,45 @@
+<apex:page StandardController="Lead"
+	extensions="LeadCreationPartnerExpressCls" tabStyle="Lead">
+	<style>
+.btn {
+	color: #084B8A !important;
+	border: 1px solid #A5A6A5 !important;
+	padding: 9px !important;
+	background: #FFF;
+	box-shadow: -4px -23px 18px -19px #A5A6A5 inset;
+	-webkit-box-shadow: -4px -23px 18px -19px #A5A6A5 inset;
+	-moz-box-shadow: -4px -23px 18px -19px #A5A6A5 inset;
+}
+
+.btnDiv {
+	width: 95%;
+	margin: auto;
+	border: 1px solid #A5A6A5;
+	/* min-height: 100px; */
+	margin-top: 5px; //
+	margin-bottom: 5px;
+	background: #FFF !important;
+	-moz-border-radius: 11px;
+	-webkit-border-radius: 11px;
+	border-radius: 11px;
+	/*behavior: url({!$Resource.BorderRadiusHTC});*/
+	box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+	-webkit-box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+	-moz-box-shadow: 0px -71px 101px -19px #C7D6E9 inset;
+	text-align: center;
+	/*padding:10px;*/
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+</style>
+	<apex:pageMessages escape="false"></apex:pageMessages>
+	<apex:form >
+		<div class="btnDiv">
+			<apex:commandButton rendered="{!showContinueBtn}"
+				value="Schedule an Appointment"
+				onclick="window.open('https://www.timetrade.com/app/td-951527/workflows/nq17q/schedule/welcome?view=embed&fs=1&wfsid=b07a7e16-baba97f6-b07a7e14-baba97f6-00000002-799o9rhgarab2tgd07vphd0fau6pbk32');return false;" />
+			<apex:commandButton rendered="{!showContinueBtn}"
+				action="{!redirectNewLead}" value="Go to Lead" />
+		</div>
+	</apex:form>
+</apex:page>

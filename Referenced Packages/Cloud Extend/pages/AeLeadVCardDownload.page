@@ -1,0 +1,15 @@
+<!--  Generates the vCard content for a lead  -->
+<apex:page title="AeLeadVCard.vcf" cache="True" contentType="text/x-vcard#{!Lead.id}.vcf"  standardcontroller="Lead">BEGIN:VCARD
+VERSION:3.0
+N;CHARSET=utf-8:<c:AeEscapeVCardString vcString="{!Lead.LastName}"/>;<c:AeEscapeVCardString vcString="{!Lead.FirstName}"/>
+FN;CHARSET=utf-8:<c:AeEscapeVCardString vcString="{!Lead.Name}"/>
+ORG;CHARSET=utf-8:<c:AeEscapeVCardString vcString="{!Lead.Company}"/>
+TITLE;CHARSET=utf-8:<c:AeEscapeVCardString vcString="{!Lead.Title}"/>
+EMAIL;type=INTERNET;type=pref:<c:AeEscapeVCardString vcString="{!Lead.Email}"/>
+TEL;type=WORK;type=VOICE;type=pref:<c:AeEscapeVCardString vcString="{!Lead.Phone}"/>
+TEL;type=WORK;type=CELL;type=pref:<c:AeEscapeVCardString vcString="{!Lead.MobilePhone}"/>
+TEL;type=WORK;type=FAX;type=pref:<c:AeEscapeVCardString vcString="{!Lead.Fax}"/>
+URL;type=WORK:{!URLFOR($Page.AeGuideList)}?objectId={!Lead.id}&amp;objectType=Lead
+ADR;type=WORK:;;<c:AeEscapeVCardString vcString="{!Lead.Street}"/>;<c:AeEscapeVCardString vcString="{!Lead.City}"/>;<c:AeEscapeVCardString vcString="{!Lead.State}"/>;<c:AeEscapeVCardString vcString="{!Lead.PostalCode}"/>;<c:AeEscapeVCardString vcString="{!Lead.Country}"/>
+END:VCARD
+</apex:page>

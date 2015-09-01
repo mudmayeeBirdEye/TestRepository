@@ -1,0 +1,789 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+  <head>
+    <style>
+        .AgreementContent{
+          border:1px solid red;
+        }
+        .MsoTitle{
+            font-family: cambria;
+           font-size: 16px;
+           color:#17365D;
+           margin-bottom:0px;
+            padding:2px;
+         }
+         .MsoTitleStyle{
+            margin-left:1em;
+            mso-element:para-border-div;
+            /*border:none;border-bottom:solid #4F81BD 1.0pt;*/
+            mso-border-bottom-themecolor:accent1;
+            margin-bottom:0px;
+        }
+         .MsoNormal{
+           font-family: calibri;
+           font-size: 14px;
+           color:#000;
+           padding:2px;
+         }
+         .MsoSubtitle{
+           color: #4F81BD;
+           font-family: cambria;
+           font-size: 17px;
+           font-style: italic;
+            padding:2px;
+         }
+          #eula p{
+            display: block;
+           /* -webkit-margin-before: 1em !important;
+            -webkit-margin-after: 1em !important;
+            -webkit-margin-start: 0px !important;
+            -webkit-margin-end: 0px !important;*/
+             padding:0 0 1em 1em !important;
+          }
+        #eula ul{
+            display: block;
+            padding:0 0 0 40px !important;
+            margin:0 0 1em 1em !important;
+            list-style-type: disc;
+            /*-webkit-margin-before: 1em;
+            -webkit-margin-after: 1em;
+            -webkit-margin-start: 0px;
+            -webkit-margin-end: 0px;
+            -webkit-padding-start: 40px;*/
+         }
+         #eula ul li{
+            font-family: calibri;
+           font-size: 14px;
+           color:#000;
+           padding:4px;
+         }
+         .mainDIV{
+            border-radius: 0px 6px 0px 0px;
+            border-top: 1px solid;
+            border-right: 1px solid;
+            padding:10px;
+          }
+          .box_mod_2 .center_content{
+            left:0px;
+          }
+       </style>
+     </head>
+ <apex:composition template="{!$Site.Template}">
+    <apex:define name="search">  
+<div class="MsoTitleStyle">
+    <p class="MsoTitle">
+        RingCentral Office@Hand from AT&amp;T End User Licensing Agreement
+    </p>
+</div>
+<div id='eula' class='mainDIV'>
+<p class="MsoNormal">
+  IF YOU DO NOT AGREE TO THE TERMS OF THIS END USER LICENSE AGREEMENT AND THE AT&amp;T TERMS OF SERVICE (COLLECTIVELY, “AGREEMENT”), DO NOT DOWNLOAD, INSTALL, OR USE RINGCENTRAL OFFICE@HAND FROM AT&amp;T (“Office@Hand”).
+</p>
+<p class="MsoNormal">
+   BY DOWNLOADING, INSTALLING, OR USING RINGCENTRAL OFFICE@HAND FROM AT&amp;T, YOU AGREE TO ABIDE BY AND COMPLY WITH THE AGREEMENT, AND YOU AFFIRM THAT YOU EITHER ARE OVER THE AGE OF MAJORITY IN YOUR JURISDICTION OF RESIDENCE, ARE AN EMANCIPATED MINOR, OR POSSESS LEGAL PARENTAL OR GUARDIAN CONSENT, AND THAT YOU ARE FULLY ABLE AND COMPETENT TO ENTER INTO THE TERMS, CONDITIONS, OBLIGATIONS, AFFIRMATIONS, REPRESENTATIONS, AND WARRANTIES SET FORTH IN THE AGREEMENT.
+</p>
+<p class="MsoNormal">
+    <b>YOU UNDERSTAND THAT 911 SERVICE IS ONLY PROVIDED BY RINGCENTRAL OFFICE@HAND FROM AT&amp;T IP DESK PHONES AND SOFTPHONES ON PCS, AND THE OTHER RINGCENTRAL OFFICE@HAND FROM AT&amp;T SOFTWARE APPLICATIONS AND SERVICES DO NOT PROVIDE 911 SERVICE. IF YOU SUBSCRIBE TO ONE OF THE OTHER RINGCENTRAL SOFTWARE APPLICATIONS OR SERVICES, YOU MUST MAKE ALTERNATIVE ARRANGEMENTS TO PLACE 911 CALLS, SUCH AS USING A TRADITIONAL WIRELINE OR CELLULAR TELEPHONE, AND YOU SHOULD NOT RELY ON RINGCENTRAL OFFICE@HAND FROM AT&amp;T TO CALL 911.</b>
+</p>
+<p class="MsoNormal">
+    <b>YOU UNDERSTAND THAT THE RINGCENTRAL OFFICE@HAND FROM AT&amp;T MOBILE APPLICATION USES YOUR DEVICE’S DIALER AND CELLULAR TELEPHONE SERVICE TO MAKE 911 CALLS. IF YOUR DEVICE DOES NOT HAVE CELLULAR TELEPHONE SERVICE, YOU WILL NOT BE ABLE TO CALL 911 FROM THE RINGCENTRAL OFFICE@HAND FROM AT&amp;T MOBILE APPLICATION.</b>
+</p>
+<p class="MsoNormal">
+    <b>RINGCENTRAL OFFICE@HAND FROM AT&amp;T IS INTENDED FOR GENERAL BUSINESS USE ONLY. IT IS NOT DESIGNED, MANUFACTURED, INTENDED, OR RECOMMENDED FOR USE OR RESALE AS EQUIPMENT OR SERVICES IN ENVIRONMENTS REQUIRING FAIL-SAFE PERFORMANCE (E.G., EMERGENCY MEDICAL CARE, HAZARDOUS ACTIVITIES) OR IN WHICH THE FAILURE OF THE SERVICES COULD LEAD TO DEATH, PERSONAL INJURY, OR SEVERE PHYSICAL OR ENVIRONMENTAL DAMAGE. RINGCENTRAL SPECIFICALLY DISCLAIMS ANY EXPRESS OR IMPLIED WARRANTY OF FITNESS FOR HIGH RISK ACTIVITIES OR SERVICES.</b>
+</p>
+<p class="MsoNormal">
+    The Agreement governs your use of the RingCentral Office@Hand from AT&amp;T services (“Services”) and RingCentral Office@Hand from AT&amp;T software applications (“Applications”) including, without limitation, the User Portal, Mobile Application, and Softphone.
+</p>
+<p class="MsoNormal">
+    This Agreement is between RingCentral, Inc. and its affiliates (“RingCentral”) and the legal entity you represent by signing up for any Service, using the Service, or downloading, installing, or using any Application (“You”). If You are an individual entering this Agreement on behalf of Your company, You represent and warrant that You have the authority and are competent to do so.
+</p>
+<p class="MsoSubtitle">
+     1.<span style="font-size: 7pt; ">&nbsp;&nbsp;&nbsp; </span>End User License and Restrictions
+</p>
+<p class="MsoNormal">
+    RingCentral grants You a limited, personal, revocable, non-exclusive, non-sublicensable, non-assignable, non-transferable, non-resellable license and right to use the RingCentral Services and Applications in strict accordance with the Agreement. All rights not expressly granted under this Agreement are retained by RingCentral.
+</p>
+<p class="MsoNormal">
+    <b>No Grant of Intellectual Property Rights.</b> You acknowledge and agree that any and all patents, copyrights, trademarks, service marks, trade secrets, and all other intellectual property rights (collectively, "IP&nbsp;Rights") in the Applications and Services are and shall remain the sole and exclusive property of RingCentral and its licensors. Nothing in this Agreement intends to or shall grant, transfer, or assign any IP Rights to, or vest any IP Rights in, You. You are only entitled to the limited use of the rights expressly granted to You in this Agreement. You will not take any action to jeopardize, limit, or interfere with the IP Rights. You acknowledge and agree that any unauthorized use of the IP Rights is a violation of this Agreement, as well as a violation of applicable intellectual property laws. You acknowledge and understand that all title and rights in and to any third party content that may be accessed through the Applications or Services is the property of the respective content owners and may be protected by applicable copyright or other intellectual property laws and treaties.
+</p>
+<p class="MsoNormal">
+    <b>No Grant of Rights to Third Parties and No Resale.</b> You agree not to sell, assign, rent, lease, distribute, export, import, act as an intermediary or provider, or otherwise grant rights to third parties with regard to the Applications or Services or any part thereof without RingCentral's prior written consent. If You are interested in reselling products or services offered by RingCentral, You are encouraged to join RingCentral's affiliate network, available <a href="http://www.ringcentral.com/partners.asp">here</a>.
+</p>
+<p class="MsoNormal">
+    <b>No Modifications.</b> You agree not to undertake, cause, permit, or authorize the modification, creation of derivative works, translation, reverse engineering, decompiling, disassembling, or hacking of the Applications or Services, or any parts thereof. You agree not to intercept, capture, emulate, decrypt, or redirect the communications protocols used by RingCentral for any purpose, including without limitation causing the Applications to connect to any computer server or other device not authorized by RingCentral or in a manner not authorized by RingCentral.
+</p>
+<p class="MsoNormal">
+    <b>New Versions of the Software. </b>RingCentral, in its sole discretion, reserves the right to add, remove, or modify features or functions, or to provide fixes, updates and upgrades, to the Applications and Services. You acknowledge and agree that RingCentral has no obligation to make available to You any subsequent versions of the Applications or Services. You also agree that You may have to enter into a renewed version of this Agreement if you want to download, install, or use a new version of the Software.
+</p>
+<p class="MsoNormal">
+    In addition, You and RingCentral acknowledge that no Third-Party has any obligation whatsoever to furnish maintenance or support services with respect to the Applications or Services and that RingCentral is solely responsible for the provision of maintenance and support as provided in this Agreement and to the extent such maintenance and support is required under applicable law.
+</p>
+<p class="MsoSubtitle">
+     2.<span style="font-size: 7pt; ">&nbsp;&nbsp;&nbsp; </span>Service Registration Procedures
+</p>
+<p class="MsoNormal">
+    Upon signing up for the Service and at subsequent times as requested by RingCentral, You agree to provide to RingCentral Your true, accurate, current, and complete personal name and/or business name, administrator name, billing address, shipping address, the addresses where the Services will primarily be used, 911 registered address for each applicable device, email address, contact phone number, and other data which may be necessary to administer 
+    Your RingCentral Office@Hand from AT&amp;T account ("Account") (collectively, "Registration Data"). You represent and warrant that the information You provide is accurate, current, and complete, and agree to promptly update any of the information if it changes. If You provide Registration Data that is, or that RingCentral suspects to be, false, inaccurate, not current, incomplete, fraudulent, or otherwise unlawful, RingCentral has the right, in its sole discretion, to suspend or terminate the Service and refuse any and all current or future use of all Services by You, Your business(es), affiliates and all users of Your Account. At all times, You shall maintain and promptly update Registration Data.
+</p>
+<p class="MsoNormal">
+    Upon completion of all Registration Data and acceptance of this Agreement, RingCentral will provide You with, as applicable, a password(s), user ID(s), PIN(s), telephone number(s), and other account information. You will be required to provide a security question and answer that will be used to verify ownership or affiliation with the Account. You are solely responsible for maintaining the confidentiality of all passwords, PINs, and security questions and answers associated with the Account, and, at all times, You will be solely responsible for all transactions and activities that occur as a result of the disclosure (whether authorized or unauthorized) of any password(s), PIN(s), and/or security questions(s) and answer(s) associated with the Account, even if such transactions and/or activities were not authorized by You. You are solely liable for any transactions or activities 
+    by You or anyone else that occur on Your Account.
+    You shall immediately notify AT&amp;T of any unauthorized use of Your Account or if any other breach of security has occurred. In no event shall RingCentral be liable for any unauthorized use of Your Account.
+</p>
+<p class="MsoNormal">
+    In connection with the registration, implementation, maintenance, or servicing of the Services, You will be required to provide data, information or other materials (collectively "Customer Data"). You hereby grant to RingCentral and AT&amp;T a perpetual, worldwide, royalty-free, fully paid-up, non-exclusive, non-transferable (except in connection with an assignment of this Agreement) license to copy, store, record, transmit, display, view, print, and use Customer Data to the extent required to provide or improve the Services. RingCentral may also share Customer Data as permitted pursuant to RingCentral's Privacy Policy, available <a href="http://www.ringcentral.com/legal/privacy-policy.html">here</a>, which is incorporated into this Agreement.
+</p>
+<p class="MsoSubtitle">
+     3.<span style="font-size: 7pt; ">&nbsp;&nbsp;&nbsp; </span>Customer Representations
+</p>
+<p class="MsoNormal">
+    You represent and warrant that You possess the legal right, capacity, and ability to enter into this Agreement. You represent and warrant that You have made and will maintain at all times wireless or traditional wireline telephone service that will enable You to call 911 and any other applicable emergency service number. You represent and warrant that You will not use the Applications or Services in environments requiring fail-safe performance or in which the failure of the Applications or Services could lead directly to death, personal injury, or severe physical or environment damage. You represent and warrant that the Registration Data, user name, contact information, Registered Location(s), and all other information provided in connection with Your RingCentral Account are true and correct at all times. You represent and warrant that You will not use the Applications or Services in violation of the Use Policy herein.
+</p>
+<p class="MsoNormal">
+    You agree to be financially responsible for Your use of the Applications or Services, including the authorized or unauthorized use of Your Account. In order to use the Applications or Services, You must have properly configured and working Internet service and/or Public Switched Telephone Network ("PSTN") service (i.e., mobile and/or landline phone service) and hereby agree, at Your sole expense: to (1) obtain access to Your own Internet and/or PSTN service with a third party provider other than RingCentral; (2) be responsible for payment of Internet and/or PSTN connection or service fees and all equipment necessary to establish a connection to such Internet and/or PSTN service, as may be required to use the Applications or Services; (3) supply and pay third-party providers for all additional phone service and features required for Your use of the Applications or Services; and (4) pay AT&amp;T for the Applications or Services.
+</p>
+<p class="MsoSubtitle">
+     4.<span style="font-size: 7pt; ">&nbsp;&nbsp;&nbsp; </span>Product Pricing and Availability
+</p>
+<p class="MsoNormal">
+    With respect to its advertising, offering, or sale of Applications, Services, or any other products (collectively, “Products”), RingCentral and AT&amp;T attempt to describe Products as accurately as possible. Nevertheless, neither RingCentral nor AT&amp;T warrant that any descriptions, pricing, availability, or other information relating to the advertising, offering, or sale of Products (collectively, “Product Information”) from its Website, marketing materials, promotional flyers, advertisements, or other printed or electronic materials (collectively, “Product Materials”) is accurate, complete, reliable, current, or error-free. Despite our efforts, it is possible that Product Information may be described inaccurately, or that the Product may be unavailable. In the event RingCentral or AT&amp;T determine that a Product is described inaccurately, or unavailable, RingCentral reserves the right to take any action it deems reasonable and necessary to rectify the error, including without limitation, canceling Your Account or subscription to the Services. You agree to notify AT&amp;T immediately if You become aware of any pricing or descriptive errors or inconsistencies with any Products You order through the Product Materials and comply with any corrective action taken by RingCentral.
+</p>
+<p class="MsoNormal">
+    Please note that all prices, taxes, surcharges, and fees are subject to change at any time. You acknowledge and agree that the Services may not be available 100% of the time.
+</p>
+<p class="MsoSubtitle">
+     5.<span style="font-size: 7pt; ">&nbsp;&nbsp;&nbsp; </span>Marketing Materials and Promotional Services
+</p>
+<p class="MsoNormal">
+    From time and time, RingCentral may send You marketing materials and offer additional promotional services to 
+    You at no cost or at an additional fee (“Promotional Services”). You hereby agree that RingCentral may send You 
+    (including registered administrators and end users of Your Account) 
+    such marketing and promotional materials via electronic transmission, e-mail, mail, or otherwise, 
+    provided, that You may unsubscribe to such materials at any time by notifying RingCentral Customer Support.
+     You understand and agree that RingCentral may modify the scope of the Promotional Services it offers at any
+      time without additional notice to You. You further understand and agree that RingCentral may offer Promotional 
+      Services only to new customers and that You may not be eligible for some or all of the Promotional Service offerings.
+</p>
+<p class="MsoSubtitle">
+     6.<span style="font-size: 7pt; ">&nbsp;&nbsp;&nbsp; </span>Use Policies
+</p>
+<p class="MsoNormal">
+    You shall not use the Services for any illegal, fraudulent, improper, or abusive purpose or in any way that 
+    interferes with RingCentral’s ability to provide high quality Services to other customers, prevents or restricts 
+    other customers from using the Services, or damages any RingCentral’s or other customers’ property. If RingCentral 
+    finds that You are using the Services for anything other than the permitted uses in this Agreement or for any of the 
+    prohibited uses in this Agreement, RingCentral may at its sole discretion terminate Your Service, and AT&amp;T may charge
+    You any applicable fees for the Services used plus damages caused by Your improper use.
+</p>
+<p class="MsoNormal">
+    Prohibited uses include, but are not limited to:
+</p>
+<ul>
+    <li>Behavior that is illegal, obscene, threatening, harassing, defamatory, libelous, deceptive, fraudulent, malicious, infringing, tortious, or invasive of another’s privacy. </li>
+    <li>
+        Sending unsolicited messages or advertisements, including email, voicemail, SMS, or faxes 
+        (commercial or otherwise) (“spamming”), or otherwise sending bulk and/or junk email, voice mail, SMS, or faxes. 
+      </li>
+    <li>
+       Harvesting or otherwise collecting information about others, including email addresses, without their consent.
+     </li>
+    <li>
+        Negligently, recklessly, knowingly, or intentionally transmitting any material that contains viruses, time bombs, trojan horses, worms, malware, spyware, 
+        or any other programs that may be harmful or dangerous. </li>
+    <li>
+    Creating a false Caller ID identity ("ID spoofing") or forged email/SMS address or header, or otherwise attempting to mislead others as to the identity of the sender or the origin of any communication made using the Services. </li>
+    <li>Transmitting any material that may infringe, misappropriate, or otherwise violate the foreign or domestic intellectual property rights or other rights of third parties. </li>
+    <li>Violating any U.S. or foreign law regarding the transmission of technical data or software exported through the Services. </li>
+    <li>
+    Utilizing the Services in excess of what, in RingCentral's sole discretion, would be expected of normal business use, including without limitation allowing more than one user to use a single VoIP line or using a single VoIP line in excess of what would be expected of a single user. </li>
+    <li>Using the Services in any way that interferes with other customers' and third parties' use and enjoyment of the Services or use the Services in any manner which disrupts, prevents or restricts any other customer from using the Services. </li>
+    <li>
+    Using or employing methods and/or devices that are designed or likely to take advantage of, bypass, exploit, or otherwise avoid this Use Policy. </li>
+</ul>
+<p class="MsoNormal">
+    You further understand and agree that:
+</p>
+<ul>
+    <li>You shall be solely liable for any transmissions sent through the Services under Your Account, including the content of any transmission sent through the Services under Your Account. </li>
+    <li>You will abide by all applicable RingCentral and AT&amp;T policies, procedures, and agreements related to the Services. </li>
+    <li>You shall not attempt to gain unauthorized access to the Services, other accounts, computer systems or networks connected to the Services, through password mining or any other means. </li>
+    <li>Your use of the Services is subject to all applicable local, state, national, and international laws and regulations (including without limitation those governing account collection, export control, consumer protection, unfair competition, anti-discrimination, securities laws, and false advertising). </li>
+</ul>
+<p class="MsoNormal">
+    In addition, some of RingCentral's plans and other Services are offered on an "unlimited" basis. All unlimited plans:
+</p>
+<ul>
+    <li>May only be used for normal business use. </li>
+    <li>Are provided only for dialog between two individuals at one time per line. </li>
+    <li>Exclude international calling, which is available for an additional fee. </li>
+    <li>Are issued on a "one (1) user per line basis", meaning that only one registered user may be assigned to use the Services for any one line. </li>
+</ul>
+<p class="MsoNormal">
+    Unlimited plans also may not be used for any of the following prohibited uses (which are in addition to the other prohibited uses applicable to all Services):
+</p>
+<ul>
+    <li>
+    Trunking or forwarding Your RingCentral number to (an)other phone number(s) capable of handling multiple simultaneous calls, or to a private branch exchange (PBX) or a key system. </li>
+    <li>Spamming or blasting (e.g., sending one hundred (100) or more bulk and/or junk voicemail or faxes simultaneously). </li>
+    <li>Bulk call-in lines (e.g., customer support or sales call centers, "hotlines", 900 numbers, sports-line numbers, etc.). </li>
+    <li>Auto-dialing or "predictive" dialing (i.e., non-manual dialing or using a software program or other means to continuously dial or place out-bound calls). </li>
+</ul>
+<p class="MsoNormal">
+    In addition, unusually high usage of the Services may impair RingCentral’s ability to provide high quality 
+    Services to others and/or indicate unauthorized use of the Services, in which case RingCentral may suspend or
+     terminate Your Account and/or suggest that you upgrade your plan to a level that can accommodate the anticipated 
+     volume.
+</p>
+<p class="MsoNormal">
+    RingCentral reserves the right to add to, modify or amend this Use Policy at any time for any reason at its sole discretion.
+</p>
+<p class="MsoSubtitle">
+     7.<span style="font-size: 7pt; ">&nbsp;&nbsp;&nbsp; </span>Unsolicited Advertisements
+</p>
+<p class="MsoNormal">
+    The transmission of unsolicited calls, using the Services for broadcasting, and/or transmitting unsolicited fax advertisements is illegal under federal law, including the Federal Telephone Consumer Protection Act of 1991 (<a href="http://ftp.fcc.gov/cgb/consumerfacts/unwantedfaxes.html">http://ftp.fcc.gov/cgb/consumerfacts/unwantedfaxes.html</a>), and under a number of similar state laws. Distribution of unsolicited voicemail, broadcast, and fax advertisements through the Services is prohibited. You shall not use the Services to send or transmit any unsolicited communications or advertisements and understand that, if You do, RingCentral may immediately terminate Your right to use the Services without liability of any kind.
+</p>
+<p class="MsoNormal">
+    At RingCentral's sole option and without further notice, RingCentral may use technologies and procedures, such as filters, that may terminate such unsolicited advertisements without delivering them. You hereby release and agree to fully, finally, and forever release, hold harmless, and fully indemnify RingCentral from and against any damages or liabilities of any kind related to any voicemail, broadcast, and/or fax spam or solicitations that You may send and/or receive using the Services.
+</p>
+<p class="MsoNormal">
+    If You transmit or are otherwise connected with any transmission of voice, fax, e-mail, or other unsolicited marketing messages using the Services, You agree to pay RingCentral its actual damages if those damages can be reasonably calculated. If actual damages cannot be reasonably calculated, You agree to pay RingCentral liquidated damages of ten dollars ($10.00) for each unsolicited marketing message transmitted through the Services. You acknowledge that if actual damages cannot be reasonably calculated, these liquidated damages are a reasonable estimation of such damages and are not a penalty.
+</p>
+
+<p class="MsoSubtitle">
+     8.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Equipment Return Policy
+</p>
+<p class="MsoNormal">
+    You are responsible for all return shipping charges for any hardware returned to RingCentral for any reason, 
+    including situations in which hardware is covered under warranty. If You have purchased any hardware from AT&amp;T or 
+    AT&amp;T has otherwise provided You with any hardware and Your Account is terminated for any reason after the end of 
+    any free-trial period and prior to the end of Your first year of service, You hereby authorize AT&amp;T to immediately 
+    bill your credit card the appropriate equipment return fees, as set forth below.
+</p>
+<p class="MsoNormal">
+    If You cancel Your RingCentral Service within ninety (90) days from the date of purchase of the hardware, You may (a) keep the hardware and pay the list price minus the actual price paid for the hardware, excluding taxes, or (b) return Your hardware and receive a full refund. No returns are accepted after ninety (90) days from the date of purchase of the hardware. In addition, the following terms and charges apply to hardware returns:
+</p>
+<ul>
+    <li>You agree to pay all shipping and handling charges related to any hardware returns. </li>
+    <li>All hardware must be fully functional, include all components, manuals, peripheral devices, and all other accessories that were originally shipped with the hardware. </li>
+    <li>Before returning any hardware that has data in its memory, please transfer all files You wish to retain to another file source. Once the hardware is returned, Your files cannot be recovered and You release us of any liability for any lost, damaged, or destroyed files, data, or other information. </li>
+</ul>
+<p class="MsoSubtitle">
+     9.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Account Ownership
+</p>
+<p class="MsoNormal">
+    The Account owner shall be the legal entity (e.g., corporation, partnership, individual) 
+    that signs up for the Services with AT&amp;T. Subsequent changes to ownership must be supported by appropriate
+     legal documentation. Neither AT&amp;T nor RingCentral will adjudicate ownership-related disputes, or any other 
+     internal business dispute. If AT&amp;T is unable to determine the valid owner of the Account, AT&amp;T reserves the
+      right to suspend or terminate the Account and Services.
+</p>
+<p class="MsoSubtitle">
+     10.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Number Porting and Availability
+</p>
+<p class="MsoNormal">
+    RingCentral will use reasonable efforts to facilitate number transfers or port
+    requests for You, provided that You comply with the necessary
+    and specific procedures for porting between service providers.
+</p>
+<p class="MsoNormal">
+    You acknowledge and understand that number porting depends on the cooperation of third parties outside of 
+    RingCentral’s control. Accordingly, You agree that RingCentral will not be liable for the failure or delay of any third party to cooperate in the porting of any telephone number, 
+    or for the allegedly unauthorized porting of any telephone number by a third party.
+</p>
+<p class="MsoNormal">
+   RingCentral works with third party carrier(s) who, on RingCentral’s behalf, port telephone numbers in 
+   accordance with applicable Regulatory Rules and Industry Guidelines. RingCentral’s third-party carrier(s) 
+   require very specific and detailed information and requirements when completing a port request. Please be 
+   informed that You will be required to provide such detailed and specific information to complete a port request. 
+   For porting numbers into Your RingCentral Office@Hand from AT&amp;T Account, follow the procedures on Your Account 
+   settings page for transferring a number to Your RingCentral Office@Hand from AT&amp;T Account. For porting numbers out
+    of Your RingCentral Office@Hand from AT&amp;T Account, follow the procedures of Your new service provider.
+     You understand that porting Your number out of Your Account does not automatically terminate Your RingCentral
+      Office@Hand from AT&amp;T Account.
+</p>
+<p class="MsoNormal">
+    Number porting is defined and regulated by the Federal Communications Commission (FCC). Visit <a href="http://www.fcc.gov/cgb/NumberPortability">http://www.fcc.gov/cgb/NumberPortability</a> to learn more about number porting.
+</p>
+<p class="MsoNormal">
+    RingCentral cannot guarantee requested telephone numbers will be available, that Your existing provider will port Your number, or that circumstances beyond RingCentral's control will not prevent or delay a successful port of Your number for the Services. You should not order any printed material, such as business cards or stationery, showing a telephone number, or issue any press releases or otherwise publicize any telephone number until that telephone number becomes active on Your Account. RingCentral shall not be liable for reimbursement for press releases, business cards, and/or stationery under any conditions.
+</p>
+<p class="MsoNormal">
+    You understand and agree that RingCentral may from time to time need to change the telephone or facsimile number assigned to You (due to an area code split or for any other reason). RingCentral shall not be liable for any damages (including consequential, special damages or other damages) to You in the event that it needs to assign You a new telephone or facsimile number.
+</p>
+<p class="MsoSubtitle">
+     11.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Storage of User Information
+</p>
+<p class="MsoNormal">
+    RingCentral is not obligated to store Your communications logs, voicemails, faxes, e-mails, or other messages and does so only as a convenience to You. You agree that RingCentral has no responsibility or liability whatsoever for the deletion or failure to store any call log information, voicemails, faxes, e-mails, messages, and/or other communications maintained or transmitted by the Services. You acknowledge and agree that RingCentral may establish limits as to the size of communications that RingCentral transmits or stores and the duration for which RingCentral stores any communications.
+</p>
+<p class="MsoSubtitle">
+     12.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Recording Conversations
+</p>
+<p class="MsoNormal">
+    Certain RingCentral Services provide a function that allows You to record individual telephone conversations. The laws regarding the notice, notification, and consent requirements for recording conversations vary from state to state. In some states, You are required to obtain consent from all parties to a record a conversation. You are solely responsible for complying with all federal, state, and local laws in any relevant jurisdiction when using this feature. RingCentral expressly disclaims all liability with respect to your recording of telephone conversations. You hereby agree to fully, finally, and forever release, discharge, hold harmless, and fully indemnify RingCentral from and against any damages or liabilities of any kind related to Your recording of any telephone conversations using the Services.
+</p>
+<p class="MsoSubtitle">
+     13.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Voice-to-Text and Text-to-Voice Limitations
+</p>
+<p class="MsoNormal">
+    Certain RingCentral Services may provide a function that allows voicemails to be converted to text and vice versa.
+     You understand and agree that RingCentral’s voice-to-text (“VTT”) and text-to-voice (“TTV”)
+      features may not accurately transcribe voicemails or articulate text messages, respectively. 
+      You are solely responsible for checking the original message and verifying the accuracy of the message when
+       using any and all VTT or TTV features. RingCentral expressly disclaims all liability with respect to the
+        conversion of voicemails to text or vice versa. You hereby agree to fully, finally, and forever release, 
+        discharge, hold harmless, and fully indemnify RingCentral from and against any damages or liabilities 
+        of any kind related to Your use of VTT or TTV features when using the Services.
+</p>
+<p class="MsoSubtitle">
+     14.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Support and Feedback
+</p>
+<p class="MsoNormal">
+    AT&amp;T provides customer and technical support to You via telephone and e-mail 
+    for the Services. AT&amp;T will use reasonable efforts to troubleshoot and 
+    resolve issues reported by You but does not make any representations or
+     guarantees that AT&amp;T will be able to fully resolve any such issues. 
+     Except as provided in this section, AT&amp;T has no obligation to provide 
+     additional customer support, technical support, or to provide solutions (e.g., bug fixes to software) 
+     to any issues that may arise in Your particular use of the Services.
+</p>
+<p class="MsoNormal">
+   From time to time, RingCentral may send You surveys, comment cards, customer satisfaction forms, 
+   or other requests to provide feedback. You hereby grant RingCentral, its licensors, and suppliers a 
+   perpetual, unlimited, worldwide fully-paid up, royalty free license to use all feedback, answers, ideas, 
+   comments, or other information You provide to RingCentral.
+</p>
+<p class="MsoSubtitle">
+     15.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Service Changes
+</p>
+<p class="MsoNormal">
+    You understand and agree that RingCentral may make upgrades or changes to 
+    the Services which will not materially diminish the functionality of the Services 
+    without prior notice to You. In the event that a change to the Services would, in RingCentral’s 
+    reasonable discretion and judgment, permanently and materially diminish or impair the functionality 
+    of the Services (a “Change”), RingCentral shall provide You with written notice of such Change at 
+    least sixty (60) days prior to the date the Change will take effect. If the Change is unacceptable 
+    to You, You may terminate the Services without penalty by calling AT&amp;T Advanced Mobility Solutions
+    customer care at 1-866-563-4703. Any use of the Services after the effective date of Change will be 
+    deemed Your acceptance of the Change.
+</p>
+<p class="MsoSubtitle">
+     16.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Additional Terms for RingCentral Office@Hand from AT&amp;T Service with VoIP
+</p>
+<p class="MsoNormal">
+   RingCentral plans include one or more Voice over Internet Protocol (“VoIP”) lines and options 
+   to add one or more VoIP lines to Your Services. In either case, Services for the VoIP line(s)
+   will be referred to as “VoIP Service”, for which the following additional terms shall apply:
+</p>
+<p class="MsoNormal">
+    <b>Grant of Rights</b>
+</p>
+<p class="MsoNormal">
+     RingCentral grants You a non-exclusive, non-transferable, revocable license, and
+     right to use each VoIP line exclusively with one user under Your Account, subject to 
+     all the other terms of this Agreement. Accordingly, if You want to allow multiple users to use the 
+     VoIP Service, You will need to purchase at least one VoIP line for each user.
+</p>
+
+<p class="MsoNormal">
+    <b>Equipment</b>
+</p>
+<p class="MsoNormal">
+     To use the VoIP Service, You may need to purchase phones, headsets, or other equipment (collectively, “Equipment”). 
+     All Equipment shipments are F.O.B. RingCentral’s shipping distributor facility. RingCentral’s liability for delivery 
+     shall cease, and title to such Equipment (if applicable) and all risk of loss or damage
+     shall pass to You upon delivery to the shipping carrier.
+</p>
+<p class="MsoNormal">
+    All equipment obtained from RingCentral in connection with VoIP Service is subject to the Equipment Return Policy above. 
+ </p>
+<p class="MsoNormal">
+    <b>911 SERVICE FOR RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE</b>
+</p>
+<p class="MsoNormal">
+    <b>YOU UNDERSTAND THAT 911 SERVICE IS ONLY PROVIDED BY RINGCENTRAL OFFICE@HAND FROM AT&amp;T IP 
+    DESK PHONES AND SOFTPHONES ON PCS, AND THE OTHER RINGCENTRAL OFFICE@HAND FROM AT&amp;T SOFTWARE APPLICATIONS AND
+     SERVICES DO NOT PROVIDE 911 SERVICE.</b>
+</p>
+<p class="MsoNormal">
+      911 service for RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE operates differently than traditional 911 
+      service. We are required by the FCC to advise You of the circumstances under which 911 may not be 
+      available or may be in some way limited by comparison to traditional 911 service. Such circumstances 
+      include
+</p>
+<p class="MsoNormal">
+    <b>(1)&nbsp;Internet Connection Failure.</b>
+     If the connection to the wired broadband Internet over which Your 
+     RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE is provided is interrupted, 
+     You will not have access to RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE during that interruption and 
+     therefore will not have access to 911 service during that interruption.
+</p>
+<p class="MsoNormal">
+    <b>(2)&nbsp;Number Flexibility &amp; Service Portability.</b>
+      Traditional 911 service automatically sends Your 911 call to the appropriate local 
+      emergency responder, or Public Safety Answering Point ("PSAP"), based on Your wireline
+       telephone number. Enhanced 911 service (also known as E911) automatically sends Your 911 
+       call to the appropriate PSAP along with Your registered address and telephone number.
+        Because RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE permits You to obtain a telephone 
+        number that does not correspond to Your geographic location
+         (for example, You may obtain a RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE phone number with a California
+          area code even if You do not have a California address) and allows You to use RINGCENTRAL OFFICE@HAND FROM AT&amp;T
+           SERVICE anywhere You have wired broadband Internet, 911 service for RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE 
+           functions differently than traditional 911 and E911 service in certain respects.
+</p>
+<p class="MsoNormal">
+    Because Your address does not necessarily correspond with Your telephone number, You must provide RingCentral with
+     the street address(es) where You will be using RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE ("Registered Location(s)") 
+     when You sign up for service.
+</p>
+<p class="MsoNormal">
+    If You relocate any equipment (PC with softphone, IP phone, or ATA with traditional phone) that 
+    You use to access the RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE, You must update Your Registered Location(s). 
+    If You do not update Your Registered Location(s), any 911 calls You make using RINGCENTRAL OFFICE@HAND 
+    FROM AT&amp;T SERVICE will be routed based on Your previously provided Registered Location and therefore may not be 
+    routed to the appropriate PSAP for Your new location.
+</p>
+<p class="MsoNormal">
+    In addition, because RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE will, where possible, automatically 
+    transmit Your Registered Location to the PSAP, You must update Your Registered Location to ensure that 
+    RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE transmits accurate location information to the PSAP.
+</p>
+<p class="MsoNormal">
+    Once You notify us of a change in Your Registered Location, there may be a delay in making the new 
+    Registered Location available to properly route 911 calls and advise PSAPs of Your new Registered Location.
+</p>
+<p class="MsoNormal">
+    In some parts of the country where direct routing to PSAPs is not available for 911 service for 
+    RINGCENTRAL OFFICE@HAND FROM AT&amp;T , RingCentral will route Your call to the National Emergency 
+    Call Center where trained agents will ask for the name, location, and telephone number of the person 
+    calling 911 and will contact the appropriate PSAP to send help. The call center will not automatically 
+    receive Your address and telephone number. In these situations, public safety response times may be delayed.
+     As a result, there may be an additional delay before emergency services arrive.
+</p>
+<p  class="MsoNormal">
+    <b>(3)&nbsp;Loss of Electrical Power.</b>Unless You have a backup system to power Your wired broadband 
+     Internet connection and any equipment (PC with softphone, IP phone, ATA with traditional phone)
+     that You use to access Your RINGCENTRAL OFFICE@HAND FROM AT&amp;T SERVICE, You will not have phone 
+     service or 911 service during any power outage.
+</p>
+<p class="MsoNormal">
+    <b>Registration of Physical Locations Required.</b> 
+    As discussed above, You must register the Registered Location where You will be using service for each 
+    Premium user You sign up for from RingCentral (e.g., if You purchase RingCentral Office@Hand from AT&amp;T for 
+    three Premium users, You must provide a Registered Location for each of the three users). RingCentral will 
+    obtain Your Registered Location as part of the service initiation process and will not provide Service until 
+    you have provided Your initial Registered Location. However, You must update Your Registered Location when You
+     use Your Service from a new location. Regardless of what address You register, in some circumstances, such as 
+     unavailability of direct routing to PSAPs or the use of portable devices to access the VoIP Service, emergency 
+     calls will be routed to the National Emergency Call Center.
+</p>
+<p class="MsoNormal">
+    You agree to provide true, accurate, current, and complete Registered Location information to RingCentral
+     as part of the service initiation process and to update as soon as possible Your Registered Location with true, 
+     accurate, current, and complete information whenever You use Your Service from a new location. If You provide
+      Registered Location information that is, or that RingCentral suspects to be, false, inaccurate, not current,
+       or incomplete, RingCentral has the right to suspend or terminate the Services and refuse any and all current 
+       or future use of all Services, or any portion thereof. RingCentral will not, however, disable Your ability to
+        make a 911 call during any service suspension.
+</p>
+<p class="MsoNormal">
+    You may update Your Registered Location by logging on to Your Account settings page or calling customer 
+    support at AT&amp;T Advanced Mobility Solutions customer care at 1-866-563-4703. For purposes of 911 Dialing, 
+    You may only register one Registered Location for each Premium user.
+</p>
+<p class="MsoNormal">
+    <b>Notify All Users of 911 Limitations.</b> . You should inform all business colleagues, household residents, guests, and other persons who may be present at the physical location where You utilize the Service that 911 may not be available or may be in some way limited in comparison to traditional 911 service. RingCentral will provide these subscribers stickers warning that "E911 Service May Be Limited or Not Available" (or a similar message) for use with any VoIP equipment by mailing stickers to subscribers upon Service initiation. It is Your responsibility to place these stickers on the equipment You use to access VoIP Service. If You have not received a sticker, or You require additional 911 stickers, please contact AT&amp;T customer support at AT&amp;T Advanced Mobility Solutions customer care at 1-866-563-4703.
+</p>
+<p class="MsoNormal">
+    <b>Disclaimer of 911 Liability.</b> RingCentral disclaims all responsibility for the conduct of PSAPs, 
+    the National Emergency Call Center, and all other third parties involved in the provision of emergency
+     response services. RingCentral does not have any control over PSAPs, the National Emergency Call Center,
+      or other third parties and is therefore not responsible for whether they answer 911 calls made using the
+       VoIP service, how they answer these calls, or how they handle or respond to these calls. RingCentral relies
+        on third parties to assist it in the provision of 911 service and disclaims any and all liability for acts
+         or omissions by third parties in the provision of 911 service for RingCentral Office@Hand from AT&amp;T.
+</p>
+<p class="MsoNormal">
+    <b>Operator Assisted Calling, 311, 511, and other X11 Calling</b>
+</p>
+<p class="MsoNormal">
+    The VoIP Service does not support 0+ or operator assisted calling (including, without limitation, collect calls, third party billing calls, 900, or calling card calls). The Service may not support 311, 411, 511, and/or other X11 calling (other than 911 and 711 as specified in this Agreement) in one or more service areas.
+</p>
+<p class="MsoNormal">
+    <b>711 Calling</b>
+</p>
+<p class="MsoNormal">
+    The VoIP Service allows You to dial 711 to reach Telecommunications Relay Services ("TRS"). TRS enables persons with hearing or speech disabilities to access the public telephone system and communicate with voice telephone users through a communications assistant at a TRS relay center. Because the Service allows You to use a phone number that may not reflect Your geographic location, 711 calls made using the VoIP Service may not be routed to the appropriate TRS center for Your geographic location.
+</p>
+<p class="MsoSubtitle">
+     17.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Additional Terms for Directory Listing Service
+</p>
+<p class="MsoNormal">
+     RingCentral may offer a directory assistance listing Service (“Directory Assistance Listing”)
+     associated with Your assigned toll free and/or local number Account, for which the following additional 
+     terms shall apply.
+</p>
+<p class="MsoNormal">
+     By subscribing to Directory Assistance Listing, RingCentral
+     will share certain information about Your Account with third-parties as reasonably necessary 
+     to provide phone directory assistance (“Listing Information”). This information may include,
+     without limitation, Your company name, address, and phone numbers. This information will be published in,
+     and made publicly-available through, third-party directory assistance listing services, to be selected by
+     RingCentral or third-party service providers in their sole discretion. You hereby permit and grant RingCentral 
+     a worldwide, irrevocable, non-exclusive, royalty-free, fully paid-up license to use and disclose Your Account
+     information for these purposes. You further acknowledge that by subscribing to Directory Assistance Listing,
+     Your Listing Information may enter the public domain and that RingCentral cannot control third parties’ use of such 
+     information obtained through Directory Assistance Listing. You represent and warrant that the information provided
+     in Your Account, including without limitation Your company name and address, are true and accurate, and shall 
+    remain true and accurate (whether by updating such information or otherwise), at all times that You use the Services.
+</p>
+<p class="MsoNormal">
+    You may opt out of Directory Assistance Listing at any time. You acknowledge, however,
+     that RingCentral may not be able to have Your Listing Information removed from some or
+      all third-party directory assistance listing services that have already received Your 
+      information. You agree that RingCentral is under no obligation to have Your Listing Information 
+      removed from any third-party directory assistance listing service already in receipt of such information.
+</p>
+<p class="MsoNormal">
+      RingCentral bears no responsibility or liability for any cost, damages,
+      liabilities, or inconvenience caused by calls made to Your telephone number;
+      materials sent to You; inaccuracies, errors, or omissions with Listing Information; 
+      or any other use of such information. For the avoidance of doubt, RingCentral shall not be liable to You for any use by third parties of Your Listing Information obtained through Directory Assistance Listing, including without limitation the use of such information after You have opted out of Directory Assistance Listing.
+</p>
+<p class="MsoSubtitle">
+     18.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Publicity Rights
+</p>
+<p class="MsoNormal">
+    You agree that RingCentral may identify You as a user of the Services in its business deals; press releases; marketing materials; electronic, printed, and broadcast advertising; newsletters; mailings; tradeshows; other promotional materials; on RingCentral's website; or any other third-party website where RingCentral or its designated agents may promote the Services. You hereby grant RingCentral and its agents an irrevocable, perpetual, worldwide, non-exclusive, fully paid-up, royalty-free license (with right to sublicense) to use, reproduce, publish, and display Your name, trademarks, service marks, designs, logos, and symbols in connection with such purpose.
+</p>
+<p class="MsoSubtitle">
+     19.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Non-disparagement
+</p>
+<p class="MsoNormal">
+    You agree not to directly or indirectly through a third party engage in any conduct or make any communication (public or private) that disparages RingCentral or the Applications or Services in any way. Such communications include, but are not limited to, publishing, posting, printing, disseminating, or otherwise making such disparaging statements on or through the Internet, in any blog, or through any other form of social media. You further agree not to solicit or encourage, directly or indirectly, any such statements, comments, or communications by any third-party. In accordance with the termination provisions below, RingCentral may terminate Your access to the Applications or Services if You breach the requirements of this section.
+</p>
+<p class="MsoSubtitle">
+     20.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Copyright Infringement
+</p>
+<p class="MsoNormal">
+    Materials may be made available via the Service by third parties not within our control. We are under no obligation to, and do not, review content transmitted, sent, or received using the Applications or Services for purposes of determining copyright infringement. However, RingCentral reserves the right to terminate access to its Applications or Services if a user infringes on others' copyrights, and will, in appropriate circumstances, terminate access to the Applications or Services if RingCentral determines that a user is a repeat infringer.
+</p>
+<p class="MsoNormal">
+    Pursuant to Title 17, Section 512 of the United States Code, all claims of copyright infringement for any material You believe to reside on RingCentral's Applications or Services should be provided in writing to RingCentral's Legal Department at RingCentral's current address as posted on RingCentral's Website, available <a href="http://www.ringcentral.com/whyringcentral/contactus.html">here</a>.
+</p>
+<p class="MsoSubtitle">
+     21.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Export Restrictions
+</p>
+<p class="MsoNormal">
+    You represent and warrant that (a) You are not located in (and will not use the Services or Applications in) a country that is subject to a U.S. Government embargo, or that has been designated by the U.S. Government as a "terrorist supporting" country; and (b) You are not listed on any U.S. Government list of prohibited or restricted parties relating to exports. You also acknowledge that the Applications and Services may be subject to other U.S. and foreign laws and regulations governing the export of software by physical or electronic means. You agree to comply with all applicable U.S. and foreign laws that apply to RingCentral as well as end-users end-use, and destination restrictions imposed by U.S. and foreign governments.
+</p>
+<p class="MsoSubtitle">
+     22.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Additional Software Licenses
+</p>
+<p class="MsoNormal">
+    The Applications may also be governed by the additional terms of certain software licenses, which are available here:
+</p>
+<ul>
+    <li>
+    <a href="http://www.ringcentral.com/legal/other_licenses/JSON-Framework.html" target="_blank">JSON Framework License</a>
+    </li>
+    <li><a href="http://www.ringcentral.com/legal/other_licenses/KissXML.html" target="_blank">KissXML License</a>
+    </li>
+    <li><a href="http://www.ringcentral.com/legal/other_licenses/GIPS_iLBC.html" target="_blank">Global IP Solutions iLBC Public License</a>
+    </li>
+    <li><a href="http://www.ringcentral.com/legal/other_licenses/libsrtp.html" target="_blank">libSRTP License</a>
+    </li>
+    <li><a href="http://www.ringcentral.com/legal/other_licenses/vovida.html" target="_blank">Vovida Software License</a>
+    </li>
+    <li><a href="http://www.ringcentral.com/legal/other_licenses/PortAudio.html" target="_blank">PortAudio</a>
+    </li>
+</ul>
+<p class="MsoSubtitle">
+     23.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Indemnification
+</p>
+<p class="MsoNormal">
+    To the maximum extent permitted by applicable law, You shall indemnify and hold harmless, individually and collectively, 
+    RingCentral, its affiliates, agents, resellers, and other providers who furnish goods and services to You in connection with 
+    the Services, and their officers, directors, managers, employees, and shareholders (the “Indemnified Parties”) from and 
+    against any and all liability, claims, losses (including loss of profits, revenue and goodwill), damages, fines, penalties,
+    injuries to persons or property, costs, and expenses (including reasonable attorneys’ fees and dispute resolution expenses)
+    arising from or related to (1) the use of or reliance upon the Applications or Services by You or any third party acting 
+    upon Your permission, knowledge, authority or direction, (2) a breach of this Agreement by You, (3) any negligent acts, 
+    omissions to act or willful misconduct by You or any third party acting with Your permission, knowledge, authority or direction, (4) the inability to use the Applications or Services or failure or outage of the Applications or Services for any reason, including but not limited to those related to calling, “911” or other emergency responders, (5) the use of the Applications or Services in connection with a violation of any applicable law, code, regulation, or ordnance, and/or (6) the misappropriation, breach, violation, or infringement of any right, title or interest of any third party, including but not limited to, contractual rights, intellectual property rights (including patent, trademark, copyright, and trade secret rights), rights of privacy, and rights of publicity and personality.
+</p>
+<p class="MsoSubtitle">
+     24.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Term
+</p>
+<p class="MsoNormal">
+    Your license to the Applications and Services is provided for a term specified in Your 
+    AT&amp;T wireless services agreement (the “Term”). The initial Term begins on the date that you sign
+     up for the Services (the “Date of Purchase”).
+</p>
+<p class="MsoNormal">
+    The Term for all Service plans will renew automatically for successive Terms of the same 
+    length without further action by or notice to You unless You notify AT&amp;T customer service of 
+    non-renewal at least thirty (30) days before the end of the then current Term, unless otherwise
+     provided in Your Services contract.
+</p>
+<p class="MsoNormal">
+   For avoidance of doubt, the provisions of this Agreement relating to intellectual property ownership,
+    customer representations, confidentiality, use policies and restrictions, equipment, number porting and 
+    availability, storage of user information, customer feedback, publicity rights, non-disparagement, 
+    additional software licenses, indemnification, force majeure, warranty disclaimers, limitations of 
+    liability, notices, assignment, future changes, interpretation, dispute resolution and arbitration, 
+    and choice of law shall survive termination or expiration of this Agreement for the maximum term allowable by law.
+</p>
+<p class="MsoSubtitle">
+     25.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Termination
+</p>
+<p class="MsoNormal">
+    <b>Monthly Plan Customers.</b> 
+    For monthly plan customers, You may cancel or terminate Your use of the Services with or without cause 
+    at any time by calling AT&amp;T Advanced Mobility Solutions customer care at 1-866-563-4703 subject to 
+    the restrictions and fees provided in this Agreement, Your Services contract, and any additional 
+    agreements governing the Services. 
+</p>
+<!--<p class="MsoNormal"><b>Annual Plan Customers.</b> For annual plan customers, You are purchasing the Service for the full length of the applicable Term. You have thirty (30) days from the Date of Purchase for a prorated refund in accordance with Your Services Contract. After thirty (30) days, if You terminate the Services prior to the end of Your Term, You are responsible for all charges for any remaining time left on the Term as if You remained a customer through the end of the then-current Term, including, without limitation, outstanding charges, unbilled charges, taxes, and fees, including any applicable disconnection fee. In addition, You will not be entitled to a refund for any unused portion of prepaid Term charges.</p> -->
+<p class="MsoNormal">
+    <b>Generally.</b> You understand and agree that RingCentral may at any time, and without additional notice to You, terminate, modify, suspend, disconnect, discontinue, or block access to some or all of the features of the Application or Services if:
+</p>
+<ul>
+    <li>RingCentral determines that You have materially breached this Agreement. </li>
+    <li>RingCentral determines that You have created or caused to be created multiple free accounts. </li>
+    <li>RingCentral determines that You have verbally insulted, abused, or harassed any of its employees, contractors, agents, or other representatives. </li>
+    <li>You have failed to respond to RingCentral's calls or email attempts to contact You about Your Account. </li>
+    <li>RingCentral determines that You did not or will not reasonably comply or cooperate with any applicable law or regulation. </li>
+    <li>RingCentral is ordered by law enforcement or other government agencies to suspend or terminate Service to Your Account. </li>
+    <li>You bring any legal action or proceeding, including without limitation in any court, regulatory, or administrative body, arbitral body, or mediator, against RingCentral, or participate in any class action lawsuit against RingCentral. </li>
+    <li>You make any disparaging statement (whether written, oral, electronic, or otherwise) against RingCentral, its Services, or its employees, contractors, agents, investors, affiliates, or other representatives. </li>
+    <li>RingCentral determines that such action is necessary to protect, maintain, or improve the Services; to prevent fraud or misrepresentation by affirmative acts and/or omissions; to protect RingCentral, its customers, or other third parties affiliated with RingCentral; or for any other good cause. </li>
+</ul>
+<p class="MsoNormal">
+    Upon any termination or suspension of Your Account, RingCentral may immediately deactivate or delete Your Account and all related information and files in Your Account and/or restrict any further access to such files, information, or the Applications or Services.
+</p>
+<p class="MsoNormal">
+    RingCentral shall not be liable to You or any third party for any reason for terminating or suspending Your use or access to the Applications or Services.
+</p>
+<!--<p class="MsoNormal">If You or RingCentral terminate or suspend Your right to use the Services, You shall not be entitled to any refund or pro ration of any pre-paid amounts, Plan Credits, international calling credits, or other amounts paid to RingCentral prior to the termination or suspension date.</p>-->
+<p class="MsoSubtitle">
+     26.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Force Majeure
+</p>
+<p class="MsoNormal">
+    RingCentral shall be excused from any delay or failure in performance hereunder caused by reason of occurrence or contingency beyond its reasonable control, including without limitation, acts of God, earthquake, fire, flooding, fiber cuts, actions or inactions of third party providers or suppliers, riots, sabotage, war, government requirements, or other events that are beyond RingCentral's reasonable control.
+</p>
+<p class="MsoSubtitle">
+     27.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Warranty Disclaimer
+</p>
+<p class="MsoNormal">
+    THE SERVICES PROVIDED HEREUNDER ARE PROVIDED "AS IS" AND "AS AVAILABLE" AND RINGCENTRAL MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE AND ANY SIMILAR WARRANTY, WHETHER SAID WARRANTY ARISES UNDER PROVISIONS OF ANY LAW OF THE UNITED STATES OR ANY STATE THEREOF OR ANY COUNTRY. RINGCENTRAL MAKES NO REPRESENTATIONS OR WARRANTIES THAT THE SERVICES ARE FREE OF RIGHTFUL CLAIMS OF ANY THIRD PARTY FOR INFRINGEMENT OR MISAPPROPRIATION OF INTELLECTUAL PROPERTY OR OTHER PROPRIETARY RIGHTS (INCLUDING PATENT AND TRADE SECRET RIGHTS). THE ENTIRE RISK ASSOCIATED WITH THE USE OF THE SERVICES SHALL BE BORNE SOLELY BY YOU.
+</p>
+<p class="MsoNormal">
+    RINGCENTRAL MAKES NO WARRANTY ON UP-TIME, RESPONSE TIMES, LATENCY, MEAN-TIME BETWEEN FAILURES, QUALITY OF SERVICE, AND/OR QUALITY OF VOICE OR FAX COMMUNICATIONS. RINGCENTRAL EXPRESSLY DISCLAIMS ANY WARRANTY THAT THE SERVICES ARE APPROPRIATE FOR HIGH-RISK OR OTHER ACTIVITIES WHERE FAILURE OF THE SERVICE COULD RESULT IN SERIOUS HARM TO PERSONS OR PROPERTY.
+</p>
+<p class="MsoNormal">
+    RINGCENTRAL MAKES NO WARRANTY THAT THE SERVICES WILL MEET YOUR REQUIREMENTS, OR THAT THE SERVICES WILL BE UNINTERRUPTED, TIMELY, SECURE, ERROR FREE OR THAT ANY DEFECTS IN THE SERVICES WILL BE CORRECTED. RINGCENTRAL IS NOT RESPONSIBLE FOR MESSAGES OR INFORMATION LOST OR MISDIRECTED DUE TO INTERRUPTIONS OR FLUCTUATIONS IN THE SERVICES OR THE INTERNET IN GENERAL. RINGCENTRAL IS NOT RESPONSIBLE FOR THE CONTENT OR FUNCTIONALITY OF ANY THIRD PARTY NETWORK USED IN CONNECTION WITH THE SERVICES.
+</p>
+<p class="MsoNormal">
+    RINGCENTRAL DOES NOT WARRANT THE ACCURACY OR RELIABILITY OF THE RESULTS OBTAINED THROUGH USE OF THE SERVICES OR ANY DATA OR INFORMATION DOWNLOADED OR OTHERWISE OBTAINED OR ACQUIRED THROUGH THE USE OF THE SERVICES. YOU ACKNOWLEDGE THAT ANY DATA OR INFORMATION DOWNLOADED OR OTHERWISE OBTAINED OR ACQUIRED THROUGH THE USE OF THE SERVICES ARE AT YOUR SOLE RISK AND DISCRETION AND RINGCENTRAL WILL NOT BE LIABLE OR RESPONSIBLE FOR ANY DAMAGE TO YOU OR YOUR PROPERTY.
+</p>
+<p class="MsoNormal">
+    NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM RINGCENTRAL, ITS EMPLOYEES, RESELLERS, PARTNERS, OR AFFILIATES OR THROUGH OR FROM THE SERVICES SHALL CREATE ANY WARRANTY NOT EXPRESSLY STATED IN THESE TERMS AND CONDITIONS.
+</p>
+<p class="MsoNormal">
+    ALTHOUGH EVERY EFFORT IS MADE TO ENSURE THAT VOICEMAILS AND FAX TRANSMISSIONS ARE SECURE, RINGCENTRAL MAKES NO GUARANTEES OF SECURITY.
+</p>
+<p class="MsoNormal">
+    SOME JURISDICTIONS DO NOT PERMIT THE DISCLAIMER OF CERTAIN IMPLIED WARRANTIES, SO CERTAIN OF THE FOREGOING DISCLAIMERS MAY NOT APPLY TO YOU. TO THE EXTENT THAT RINGCENTRAL CANNOT DISCLAIM ANY SUCH WARRANTY AS A MATTER OF APPLICABLE LAW, THE SCOPE AND DURATION OF SUCH WARRANTY WILL BE THE MINIMUM PERMITTED UNDER SUCH LAW.
+</p>
+<p class="MsoSubtitle">
+     28.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Limitation of Liability
+</p>
+<p class="MsoNormal">
+    <b>IN NO EVENT SHALL RINGCENTRAL BE LIABLE TO YOU OR ANY THIRD PARTY FOR SPECIAL, EXEMPLARY,
+     INDIRECT, INCIDENTAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES OF ANY KIND WHETHER ARISING UNDER CONTRACT, 
+     WARRANTY, TORT (INCLUDING NEGLIGENCE OR STRICT LIABILITY), OR ANY OTHER THEORY OF LIABILITY, EVEN IF 
+     RINGCENTRAL HAS BEEN INFORMED IN ADVANCE OF SUCH DAMAGES OR SUCH DAMAGES COULD HAVE BEEN REASONABLY FORESEEN BY 
+     RINGCENTRAL. RINGCENTRAL’S TOTAL LIABILITY FOR ANY AND ALL DAMAGES, REGARDLESS OF THE FORM OF THE ACTION, SHALL BE 
+     LIMITED AND CAPPED IN THEIR ENTIRETY TO THE MONTHLY FEES CHARGED TO YOU DURING THE ONE (1) MONTH IMMEDIATELY PRIOR 
+     TO THE DATE THAT THE EVENTS GIVING RISE TO THE ACTION OR CLAIM FIRST OCCURRED. THE LIMITATION OF LIABILITY REFLECTS 
+     THE ALLOCATION OF RISK BETWEEN THE PARTIES. THE LIMITATIONS SPECIFIED IN THIS SECTION WILL SURVIVE AND APPLY IN ANY 
+     AND ALL CIRCUMSTANCES. SOME JURISDICTIONS DO NOT ALLOW CERTAIN LIMITATIONS OF LIABILITY, SO CERTAIN OF THE FOREGOING 
+     LIMITATIONS MAY NOT APPLY TO YOU.</b>
+</p>
+<p class="MsoSubtitle">
+     29.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Notices
+</p>
+<p class="MsoNormal">
+    Notices to You shall be effective on the date sent to Your registered electronic mail address when sent by email or, at RingCentral's option, three (3) days following the date deposited in regular United States Mail, postage prepaid, and addressed to Your current address on Your Account. You are responsible for notifying RingCentral of any changes in Your contact information or address through Your Account settings page or by contacting AT&amp;T Advanced Mobility Solutions customer care at 1-866-563-4703.
+</p>
+<p class="MsoNormal">
+    Written notice to RingCentral shall be effective when directed to RingCentral's Legal Department and received at RingCentral's then-current address as posted on RingCentral's Website, available <a href="http://www.ringcentral.com/whyringcentral/contactus.html">here</a>. Your notice must specify Your name, Account information, and security verification question and answer. All notices from You to RingCentral must be made in writing.
+</p>
+<p class="MsoSubtitle">
+     30.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Assignment
+</p>
+<p class="MsoNormal">
+    RingCentral may assign this Agreement and any of its rights and obligations hereunder at any time. You may not transfer or assign this Agreement or any of Your rights or obligations under this Agreement. Any purported transfer or assignment in violation of this section is void. Subject to the foregoing, this Agreement shall be binding on and inure to the benefit of the parties, their successors, permitted assigns, and legal representatives.
+</p>
+<p class="MsoSubtitle">
+     31.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Future Changes to this Agreement
+</p>
+<p class="MsoNormal">
+    We may change the terms of this Agreement from time to time upon delivery of electronic or written notices to You. RingCentral and AT&amp;T generally provide written notice of changes to Your account, including this Agreement and any other legal agreements, via email, electronic notice on the RingCentral Office@Hand from AT&amp;T Website or Your Account Page, or on Your billing statements. You agree to carefully read and review each such e-mail notice, electronic notice, and billing statement from RingCentral fully regarding any such notices of changes to Your Account.
+</p>
+<p class="MsoNormal">
+    The modified terms shall replace and supersede all previously agreed to electronic and written terms, as well as any prior versions of this Agreement. You agree that you are solely responsible for (a) making sure that Your registered email account is current and functional, (b) checking Your registered email account on a routine basis, (c) checking the RingCentral Office@Hand from AT&amp;T Website and Your Account page on a routine basis, and (d) making sure that RingCentral and AT&amp;T communications are not blocked or rendered undeliverable by You, Your computer, any software installed on Your computer, Your Internet service provider, or for any other reason.
+</p>
+<p class="MsoSubtitle">
+     32.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Interpretation of this Agreement
+</p>
+<p class="MsoNormal">
+    This Agreement, including the documents incorporated herein, constitutes the entire agreement between You and RingCentral with respect to the Applications and Services and supersedes all prior or contemporaneous understandings regarding such subject matter.
+</p>
+<p class="MsoNormal">
+    If any part of this Agreement is held invalid or unenforceable, that portion shall be construed to reflect the parties' original intent, and the remaining portions shall remain in full force and effect.
+</p>
+<p class="MsoNormal">
+    The failure of RingCentral to exercise or enforce any right or provision of this Agreement shall not constitute a waiver of such right or any other provision.
+</p>
+<p class="MsoNormal">
+    Nothing in this Agreement shall be deemed or construed to constitute or create employment, partnership, association, joint venture, agency, or fiduciary relationship between the parties hereto.
+</p>
+<p class="MsoNormal">
+    You agree and acknowledge that any breach of the provisions regarding intellectual property ownership contained in this Agreement shall cause RingCentral irreparable harm and RingCentral may obtain injunctive relief and seek all other remedies available in law and in equity.
+</p>
+<p class="MsoNormal">
+    The section titles in this Agreement are for convenience only and have no legal or contractual effect.
+</p>
+<p class="MsoNormal">
+    This electronic document and any other electronic documents, policies, and guidelines incorporated herein will be: (1) deemed for all purposes to be a "writing" or "in writing," and to comply with all statutory, contractual, and other legal requirements for a writing; (2) legally enforceable as a signed writing as against the parties subject to the electronic documents; and (3) deemed an "original" when printed from electronic records established and maintained in the ordinary course of business. Electronic documents introduced as evidence in any judicial, arbitration, mediation, or administrative proceeding will, if established and maintained in the ordinary course of business, be admissible to the same extent as business records in written form that are similarly established and maintained.
+</p>
+<p class="MsoNormal">
+    Under California Civil Code Section 1789.3, California users of the Service receive the following specific consumer rights notice: The Complaint Assistance Unit of the Division of Consumer Services of the California Department of Consumer Affairs may be contacted in writing at 1020 N Street, #501, Sacramento, California 95814, or by telephone at 916-445-1254.
+</p>
+<p class="MsoSubtitle">
+     33.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Dispute Resolution and Optional Arbitration
+</p>
+<p class="MsoNormal">
+    In the event of any dispute, claim, question, or disagreement between You and RingCentral ("Dispute"), You and RingCentral shall first use reasonable best efforts to settle the dispute, claim, question, or disagreement. To this end, You and an authorized member of RingCentral's legal department (or other representative of RingCentral designated by the legal department) shall consult and negotiate with each other in good faith and, recognizing their mutual interests, attempt to reach a just and equitable solution satisfactory to both parties. Neither You nor RingCentral shall file or pursue any Disputes in any court, administrative, arbitral, or other adjudicative body prior to engaging in such consultations and negotiations.
+</p>
+<p class="MsoNormal">
+    You agree that any Disputes shall be adjudicated in the state and federal courts of the State of California, U.S.A. Venue for any Disputes shall be the Superior Court of California, County of San Mateo for state court cases, and the United States District Court of the Northern District of California for federal court cases. You agree to submit to the exclusive jurisdiction of such courts with respect to any Disputes and agree not to bring any Disputes in any other court or adjudicative body. You hereby consent to venue and personal jurisdiction in such courts with respect to such Disputes and irrevocably waive any right that You may have to assert that such forum is not convenient or that any such court lacks jurisdiction.
+</p>
+<p class="MsoNormal">
+    Notwithstanding the adjudication requirement above, for any Disputes involving ten thousand dollars ($10,000) or less, either party may choose to resolve such Dispute through binding, non-appearance-based arbitration (i.e., arbitration conducted online, through written filings, and/or via teleconference). Such arbitration shall be conducted through an established alternative dispute resolution provider mutually agreed upon by the parties, and any judgment rendered by the arbitrator may be entered in any court having jurisdiction. The arbitrator's decision shall be final and legally binding.
+</p>
+<p class="MsoNormal">
+    In the event of any litigation (including arbitration) between You and RingCentral, the non-prevailing party shall reimburse the prevailing party for all reasonable and documented attorneys' fees, costs, and expenses relating to the Dispute.
+</p>
+<p class="MsoSubtitle">
+     34.<span style="font-size: 7pt; "></span>&nbsp;&nbsp;&nbsp;Choice of Law
+</p>
+<p class="MsoNormal">
+    This Agreement and Your use of the Applications and Services shall be governed by and construed under the laws of the State of California and the United States without regard to its conflict of law rules. The United Nations Convention on Contracts for the International Sale of Goods does not apply to this Agreement or Your sign up or use of the Applications or Services.
+</p>
+  </div> 
+   </apex:define>
+     </apex:composition>
+
+</apex:page>

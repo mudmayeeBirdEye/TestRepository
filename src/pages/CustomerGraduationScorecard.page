@@ -1,0 +1,1475 @@
+<apex:page standardController="Account" extensions="AccountMetricExtension" cache="false">
+
+<style>
+         
+         .btnDiv {
+            /*width: 100%;*/
+            margin: auto;
+            padding-top:3px;
+            padding-bottom:3px;
+           /* border: 1px solid #A5A6A5;*/
+            margin-top: 5px; 
+            margin-bottom: 5px;
+           /* background: #FFF !important;*/
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+           /* -webkit-box-shadow: 0px -71px 101px -19px #DEEBEF inset;*/ 
+            -moz-box-shadow: 0px -71px 101px -19px #DEEBEF inset;
+            text-align: center;
+            }
+            .btn {
+            color:#084B8A !important;
+            background-color:#E16222!important;
+            border: 1px solid #A5A6A5 !important;
+           
+            padding: 9px !important;
+            vertical-align: center;
+        }
+     .btnDivNew {
+        /*width: 95%;*/
+        margin: auto;
+        border: 1px solid skyblue;
+        /* min-height: 100px; */
+        margin-top: 5px;
+        //margin-bottom: 5px;
+        background: #FFF !important;
+        
+        /*-moz-border-radius: 11px;
+        -webkit-border-radius: 11px;
+        border-radius: 11px;*/
+        
+        /*behavior: url({!$Resource.BorderRadiusHTC});
+        box-shadow: 0px 0px 20px 0px skyblue inset;
+        -webkit-box-shadow: 0px 0px 20px 0px skyblue inset;
+        -moz-box-shadow: 0px 0px 20px 0px skyblue inset;*/
+        text-align: center;
+        /*padding:10px;*/
+        padding-top : 3px;
+        padding-bottom : 3px;
+        margin-left:9px;
+    }
+        .bPageBlock .pbTitle {
+            width: auto !important;
+        }
+        
+        div.blackdiv {
+            position: absolute;
+            top: -5px; 
+            width: 3px; 
+            /*left: 120px; */
+            height: 30px; 
+            float:left; 
+            z-index:3; 
+            background-color: black;
+         }
+         
+         div.header {
+            background-color:#336688; border: 0px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;
+            background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+            background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: linear-gradient(to bottom, #336688 0%,#336688 50%,#336688 51%,#ffffff 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#bbffffff', GradientType=0 );
+            box-shadow: inset 0px 10px 30px #336688; ">
+        }
+        
+        div.header2 {
+            background-color:#E89619; border: 0px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;
+            background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8));
+            background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+            background: linear-gradient(to bottom, #E89619 0%,#E89619 50%,#336688 51%,#ffffff 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#bbffffff', GradientType=0 );
+            box-shadow: inset 0px 10px 30px #336688; ">
+        }
+        
+        h1 {color:black; font-weight:bold; font-size:12px; text-align:center; position:relative; top:0px;}
+        h2 {color:black; font-weight:bold; font-size:12px; text-align:center; position:relative; top:0px;}
+        h3 {color:blue; font-weight:normal; font-size:12px; text-align:center; position:relative; top:0px;}
+        h4 {color:black; font-weight:bold; font-size:20px;}
+        h5 {color:white; font-weight:bold; font-size:16px; position:relative; top:12px;}
+        h6 {color:black; font-weight:bold; font-size:16px;}
+        h7 {color:black; font-weight:normal; font-size:16px;}
+        
+        
+    </style >
+
+<apex:form >
+
+<apex:pageBlock >
+
+
+<br/>            
+        <apex:pageMessage summary="No Peer Groups." severity="info" strength="1" rendered="{!peerGroupPerAccountMetricList.size == 0}" />          
+        <center>
+        <!-- Top Title -->
+        <table width="1200" border="0" cellspacing="0" cellpadding="0"><tr><td><h4>Customer Graduation Scorecard</h4></td></tr></table>
+        <br/><br/>
+        
+        <!-- Top Bar / Account Info -->
+        <table width="1200" border="0" cellspacing="0" cellpadding="0">
+        <tr><td>
+            <div class="header" style="background-color:#336688; border: 1px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;">
+                <h5>&nbsp;&nbsp;&nbsp;Account Information</h5>
+            </div>
+            <div style="border: 1px solid black;">
+                <br/>
+                <table width="1100" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="250">&nbsp;<h6>Account Name:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                            {!accObj.Name}<apex:OutputText rendered="{!ISNULL(accObj.Name)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td width="250">&nbsp;<h6>Activation Date:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                        <apex:outputText value="{0,date,MMMM dd, yyyy}">
+                            <apex:param value="{!accObj.RC_Activation_Date__c }" />
+                        </apex:outputText>
+                        <apex:OutputText rendered="{!ISNULL(accObj.RC_Activation_Date__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="250">&nbsp;<h6>Brand:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                            {!accObj.RC_Brand__c }<apex:OutputText rendered="{!ISNULL(accObj.RC_Brand__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td width="250">&nbsp;<h6>Contract Renewal Date:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">                 
+                            <apex:outputText rendered="{!quoteObj!=null && quoteObj.End_Date__c!=null}" value="{0,date,MMMM dd, yyyy}">
+                                <apex:param value="{!quoteObj.End_Date__c+1 }" /> 
+                            </apex:outputText>               
+                            <apex:OutputText rendered="{!quoteObj==null || ISNULL(quoteObj.End_Date__c)}" value="N/A"/>
+                        </div>
+                    </td>                
+                </tr>
+                <tr>
+                    <td width="250">&nbsp;<h6>Service:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                            {!accObj.RC_Service_name__c }<apex:OutputText rendered="{!ISNULL(accObj.RC_Service_name__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>                    
+                    <td width="250">&nbsp;<h6>Contract Term:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">       
+                             
+                            <apex:OutputText rendered="{!quoteObj==null || ISNULL(quoteObj.End_Date__c)}" value="N/A"/>
+                            <apex:OutputText rendered="{!quoteObj!=null && quoteObj.End_Date__c!=null && today() >=quoteObj.Start_Date__c && today() <=quoteObj.End_Date__c}" value="{!quoteObj.Initial_Term_months__c}"/>
+                            <apex:OutputText rendered="{!quoteObj!=null && quoteObj.End_Date__c!=null && today() >quoteObj.End_Date__c }" value="{!quoteObj.Term_months__c}"/>                                                       
+                            
+                        </div>
+                    </td>              
+                </tr>
+                <tr>
+                    <td width="250">&nbsp;<h6>Number of Lines:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                            <apex:outputText value="{0,number,integer}">
+                                <apex:param value="{!accObj.Number_of_DL_s__c}" />
+                            </apex:outputText>
+                        <apex:OutputText rendered="{!ISNULL(accObj.Number_of_DL_s__c)}" value="N/A"/>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td width="250">&nbsp;<h6>Peer Group:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 1}" value="Fax"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 2}" value="Pro"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 3}" value="Pro1"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 4}" value="Office 2-9"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 9}" value="Office 10-19"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 5}" value="Office 20+ DLs"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 6}" value="ATT Premium Only"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 7}" value="ATT Virtual Only"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 8}" value="ATT Mix Users"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Peer_Group_ID__c == 101}" value="Other"/>
+                        <apex:OutputText rendered="{!ISNULL(accountMetricObj.Peer_Group_ID__c)}" value="N/A"/>
+                        </div>
+                    </td>               
+                </tr>
+                <tr>
+                    <td width="250">&nbsp;<h6></h6></td>
+                    <td width="250">                        
+                    </td>
+                    <td></td>
+                    <td width="250">&nbsp;<h6>Accounts in Peer Group:</h6></td>
+                    <td width="250">
+                        <div style="color:black; font-weight:normal; font-size:16px;">
+                            <apex:outputText value="{0,number,integer}">
+                                <apex:param value="{!peergroupMap[1000].Number_of_Accounts__c}" />
+                            </apex:outputText>                        
+                        <apex:OutputText rendered="{!ISNULL(peergroupMap[1000].Number_of_Accounts__c)}" value="N/A"/>
+                        </div>
+                    </td>               
+                </tr>
+                
+                </table>
+                <br/>
+            </div>        
+        </td></tr>
+        </table>
+        <br/>
+
+        
+        <!-- Metrics -->
+        <table width="1200" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5">
+                <div class="header" style="background-color:#336688; border: 1px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;">
+                    <h5>&nbsp;&nbsp;&nbsp;Implementation Phase</h5>
+                </div> 
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div class="header" style="background-color:#336688; border: 1px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;">
+                    <h5>&nbsp;&nbsp;&nbsp;Adoption / Maturity Phase</h5>
+                </div>
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div class="header" style="background-color:#336688; border: 1px solid black;border-top-left-radius:1em;border-top-right-radius:1em;height:40px;">
+                    <h5>&nbsp;&nbsp;&nbsp;Graduation Phase</h5>
+                </div>
+            </td>
+        </tr>
+        
+        <!-- Roll up -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#d9d9d9; border: 1px solid black;height:80px;">
+                <table border="0" width="100%">
+                        <tr>
+                            <td align="center" colspan="2">
+                                <!--  Completion Rate -&nbsp;<apex:outputText value="{0, number,###,###,##0.0}"><apex:param value="{!Completion30D}" /></apex:outputText>% -->
+                                  Completion Rate -&nbsp;<apex:outputText value="{0, number,###,###,##0.0}"><apex:param value="{!impObj.Implementation_Phase_Completion_Rate__c}" /></apex:outputText>%
+                              </td>                           
+                        </tr>
+                        <tr>
+                            <td width="38">&nbsp;</td>
+                            <td>
+                                <!-- <DIV style="position: relative; top: 0px; width: 3px; left: {!completion30d*3}px; height: 30px; float:left; z-index:3; background-color: Black"></DIV> -->
+                                <DIV style="position: relative; top: 0px; width: 3px; left: {!impObj.Implementation_Phase_Completion_Rate__c*3}px; height: 30px; float:left; z-index:3; background-color: Black"></DIV>
+                                
+                                <DIV style="position: relative; top: 5px; width: 300px; height: 25px; float:left; background-color: Red">
+                                <img width="300" height="25" src="{!$Resource.CGBar_RAG}"></img>
+                                </DIV>
+
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2">
+                                Completion Date - {!impObj.Account_Graduation_Date_0_30__c}
+                            </td>                            
+                        </tr>
+                        
+                </table>
+                </div> 
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#d9d9d9; border: 1px solid black;height:80px;">
+                <table border="0" width="100%">
+                        <tr>
+                            <td align="center" colspan="2">
+                                 <!-- Completion Rate -&nbsp;<apex:outputText value="{0, number,###,###,##0.0}"><apex:param value="{!Completion60D}" /></apex:outputText>% -->
+                                Completion Rate -&nbsp;<apex:outputText value="{0, number,###,###,##0.0}"><apex:param value="{!accountMetricObj.Adoption_Phase_Completion_Rate__c}" /></apex:outputText>%
+                            </td>                           
+                        </tr>
+                        <tr>
+                            <td width="38">&nbsp;</td>
+                            <td>
+                                <DIV style="position: relative; top: 0px; width: 3px; left: {!accountMetricObj.Adoption_Phase_Completion_Rate__c*3}px; height: 30px; float:left; z-index:3; background-color: Black"></DIV>
+                                <DIV style="position: relative; top: 5px; width: 300px; height: 25px; float:left; background-color: Red">
+                                <img width="300" height="25" src="{!$Resource.CGBar_RAG}"></img>
+                                </DIV>
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2">
+                                Completion Date - {!accountMetricObj.Account_Graduation_Date_31_60__c}
+                            </td>                            
+                        </tr>
+                        
+                </table>
+                </div> 
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#d9d9d9; border: 1px solid black;height:80px;">
+                <table border="0" width="100%">
+                        <tr>
+                            <td align="center" colspan="2">
+                                <!-- Completion Rate -&nbsp;<apex:outputText value="{0, number,###,###,##0.0}"><apex:param value="{!Completion90D}" /></apex:outputText>% -->
+                                Completion Rate -&nbsp;<apex:outputText value="{0, number,###,###,##0.0}"><apex:param value="{!accountMetricObj.Graduation_Phase_Completion_Rate__c}" /></apex:outputText>%
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td width="38">&nbsp;</td>
+                            <td>
+                                <DIV style="position: relative; top: 0px; width: 3px; left: {!accountMetricObj.Graduation_Phase_Completion_Rate__c*3}px; height: 30px; float:left; z-index:3; background-color: Black"></DIV>
+                                <DIV style="position: relative; top: 5px; width: 300px; height: 25px; float:left; background-color: Red">
+                                <img width="300" height="25" src="{!$Resource.CGBar_RAG}"></img>
+                                </DIV>
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2">
+                                Completion Date - {!accountMetricObj.Account_Graduation_Date_61_90__c}
+                            </td>                            
+                        </tr>
+                        
+                </table>
+                </div> 
+            </td>
+        </tr>
+
+        <!-- Header -->
+            <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#336688; border: 1px solid black;">
+                <table border="0">
+                <tr>
+                    <td width="90"><center><div style="color:white; font-weight:bold; font-size:12px;">Status</div></center></td>
+                    <td width="210"><center><div style="color:white; font-weight:bold; font-size:12px;">Metric Name</div></center></td>
+                    <td width="90"><center><div style="color:white; font-weight:bold; font-size:12px;">Actual</div></center></td>
+                </tr>
+                </table>
+                </div> 
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#336688; border: 1px solid black;">
+                <table border="0">
+                <tr>
+                    <td width="90"><center><div style="color:white; font-weight:bold; font-size:12px;">Status</div></center></td>
+                    <td width="210"><center><div style="color:white; font-weight:bold; font-size:12px;">Metric Name</div></center></td>
+                    <td width="90"><center><div style="color:white; font-weight:bold; font-size:12px;">Actual</div></center></td>
+                </tr>
+                </table>
+                </div> 
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5">
+                <div style="background-color:#336688; border: 1px solid black;">
+                <table border="0">
+                <tr>
+                    <td width="90"><center><div style="color:white; font-weight:bold; font-size:12px;">Status</div></center></td>
+                    <td width="210"><center><div style="color:white; font-weight:bold; font-size:12px;">Metric Name</div></center></td>
+                    <td width="90"><center><div style="color:white; font-weight:bold; font-size:12px;">Actual</div></center></td>
+                </tr>
+                </table>
+                </div> 
+            </td>
+        </tr>
+     
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" bgcolor="#ffffff">
+                <div style="border-left: 1px solid black;border-right: 1px solid black">&nbsp;</div> 
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" bgcolor="#ffffff">
+                <div style="border-left: 1px solid black;border-right: 1px solid black">&nbsp;</div> 
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" bgcolor="#ffffff">
+                <div style="border-left: 1px solid black;border-right: 1px solid black">&nbsp;</div> 
+            </td>
+        </tr>
+        
+        <!-- 1st Row -->
+        <tr>
+        <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(ImpCompleted_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(ImpCompleted_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Implementation Completed
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        <apex:OutputText rendered="{!ImpCompleted_Green=true}" value="Yes"/>
+                        <apex:OutputText rendered="{!ImpCompleted_Red=true}" value="No"/>
+                        </center>
+                    </td>
+                </tr>
+                </table>
+              
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(MobileUser_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Orange" style="display:{!if(MobileUser_Orange,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Orange}"></img></div>
+                        <div id="Red" style="display:{!if(MobileUser_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        % of Users Active on Mobile App for the Last 30 Days
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_18_value__c))}" value="{!Floor((accountMetricObj.Metric_18_value__c)*100)}%"/>
+                        <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_18_value__c)}" value="N/A"/>
+                        </center>
+                    </td>
+                </tr>
+                </table>
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(MinuteTrend_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(MinuteTrend_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Minute Trend, Last 60 vs Previous 60 days
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_3_value__c))}" value="{!Floor((accountMetricObj.Metric_3_value__c)*100)}%"/>
+                        <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_3_value__c)}" value="N/A"/>
+                        </center>
+                    </td>
+                </tr>
+                </table>
+            </td>
+        </tr>
+        
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+        </tr>
+        
+        
+        <!-- 2nd Row -->
+        <tr>
+        <!-- Left -->
+            <td width="390" valign="top" colspan="5"  style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+   
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(WebPortal_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(WebPortal_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Web Portal Adoption
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        <apex:OutputText rendered="{!wEBpORTAL_Green=true}" value="Yes"/>
+                        <apex:OutputText rendered="{!wEBpORTAL_Red=true}" value="No"/>
+                        </center>
+                    </td>
+                </tr>
+                </table>
+ 
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+     
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(ConfUser_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(ConfUser_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Conference Calling Mins Trends, Last 30 vs Previous 30 Days
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_23_value__c))}" value="{!Floor((accountMetricObj.Metric_23_value__c)*100)}%"/>
+                        <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_23_value__c)}" value="N/A"/>
+                        </center>
+                    </td>
+                </tr>
+                </table>
+   
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+  
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(T3Case_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(T3Case_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Open Tier 3 Cases / Pending PKIs
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        <apex:OutputText rendered="{!T3Case_Green=true}" value="No"/>
+                        <apex:OutputText rendered="{!T3Case_Red=true}" value="Yes"/>
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+        </tr>
+        
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+        </tr>
+        
+        <!-- 3rd Row -->
+        <tr>
+        <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(AcctNetwork_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(AcctNetwork_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Account Network Information
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        <apex:OutputText rendered="{!AcctNetwork_Green=true}" value="Yes"/>
+                        <apex:OutputText rendered="{!AcctNetwork_Red=true}" value="No"/>                       
+                        </center>
+                    </td>
+                </tr>
+                </table>
+  
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(FaxUser_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Orange" style="display:{!if(FaxUser_Orange,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Orange}"></img></div>
+                        <div id="Red" style="display:{!if(FaxUser_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Fax Completion Rate, Last 30 Days
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_27_value__c))}" value="{!Floor((accountMetricObj.Metric_27_value__c)*100)}%"/>
+                        <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_27_value__c)}" value="N/A"/>
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(RedAcc_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(RedAcc_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Red Account Object Created in the Past 180 Days
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        <apex:OutputText rendered="{!NOT(ISNULL(accountMetricObj.Metric_28_value__c))}" value="{!Floor((accountMetricObj.Metric_28_value__c))}"/>
+                        <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_28_value__c)}" value="N/A"/>
+
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+        </tr>
+        
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+        </tr>
+        
+        
+        <!-- 4th Row -->
+        <tr>
+        <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(PortedIn_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(PortedIn_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Ported In
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>                       
+                        <apex:OutputText rendered="{!accountMetricObj.Metric_11_value__c == 0}" value="No"/>
+                        <apex:OutputText rendered="{!accountMetricObj.Metric_11_value__c == 1}" value="Yes"/>
+                        <apex:OutputText rendered="{!ISNULL(accountMetricObj.Metric_11_value__c)}" value="N/A"/>
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(Farming_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(Farming_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        <div id="Orange" style="display:{!if(Farming_Orange,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Orange}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Current Owner Assigned
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        <apex:OutputText rendered="{!Farming_Green=true}" value="Yes"/>
+                        <apex:OutputText rendered="{!Farming_Red=true}" value="No"/> 
+                        <apex:OutputText rendered="{!Farming_Orange=true}" value="N/A"/> 
+                        </center>
+                    </td>
+                </tr>
+                </table>
+                  
+            </td>
+        </tr>
+        
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+        </tr>
+        
+        
+        
+        <!-- 5th Row -->
+        <tr>
+        <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(ACCReview_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(ACCReview_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        <div id="Orange" style="display:{!if(ACCReview_Orange,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Orange}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Account Review Completion %
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        {!floor(IC_ACCReview_Score*1000)}%
+                        </center>
+                    </td>
+                </tr>
+                </table>
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+         
+                <table border="0" height="38">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(GradKit_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(GradKit_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Graduation Kit (re-purposed welcome kit)
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        <apex:OutputText rendered="{!GradKit_Green=true}" value="Yes"/>
+                        <apex:OutputText rendered="{!GradKit_Red=true}" value="No"/>
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+        </tr>
+        
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+        </tr>
+        
+        
+        <!-- 6th Row -->
+        <tr>
+        <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+ 
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>                        
+                        <div id="Green" style="display:{!if(IC_CompanyInfo_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(IC_CompanyInfo_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        <div id="Orange" style="display:{!if(IC_CompanyInfo_Orange,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Orange}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Company Numbers and Info Completion %
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        {!floor(IC_CompanyInfo_Score*1000)}%
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0" height="38">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+ 
+                <table border="0" height="38">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+        </tr>
+        
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+        </tr>
+        
+        
+        <!-- 7th Row -->
+        <tr>
+        <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+      
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(IC_Users_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(IC_Users_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        <div id="Orange" style="display:{!if(IC_Users_Orange,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Orange}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Users Completion %
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        {!floor(IC_Users_Score*400)}%
+                        </center>
+                    </td>
+                </tr>
+                </table>
+  
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0" height="38">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0" height="38">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+        </tr>
+        
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+        </tr>
+        
+        
+        <!-- 8th Row -->
+        <tr>
+        <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(IC_Phones_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(IC_Phones_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        <div id="Orange" style="display:{!if(IC_Phones_Orange,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Orange}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Phones and Devices Completion %
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>                           
+                           {!floor(IC_Phones_Score*400)}%
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0" height="38">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0" height="38">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+        </tr>
+        
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+        </tr>
+        
+        <!-- 9th Row -->
+        <tr>
+        <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(IC_Groups_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(IC_Groups_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        <div id="Orange" style="display:{!if(IC_Groups_Orange,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Orange}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Groups Completion %
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>                           
+                           {!floor(IC_Groups_Score*667)}%
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0" height="38">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0" height="38">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+        </tr>
+        
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+        </tr>
+        
+        
+        <!-- 10th Row -->
+        <tr>
+        <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0">
+                <tr>
+                    <td width="90">
+                        <center>
+                        <div id="Green" style="display:{!if(IC_Tools_Green,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Green}"></img></div>
+                        <div id="Red" style="display:{!if(IC_Tools_Red,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Red}"></img></div>
+                        <div id="Orange" style="display:{!if(IC_Tools_Orange,"block","none")};"><img width="32" height="32" src="{!$Resource.CGDash_Orange}"></img></div>
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        Tools Completion %
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>                           
+                           {!floor(IC_Tools_Score*667)}%
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0" height="38">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+
+                <table border="0" height="38">
+                <tr>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="210">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                    <td width="90">
+                        <center>
+                        &nbsp;
+                        </center>
+                    </td>
+                </tr>
+                </table>
+
+            </td>
+        </tr>
+        
+        
+        
+        <!-- Filler -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" style="border-left: 1px solid black;border-right: 1px solid black" bgcolor="#ffffff">
+                &nbsp;
+            </td>
+        </tr>
+        
+        
+        
+        <!-- Bottom -->
+        <tr>
+            <!-- Left -->
+            <td width="390" valign="top" colspan="5" bgcolor="#ffffff">
+                <div style="border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black">
+                &nbsp;
+                </div> 
+            </td>
+            <!-- Middle -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" bgcolor="#ffffff">
+                <div style="border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black">
+                &nbsp;
+                </div> 
+            </td>
+            <!-- Right -->
+            <td>&nbsp;</td>
+            <td width="390" valign="top" colspan="5" bgcolor="#ffffff">
+                <div style="border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black">
+                &nbsp;
+                </div> 
+            </td>
+        </tr>
+      
+        </table>   
+        </center>
+
+<br/><br/>
+            <!-- disable export pdf
+            <div  class="btnDivNew" >
+            <input type="button" class="btn" value="Export as PDF" onClick="window.open('/apex/CustomerGraduationScorecardPDF?accid={!accObj.id}');" />&nbsp;
+            </div>
+            -->
+        </apex:pageBlock>
+        
+       <apex:ActionFunction action="{!redirectToSendMailPage}" name="sendMailToCustomer"></apex:ActionFunction>
+
+</apex:form>
+
+
+</apex:page>

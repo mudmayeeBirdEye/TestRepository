@@ -1,0 +1,138 @@
+<apex:page controller="PartnerHierarchyController" tabStyle="Account">
+<!--  <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />-->
+<!-- <apex:includeScript value="{!URLFOR($Resource.Jtreeview, 'tree/jquery18.js')}" /> -->
+  <link rel="stylesheet" href="{!URLFOR($Resource.Jtreeview,'tree/jquery.treeview1.css')}"/>
+    <script src="{!URLFOR($Resource.Jtreeview,'tree/jquery18.js')}" type="text/javascript"></script>
+     <script src="{!URLFOR($Resource.Jtreeview,'tree/jquery.cookie.js')}" type="text/javascript"></script>
+    <script src="{!URLFOR($Resource.Jtreeview,'tree/jquery.treeview.js')}" type="text/javascript"></script>
+    
+   
+    <apex:stylesheet value="{!URLFOR($Resource.Jtreeview, '/tree/css/tree.css')}"/>
+<script type="text/javascript">
+      $(document).ready(function(){
+         
+    // first example
+    /*$("#tree").treeview({
+        collapsed: false,
+        persist: "location",
+        animated: "fast",
+        control: "#sidetreecontrol"
+    });*/
+        });
+     
+     
+     function showEmployeeDetails(empId){
+     
+     }  
+</script>
+
+ <!-- <div style='margin-left:25px;'>
+ <div  class="treeheader" style="height:0px;">&nbsp; </div> 
+         <apex:outputPanel id="treeview1">
+      
+        <div id="sidetreecontrol">
+         <a href="?#" id='sidetreecontrol1'><font style="color:blue;">Collapse All</font></a> 
+          | <a href="?#"><font style="color:blue;">Expand All</font></a>
+          </div>
+
+  <ul  id="tree" class="treeview">
+           <apex:outputText value="{!strTreeView}" escape="false"></apex:outputText> 
+        </ul>
+</apex:outputPanel>
+</div>  -->
+ <div style="margin-top: 10px;">
+        <a href="javascript:void(0);" onclick="collapse();" id="collapse_button">Collapse All</a>
+        <a href="javascript:void(0);" onclick="expand();" id="expand_button">Expand All</a>
+    </div>
+    <div class="b-tree-holder" >
+        <div id="Tree">
+            <ul id='tree' class="treeview">
+                <apex:outputText value="{!strTreeView}" escape="false" />
+            </ul>
+        </div>
+    </div>
+<script>
+function expand() {
+        $('.m-plus').addClass('m-minus').removeClass('m-plus').next().addClass('m-closed').next().next('ul').css('display', 'block');
+    }
+    function collapse() {
+        $('.m-minus').addClass('m-plus').removeClass('m-minus').next().removeClass('m-closed').next().next('ul').css('display', 'none');
+    }
+
+$(document).ready(function(){
+       $('#Tree a:first').addClass('chozenFolder');
+        $('#Tree li').has('ul').prepend('<span class="m-plus"></span>');
+        $('#Tree ul:first-child').addClass('m-first');
+        $('#Tree ul.m-first li:first').addClass('m-parent');
+        $('#Tree ul.m-first li:first span:first').remove();
+        $('#Tree ul li:last-child').addClass('m-last');
+        //$("#Tree ul ul ul").hide();
+       $('#Tree ul .m-plus, #Tree ul .m-minus').click(function() {
+            if($(this).hasClass('m-minus')) {
+               //console.log($(this).removeClass('m-minus').addClass('m-plus').next().toggleClass('m-closed').next().next('ul'));
+                $(this).removeClass('m-minus').addClass('m-plus').next().toggleClass('m-closed').next().next('ul').toggle();
+            } else {
+                $(this).removeClass('m-plus').addClass('m-minus').next().toggleClass('m-closed').next().next('ul').toggle();
+            }
+        } );
+        
+        
+    
+   expand();
+  //collapse();
+});
+
+
+</script>
+
+
+
+
+<script>
+var mapData= new Object();
+$.each({!strJson}, function(key, item) {
+//console.log(item);
+ var DLAndMRR='<strong>(DLs='+item.dDLs+',MRR='+item.dMRR+')</strong>'
+   $('#'+key).html(DLAndMRR);
+   mapData[key]=$(item);
+});
+console.log(mapData);
+
+$(document).ready(function(){
+$.each({!strJson}, function(key, item) {
+var allDll=item.dDLs;
+var allMrr=item.dMRR;
+ $('.'+key).find("span.m-minus,span.m-plus").each(function() {
+    if(!$(this).parent().hasClass(''+key)){
+      
+       var objId=$(this).siblings('span').attr('id');      
+       var objDataDetail=(mapData[objId])[0];
+       
+        //console.log(objDataDetail);
+       //console.log(objDataDetail[0].dDLs);
+        
+        allDll=allDll+objDataDetail.dDLs-objDataDetail.ownDLs;
+        allMrr=allMrr+objDataDetail.dMRR-objDataDetail.ownMRR;
+       
+       if($(this).parent().hasClass('parent-'+key)){
+        //  allDll=allDll-objDataDetail.ownDLs;
+          //allMrr=allMrr-objDataDetail.ownMRR;
+       }
+    }
+});
+ var DLAndMRR='<strong>(DLs='+allDll+',MRR='+allMrr+')</strong>'
+$('#'+key).html(DLAndMRR);
+allDll=0
+allMrr=0;
+});
+
+});
+var abc='2#';
+console.log(abc.split('#'));
+
+</script>
+
+<apex:pagemessages />
+
+
+</apex:page>

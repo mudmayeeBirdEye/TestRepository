@@ -1,0 +1,503 @@
+<apex:page showHeader="false" sidebar="false" controller="IntranetController" standardStylesheets="false" > <!-- action="{!login}" -->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" class="ext-strict">
+<head>
+<script type="text/javascript" src="/CMSExample/jslibrary/1329331264000/sfdc/JiffyStubs.js"></script>
+</head>
+<body style=" background:white;" class="ext-gecko ext-gecko3" >
+<span id="j_id0:j_id5">
+<meta content="NO-CACHE" http-equiv="PRAGMA"/>
+<meta content="Mon, 01 Jan 1990 12:00:00 GMT" http-equiv="Expires"/>
+<apex:stylesheet value="{!URLFOR($Resource.CMSForce, 'AppxTemplateResources/appxtemplatefiles/all.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.CMSForce, 'AppxTemplateResources/appxtemplatefiles/appxtemplate.css')}"/>
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.jquerycookie, 'cookie/jqueryCookie.js')}" />
+
+<title>Ringcentral Intranet</title>
+   <!-- <apex:stylesheet value="{!URLFOR($Resource.TREEVIEW, 'jquery.treeview.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.TREEVIEW, '/demo/screen.css')}"/>
+    
+    <apex:includeScript value="{!URLFOR($Resource.TREEVIEW, '/lib/jquery.cookie.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.TREEVIEW, 'jquery.treeview.js')}" />
+   -->
+     <apex:stylesheet value="{!URLFOR($Resource.RCSupportLatestCss, 'css/support/left.css')}" />
+   
+<style>
+            #body {
+                background:white !important;
+            }
+            #page {
+                background: none !important;
+                box-shadow: 0 0 92px 5px #dadada inset;
+                -moz-box-shadow: 0 0 92px 5px #dadada inset;
+                -webkit-box-shadow: 0 0 92px 5px #dadada inset;
+                min-width:1004px;
+                border-left:1px solid lightgray;
+                border-right:1px solid lightgray;
+               }
+               .main-right p{
+                   /*height: 7px !important;*/
+               }
+                #navigationlinks a{
+                    color:black !important;
+                }
+               #navigationlinks {
+                   width: 100%;
+                    color:black !important; 
+                    margin:0px;   
+                    padding:5px;           
+               }
+            #navigationlinks p:hover{
+                background:lightgray;
+                border-radius:5px;
+                border:1px solid lightgray;
+                cursor:pointer;
+            }
+            .main-right p img {
+                border: 1px solid lightgray;
+                border-radius: 5px;
+            }
+            .contentblock1 p{
+              display:inline;
+            }
+            .main-left {
+                width:14.0% !important;
+                margin:5px;
+            }
+            .header-bottom {
+                margin: 0px !important;
+            }
+            .mainmenutab {
+               
+                text-align:center;
+                width:100%;
+                /*
+                    border:1px solid lightgray;
+                    border-radius:4px;
+                */
+            }
+            .mainmenutab:hover {
+                box-shadow:0 0 4px 2px lightgray;
+                text-align:center;
+                /*
+                    border:1px solid lightgray;
+                    border-radius:4px;
+                */
+            }
+            .mainmenutab:active {
+                 box-shadow: none;
+                 text-align:center;
+                 /*
+                    border:1px solid lightgray;
+                    border-radius:4px;
+                 */
+            }
+            .mainmenutabselected {
+                 box-shadow:0 0 4px 2px darkgray;
+                 text-align:center;
+                 border:1px solid black;
+                 border-radius:4px;
+                 width:100%;
+            }
+           .main-left .find {
+               width:auto;
+               min-width:30px;
+           }
+           ul li, ol li {
+               margin-left:0px;
+           }
+           .backImage {
+               background-image:url('{!URLFOR($Resource.RCSupportLatestCss,'/images/support/inc_images/arrow-blue-bottom.gif')}') !important;
+           }
+           .submenuPanel {
+                height: 58px;
+                border:1px solid transparen;
+                border-radius:5px;
+                margin-top:0px;
+                margin-bottom:5px;
+                box-shadow:0px 0px 26px 0px orange; 
+                -moz-box-shadow:0px 0px 26px 0px orange;
+                -webkit-box-shadow:0px 0px 26px 0px orange;
+           }
+           .mainMenuTabPanel {  
+                border: 1px solid lightgray;
+                border-radius:5px;
+                height:78px;
+                margin:0px;
+                box-shadow:0px 0px 34px 1px skyblue;
+                -moz-box-shadow:0px 0px 34px 1px skyblue;
+                -webkit-box-shadow:0px 0px 34px 1px skyblue;
+            }
+            .mainTabTextCls {
+                font-size: 12px;
+                font-weight: bolder;
+                font-family: verdana;
+                color:#095183;
+            }
+            .childTabTextCls {
+                font-size: 11px;
+                font-weight: bolder;
+                font-family: verdana;
+                color:#095183;
+            }
+            .linkTop {
+                color: #095183;
+                font-family: Helvetica;
+                font-size: 12px;
+                text-decoration: none;
+                padding-left: 20px;
+                font-weight: bold;
+            }
+</style>
+<div id="page">
+    <div style="background:none;height:auto;" id="header">
+        <div style="height:auto;" class="header-top">
+            <h1>
+            <a style="height:38px;background:url('{!URLFOR($Resource.RCLogoOnSite)}') no-repeat 0 0;" href="http://www.ringcentral.com">
+            <span>RingCentral</span>
+            </a>
+            </h1>
+            <div class="top-right">
+                <div class="top">
+                    <div id="multi-lang-2">
+                        <!--<apex:form >
+                            <apex:inputText value="{!searchTxt}" />
+                             <apex:commandLink action="{!searchText}" >
+                                    Search
+                                    </apex:commandLink> | 
+                                     <apex:commandLink rendered="{!isLoginRequired}" action="{!loginToSite}">
+                                        Login
+                                    </apex:commandLink>
+                                   <apex:commandLink action="{!onLogout}"  rendered="{!!isLoginRequired}">
+                                        Logout
+                                    </apex:commandLink>
+                                    <!-- <input id="searchText" type="text" value=""/> <a href="#" onclick="alert('Under Process');">Search</a> | <a href="#" onclick="alert('Under Process');">Login</a>  -->
+                       <!-- </apex:form>-->
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div style="background:none;border-top: 1px solid lightgray;" id="main">
+        <div class="main-left">
+             <div style="min-height: 78px;border:1px solid lightgray;border-radius: 4px;margin-bottom: 5px;text-align:center;">
+                  <!-- <div class="ssbg" id="ssbg"> **{!firstName}-{!lastName}** <p class="sst" style="margin-top:2px;margin-bottom:2px;">System Status</p><img style="width:60px" src="{!$Site.CurrentSiteUrl}{!photoUrl}" /> <img src="http://www.ringcentral.com/images/system_status/green.gif" /><p class="iss" style="margin-top:2px;margin-bottom:2px;"><span id="ssp">No Known Issues</span></p></div>--> 
+                 <!-- <table width="100%">
+                    <tr>
+                        <td>
+                            <b> Welcome </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                          <img style="width:60px" src="{!$Site.CurrentSiteUrl}{!photoUrl}" /> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:outputText > <b> {!firstName} {!lastName} </b> </apex:outputText>  
+                        </td>
+                    </tr>
+                  </table>-->
+             </div>
+            <div style="background:none;height:auto;border: 1px solid lightgray;border-radius: 4px;" class="find">
+               <apex:form > 
+                <div class="contentblock">
+               
+                      <!-- <ul class="level-1">
+                        <apex:repeat value="{!lstLeftMainTab}" var="objTab">
+                            <li class="li-item-F {!IF($CurrentPage.parameters.parentId == objTab.Id, 'backImage', '')}" onclick="showAndHide('{!objTab.Id}',this);"  >
+                                <apex:outputPanel styleClass="linkTop">{!objTab.Name}</apex:outputPanel>
+                            </li>
+                            <ul class="level-2 menu" id="{!objTab.Id}" style="{!IF($CurrentPage.parameters.parentId == objTab.Id, 'display:block;', '')}">
+                                 <apex:repeat value="{!leftMainToChildTabs[objTab.Id]}" var="objChildTab" rendered="{!IF(leftMainToChildTabs[objTab.Id]== null, false, true)}">
+                                     <li class="li2-item-1 noSubMenu" >
+                                        <apex:commandLink styleClass="linkLv2" action="{!loadLeftSubMenu}" style="{!IF($CurrentPage.parameters.id== objChildTab.Id,'color:#07437E','')}">
+                                             <apex:param name="strChildTabId" value="{!objChildTab.id}" assignTo="{!strChildTabId}"/>
+                                               <apex:param name="strParentTabId" value="{!objChildTab.ParentID__c}" assignTo="{!strParentTabId}"/>
+                                                {!objChildTab.name}
+                                        </apex:commandLink>
+                                    </li>
+                                 </apex:repeat> 
+                             </ul>  
+                        </apex:repeat>
+                    </ul> -->
+                    <ul class="level-1">
+                        <!--<apex:repeat value="{!lstLeftMainTab}" var="objTab">
+                            <li class="li-item-F {!IF($CurrentPage.parameters.parentId == objTab.Id, 'backImage', '')}" id="leftTab-{!objTab.Id}" onclick="showAndHide('{!objTab.Id}', '{!leftMainToChildTabs[objTab.Id]}', 'leftTab-{!objTab.Id}');" >
+                                <apex:variable var="leftChildList" value="{!leftMainToChildTabs[objTab.Id]}" />
+                                <apex:variable var="statusNew" value="false" />
+                                <apex:outputPanel styleClass="linkTop" rendered="{!IF(leftMainToChildTabs == null || leftChildList == null || leftChildList.size == 0, true, false)}">
+                                    <apex:variable var="statusNew" value="true" />
+                                    <apex:commandLink action="{!loadLeftSubMenu}" style="text-decoration: none;">
+                                           <apex:param name="strParentTabId" value="{!objTab.Id}" assignTo="{!strParentTabId}"/>
+                                           {!objTab.Name}
+                                    </apex:commandLink>
+                                    <!-- <apex:actionSupport event="onclick" action="{!loadLeftSubMenu}">
+                                         <apex:param name="strParentTabId" value="{!objTab.Id}" assignTo="{!strParentTabId}"/>
+                                        {!objTab.Name}
+                                    </apex:actionSupport> -->
+                                <!--</apex:outputPanel>
+                                <apex:outputPanel styleClass="linkTop"  rendered="{!IF(statusNew == 'false', true, false)}">
+                                    {!objTab.Name}
+                                </apex:outputPanel>
+                                <!--
+                                    <apex:outputPanel styleClass="linkTop" >
+                                        {!objTab.Name}
+                                    </apex:outputPanel>
+                                -->
+                            <!--</li>-->
+                            <!--<ul class="level-2 menu" id="{!objTab.Id}" style="{!IF($CurrentPage.parameters.parentId == objTab.Id, 'display:block;', '')}">
+                                 <apex:repeat value="{!leftMainToChildTabs[objTab.Id]}" var="objChildTab" rendered="{!IF(leftMainToChildTabs[objTab.Id]== null, false, true)}">
+                                     <li class="li2-item-1 noSubMenu" >
+                                        <apex:commandLink styleClass="linkLv2" action="{!loadLeftSubMenu}" style="{!IF($CurrentPage.parameters.id== objChildTab.Id,'color:#07437E','')}">
+                                             <apex:param name="strChildTabId" value="{!objChildTab.id}" assignTo="{!strChildTabId}"/>
+                                               <apex:param name="strParentTabId" value="{!objChildTab.ParentID__c}" assignTo="{!strParentTabId}"/>
+                                                {!objChildTab.name}
+                                        </apex:commandLink>
+                                    </li>
+                                 </apex:repeat> 
+                             </ul> --> 
+                       <!-- </apex:repeat> -->
+                    </ul>
+                </div>
+              </apex:form> 
+            </div>
+        </div>
+        <!--<span style="margin:5px;">
+        <div style="margin:5px; border-left: 1px solid lightgray;width: 1px;height:520px;float:left;display:inline;">
+        </div>
+        </span>
+      -->
+        <div style="width:83.6%;min-width:500pxmin-height:500px;;margin:0px;display:inline;border-left: 1px solid lightgray;padding-left:8px;margin-top:5px;" class="main-right">
+                
+                <div class="header-bottom mainMenuTabPanel">
+                <!-- <div style="border: 1px solid lightgray;border-radius:5px;height:78px;margin:0px;box-shadow:0px 0px 34px 1px skyblue inset;" class="header-bottom"> -->
+                  <!--<apex:form >
+                    <div style="margin:0px;" id="navigationlinks">
+                        <span id="headerSpan">
+                        <div class="contentblock">
+                            <apex:repeat value="{!lstMainTab}" var="objTab">
+                                  <div style="color: rgb(51, 51, 51); float: left; padding-left:10px;width: 80px; ">
+                                    <!-- <apex:outputtext value='{!objTab.Site_Tab_Image__c}' escape='false'>
+                                     </apex:outputText> -->
+                                      <!-- <apex:commandLink action="{!loadSubMenu}" value="{!objTab.Name}"  reRender="submenu" status="status3"> -->
+                                       <!--<apex:commandLink action="{!loadSubMenu}"  >
+                                          <apex:outputPanel >
+                                             <table class="mainmenutab"  style="{!IF($CurrentPage.parameters.parentId==objTab.id,' border-radius: 4px 4px 4px 4px; text-align: center; box-shadow: 0px 0px 4px 2px darkgray; border: 1px solid black;','')}" id="{!objTab.id}_tab"><tr><td>
+                                                 <apex:image height="42" width="56" rendered="{!(objTab.Tab_Image_Id__c!=null && objTab.Tab_Image_Id__c!='')}" styleClass="photo"  url="{!$Site.CurrentSiteUrl}servlet/servlet.FileDownload?file={!objTab.Tab_Image_Id__c}" title="{!objTab.Name}" />
+                                            </td></tr>
+                                            <tr>
+                                                <td nowrap="nowrap" class="mainTabTextCls">
+                                                {!objTab.Name}
+                                              </td>
+                                            </tr>
+                                           </table>
+                                           </apex:outputPanel>
+                                         <apex:param name="strParentTabId" value="{!objTab.id}" assignTo="{!strParentTabId}"/>
+                                       </apex:commandLink>
+                                   </div> 
+                                   <div style="float:left;width:5px;"><span></span></div>
+                            </apex:repeat>
+                        
+                         </div>
+                        </span>
+                    </div>
+                  </apex:form>
+                </div>
+                <div style="width:100%">
+                    <div style="width: 80%;float:left;margin-top: 5px;min-height:415px;border-right: 1px solid lightgray;padding-right: 5px;">
+                      <!--<apex:form >    
+                      <apex:outputPanel rendered="{!IF(lstChildTab.size != 0, true, false) }">
+                        <div class="submenuPanel">
+                        <!-- <div style="height: 52px;border:1px solid transparen;border-radius:5px;margin-top:0px;margin-bottom:5px;box-shadow:0px 0px 26px 0px orange inset; "> -->
+                        
+                           <!-- <span id="submenupnl">
+                            <div class="contentblock1">
+                               <apex:outputPanel id="submenu"> 
+                                 <div>
+                                    <!-- <c:actionstatus ></c:actionstatus>-->
+                                      <!--<apex:outputPanel rendered="{!lstChildTab.size>0}">
+                                       
+                                        <apex:repeat value="{!lstChildTab}" var="objChildTab">
+                                             <div style="float:left;width:5px;"><span><table><tr><td></td></tr></table></span></div>
+                                             <div style="color: rgb(51, 51, 51); float: left; padding-left:10px;width: 85px;margin-top:2px;">
+                                             <apex:commandLink action="{!loadSubMenuContent}" >
+                                                <apex:param name="strChildTabId" value="{!objChildTab.id}" assignTo="{!strChildTabId}"/>
+                                               <apex:param name="strParentTabId" value="{!objChildTab.ParentID__c}" assignTo="{!strParentTabId}"/>
+                                               
+                                                <table class="mainmenutab" style="{!IF($CurrentPage.parameters.id==objChildTab.id,' border-radius: 4px 4px 4px 4px; text-align: center; box-shadow: 0px 0px 4px 2px darkgray; border: 1px solid black;','')}" id="{!objChildTab.id}_child">
+                                                    <tr>
+                                                        <td>
+                                                            <apex:image height="30px" width="30px" rendered="{!(objChildTab.Tab_Image_Id__c!=null && objChildTab.Tab_Image_Id__c!='')}" styleClass="photo"  url="{!$Site.CurrentSiteUrl}servlet/servlet.FileDownload?file={!objChildTab.Tab_Image_Id__c}" title="{!objChildTab.Name}" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="height:16px;" nowrap="nowrap" class="childTabTextCls">
+                                                            {!objChildTab.Name}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                             </apex:commandLink> 
+                                           </div>
+                                         </apex:repeat>
+                                      
+                                    </apex:outputPanel>
+                                      </div>
+                                </apex:outputPanel> 
+                               <!-- <p>
+                                  <img width="56" height="42" alt="" src="{!URLFOR($Resource.CMSForce, 'img/home.jpg')}"/>&nbsp;&nbsp; 
+                                  <img width="56" height="42" alt="" src="{!URLFOR($Resource.CMSForce, 'img/peoples.jpg')}"/>&nbsp;
+                                   <img width="56" height="42" alt="" src="{!URLFOR($Resource.CMSForce, 'img/salesforce-chatter.jpg')}"/>
+                                </p> -->
+                              
+                          <!--  </div>
+                            </span>
+                        </div>
+                        </apex:outputPanel>
+                        </apex:form>    
+                        <div class="specs-holder-2">
+                            <div style="border-top:1px solid lightgray;" class="main-right-cont">
+                                <apex:variable value="{!IF($CurrentPage.parameters.parentId == '', '', mapTab[$CurrentPage.parameters.parentId].name)}" var="isParentContentAvailable" />
+                                <apex:variable value="{!IF($CurrentPage.parameters.id == '', '', mapTab[$CurrentPage.parameters.id].name)}" var="isChildContentAvailable" />
+                                <apex:outputPanel style="width:100%;height:30px;color:black;" rendered="{!IF(LEN(TRIM(isParentContentAvailable)) == 0, false,true)}">
+                                    <span>You are here </span> > <span style="color:blue;">{!TRIM(isParentContentAvailable)}</span> > <span style="color:orange;">{!isChildContentAvailable}</span>
+                                </apex:outputPanel>
+                                <span id="s_holder">
+                                <div class="contentblock">
+                                 <apex:outputPanel rendered="true">
+                                       <apex:outputPanel id="contentblock">
+                                        
+                                       </apex:outputPanel>
+                                   </apex:outputPanel>  
+                                    <p>
+                                      <!--<apex:pageMessages ></apex:pageMessages>-->
+                                      <!--  <apex:insert name="docSearch"></apex:insert> 
+                                        <apex:insert name="body"></apex:insert>
+                                        <!-- <apex:outputText escape="false" rendered="{!IF($CurrentPage.parameters.srch == '' && $CurrentPage.parameters.parentId == '' && $CurrentPage.parameters.Id == '' && defaultContent != null && defaultContent != '' , true, false)}" value="{!defaultContent}"  />  -->
+                                 <!--   </p>
+                                </div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<span style="margin:5px;">
+                    <div style="margin:5px; border-left: 1px solid lightgray;width: 1px;height:476px;float:left;display:inline;">
+                    </div>
+                    </span>
+                    -->
+                   <!-- <div style="width: 16%;float: right;margin-top: 5px;" id="rightbar">
+                        <div style="min-width:100px;">
+                            <div class="contentblock">
+                                <div style="font-size:12px">
+                                    <p><i><span style="color:#095183">Ring</span><span STYLE="color:orange;">Central</span></i> Feeds</p>
+                                    <P><a href="javascript:void(0)" target="_blank" title="RingCentral News">Coming Soon</a></p>
+                                </div>
+                                <div class="right_links" style="border-top:1px solid lightgray;">
+                                <p class="rl_header">
+                                    Quick Links</p>
+                                <p>
+                                    <a href="http://www.ringcentral.com/support/fordevelopers.html" target="_blank" title="For Developers">FOR DEVELOPERS</a></p>
+                                <p>
+                                    <a href="http://www.ringcentral.com/partner/agent.html" target="_blank" title="For Resellers">FOR RESELLERS</a></p>
+                                <p>
+                                    <a href="http://www.ringcentral.com/partner/overview.html" target="_blank" title="For Partners">FOR PARTNERS</a></p>
+                                <p>
+                                    <a href="http://www.ringcentral.com/support/qos-information.html" target="_blank" title="Quality of Service">QUALITY OF SERVICE</a></p>
+                                <p>
+                                    <a href="http://www.ringcentral.com/support/images/creditcardauthorizationform.pdf" target="_blank" title="Credit Card Auth Form">CREDIT CARD AUTH FORM</a></p>
+                               <p>
+                                    <a href="http://help2012.ringcentral.com" target="_blank" title="RingCentral 2012 Help Site">RINGCENTRAL AMAROSA SUPPORT</a></p>
+                            </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div> 
+            </div>
+    
+    </div>
+</div>
+<div style="min-width:1004px;">
+    <div style="background:white;color:black;border-top:1px solid lightgray;min-width:500px;width:90%;" id="footer">
+        <p>
+            &copy; 1999-2011 RingCentral, Inc. All rights reserved.
+        </p>
+        <!--<div style="font-size: 11px;padding-right: 30px;color:black;">
+            <a title="RingCentral Contact Us" style="color:black;" rel="nofollow" href="http://www.ringcentral.com/whyringcentral/contactus.html">Contact Us</a>
+            <span>|</span><a title="About RingCentral" style="color:black;" rel="nofollow" href="http://www.ringcentral.com/whyringcentral/company.html">About RingCentral</a>
+            <span>|</span><a title="RingCentral Affiliate Program" style="color:black;" rel="nofollow" href="http://www.ringcentral.com/partner/overview.html">Affiliates and Partners</a>
+            <span>|</span><a title="RingCentral Legal pages" style="color:black;" rel="nofollow" href="http://www.ringcentral.com/legal.html">Legal</a>
+            <span>|</span><a title="Security Policy" style="color:black;" rel="nofollow" href="http://www.ringcentral.com/security-statement.html">Security Policy</a>
+            <span>|</span><a title="Sitemap" style="color:black;" href="http://www.ringcentral.com/sitemap.html">Site Map</a>
+        </div>-->
+    </div>
+</div>
+</span>
+</body>
+</html>
+ <script>
+      /* $(document).ready(function () {
+          $('#{!$CurrentPage.parameters.parentId}_tab').css({'background-image' : 'none', 'background-color' : '#ff6666', 'font-weight' : 'bolder'});
+           if('{!$CurrentPage.parameters.id}'!=''){
+             $('#{!$CurrentPage.parameters.id}_child').css({'background-image' : 'none', 'background-color' : '#ff6666', 'font-weight' : 'bolder'});
+           }
+       }); */  
+       
+       function createCookie(name,value,days) {
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime()+(days*24*60*60*1000));
+                var expires = "; expires="+date.toGMTString();
+            }
+            else var expires = "";
+            document.cookie = name+"="+value+expires+"; path=/";
+        }
+        
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+        
+        function eraseCookie(name) {
+            createCookie(name,"",-1);
+        }
+ </script>
+ <script type="text/javascript">
+     var $j = jQuery.noConflict();
+        function showAndHide(elementId, childObj, objElem){
+            try {
+                // alert(obj.style.backgroundImage);
+                var obj = document.getElementById(objElem);
+                if(obj.style.backgroundImage == null || obj.style.backgroundImage == '' || obj.style.backgroundImage.indexOf('arrow-blue-right.gif') !=-1) {
+                     $j("#"+elementId).show("fast");
+                     // $j('#'+objElem).css('background-image', "url('{!URLFOR($Resource.RCSupportLatestCss,'/images/support/inc_images/arrow-blue-bottom.gif')}')");
+                     obj.style.backgroundImage = "url('{!URLFOR($Resource.RCSupportLatestCss,'/images/support/inc_images/arrow-blue-bottom.gif')}')";
+                } else {
+                    $j("#"+elementId).hide("fast");
+                    obj.className = "li-item-F";
+                    // $j('#'+objElem).css('background-image', "url('{!URLFOR($Resource.RCSupportLatestCss,'/images/support/inc_images/arrow-blue-right.gif')}')");
+                    obj.style.backgroundImage = "url('{!URLFOR($Resource.RCSupportLatestCss,'/images/support/inc_images/arrow-blue-right.gif')}')";
+                }
+                 
+            } catch(x) {alert(x)}
+            /*
+              if(document.getElementById(elementId).style.display=="block"){
+                   $j("#"+elementId).hide("fast");
+                   obj.className = "li-item-F";
+                   $j(obj).css('background-image', "url('{!URLFOR($Resource.RCSupportLatestCss,'/images/support/inc_images/arrow-blue-right.gif')}')");
+               }else{
+                 $j("#"+elementId).show("fast");
+                 $j(obj).css('background-image', "url('{!URLFOR($Resource.RCSupportLatestCss,'/images/support/inc_images/arrow-blue-bottom.gif')}')");
+              }
+              */
+         }
+</script>
+
+
+</apex:page>

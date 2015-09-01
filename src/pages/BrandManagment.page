@@ -1,0 +1,323 @@
+<apex:page controller="schedulerAdminConfiguration" showheader="false" standardStylesheets="true">
+	<style>
+		.tableContainer {
+		    height: auto;
+		    width: 95%;
+		    align: center;
+		    margin: 20px;
+		}
+		
+		#advisor {
+		    color: Black;
+		    width: 100%;
+		}
+		
+		#advisor td {
+		    background-color: #DDDEDF;
+		    vertical-align: top;
+		    color: black;
+		    border: 0px solid black;
+		    border-collapse: collapse;
+		    /*border-radius: 2px 2px 2px 2px;*/
+		    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);*/
+		    line-height: 18px;
+		    z-index: 1000;
+		    text-align: left;
+		    width: 0px;
+		    padding: 6px;
+		    font-family: Georgia;
+		    font-size: 12px;
+		}
+		
+		.tableClass {
+		    width: 850px;
+		    font-family: Georgia;
+		    font-size: 12px;
+		    padding: 10px;
+		}
+		
+		.header {
+		    font-size: 25px;
+		    display: block;
+		    font-family: Georgia;
+		    margin-left: 500px;
+		}
+		
+		.custPopup {
+		    background-color: white;
+		    border-width: 2px;
+		    border-style: solid;
+		    z-index: 9999;
+		    left: 20%;
+		    padding: 10px;
+		    position: absolute;
+		    width: 800px;
+		    height: 150px;
+		}
+		
+		.popupBackground {
+		    background-color: black;
+		    opacity: 0.20;
+		    filter: alpha(opacity = 20);
+		    position: absolute;
+		    width: 100%;
+		    height: 100%;
+		    top: 0;
+		    left: 0;
+		    z-index: 9998;
+		}
+		
+		.background {
+		    background-color: #fff;
+		}
+		
+		.preRequiredLabel:after {
+		    content: " | ";
+		    color: red;
+		}
+		
+	</style>
+	<script>
+	    /*call remove method from controller*/
+	    function removeAdvisor(Id)
+	         alert(Id);
+	         removeAdvisor();
+	
+	    }
+   	</script>
+    <apex:form >
+        <br/>        
+        <apex:actionFunction name="callAction" action="{!showTemplates}" reRender="refEmailTemp" />
+        <apex:outputpanel layout="block" styleclass="header">
+            <apex:image value="/servlet/servlet.ImageServer?id=015Q0000000Maft&oid=00DQ0000003Mh6u&lastMod=1369288826000"
+                height="45px" width="45px" />Scheduler Admin Configuration
+        </apex:outputpanel>
+        <table style="padding: 6px;width: 100%;">
+            <tr>
+                <td>
+                	<apex:pageBlock rendered="{!isconfiguredata}">
+                        <apex:pageBlockSection columns="1">
+                            <apex:pageBlockSectionItem >
+                                <apex:PageBlockTable value="{!newlistBrand}"
+                                    var="configure" id="theTable2" rowClasses="odd,even"
+                                    styleClass="tableClass">
+                                    <apex:facet name="header">Brand Configuration List</apex:facet>
+                                    <apex:column >
+                                        <apex:facet name="header">Action</apex:facet>
+                                        <apex:commandLink value="Remove" id="theCommandLinkDelete"
+                                            onclick="if(!confirm('Are you sure to remove this Brand?')) return false;"
+                                            action="{!removeRecord}">
+                                            <apex:param name="Name" value="{!configure.id}" />
+                                        </apex:commandLink> |  <apex:commandLink value="Edit"
+                                            id="theCommandLinkEdit" action="{!editBrandRecords}">
+                                            <apex:param name="NameBrand" value="{!configure.Id}" />
+                                        </apex:commandLink>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Brand Name</apex:facet>
+                                        <apex:commandLink value="{!configure.brandName}" id="toBrandScreen"
+                                            action="{!toBrandScreen}">
+                                            <apex:param name="Brandid" value="{!configure.Id}" />
+                                        </apex:commandLink>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Brand Id</apex:facet>
+                                        <apex:outputText value="{!configure.brandId}" />
+                                    </apex:column>
+                                     <apex:column >
+                                        <apex:facet name="header">Preferred Language</apex:facet>
+                                        <apex:outputText value="{!configure.preferredLanguage}" />
+                                    </apex:column>
+                                   
+                                    <apex:column >
+                                        <apex:facet name="header">Buffer Days</apex:facet>
+                                        <apex:outputText value="{!configure.bufferDays}" />
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Cancellation(Customer)</apex:facet>
+                                        <apex:outputLink value="/{!configure.cancellationEmailTemplateCustomer.id}" >{!configure.cancellationEmailTemplateCustomer.name}</apex:outputLink>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Cancellation(Internal)</apex:facet>
+                                        <apex:outputLink value="/{!configure.cancellationEmailTemplateInternal.id}" >{!configure.cancellationEmailTemplateInternal.name}</apex:outputLink>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Confirmation</apex:facet>
+                                        <apex:outputLink value="/{!configure.confirmationEmailTemplateName.id}" >{!configure.confirmationEmailTemplateName.name}</apex:outputLink>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Reminder</apex:facet>
+                                        <apex:outputLink value="/{!configure.reminderEmailTemplateName.id}" >{!configure.reminderEmailTemplateName.name}</apex:outputLink>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Rescheduling(Customer)</apex:facet>
+                                        <apex:outputLink value="/{!configure.reschedulingEmailTemplateCustomer.id}" >{!configure.reschedulingEmailTemplateCustomer.name}</apex:outputLink>
+                                    </apex:column>
+                                    <apex:column >
+                                        <apex:facet name="header">Rescheduling(Internal)</apex:facet>
+                                        <apex:outputLink value="/{!configure.reschedulingEmailTemplateInternal.id}" >{!configure.reschedulingEmailTemplateInternal.name}</apex:outputLink>
+                                    </apex:column>
+                                </apex:PageBlockTable>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                </td>
+            </tr>
+        </table>
+
+        <table class="tableContainer">
+            <tr>
+                <td>
+                    <fieldset id="advisor" >
+                        <legend style="font-family: Georgia; font-size: 14px;">Brand Management</legend>
+                        <apex:pageblock >
+                            <apex:pageblocksection columns="4">
+                                <apex:pageblocksectionItem >
+                                        <apex:outputtext value="Brand Name" styleclass="preRequiredLabel" />
+                                        <apex:inputField value="{!objschedulerConfiguration.Name}" /> 
+                                </apex:pageblocksectionItem>
+                                <apex:pageblocksectionItem >
+                                    <apex:outputtext value="Brand Id" styleclass="preRequiredLabel" />
+                                    <apex:inputfield value="{!objschedulerConfiguration.Brand_Id__c}" />
+                                </apex:pageblocksectionItem>
+                                <apex:pageblocksectionItem >
+                                    <apex:outputtext value="Buffer days" styleclass="preRequiredLabel" />
+                                    <apex:inputField value="{!objschedulerConfiguration.Buffer_Days__c}" />
+                                </apex:pageblocksectionItem>
+                                 <apex:pageblocksectionItem >
+                                    <apex:outputtext value="Preferred Language" styleclass="preRequiredLabel" />
+                                    <apex:inputField value="{!objschedulerConfiguration.Preferred_Language__c}" />
+                                </apex:pageblocksectionItem>
+                            </apex:pageblocksection>
+                        </apex:pageblock>
+                    </fieldset>
+                </td>
+            </tr>            
+            <tr>
+            	<td>
+            		<apex:outputPanel id="tstpopup">
+            			<apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}" />
+            			<apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
+			                <apex:pageBlock title="Select an Email Template">
+			                    <apex:pageBlockSection title="Email Template" columns="3">
+			                        <apex:pageblocksectionItem >
+			                            <apex:outputpanel >
+			                                <apex:outputtext value="Select Folder" styleclass="preRequiredLabel" />
+			                            </apex:outputpanel>
+			                        </apex:pageblocksectionItem>
+			                        <apex:pageblocksectionItem >
+			                            <apex:selectList value="{!selectedFolder}" multiselect="false" size="1" onchange="callAction()">
+			                                <apex:selectOptions value="{!FolderName}" />
+			                            </apex:selectList>
+			                        </apex:pageblocksectionItem>
+			                        <apex:pageblocksectionItem >
+			                            <apex:selectList value="{!selectedTemplate}" multiselect="false" size="1" rendered="{!display}" id="refEmailTemp">
+			                                <apex:selectOptions value="{!templateList}" />
+			                            </apex:selectList>
+			                        </apex:pageblocksectionItem>
+			                    </apex:pageBlockSection>
+			                </apex:pageBlock>
+			                <apex:commandButton action="{!saveTemplate}" value="Save" style="margin-left:350px;" />
+			                <apex:commandButton action="{!closePopup}" value="Cancel" onclick="return confirmcancel()" immediate="true" />
+            			</apex:outputPanel>
+        			</apex:outputPanel>            	
+            	</td>
+            </tr>
+            <tr>
+                <td>
+                    <fieldset id="advisor" >
+                        <legend style="font-family: Georgia; font-size: 14px;">Email Management</legend>
+                        <apex:pageblock >
+                            <apex:pageblocksection >
+                                <apex:pageblocksectionItem dataStyle="text-align: left; width: 40%">
+                                	<apex:outputpanel >
+                                		<b><apex:outputtext value="Cancellation Email Template (Customer)" styleclass="preRequiredLabel"/></b>
+                                	</apex:outputpanel>                                      
+                                </apex:pageblocksectionItem>
+                                <apex:actionRegion >
+                                	<apex:inputField style="width: 50%;text-align: center;" value="{!objschedulerConfiguration.Cancellation_Email_Template_Customer__c}" id="cancellationCustomer"/>
+                                	<script>document.getElementById('{!$Component.cancellationCustomer}').disabled = true;</script>
+                                    <apex:commandButton value="Add Email Template" action="{!showPopup}" rerender="tstpopup">
+                                        <apex:param value="1" name="emailTemplate" assignTo="{!emailTemplate}" />
+                                    </apex:commandButton>
+                                    <apex:actionSupport event="onclick" rerender="tstpopup" rendered="true" />
+                                </apex:actionRegion>
+                                <apex:pageblocksectionItem dataStyle="text-align: left; width: 40%">
+                                	<apex:outputpanel >
+                                    	<b><apex:outputtext value="Cancellation Email Template (Internal)" styleclass="preRequiredLabel" /></b>
+                                    </apex:outputpanel>	
+                                </apex:pageblocksectionItem>
+                                <apex:actionRegion >
+                                	<apex:inputField style="width: 50%;text-align: center;" value="{!objschedulerConfiguration.Cancellation_Email_Template_Internal__c}" id="cancellationInternal"/>
+                                    <script>document.getElementById('{!$Component.cancellationInternal}').disabled = true;</script>
+                                    <apex:commandButton value="Add Email Template" action="{!showPopup}" rerender="tstpopup">
+                                        <apex:param value="2" name="emailTemplate" assignTo="{!emailTemplate}" />
+                                    </apex:commandButton>
+                                    <apex:actionSupport event="onclick" rerender="tstpopup" rendered="true" />
+                                </apex:actionRegion>
+                                <apex:pageblocksectionItem dataStyle="text-align: left; width: 40%">
+                                	<apex:outputpanel >
+                                    	<b><apex:outputtext value="Confirmation Email Template" styleclass="preRequiredLabel"/></b>
+                                    </apex:outputpanel>  
+                                </apex:pageblocksectionItem>
+                                <apex:actionRegion >
+                                	<apex:inputField style="width: 50%;text-align: center;" value="{!objschedulerConfiguration.Confirmation_Email_Template_Name__c}" id="confirmation"/>
+                                    <script>document.getElementById('{!$Component.confirmation}').disabled = true;</script>
+                                    <apex:commandButton value="Add Email Template" action="{!showPopup}" rerender="tstpopup">
+                                        <apex:param value="3" name="emailTemplate" assignTo="{!emailTemplate}" />
+                                    </apex:commandButton>
+                                    <apex:actionSupport event="onclick" rerender="tstpopup" rendered="true" />
+                                </apex:actionRegion>
+                                <apex:pageblocksectionItem dataStyle="text-align: left; width: 40%">
+                                	<apex:outputpanel >                               	
+                                    	<b><apex:outputtext value="Reminder E-mail Template" styleclass="preRequiredLabel" /></b>
+                                    </apex:outputpanel>
+                                </apex:pageblocksectionItem>
+                                <apex:actionRegion >
+                                	<apex:inputField style="width: 50%;text-align: center;" value="{!objschedulerConfiguration.Reminder_E_mail_Template_Name__c}" id="reminder"/>
+                                    <script>document.getElementById('{!$Component.reminder}').disabled = true;</script>
+                                    <apex:commandButton value="Add Email Template" action="{!showPopup}" rerender="tstpopup">
+                                        <apex:param value="4" name="emailTemplate" assignTo="{!emailTemplate}" />
+                                    </apex:commandButton>
+                                    <apex:actionSupport event="onclick" rerender="tstpopup" rendered="true" />
+                                </apex:actionRegion>
+                                <apex:pageblocksectionItem dataStyle="text-align: left; width: 40%">
+                                	<apex:outputpanel >
+                                    	<b><apex:outputtext value="Rescheduling Email Template (Customer)" styleclass="preRequiredLabel" /></b>
+                                    </apex:outputpanel>                                                                            
+                                </apex:pageblocksectionItem>
+                                <apex:actionRegion >
+                                	<apex:inputField style="width: 50%;text-align: center;" value="{!objschedulerConfiguration.Rescheduling_Email_Template_Customer__c}" id="reschedule"/>
+                                    <script>document.getElementById('{!$Component.reschedule}').disabled = true;</script>
+                                    <apex:commandButton value="Add Email Template" action="{!showPopup}" rerender="tstpopup">
+                                        <apex:param value="5" name="emailTemplate" assignTo="{!emailTemplate}" />
+                                    </apex:commandButton>
+                                    <apex:actionSupport event="onclick" rerender="tstpopup" rendered="true" />
+                                </apex:actionRegion>
+                                <apex:pageblocksectionItem dataStyle="text-align: left; width: 40%">
+                                	<apex:outputpanel >
+                                    	<b><apex:outputtext value="Rescheduling Email Template (Internal)" styleclass="preRequiredLabel" /></b>
+                                    </apex:outputpanel>
+                                </apex:pageblocksectionItem>
+                                <apex:actionRegion >
+                                	<apex:inputField style="width: 50%;text-align: center;" value="{!objschedulerConfiguration.Rescheduling_Email_Template_Internal__c}" id="rescheduleInternal"/>
+                                    <script>document.getElementById('{!$Component.rescheduleInternal}').disabled = true;</script>
+                                    <apex:commandButton value="Add Email Template" action="{!showPopup}" rerender="tstpopup">
+                                        <apex:param value="6" name="emailTemplate" assignTo="{!emailTemplate}" />
+                                    </apex:commandButton>
+                                    <apex:actionSupport event="onclick" rerender="tstpopup" rendered="true" />
+                                </apex:actionRegion>
+                            </apex:pageblocksection>
+                        </apex:pageblock>
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <apex:commandButton value="Save Brand" style="margin-left:50%;" action="{!saveBrand}" />
+                </td>
+            </tr>
+        </table>
+        <hr />        
+    </apex:form>
+</apex:page>

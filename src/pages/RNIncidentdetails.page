@@ -1,0 +1,210 @@
+<apex:page controller="RNIncidentDetails" showHeader="false" sidebar="false">
+
+ <script type="text/javascript"> 
+ function toogleFilterALL(getType)
+ {   
+     var getFilterDiv1 = document.getElementById("divdetails");
+     var getFilterDiv1 = document.getElementById("divMessage"); 
+     //var getFilterDiv2 = document.getElementById("divTask");
+     var getdivCollapseMode = document.getElementById("divCollapseMode");
+     if(getType == 1)
+     {
+         getFilterDiv1.style.display = "";
+        // getFilterDiv2.style.display = "";   
+         getdivCollapseMode.style.display = "none";      
+     }else{
+         getFilterDiv1.style.display = "none";
+       //  getFilterDiv2.style.display = "none";
+         getdivCollapseMode.style.display = "";
+     }
+ }  
+ 
+ function goback() {
+    history.go(-2);
+ } 
+      
+</script>
+<apex:form >
+   
+<style type="text/css">
+.font_color {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    
+}
+.font_header {
+    color: black;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 12px;
+    text-align: center;
+    vertical-align:top;
+}
+
+.font_headerTop {
+    color: white;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 16px;
+}
+</style>
+
+<Table border="0" height="200%" width="100%">
+    <tr>
+    <td>
+        <table width="100%">
+            <tr>
+                <td align="left">
+                </td>
+                <td align="right">
+                    <a href="#" onclick="javascript:toogleFilterALL('1');">Expand All</a> &nbsp;&nbsp; 
+                    <a href="#"  onclick="javascript:toogleFilterALL('0');">Collapse All</a>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </td>
+    </tr>
+   
+  <tr>
+    <td>
+        <table width="100%">
+            <tr>
+                <td>
+                <b>Reference#:</b>&nbsp;&nbsp;{!strSummaryRefNum}
+                </td>
+                <td align="right">
+                <b>Status:</b>&nbsp;&nbsp;{!strSummaryStatus}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                <b>Subject:</b>&nbsp;&nbsp;{!strSummarySub}
+                </td>
+                <td align="right">
+                <b>Assigned To:</b>&nbsp;&nbsp;{!strSummaryAssTo}
+                </td>
+            </tr>
+            
+        </table>
+    </td>
+</tr>    
+    
+ <tr>
+      <td width="70%" valign="top">
+      <div id="divdetails" style="display:none;">
+      <apex:pageBlock title="Incidentdetails">
+            <apex:dataTable value="{!Datadetails}" var="a" border="1" width="100%" style="border-collapse: collapse;border-color: #7F7F7F;">           
+                <apex:column headerClass="font_header">
+                    <apex:facet name="header"><b>Reference no</b></apex:facet>
+                    {!a.refNumber} 
+                </apex:column>
+                <apex:column headerClass="font_header" >
+                    <apex:facet name="header"><b>Created By</b></apex:facet>
+                    {!a.assignedTo}  
+                </apex:column>
+                <apex:column headerClass="font_header" >
+                    <apex:facet name="header"><b>status</b></apex:facet>
+                    {!a.status}  
+                </apex:column> 
+                
+            </apex:dataTable>
+        </apex:pageBlock>
+        </div>
+    </td>
+</tr>
+
+ <tr>
+ <td width="70%" valign="top">
+ <div id="divMessage">
+  <apex:pageBlock title="Messages">
+  <table border="1" width="100%" id="table2" bordercolorlight="#7F7F7F" style="border-collapse: collapse">
+    <tr class="font_header">
+        <td align="center"><b><font face="Arial">Created By</font></b></td>
+        <td align="center"><b><font face="Arial">Created Date</font></b></td>
+        <td align="center"><b><font face="Arial">Message</font></b></td>
+    </tr>
+    <apex:repeat value="{!data}" var="d">
+        <tr id="{!d.TID}" onmouseover="highlightRow({!d.TID});" onmouseout="unhighlightRow({!d.TID});">
+            <td align="left" valign="top">{!d.createby}</td> 
+            <td align="left" valign="top">{!d.createDate}</td> 
+            <td align="left">
+                <apex:outputText escape="false" value="{0}" >
+                     <apex:param value="{!d.subject}" />
+                </apex:outputText>
+            </td> 
+        </tr>  
+   </apex:repeat>
+  </table>
+   </apex:pageBlock>
+  </div>
+</td>
+</tr>
+<tr>
+    <td>
+    <div id="divCollapseMode" style="display:none;">    
+        <apex:pageBlock title="Messages">
+        </apex:pageBlock>
+    </div>
+    </td>
+</tr>
+<tr>
+     <td align="right">
+        <a href="javascript:history.go(-1)" ><b>Back to Incidents List</b></a>
+    </td>
+</tr>
+</Table>
+         
+<script type="text/javascript">
+	var getRowCounter=0;
+	var storeOldColor;
+ <apex:repeat value="{!data}" var="d">    
+     var getRowPrint = document.getElementById("{!d.TID}");     
+     if(getRowCounter%2 == 1){
+         getRowPrint.style.backgroundColor="#ffffff";
+     }else{
+         getRowPrint.style.backgroundColor="#efefef";
+     }     
+     getRowCounter++;   
+</apex:repeat> 
+
+  function highlightRow(getRId)
+  { 
+     var getRowPrint = document.getElementById(getRId);
+         storeOldColor = getRowPrint.style.backgroundColor;
+     getRowPrint.style.backgroundColor="#FFFF88";  
+    
+  }
+  function unhighlightRow(getRId)
+  { 
+     var getRowPrint = document.getElementById(getRId);            
+     getRowPrint.style.backgroundColor=storeOldColor ;  
+    
+  }
+ 
+</script> 
+    
+        
+      <!--<apex:pageBlock title="Messages">
+        <apex:dataTable value="{!data}" var="d" border="1" cellspacing="2" cellpadding="5" width="100%" style="border-collapse: collapse;border-color: #7F7F7F;">            
+            <apex:column headerClass="font_header" style="valign:top;">
+                <apex:facet name="header"><b>Created By</b></apex:facet>
+                <apex:outputText escape="false" value="{0}" style="vertical-align:top;" >
+                     <apex:param value="{!d.createby}" />
+                </apex:outputText>
+            </apex:column>
+            <apex:column headerClass="font_header" >
+                <apex:facet name="header"><b>Created Date</b></apex:facet>
+                {!d.createDate}  
+            </apex:column>
+            <apex:column headerClass="font_header"  >
+                <apex:facet name="header"><b>Message</b></apex:facet>               
+                <apex:outputText escape="false" value="{0}" >
+                     <apex:param value="{!d.subject}" />
+                </apex:outputText>
+            </apex:column>
+        </apex:dataTable>
+    </apex:pageBlock>-->
+</apex:form>
+</apex:page>

@@ -1,0 +1,177 @@
+<apex:page id="SurveyHtml" controller="SurveyHtmlPreviewController" standardStylesheets="false" showHeader="false" title="RingCentral Service Questionairre">
+    <HEAD>
+        <TITLE>RingCentral Service Questionairre</TITLE>
+        <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+        <META HTTP-EQUIV="Expires" CONTENT="-1"/>
+    </HEAD>
+    <style>
+        p {color:#798496;font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:11px; font-style:normal; line-height:20px;}
+        
+        h1 {font-size: 11px;}
+        
+        .content{border: 1px solid #000; width: 750px; padding: 10px;margin:0px auto;border-radius: 15px 15px 15px 15px;}
+        
+        .content1{border: 1px solid #000; width: 750px; padding: 10px;margin:0px auto;border-radius: 15px 15px 15px 15px;
+            background: lightgray;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        /*.btnClass {
+            color: #333;
+            margin: 1px;
+            padding: 2px 3px;
+            border: 1px solid #B5B5B5;
+            border-bottom-color: #7F7F7F;
+            background: #E8E8E9 url('/img/alohaSkin/btn_sprite.png') repeat-x right top;
+            font-weight: bold;
+            font-size: .9em;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            height: 24px;
+            width: auto;
+            min-width: 60px;
+            cursor:pointer;
+        }*/
+        .btnClass {
+            color: #333 !important;
+            margin: 1px !important;
+            padding: 2px 3px !important;
+            border: 1px solid #B5B5B5 !important;
+            border-bottom-color: #7F7F7F !important;
+            background: #E8E8E9 url('/img/alohaSkin/btn_sprite.png') repeat-x right top !important;
+            font-weight: bold !important;
+            font-size: .9em !important;
+            -moz-border-radius: 3px !important;
+            -webkit-border-radius: 3px !important;
+            border-radius: 3px !important;
+            height: 24px !important;
+            width: auto !important;
+            min-width: 60px !important;
+            cursor:pointer !important;
+        }
+        .headingStyle{
+            text-align: center;
+            color: #17365D;
+            font-weight: bold;
+            font-size: 20px;
+            text-decoration: underline;
+            text-underline-color: #17365D;
+        }
+        input[type="radio"] { 
+            border:none !important;
+        }
+    </style>
+
+    <apex:stylesheet value="{!URLFOR($Resource.Style_Resources, 'default2.style.css')}" />
+    
+    <apex:OutputPanel rendered="{!!toShowPanel}">
+        <div class="content1">
+            <apex:OutputText >Preview Not Available.</apex:OutputText>
+        </div>
+    </apex:OutputPanel>
+    <apex:PageMessages ></apex:PageMessages>
+    
+    <div class="content" style="{!IF(surveyObj.SurveyType__c =='RC - IT Internal Survey', 'background-color: #EDEFF4;', '')}">
+    <apex:OutputPanel rendered="{!toShowPanel}">
+        <div >
+        <table width="100%"> 
+            <tr><td class="headingStyle"><apex:OutputText styleclass="headingStyle">{!surveyObj.Name}</apex:OutputText></td></tr>
+            <tr>
+                <td>
+                    <apex:image url="{!URLFOR($Resource.Rogers_Images, 'rogers_survey_header.png')}" 
+                    rendered="{!if(CONTAINS(surveyObj.SurveyType__c,'Rogers'),true,false)}"/>
+                    
+                    <apex:image url="{!URLFOR($Resource.Style_Resources, 'images/logo.gif')}" 
+                    rendered="{!if(!CONTAINS(surveyObj.SurveyType__c,'Rogers') && surveyObj.SurveyType__c !='RC - IT Internal Survey'
+                    && surveyObj.SurveyType__c !='ATT Implementation',true,false)}"/>
+                    
+                    <apex:image style="width:100%" url="{!$Resource.ATTSurveyHeader}" 
+                    rendered="{!if(surveyObj.SurveyType__c == 'ATT Implementation',true,false)}"/>
+                
+                    <br/><br/> 
+                    <div id="page">
+                    <apex:form >
+                        <apex:outputtext value="{!outputTextStr}" escape="false"></apex:outputtext>
+                        <apex:image url="{!$Resource.It_survey_logo}" rendered="{!if(surveyObj.SurveyType__c =='RC - IT Internal Survey',true,false)}"/> 
+                        <apex:variable value="{!1}" var="rowNum"/>
+                        <apex:repeat value="{!wrQuesOptionList}" var="varQuestionOption" >
+                            <table>
+                                <thead>
+                                    <tr>
+                                         <td>
+                                         <b>
+                                            <apex:outputPanel rendered="{!varQuestionOption.IsMandatory }">
+                                                <font color="red">*</font>
+                                            </apex:outputPanel>
+                                            <apex:outputText escape="false" style="{!IF(surveyObj.SurveyType__c =='RC - IT Internal Survey', 'color: #798496;', '')}" 
+                                            value="{!FLOOR(rowNum)}.&nbsp;{!varQuestionOption.questionStr}" id="qus"/>  
+                                         </b>
+                                         </td>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    <tr>
+                                        <td>
+                                        <apex:outputPanel rendered="{!IF(varQuestionOption.answerType == 'TextArea', 'true', 'false')}">
+                                            <apex:inputTextArea value="{!varQuestionOption.answerValue}" readonly="true" rows="4" cols="100" />
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!IF(varQuestionOption.answerType == 'Radio', 'true', 'false')}">
+                                            <table>
+                                             <apex:selectRadio value="{!varQuestionOption.answerValue}" layout="{!pageDir}" readonly="true" disabled="true">
+                                                <apex:selectOptions value="{!varQuestionOption.values}" />
+                                            </apex:selectRadio>
+                                             </table>
+                                        </apex:outputPanel>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                    </apex:repeat>
+                    <div style="padding-left: 15px;padding-top: 15px;font-size: 12px;">
+                        <apex:outputText style="font-size: 12px;" escape="false"  
+                        value="Did you know you can create Support cases using the Web? Checkout "/>
+                            <a onclick="return false;" href ="http://success.ringcentral.com/RCContactSupp" target="_blank">success.ringcentral.com</a> today!! 
+                    </div>
+                <br/>
+                <apex:CommandButton value="{!btnTitle}" disabled="true"></apex:CommandButton>
+                </apex:form> 
+                <!--<apex:outputPanel rendered="{!if(surveyObj.SurveyType__c !='RC - IT Internal Survey',true,false)}">
+                    <Input type="button" value="Submit Your Answers" />
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!if(surveyObj.SurveyType__c =='RC - IT Internal Survey',true,false)}">
+                    <Input type="button" value="Submit" />
+                </apex:outputPanel>-->
+                <apex:outputpanel rendered="{!if(surveyObj.SurveyType__c == 'Rogers Implementation',true,false)}">
+                    <div style="margin-left:28px;">
+                        <apex:image url="{!URLFOR($Resource.Rogers_Images, 'rogers_logo.gif')}" />
+                    </div>
+                </apex:outputpanel>
+                </div>
+            </td>
+        </tr>
+        <!--<tr>
+            <td>
+                <div style="width:100%;height:70px;text-align:center;"> 
+                    <input type="submit" value="Close" class="btnClass" onclick = "Cancel1();return false;" /><br /> 
+                </div>
+            </td>
+        </tr>-->
+    </table>
+    </div>
+    </apex:OutputPanel>
+    </div>
+    <div style="width:100%;height:70px;text-align:center;"> 
+        <input type="submit" value="Close" class="btnClass" onclick = "Cancel1();" /><br /> 
+    </div>
+    
+    <script>
+        function Cancel1() {
+            window.close();
+        }
+    </script>
+</apex:page>

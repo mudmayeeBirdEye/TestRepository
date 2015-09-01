@@ -1,0 +1,219 @@
+<apex:page StandardController="Lead" extensions="UpdateCsv">
+<Style type="text/css">
+   .styled-select{
+       width: 91%;
+       box-shadow: 0px 0px 7px 0px lightblue inset;
+      -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+      -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+       padding: 5px !important;
+       font-size: 12px !important;
+       line-height: 1 !important;
+       border: 1px solid lightgray !important;
+       border-radius: 10px !important;
+       -webkit-border-radius: 10px !important;
+       -moz-border-radius: 10px !important;
+          /*height: 34px !important;*/
+          /*-webkit-appearance: none !important;*/
+       }
+   .btn {
+       color: #084B8A !important;
+       border: 1px solid #A5A6A5 !important;
+       padding: 9px !important;
+   }
+   th {
+       height: 30px !important;
+       text-align:center;
+   }
+   .rowTD {
+       /*margin:5px;*/
+   }
+   input.styled-select {
+      width:81%; 
+   }
+   .btnDiv {
+       margin: auto;
+       border: 1px solid #A5A6A5;
+       /* min-height: 100px; */
+       background: #FFF !important;
+       -moz-border-radius: 11px;
+       -webkit-border-radius: 11px;
+       border-radius: 11px;
+       /*behavior: url({!$Resource.BorderRadiusHTC});*/
+       box-shadow: 0px -71px 101px -19px #1797C0 inset;
+       -webkit-box-shadow: 0px -71px 101px -19px #1797C0 inset;
+       -moz-box-shadow: 0px -71px 101px -19px #1797C0 inset;
+       text-align: center;
+       /*padding:10px;*/
+       padding-top : 3px;
+       padding-bottom : 3px;
+       margin-top:10px;
+       margin-bottom:10px;
+    }
+    *:focus {
+        outline: 0;
+    }
+    .isa_info, .isa_success, .isa_warning, .isa_error {
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    -moz-border-radius:.5em;
+    -webkit-border-radius:.5em;
+    border-radius:.5em;
+    
+  }
+  .isa_info {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('/info.png');
+  }
+  .isa_success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image:url('/success.png');
+  }
+  .isa_warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('warning.png');
+  }
+  .isa_error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('https://c.cs9.content.force.com/servlet/servlet.ImageServer?id=015K0000000RNTV');
+  }
+  .boxShadow {
+        box-shadow: none;
+        -moz-box-shadow: none;
+        -webkit-box-shadow: none;
+  }
+  .searchbox {
+    width:100%;
+    padding: 5px;
+    background: lightblue;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+  }
+  .requiredfield {
+        width: 3px;
+        background: #F00;
+        padding-top: 5px;
+        padding-bottom: 6px;
+        float:left;
+        margin-top: 2px;
+        margin-right:2px;
+   }
+</Style>
+		<apex:outputpanel id="toppanel">
+		   <apex:form id="frm">
+		      <apex:outputPanel rendered="{!errmsg}" id="req">
+		         <div style="width:750px;padding:8px;" class="isa_error">
+		            <centre> Bad value can not be blank.</centre>
+		         </div>
+		      </apex:outputPanel>
+		      <apex:outputPanel rendered="{!successmsg}" id="suc">
+		         <div style="width:750px;padding:8px;" class="isa_success">
+		            <centre> Saved successfully.</centre>
+		         </div>
+		      </apex:outputPanel>
+		      <div style="font-size:20px;">
+		         <h4>Fields Mapping Tool</h4>
+		      </div>
+		      <div class="btnDiv" id="topBtnLevel" >
+		         <apex:commandButton action="{!updateDocCsv}" value="Save" id="theButton" status="status" styleclass="btn"/>
+		         <apex:commandButton action="{!addColumn}" value="Add Row" id="cmdAddRow" rerender="newRow" status="status"/>
+		      </div>
+		      <div style="background: #F3F3EC !important;padding: 20px;border: 1px solid lightgray;border-radius: 4px;">
+		         <table cellspacing="0px" cellpadding="0px" class="searchbox">
+		            <tr>
+		               <td style="width:36%">
+		                  <apex:selectList value="{!fieldSearch}" size="1" id="values" styleclass="styled-select boxShadow"  >
+		                     <apex:selectOptions value="{!leadfieldoptions}"/>
+		                  </apex:selectList>
+		                  <!-- <apex:inputtext value="{!fieldSearch}" styleclass="styled-select" html-placeholder="Search Field Name"/>-->
+		               </td>
+		               <td style="width:32%">
+		                  <apex:inputtext value="{!badValSearch}" styleclass="styled-select boxShadow" html-placeholder="Search Bad Value"/>
+		               </td>
+		               <td >
+		                  <apex:inputtext value="{!goodValSearch}" styleclass="styled-select boxShadow" html-placeholder="Search Good Value" style="width:65%!important;"/>
+		                  <apex:commandButton action="{!csvSearch}" value="Go" id="theSearch" status="status" styleclass="btn" style="width:33px;height:30px" rerender="toppanel"/>
+		                  <apex:commandButton action="{!reset}" value="Reset" status="status" style="height:30px"/>
+		               </td>
+		            </tr>
+		         </table>
+		         <apex:outputPanel id="newRow">
+		            <table cellspacing="0px" cellpadding="0px" style="width:100%;">
+		               <thead>
+		                  <tr>
+		                     <th >
+		                        {!columnHeader1}
+		                     </th>
+		                     <th> 
+		                        {!columnHeader2}
+		                     </th>
+		                     <th>
+		                        {!columnHeader3}
+		                     </th>
+		                  </tr>
+		               </thead>
+		               <tbody>
+		                  <apex:repeat value="{!filterwrapCsv}" var="wc" id="flst">
+		                     <tr>
+		                        <td style="width:36%">
+		                           <div class="rowTD">
+		                              <apex:selectList value="{!wc.api_Name}" size="1" id="values" styleclass="styled-select" >
+		                                 <apex:selectOptions value="{!leadfieldoptions}"/>
+		                                 <apex:actionSupport event="onchange" action="{!getNewGoodValue}" rerender="fvf" status="status"/>
+		                              </apex:selectList>
+		                           </div>
+		                        </td>
+		                        <td style="width:32%">
+		                           <div class="rowTD">
+		                              <div class="requiredfield">&nbsp;</div>
+		                              <apex:inputtext value="{!wc.bad_Value}" styleclass="styled-select" ></apex:inputtext>
+		                           </div>
+		                        </td>
+		                        <td style="width:32%">
+		                           <div class="rowTD">
+		                              <apex:outputpanel id="fvf"  >
+		                                 <apex:outputpanel id="fv" rendered="{!if((wc.api_Name != '--None--' && wc.api_Name!=null),true,false)}" >
+		                                    <apex:selectList value="{!wc.good_Value}" size="1" styleclass="styled-select" >
+		                                       <apex:selectOptions value="{!apiValueMap[wc.api_name]}"/>
+		                                    </apex:selectList>
+		                                 </apex:outputpanel>
+		                              </apex:outputpanel>
+		                              <apex:commandlink action="{!deleteRow}">
+		                                 <apex:image value="{!URLFOR($Resource.AlertBox,'alertBox/cross-circle.png')}" id="delImage"/>
+		                                 <apex:param name="q" value="{!wc.index}" assignto="{!delId}"/>
+		                              </apex:commandlink>
+		                           </div>
+		                        </td>
+		                     </tr>
+		                  </apex:repeat>
+		               </tbody>
+		            </table>
+		         </apex:outputPanel>
+		      </div>
+		      <div class="btnDiv" id="topBtnLevelNew" >
+		         <apex:commandButton action="{!updateDocCsv}" value="Save"  id="theButton1" rerender="toppanel" status="status" />
+		         <apex:commandButton action="{!addColumn}" value="Add Row" id="cmdAddRow1" rerender="toppanel" status="status"/>
+		      </div>
+		      <apex:outputpanel >
+		         <apex:actionstatus id="status">
+		            <apex:facet name="start">
+		               <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb; height: 100%;opacity:0.65;width:100%;">
+		                  <div class="waitingHolder" style="margin-top:-250px;">
+		                     <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+		                     <span class="waitingDescription">Loading...</span>
+		                  </div>
+		               </div>
+		            </apex:facet>
+		         </apex:actionstatus>
+		      </apex:outputpanel>
+		   </apex:form>
+		</apex:outputpanel>
+</apex:page>

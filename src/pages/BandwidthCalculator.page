@@ -1,0 +1,422 @@
+<apex:page controller="ATTControllerNew" showHeader="false" title="Public Knowledge Base" cache="true" expires="{!cacheMaxAge}">
+  <style>
+      .mainContainer {
+          height : 375px !important;
+          border : none !important;
+          background-color : none !important;
+          width : 967px !important;
+          margin-top : 40px !important;
+          margin-left: 5px !important; 
+      }
+      .main_center2 h2 {
+         margin : 0px 0px 0px 0px !important; 
+      }
+      span {
+          color: black !important;
+      }
+      #screen0 {
+          float : none !important;
+          position : static !important;
+      }
+      
+  </style>
+  <apex:composition template="{!$Site.Template}">
+  <apex:define name="search">
+  <link href="{!URLFOR($Resource.ATTBandwidthCal, '/BandwidthCalculator/css/default.css')}" rel="stylesheet" type="text/css" />
+  <link type="text/css" href="{!URLFOR($Resource.ATTBandwidthCal, '/BandwidthCalculator/css/smoothness/jquery-ui-1.8.23.custom.css')}" rel="stylesheet" />
+  <script type="text/javascript" src = "{!URLFOR($Resource.ATTBandwidthCal, 'BandwidthCalculator/js/jquery-1.7.2.min.js')}"></script>
+  <script type="text/javascript" src = "{!URLFOR($Resource.ATTBandwidthCal, 'BandwidthCalculator/js/jquery-ui-1.8.23.custom.min.js')}"></script>
+  <div class="container">
+  <div class="mainContainer">
+    <div class="coreContent">
+        <!-- Start screen0 -->  
+         <div id="screen0">
+              <h2>Bandwidth Calculator</h2>
+              <p>Please specify your upload and download speeds.</p>
+              <div class="leftForm">
+                <p id="uploadTitle">Select your upload speed:</p>
+                <div id="slider-range-min" style="width:550px;"></div>
+                <div>
+                    <ul style="width: 550px;" id="ticks" class="ticks">
+                    <!-- 0 --><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 0 --> 
+                    <!-- 1 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 0.128 --> 
+                    <!-- 2 --><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 0.256 --> 
+                    <!-- 3 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 0.384 --> 
+                    <!-- 4 --><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 0.512 --> 
+                    <!-- 5 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 0.640 -->
+                    <!-- 6 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 0.768 --> 
+                    <!-- 6 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 0.896 --> 
+                    <!-- 7 --><li style="width: 8px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 1 -->  
+                    <!-- 8 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 2 --> 
+                    <!-- 9 --><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 4 --> 
+                    <!-- 10 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 6 -->    
+                    <!-- 11 --><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 8 -->    
+                    <!-- 12 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 10 -->   
+                    <!-- 13 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 12 -->   
+                    <!-- 14 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 14 -->   
+                    <!-- 15 --><li style="width: 16px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 16 -->   
+                    <!-- 16 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 18 -->   
+                    <!-- 17 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 20 -->   
+                    <!-- 18 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 22 -->   
+                    <!-- 19 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 24 -->   
+                    <!-- 20 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 26 -->   
+                    <!-- 21 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 28 -->   
+                    <!-- 22 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 30 -->   
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 32 113px-->   
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 34 -->
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 36 -->
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 38 -->
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 40 -->
+                    <!-- 23--><li style="width: 16px;"><span class="scaleSpan">&nbsp;</span></li><!-- 42 -->
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 44 -->
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 46 -->
+                    <!-- 23--><li style="width: 15px;"><span class="scaleSpan">&nbsp;</span></li><!-- 38 -->
+                    <!-- 24 --><li style="width: 0px;"><span class="scaleSpanMainRg">&nbsp;</span></li><!-- 50 -->  
+                    </ul>
+                </div>
+                <div>
+                    <ul style="width: 550px;" id="ticks" class="ticks">
+                    <!-- 0 --><li style="width: 17px;margin-top:2px;"><span>0</span></li><!-- 0 --> 
+                    <!-- 1 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 0.128 -->   
+                    <!-- 2 --><li style="width: 17px;margin-top:2px;"><span>0.256</span></li><!-- 0.256 --> 
+                    <!-- 3 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 0.384 -->   
+                    <!-- 4 --><li style="width: 17px;margin-top:2px;"><span>0.512</span></li><!-- 0.512 --> 
+                    <!-- 5 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 0.640 -->   
+                    <!-- 6 --><li style="width: 17px;margin-top:2px;"><span>&nbsp;</span></li><!-- 0.768 -->    
+                    <!-- 6 --><li style="width: 16px;"><span>&nbsp;</span></li><!-- 0.896 -->   
+                    <!-- 7 --><li style="width: 8px;margin-top:2px;"><span>1</span></li><!-- 1 -->  
+                    <!-- 8 --><li style="width: 16px;"><span>&nbsp;</span></li><!-- 2 -->   
+                    <!-- 9 --><li style="width: 17px;margin-top:2px;"><span>4</span></li><!-- 4 --> 
+                    <!-- 10 --><li style="width: 16px;"><span>&nbsp;</span></li><!-- 6 -->  
+                    <!-- 11 --><li style="width: 17px;margin-top:2px;"><span>8</span></li><!-- 8 -->    
+                    <!-- 12 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 10 --> 
+                    <!-- 13 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 12 --> 
+                    <!-- 14 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 14 --> 
+                    <!-- 15 --><li style="width: 16px;margin-top:2px;"><span>16</span></li><!-- 16 -->  
+                    <!-- 16 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 18 --> 
+                    <!-- 17 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 20 --> 
+                    <!-- 18 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 22 --> 
+                    <!-- 19 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 24 --> 
+                    <!-- 20 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 26 --> 
+                    <!-- 21 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 28 --> 
+                    <!-- 22 --><li style="width: 16px;"><span>&nbsp;</span></li><!-- 30 --> 
+                    <!-- 23 --><li style="width: 17px;margin-top:2px;"><span>32</span></li><!-- 32 116px--> 
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 34 -->
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 36 -->
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 38 -->
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 40 -->
+                    <!-- 23 --><li style="width: 16px;"><span>&nbsp;</span></li><!-- 42 -->
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 44 -->
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 46 -->
+                    <!-- 23 --><li style="width: 15px;"><span>&nbsp;</span></li><!-- 48 -->
+                    <!-- 24 --><li style="width: 0px;margin-top:2px;"><span>50</span></li><!-- 0 -->    
+                    </ul>
+                </div>
+                <br />
+                <p id="downloadTitle">Select your download speed:</p>
+                <div id="slider-range-min3" style="width:550px"></div>
+                <div>
+                    <ul style="width: 550px;" id="ticks" class="ticks">
+                    <!-- 0 --><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 0 --> 
+                    <!-- 1 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 0.128 --> 
+                    <!-- 2 --><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 0.256 --> 
+                    <!-- 3 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 0.384 --> 
+                    <!-- 4 --><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 0.512 --> 
+                    <!-- 5 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 0.640 -->
+                    <!-- 6 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 0.768 --> 
+                    <!-- 6 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 0.896 --> 
+                    <!-- 7 --><li style="width: 8px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 1 -->  
+                    <!-- 8 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 2 --> 
+                    <!-- 9 --><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 4 --> 
+                    <!-- 10 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 6 -->    
+                    <!-- 11 --><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 8 -->    
+                    <!-- 12 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 10 -->   
+                    <!-- 13 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 12 -->   
+                    <!-- 14 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 14 -->   
+                    <!-- 15 --><li style="width: 16px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 16 -->   
+                    <!-- 16 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 18 -->   
+                    <!-- 17 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 20 -->   
+                    <!-- 18 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 22 -->   
+                    <!-- 19 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 24 -->   
+                    <!-- 20 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 26 -->   
+                    <!-- 21 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 28 -->   
+                    <!-- 22 --><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 30 -->   
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpanMain">&nbsp;</span></li><!-- 32 113px-->   
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 34 -->
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 36 -->
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 38 -->
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 40 -->
+                    <!-- 23--><li style="width: 16px;"><span class="scaleSpan">&nbsp;</span></li><!-- 42 -->
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 44 -->
+                    <!-- 23--><li style="width: 17px;"><span class="scaleSpan">&nbsp;</span></li><!-- 46 -->
+                    <!-- 23--><li style="width: 15px;"><span class="scaleSpan">&nbsp;</span></li><!-- 38 -->
+                    <!-- 24 --><li style="width: 0px;"><span class="scaleSpanMainRg">&nbsp;</span></li><!-- 50 -->  
+                    </ul>
+                </div>
+                <div>
+                    <ul style="width: 550px;" id="ticks" class="ticks">
+                    <!-- 0 --><li style="width: 17px;margin-top:2px;"><span>0</span></li><!-- 0 --> 
+                    <!-- 1 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 0.128 -->   
+                    <!-- 2 --><li style="width: 17px;margin-top:2px;"><span>0.256</span></li><!-- 0.256 --> 
+                    <!-- 3 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 0.384 -->   
+                    <!-- 4 --><li style="width: 17px;margin-top:2px;"><span>0.512</span></li><!-- 0.512 --> 
+                    <!-- 5 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 0.640 -->   
+                    <!-- 6 --><li style="width: 17px;margin-top:2px;"><span>&nbsp;</span></li><!-- 0.768 -->    
+                    <!-- 6 --><li style="width: 16px;"><span>&nbsp;</span></li><!-- 0.896 -->   
+                    <!-- 7 --><li style="width: 8px;margin-top:2px;"><span>1</span></li><!-- 1 -->  
+                    <!-- 8 --><li style="width: 16px;"><span>&nbsp;</span></li><!-- 2 -->   
+                    <!-- 9 --><li style="width: 17px;margin-top:2px;"><span>4</span></li><!-- 4 --> 
+                    <!-- 10 --><li style="width: 16px;"><span>&nbsp;</span></li><!-- 6 -->  
+                    <!-- 11 --><li style="width: 17px;margin-top:2px;"><span>8</span></li><!-- 8 -->    
+                    <!-- 12 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 10 --> 
+                    <!-- 13 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 12 --> 
+                    <!-- 14 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 14 --> 
+                    <!-- 15 --><li style="width: 16px;margin-top:2px;"><span>16</span></li><!-- 16 -->  
+                    <!-- 16 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 18 --> 
+                    <!-- 17 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 20 --> 
+                    <!-- 18 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 22 --> 
+                    <!-- 19 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 24 --> 
+                    <!-- 20 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 26 --> 
+                    <!-- 21 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 28 --> 
+                    <!-- 22 --><li style="width: 16px;"><span>&nbsp;</span></li><!-- 30 --> 
+                    <!-- 23 --><li style="width: 17px;margin-top:2px;"><span>32</span></li><!-- 32 116px--> 
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 34 -->
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 36 -->
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 38 -->
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 40 -->
+                    <!-- 23 --><li style="width: 16px;"><span>&nbsp;</span></li><!-- 42 -->
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 44 -->
+                    <!-- 23 --><li style="width: 17px;"><span>&nbsp;</span></li><!-- 46 -->
+                    <!-- 23 --><li style="width: 15px;"><span>&nbsp;</span></li><!-- 48 -->
+                    <!-- 24 --><li style="width: 0px;margin-top:2px;"><span>50</span></li><!-- 0 -->    
+                    </ul>
+                </div>
+                <p id="enabledQoSPar">
+                <input id="enabledQoS" type="checkbox" /><label id="labelenabledQoS" for="enabledQoS"> Yes, I  have a QoS enabled router. (<a id="enabledQoSHelp" href="#">?</a>)</label>
+                </p> 
+                <div id="dialog" title="Help" style="width: auto; min-height: 111.4px; height: auto;" scrolltop="0" scrollleft="0">
+                    <p class="Test" style="font-size: 14px;">Routers can support Quality of Service (QoS) Mechanisms to prioritize certain types of traffic such over others, for e.g. Voice call traffic.</p> 
+                    <p class="Test" style="font-size: 14px;">Please check your Router manual to find out if your model supports QoS prioritization.</p>
+                </div>
+                  </div>
+                <div class="rightForm">
+                <p style="margin-top:25px">
+                <input name="upload_speed" id="upload_speed" class="number" type="text" value="0" size="5"/>&nbsp;<span>Mbps</span>
+                </p>
+                <p style="margin-top:25px">
+                <input name="download_speed" id="download_speed" class="number" type="text" value="0" size="5"/>&nbsp;<span>Mbps</span>
+                </p>
+              </div>
+              <div class="clearBoth"></div>
+              <br />
+              <div id="digLinesMessageDiv2">Your Connection can support <input id="digLinesMessage2" class="number" type="text" value="" size="2"/> simultaneous VoIP Calls</div>
+          </div>
+        <!-- End screen0 -->    
+        <!-- Start screen1 -->  
+      <!-- End screen1 -->
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("nav li:nth-child(2)").fadeTo(1000, 1.0);
+    });
+    //Numeric fields limitations
+    $("#screen0 input.number").live("keydown", function (e) {
+        return isNumberKey(e);
+    });
+
+    $.fx
+        .speeds
+        ._default = 500;
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: "scale",
+            hide: "scale"
+        });
+
+        $("#enabledQoSHelp").click(function () {
+            $("#dialog").dialog("open");
+            return false;
+        });
+    });
+
+    var myarray = generateArray();
+
+
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && charCode != 190) {
+            return false;
+        }
+        return true;
+    }
+
+    $(function () {
+        $("#slider-range-min").slider({
+            range: "min",
+            min: 0,
+            max: 130,
+            slide: function (event, ui) {
+                $("#upload_speed").val(myarray[ui.value] / 1000);
+                $(calcConnection);
+            }
+        });
+        $("#upload_speed").val($("#slider-range-min").slider("value"));
+    });
+
+    function roundNumber(num, dec) {
+        var result = Math.round(num * Math.pow(10, dec)) / Math
+            .pow(10, dec);
+        return result;
+    }
+
+    $(function () {
+        $("#slider-range-min3").slider({
+            range: "min",
+            min: 0,
+            max: 130,
+            slide: function (event, ui) {
+                $("#download_speed").val(myarray[ui.value] / 1000);
+                $(calcConnection);
+            }
+        });
+        $("#download_speed").val($("#slider-range-min3").slider("value"));
+    });
+
+    function generateArray() {
+        var result = [];
+
+        for (i = 0; i < 32; i++) {
+            result[i] = 32 * (i);
+        }
+
+        result[32] = 1000;
+
+        for (i = 33; i < 131; i++) {
+            result[i] = result[i - 1] + 500;
+        }
+
+        return result;
+    }
+
+    $("#enabledQoS").click(function () {
+        $(calcConnection);
+    });
+
+    $("#upload_speed").change(function () {
+        var inValUp = $("#upload_speed").val();
+        //alert(inValUp);
+        if(inValUp == '') {
+            $("#upload_speed").val('0');
+        }
+        if (inValUp < 1) {
+            var nlvalUp = parseInt(inValUp * 1000 / 32);
+        }
+        if (inValUp == 1) {
+            var nlvalUp = 32;
+        }
+        if (inValUp > 1) {
+            var nlvalUp = parseInt((inValUp * 1000 - 1000) / 500) + 32;
+        }
+        //alert(nlvalUp);
+        $("#slider-range-min").slider({
+            value: nlvalUp
+        });
+        $(calcConnection);
+    });
+
+    $("#download_speed").change(function () {
+        var inValDn = $("#download_speed").val();
+        if(inValDn == '') {
+            $("#download_speed").val('0');
+        }
+        if (inValDn < 1) {
+            var nlvalDn = parseInt(inValDn * 1000 / 32);
+        }
+        if (inValDn == 1) {
+            var nlvalDn = 32;
+        }
+        if (inValDn > 1) {
+            var nlvalDn = parseInt((inValDn * 1000 - 1000) / 500) + 32;
+        }
+        $("#slider-range-min3").slider({
+            value: nlvalDn
+        });
+        $(calcConnection);
+    });
+
+
+
+    function calcConnection() {
+        var uploadSpeed = $("#upload_speed").attr("value");
+        var downloadSpeed = $("#download_speed").attr("value");
+
+        var uploadSpeedKbps = parseFloat(uploadSpeed) * 1000;
+        var downloadSpeedKbps = parseFloat(downloadSpeed) * 1000;
+
+        if (uploadSpeedKbps >= downloadSpeedKbps) {
+            var resultSpeed = downloadSpeedKbps;
+        } else {
+            var resultSpeed = uploadSpeedKbps;
+        }
+
+        if ($("#enabledQoS").is(':checked')) {
+            var digLines = parseInt(resultSpeed / 180);
+        } else {
+            var digLines = parseInt(resultSpeed / 300);
+        }
+        if(!isNaN(digLines)) {
+            $("#digLinesMessage2").val(digLines);
+        } else {
+             $("#digLinesMessage2").val('');
+        }
+    }
+
+    $("#digLinesMessage2").change(function () {
+        try {
+            var resVal = parseInt($("#digLinesMessage2").val());
+        } catch(e) { alert(e); }
+        
+        if(isNaN(resVal)) {
+             var resLines = '0';   
+             $("#upload_speed").val(resLines);
+             $("#download_speed").val(resLines);
+             $("#slider-range-min").slider({
+                value: 0
+            });
+            $("#slider-range-min3").slider({
+                value: 0
+            });
+        } else {
+            if ($("#enabledQoS").is(':checked')) {
+                var resLines = parseFloat(resVal * 180 / 1000);
+            } else {
+                var resLines = parseFloat(resVal * 300 / 1000);
+            }
+            $("#upload_speed").val(resLines);
+            $("#download_speed").val(resLines);
+    
+            if (resLines < 1) {
+                var inpvalUp = parseInt(resLines * 1000 / 32);
+            }
+            if (resLines == 1) {
+                var inpvalUp = 32;
+            }
+            if (resLines > 1) {
+                var inpvalUp = parseInt((resLines * 1000 - 1000) / 500) + 32;
+            }
+            $("#slider-range-min").slider({
+                value: inpvalUp
+            });
+            $("#slider-range-min3").slider({
+                value: inpvalUp
+            });
+        }
+        });
+</script>
+     </apex:define>
+  </apex:composition>       
+  <!--<apex:iframe height = "1000px" src="{!URLFOR($Resource.ATTBandwidthCal, '/BandwidthCalculator/index.html')}" scrolling="false" width="100%" />-->
+</apex:page>

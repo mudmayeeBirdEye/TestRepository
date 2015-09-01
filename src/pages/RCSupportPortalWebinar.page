@@ -1,0 +1,108 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" docType="html-5.0">
+<apex:composition template="RCSupportPortalHomeTemplate">
+     <apex:define name="content">
+        <c:RCSystemStatus Text="Customer Success Webinars"/>
+        <div class="webinar-container">
+  	<section class="register-webinar">
+	<hgroup>
+		<h2>Attend our Webinar Series - learn how we can help your business thrive.</h2>
+		<h3>Register for any of the following webinars:</h3>
+	</hgroup>
+	<article role="application" class="series">
+        	<h6>Learn the Basics</h6>You'll get an overview of the powerful features that
+                come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+            <span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Call Handling</h6>You'll get an overview of the powerful features that
+				come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+				<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Advanced Call Handling</h6>You'll get an overview of the powerful features that
+					come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+			<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Soft Phone</h6>You'll get an overview of the powerful features that
+					come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+			<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Password Reset</h6>You'll get an overview of the powerful features that
+				come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+			<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Soft Phone</h6>You'll get an overview of the powerful features that
+				come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+			<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+		<div class="btn">
+			<input type="submit" class="primary-btn" value="Register Now" />
+		</div>
+	</section>
+	<section class="recorded-webinar">
+			<h3>Watch recorded webinars::</h3>
+	<article role="application" class="series">
+        	<h6>Learn the Basics</h6>You'll get an overview of the powerful features that
+					come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+			<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Call Handling</h6>You'll get an overview of the powerful features that
+				come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+			<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Advanced Call Handling</h6>You'll get an overview of the powerful features that
+				come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+				<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Soft Phone</h6>You'll get an overview of the powerful features that
+				come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+				<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Password Reset</h6>You'll get an overview of the powerful features that
+				come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+			<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Soft Phone</h6>You'll get an overview of the powerful features that
+			come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+			<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Soft Phone</h6>You'll get an overview of the powerful features that
+				come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+				<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Password Reset</h6>You'll get an overview of the powerful features that
+				come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+			<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	<article role="application" class="series">
+        	<h6>Soft Phone</h6>You'll get an overview of the powerful features that
+				come with RingCentral. In this webinar you'll learn more about our user interface and how to set up your phone system
+			<span class="date">Date: Thursday, Oct 25, 10am PST (1pm EST)</span>
+    </article>
+	</section>
+  </div>
+  
+  <!-- #BeginLibraryItem "/Library/Untitled.lbi" -->
+  <!--  <div class="social-media">
+    <ul>
+      <li><a href="#" class="fb" alt="Facebook" title="Facebook">&nbsp;</a></li>
+      <li><a href="#" class="tw" alt="Twitter" title="Twitter">&nbsp;</a></li>
+      <li><a href="#" class="gplus" alt="Google Plus" title="Google Plus">&nbsp;</a></li>
+      <li><a href="#" class="in" alt="In.Com" title="In.Com"></a>&nbsp;</li>
+      <li><a href="#" class="email" alt="Email Media" title="Email Media"></a>&nbsp;</li>
+    </ul>
+  </div>-->
+        
+        </apex:define>
+      </apex:composition>  
+</apex:page>

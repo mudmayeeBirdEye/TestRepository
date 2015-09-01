@@ -1,0 +1,62 @@
+<!----------------------------------------------------------------------------------------------------------------
+* Project Name..........: Account Metrics Reporting                                                              *
+* File..................: AccountMetricsResultCSV.Page                                                           *
+* Version...............: 1.0                                                                                    *
+* Created by............: Simplion Technologies                                                                  *
+* Created Date..........: 11-09-2013                                                                             *
+* Last Modified by......: Simplion Technologies                                                                  *
+* Last Modified Date....: 11-09-2013                                                                             *
+* Description...........: This page is used for account metrics reporting                                        *
+----------------------------------------------------------------------------------------------------------------->
+
+<apex:page controller="AccountMetricsReportingController" sidebar="false" showHeader="false"  contentType="application/csv#AccountMetricsReport.xls" readOnly="true">
+    <head>
+        <style>
+            .header{
+                border-color: black;
+                /*padding: 10px 25px 10px 25px;*/
+                font: Bold 12px Arial;
+                text-decoration: underline;
+            }
+            .result{
+                /*padding: 10px 25px 10px 25px;*/
+            }
+        </style>
+    </head>
+    <body>
+        <apex:sectionHeader title="Account Metrics" subtitle="Account Health Metrics Report Results" />
+        <table>
+            <tr style="border: 2px solid;background-color: #cfeef8;">
+                <th>
+                     <apex:outputLabel value="Account Name" styleClass="header"/>
+                 </th>
+                <apex:repeat value="{!queryResult}" var="thisField" id="headerList" >
+                    <th>
+                        <apex:outputLabel value="{!thisField.Name}" styleClass="header"/>
+                    </th>
+                </apex:repeat>
+            </tr>
+            <apex:repeat value="{!mainResult}" var="thisResult" id="dataList" >
+                <tr>
+                    <td>
+                        <apex:outputText value="{!thisResult['Account_ID__r.Name']}"/>
+                    </td>
+                    <apex:repeat value="{!queryResult}" var="thisField" id="headerList" >
+                        <td>
+                            <apex:outputLabel value="{!thisResult[thisField.API_Name__c]}" rendered="{!IF(thisField.Type__c != 'Number' && thisField.Type__c != 'Currency' && thisField.Type__c != 'Boolean' && thisField.Type__c != 'Checkbox' && thisField.Type__c != 'Date/Time' && thisField.Type__c != 'Percent',true,false)}"/>
+                            <!-- <apex:outputLabel value="{!thisResult[thisField.API_Name__c]}" rendered="{!IF(thisField.Type__c != 'Number' && thisField.Type__c != 'Currency' && thisField.Type__c != 'Percent' && thisField.Type__c != 'Checkbox',true,false)}"/> -->
+                            <apex:outputText value="{!FLOOR(thisResult[thisField.API_Name__c])}" rendered="{!IF(thisField.Type__c == 'Number',true,false)}"/>
+                            <apex:outputText value="Yes" rendered="{!IF((thisField.Type__c == 'Boolean' || thisField.Type__c == 'Checkbox') && (thisResult[thisField.API_Name__c] == true || (thisField.Suggested_Values__c == '1,0' && (!ISBLANK(thisResult[thisField.API_Name__c]) && FLOOR(thisResult[thisField.API_Name__c]) == 1))),true,false)}"/>
+                            <apex:outputText value="No" rendered="{!IF((thisField.Type__c == 'Boolean' || thisField.Type__c == 'Checkbox') && (thisResult[thisField.API_Name__c] == false || (thisField.Suggested_Values__c == '1,0' && (ISBLANK(thisResult[thisField.API_Name__c]) || FLOOR(thisResult[thisField.API_Name__c]) == 0))),true,false)}"/>
+                            <apex:outputText value="{0,date,MM'/'dd'/'yyyy}" rendered="{!IF(thisField.Type__c == 'Date/Time',true,false)}">
+                                <apex:param value="{!thisResult[thisField.API_Name__c]}" />
+                            </apex:outputText>
+                            <apex:outputText value="{!thisResult[thisField.API_Name__c]*100} %" rendered="{!IF((thisField.Type__c == 'Percent' && (thisResult[thisField.API_Name__c] != null)),true,false)}"/>
+                            <apex:outputText value="{!thisResult.Account_ID__r.CurrencyIsoCode} {!thisResult[thisField.API_Name__c]}" rendered="{!IF(thisField.Type__c == 'Currency' && thisResult[thisField.API_Name__c] != null,true,false)}"/>
+                        </td>
+                    </apex:repeat>
+                </tr>
+            </apex:repeat>
+        </table>
+    </body>
+</apex:page>

@@ -1,0 +1,8 @@
+<apex:page StandardController="Opportunity" showHeader="false" sidebar="false">
+	<apex:form >
+		<CENTER>
+		<apex:PageMessage title="Contract Sent" severity="info" strength="2" summary="Contract has been sent and saved to Account."/>
+		<apex:commandButton onclick="window.close();" value="Close"/>
+		</CENTER>
+	</apex:form>
+</apex:page>

@@ -1,0 +1,34 @@
+<apex:page id="Registration" showHeader="false" controller="RCSupportControllerHandler" standardStylesheets="true" sidebar="false">
+
+<br/>
+<apex:pageBlock mode="edit" ><apex:pageBlockSection title="My Profile" collapsible="true"   >
+<apex:form id="theForm">
+<apex:pagemessages id="msg"  />
+
+<apex:panelGrid columns="4" style="margin-top:1em" border="0"  width="100%" cellspacing="20px" >
+
+<apex:outputLabel escape="false" value="<b>{!$Label.site.community_nickname}</b>" for="communityNickname"/>
+<apex:inputField required="true" id="communityNickname" value="{!objUser.CommunityNickname}"/>
+
+<apex:outputLabel escape="false" value="<b>Name</b>" for="Name"/>
+<apex:outputText id="Name" value="{!objUser.Name}"/>
+
+<apex:outputLabel escape="false" value="<b>{!$Label.site.username}</b>" for="username"/>
+<apex:outputText id="username" value="{!objUser.Username}"/>
+
+
+<apex:outputLabel escape="false" value="<b>Email</b>" for="Email"/>
+<apex:outputText id="Email"  value="{!objUser.Email}"/>
+
+
+<apex:outputLabel escape="false" value="<b>Last LoginDate</b>" for="LastLoginDate"/>
+<apex:outputText id="LastLoginDate"  value="{!objUser.LastLoginDate}"/>
+
+<apex:outputLabel escape="false" value="" for="CreatedDate"/>
+<apex:outputText id="CreatedDate"  value=""/>
+
+<b/><apex:commandButton action="{!updateUserProfile}" value="Update" id="Update" />
+</apex:panelGrid>
+</apex:form></apex:pageBlockSection>
+</apex:pageBlock>
+</apex:page>

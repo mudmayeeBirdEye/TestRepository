@@ -1,0 +1,26 @@
+<apex:page standardController="NDA_Contract__c" extensions="NDA_Contract_NoteAndAttachment" showHeader="false"  sidebar="false" >
+<style>
+    .backCss {
+          background-color:  #fffcce !important;
+          border: 1px solid #cd9e5a !important;
+          border-radius: 5px;
+          -moz-border-radius:5px !important;
+          -webkit-border-radius:5px !important;
+         }
+</style>  
+	<apex:form rendered="{!isAttached}">
+		<div class="backCss">  
+			 <apex:panelGrid border="0" columns="2" id="Paneltable">
+			 		 <apex:outputPanel rendered="{!isAttached}">
+			         	<apex:image id="warning" value="{!imgPath}" width="48.7" height="48.7" style="padding:5px;" rendered="{!isAttached}"/>
+			         </apex:outputPanel>
+			         <apex:outputPanel >
+				        <!--  <apex:outputLabel escape="false" rendered="{!isAttached}">&#9830;&#160;</apex:outputLabel> -->
+				       	 <apex:outputText escape="false" rendered="{!isAttached}"><B>IMPORTANT:</B>
+				       	 		Please attach the non-standard NDA Form to this NDA Contract record.
+				         </apex:outputText>
+		       		</apex:outputPanel>
+	       </apex:panelGrid>
+		</div>
+	</apex:form>
+</apex:page>

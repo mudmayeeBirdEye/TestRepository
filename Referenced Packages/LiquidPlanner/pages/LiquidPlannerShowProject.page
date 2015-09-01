@@ -1,0 +1,171 @@
+<apex:page standardController="Account" extensions="LiquidPlanner.LiquidPlannerProjectController" tabstyle="Liquid_Planner__tab" action="{!loadProject}">
+  <script src="{!URLFOR($Resource.jQueryFiles, 'js/jquery-1.4.4.min.js')}" type="text/javascript" charset="utf-8"></script>
+  <script src="{!URLFOR($Resource.jQueryFiles, 'js/jquery.tablesorter.min.js')}" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" href="{!URLFOR($Resource.jQueryFiles, 'css/sort-style.css')}" type="text/css" charset="utf-8" />
+  <script type="text/javascript">
+    $(document).ready(function() {
+      // call the tablesorter plugin
+      $("table").tablesorter({
+        // sort on the second column, order asc
+        sortList: [[1,0]]
+      });
+    });
+  </script>
+  <style type="text/css">
+    .title {
+      font-weight:bold;
+      padding-right: 1em;
+    }
+    .table-row{
+      background-color: white;
+      text-align:center;
+      vertical-align:top;
+      width:20px;
+    }
+    .inner_table td {
+        vertical-align:middle;
+    }
+  </style>
+  <table width="100%" class="inner_table" align="left" cellspacing="0">
+    <tr style="height:34px; background:#505759">
+      <td style="Width:100px" colspan="2">
+        <h1 align="left" style="color:White;Padding:15px">LiquidPlanner Project Details</h1>
+      </td>
+      <td>
+         <img align="right" style="Padding-right:15px" src="{!URLFOR($Resource.Images, 'LiquidLogo.png')}"/>
+      </td>
+    </tr>
+  </table>
+  <apex:pageBlock mode="details">
+    <apex:outputPanel rendered="{!!IsValidCredential}">
+      <table width="100%" class="inner_table" align="left" cellspacing="0">
+        <tr>
+          <td colspan="3">
+            <center>
+              <br/>
+              <apex:outputText value="{!InvalidCredentialMessage}"/>
+            </center>
+          </td>
+        </tr>
+      </table>
+    </apex:outputPanel>
+
+    <apex:outputPanel rendered="{! IsValidCredential}">
+      <apex:outputPanel >
+        <apex:form >
+          <apex:pageBlockSection >
+            <apex:outputPanel >
+              <apex:outputText value="Workspace" styleClass="title"/>
+             <apex:outputLink value="{!LPURL}/space/{!OpportunityProject.space.id}/home" id="workspaceLink" target="_blank">{!OpportunityProject.space.name}</apex:outputLink>
+            </apex:outputPanel>
+            <apex:outputPanel >
+              <apex:outputText value="Project" styleClass="title"/>
+             <apex:outputLink value="{!LPURL}/space/{!OpportunityProject.space.id}/projects/show/{!OpportunityProject.id}" id="projectLink" target="_blank">{!OpportunityProject.name}</apex:outputLink>
+            </apex:outputPanel>
+            <apex:outputPanel >
+              <apex:outputText value="Project Owner" styleClass="title" />
+              <apex:outputText value="{!OpportunityProject.owner.name}"/>
+            </apex:outputPanel>
+            <apex:outputPanel >
+              <apex:outputText value="Deadline Date" styleClass="title" />
+              <apex:outputText value="{!OpportunityProject.promise_by_formatted}"/>
+            </apex:outputPanel>
+            <apex:outputPanel >
+              <apex:outputText value="Expected Finish" styleClass="title" />
+              <apex:outputText value="{!OpportunityProject.expected_finish_formatted}"/>
+            </apex:outputPanel>
+            <apex:outputPanel >
+              <apex:outputText value="Percent Complete" styleClass="title" />
+              <apex:outputText value="{0,number,0%}" >
+                <apex:param value="{!OpportunityProject.percent_complete}" />
+              </apex:outputText>
+            </apex:outputPanel>
+            <apex:outputPanel >
+              <apex:outputText value="Max Effort" styleClass="title" />
+              <apex:outputText value="{!OpportunityProject.max_effort}"/>
+            </apex:outputPanel>
+            <apex:outputPanel >
+              <apex:outputText value="Expected Total Effort" styleClass="title" />
+              <apex:outputText value="{0,number,0.00}" >
+                <apex:param value="{!OpportunityProject.expected_total_effort}" />
+              </apex:outputText>
+            </apex:outputPanel>
+            <apex:outputPanel >
+              <apex:outputText value="Total Logged" styleClass="title" />
+              <apex:outputText value="{!OpportunityProject.work}"/>
+            </apex:outputPanel>
+            <apex:outputPanel >
+              <apex:outputText value="Done" styleClass="title" />
+              <apex:inputCheckbox value="{!OpportunityProject.is_done}" disabled="true"></apex:inputCheckbox>
+            </apex:outputPanel>
+            <!-- below are custem fields-->
+            <apex:outputPanel rendered="{!DisplayCustomFieldDateStarted}">
+              <apex:outputText value="Date Started" styleClass="title" />
+              <apex:outputText value="{!OpportunityProject.started_on_formatted}"/>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!DisplayCustomFieldDelayUntil}">
+              <apex:outputText value="Delay Until" styleClass="title" />
+              <apex:outputText value="{!OpportunityProject.delay_until_formatted}"/>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!DisplayCustomFieldOnHold}">
+              <apex:outputText value="On Hold" styleClass="title" />
+              <apex:inputCheckbox value="{!OpportunityProject.is_on_hold}" disabled="true"></apex:inputCheckbox>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!DisplayCustomFieldExternalReference}">
+              <apex:outputText value="Reference" styleClass="title" />
+              <apex:outputText value="{!OpportunityProject.external_reference}"/>
+            </apex:outputPanel>
+          </apex:pageBlockSection>
+          <apex:pageBlockSection id="milestonesSection" title="Project Milestones" collapsible="true">
+            <apex:outputPanel rendered="{!IF (OpportunityProject.HasMilestones,true,false)}">
+              <apex:pageBlockTable value="{! OpportunityProject.milestones}" var="milestone">
+                <apex:column headerValue="Title">
+                  <apex:outputLink value="{!LPURL}/space/{!milestone.project.space.id}/projects/show/{!milestone.id}" target="_blank">{!milestone.name}</apex:outputLink>
+                </apex:column>
+                <apex:column headerValue="Milestone Date">
+                  <apex:outputText value="{!milestone.milestonedate_formatted}"/>
+                </apex:column>
+                <apex:column headerValue="Done">
+                    <apex:inputCheckbox value="{!milestone.is_done}" disabled="true"/>
+                </apex:column>
+              </apex:pageBlockTable>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!IF (!OpportunityProject.HasMilestones,true,false)}">
+              No records to display
+            </apex:outputPanel>
+          </apex:pageBlockSection>
+          <apex:pageBlockSection id="opportunitiesSection" title="Opportunities" collapsible="true">
+            <apex:outputPanel >
+               <apex:pageBlockTable value="{!OpportunityProject.opportunities}" var="opportunity" id="oppTable" styleClass="tablesorter" headerClass="header">
+                <apex:column style="background-color: white; width:25%; vertical-align:top">
+                  <apex:facet name="header">
+                    <apex:outputText styleClass="header" value="Accounts (Clients)" />
+                  </apex:facet>
+                   <apex:outputLink value="/{!opportunity.account.Id}" style="text-decoration:none; color:blue">{!opportunity.account.Name}</apex:outputLink>
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputText styleClass="header" value="Opportunites" />
+                  </apex:facet>
+                  <apex:outputLink value="/{!opportunity.Id}" style="text-decoration:none; color:blue">{!opportunity.Name}</apex:outputLink>
+                </apex:column>
+              </apex:pageBlockTable>
+            </apex:outputPanel>
+          </apex:pageBlockSection>
+          <apex:pageBlockSection id="accountsSection" title="Accounts" collapsible="true">
+            <apex:outputPanel >
+             <apex:pageBlockTable value="{!OpportunityProject.accounts}" var="account" id="accountTable" styleClass="tablesorter" headerClass="header">
+                <apex:column style="background-color: white; width:25%; vertical-align:top">
+                  <apex:facet name="header">
+                    <apex:outputText styleClass="header" value="Accounts (Clients)" />
+                  </apex:facet>
+                   <apex:outputLink value="/{!account.Id}" style="text-decoration:none; color:blue">{!account.Name}</apex:outputLink>
+                </apex:column>
+              </apex:pageBlockTable>
+            </apex:outputPanel>
+          </apex:pageBlockSection>
+        </apex:form>
+      </apex:outputPanel>
+    </apex:outputPanel>
+  </apex:pageBlock>
+</apex:page>

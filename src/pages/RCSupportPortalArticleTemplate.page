@@ -1,0 +1,14 @@
+<apex:page standardController="RC_Knowledge_Article__kav" showHeader="false" standardStylesheets="false" >
+ 
+ <script>
+   var href='{!$CurrentPage.URL}';
+   if(href.indexOf('apex/RCSupportPortalArticleTemplate')>-1){
+      window.location=href.replace("apex/RCSupportPortalArticleTemplate","knowledge/TOCArticleRendererPkb.apexp");
+      //return;
+   }else if(href.indexOf('RCSupportPortalArticleTemplate')>-1){
+      window.location=href.replace("RCSupportPortalArticleTemplate","knowledge/TOCArticleRendererPkb.apexp");
+      //return;
+    }
+  </script>
+
+</apex:page>

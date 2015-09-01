@@ -1,0 +1,15 @@
+<apex:page controller="SitemapController" showHeader="false" contentType="text/xml" cache="false">
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+<apex:repeat id="faqrepeat" var="d" value="{!FaqList}">
+    <url>
+        <!-- <loc>{!siteurl}articles/RC_Knowledge_Article/{!d.UrlName}?type=FAQ</loc> -->
+        <loc>
+           {!siteurl}articles/RC_Knowledge_Article/{!d.UrlName}?retURL={!URLENCODE("/apex/RCSupportArtList&type=FAQ&id=")}{!d.knowledgearticleid}{!URLENCODE("&Title=")}{!URLENCODE(d.Title)}
+         
+         </loc>
+        
+        <lastmod>{!(TEXT(YEAR(DATEVALUE(d.LastPublishedDate))) & "-" & IF(LEN(TEXT(MONTH(DATEVALUE(d.LastPublishedDate))))==2,TEXT(MONTH(DATEVALUE(d.LastPublishedDate))),"0" & TEXT(MONTH(DATEVALUE(d.LastPublishedDate)))) & "-" & IF(LEN(TEXT(DAY(DATEVALUE(d.LastPublishedDate))))==2,TEXT(DAY(DATEVALUE(d.LastPublishedDate))),"0" & TEXT(DAY(DATEVALUE(d.LastPublishedDate)))))}</lastmod>
+        <priority>0.5</priority>
+    </url></apex:repeat>
+</urlset>
+</apex:page>

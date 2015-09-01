@@ -1,0 +1,206 @@
+<apex:page showHeader="false" controller="RCSupportControllerHandler" standardStylesheets="false" cache="true" sidebar="false" >
+ <head>
+ <title>Ideas And Answers</title>
+ 
+        <apex:stylesheet value="{!URLFOR($Resource.RCSupportLatestCss, 'css/support/inc_content.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.RCSupportLatestCss, 'css/support/left.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.RCSupportTopNav2, 'RCSupportTopNav2/navcss.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.RCSupportTopNav2, 'RCSupportTopNav2/default.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.RCSupportTopNav2, 'RCSupportTopNav2/default.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.RCIdeaAndAnswerCss, 'ideaAndAnswerCss.css')}" />
+      
+
+<style>
+    .box_mod_1 .center_content {
+         background: url("{!URLFOR($Resource.RCSupportCss,'/images/support/inc_images/bg_bl1_center.png')}") no-repeat scroll left top transparent;
+         float: left;
+        min-height: 525px;
+        min-height:test ;
+        position: relative;
+        top: -13px;
+       width: auto;
+    }
+   
+    body .homeFrame {
+      width:100%;
+    }
+    body .pop_up_window_container {
+      width:100%;
+    }
+    
+    .ansPageHeader {
+        clear: both;
+        display: block;
+        margin: auto;
+        width: 100%;
+    }
+    
+    body.answersTab.ansPostReplyBox {
+      width:100%;
+    }
+    
+    span.ansHomeGetAnswerContainer {
+      width:100%;
+    }
+    .loader {
+    background-image:url("{!URLFOR($Resource.RCIdeaAndAnswerCss, 'loading.gif')}") no-repeat;
+    width: 162px;
+    background-position:left bottom;
+   
+    }
+    .btn {
+       display: block;
+    }
+    .pbHeader {
+      display: block;
+    }
+    #AppBodyHeader{
+       display: none;
+    }
+    #my_frame{
+      min-height:600px;
+      height:100%;
+    }
+    
+</style>
+</head>
+<body>
+<div align="center" id="bannerDiv" class="homeFrame" style="display: block;">
+    <div class="nov_head">
+        <table width='100%' border='0'>
+            <tr>
+                <td>
+                    <a title="RingCentral Virtual PBX, Phone and Internet Fax Service and Software" class="logo" 
+                        href="#" style="margin-left: 5px ! important; z-index: 0 ! important;"><span></span></a>                
+                </td>
+                <td valign="bottom" align="right">
+               
+                   <a title="Support Home" href="{!$Site.CurrentSiteUrl}" align="right" style="color:#0d426a" >
+                               <span>Support Home</span></a> 
+                               <!--  | 
+                     <a href="javaScript:void(0);" style="color:#0d426a" onClick="window.open('http://forum.ringcentral.com','mywindow')">Customer Forum</a>--> |          
+              <a title="My Profile" id='my_Profile' href="javaScript:void(0);"  align="right" style="color:#0d426a"  >
+                               <span>My Profile</span></a>
+                 <!-- <a title="Logout" id='Logout' href="/IdeaAndAnswerForum/secur/logout.jsp"  align="right" style="color:#0d426a"  >
+                               <span>Logout</span></a> -->              
+              &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;
+               </td>
+            </tr>
+        </table>
+
+   </div>
+
+<div class="pop_up_window_container">
+    <div class="new_tab_menu">
+         <ul id="topnav_popup_window" class="menu">
+               <li class="AnswersActive" id="answer"><a href="javaScript:void(0);"  title="answers" ></a></li>
+               <li id="idea" class='ideas' ><a href="javaScript:void(0);"  title="ideas" ></a></li>
+      </ul>
+     </div>
+</div>
+</div>
+<div>
+    <div style='width:100%'>   
+       <div class="topbg"> </div>
+            <div  class="repeatbg">                                
+                 <div class="left_area">
+                     <div class="left_menu"> </div>
+                 </div>
+                 <div id="centercontent" class="center_content" style="width:100%;height:1800px;">
+                    <iframe id='my_frame' name='my_frame' width='100%'  frameBorder='0'></iframe>
+                 </div>   
+                 <div class="cb"> </div>
+               </div>
+                <div class="bottombg">
+             </div>
+     </div>
+            
+</div>
+                                                                      
+ <!--  <script src="/resource/1286257412000/jquery/js/jquery-1.4.2.min.js" type="text/javascript"></script> &nbsp;-->
+  <apex:includeScript value="{!URLFOR($Resource.RCSupportPortal, 'supportPortal/js/libs/jquery-1.8.0.min.js')}" />
+ <script>
+   try{ 
+       //$("#centercontent").html("");   
+     
+       if('{!CommunityId}'=='false'){
+            //$("#centercontent").html("<iframe id='my_frame' name='my_frame' src='{!$Site.CurrentSiteUrl}answers/answersHome.apexp' width='100%'  frameBorder='0'/>");
+            $("#my_frame").attr("src","{!$Site.CurrentSiteUrl}answers/answersHome.apexp");
+       }else{
+           //$("#centercontent").html("<iframe id='my_frame' name='my_frame' src='{!$Site.CurrentSiteUrl}answers/listQuestion.apexp?c={!CommunityId}' width='100%' frameBorder='0'/>");   
+            $("#my_frame").attr("src","{!$Site.CurrentSiteUrl}answers/listQuestion.apexp?c={!CommunityId}");
+       }
+
+       $(document).ready(function(){   
+           $("#idea").click(function(e){
+             // $("#centercontent").html("<iframe src='{!$Site.CurrentSiteUrl}ideas/ideaList.apexp' width='100%'  id='my_frame' name='my_frame' frameBorder='0' />"); 
+              $("#my_frame").attr("src", "{!$Site.CurrentSiteUrl}ideas/ideaList.apexp");
+              
+              $("#idea").removeClass("ideas");  
+              $("#idea").addClass("IdeaActive");  
+              $("#answer").removeClass("AnswersActive");
+              $("#answer").addClass("answers");
+          });
+       $("#answer").click(function(e){
+       
+           //$("#centercontent").html("");    
+           //$("#centercontent").html("<iframe id='my_answer_frame' name='my_frame' src='{!$Site.CurrentSiteUrl}answers/answersHome.apexp' width='100%'  frameBorder='0'/>");  
+           $("#my_frame").attr("src","{!$Site.CurrentSiteUrl}answers/answersHome.apexp");
+           
+           $("#answer").removeClass("answers");
+           $("#answer").addClass("AnswersActive");
+           $("#idea").removeClass("IdeaActive");
+           $("#idea").addClass("ideas"); 
+          });
+          
+            $("#my_Profile").click(function(e){
+             $("#answer").removeClass("AnswersActive").addClass('answers');
+             $("#idea").removeClass("IdeaActive").addClass('ideas');
+            // $("#centercontent").html("");    
+            //$("#centercontent").html("<iframe id='my_frame' name='my_frame' src='{!$Site.CurrentSiteUrl}apex/RCSupportPortalUserProfile' width='100%'  frameBorder='0'/>");  
+             $("#my_frame").attr("src","{!$Site.CurrentSiteUrl}apex/RCSupportPortalUserProfile");
+           }); 
+         $("#my_frame12").load(function(){
+           // $('#AppBodyHeader').remove()
+            $("#my_frame").contents().find("#AppBodyHeader").remove();
+            $("#my_frame").contents().find("bPageFooter").remove();
+            //heightIncrement();
+            $("#my_frame").height(($("#my_frame").contents().find("html").height()+20));
+        });
+          
+       });
+       $("#my_frame").live("load", function(){
+            $(this).contents().find("#AppBodyHeader").remove();
+            $(this).contents().find("bPageFooter").remove();
+            //heightIncrement();
+            $(this).height(($(this).contents().find("html").height()+20));
+       
+       });    
+       
+      function heightIncrement(){ 	alert(1234);
+    	   if($.browser.mozilla)
+    	   { alert(1);
+    		 var heightDiv   = $("iframe",top.document).contents().attr("height")+"px";					
+    		 $("iframe",top.document).css({height:heightDiv});
+    	   }
+    	   else if($.browser.opera  || $.browser.safari || $.browser.msie)
+    	   {alert(2);			   
+      		 var heightDiv   = $("iframe",top.document).height(); 	    			 
+    		 $("iframe",top.document).css({height:heightDiv}); 
+    	   } 
+}
+       
+ }catch(ex){
+     //alert(ex);
+  }
+  function showSupportPortal(){
+      var strUrl='{!$CurrentPage.parameters.siteUrl}';
+      window.location=strUrl;
+   }
+
+   
+ </script>  
+
+</body>
+          
+</apex:page>

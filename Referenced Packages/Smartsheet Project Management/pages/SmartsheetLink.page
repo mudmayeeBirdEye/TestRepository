@@ -1,0 +1,83 @@
+<apex:page controller="com_smartsheet.SmartsheetLinkController" title="{!$Label.link_title}"
+           standardStylesheets="false" sidebar="true" showHeader="true" tabStyle="com_smartsheet__Smartsheet__c">
+    <style type="text/css">
+        .smartsheetForm .pbBody p {
+            padding: 0 12px;
+        }
+
+        .smartsheetForm table.sheetList {
+            width: 90%;
+            margin: 0 12px;
+        }
+                
+        #smartsheetProgress {
+            width: 200px;
+            margin: 10px auto;
+            border: 1px solid #c0c0c0;
+            background: #eee;
+            padding: 5px;
+            text-align: center;
+        }
+        
+        #smartsheetProgress .smartsheetProgressSpinner {
+            display: block;
+            margin: 0 auto 5px auto;
+        }
+    </style>
+    
+    <apex:form styleClass="smartsheetForm" >
+        <apex:actionFunction action="{!loadSheetList}" name="loadSheetList" rerender="sheetList">
+            <apex:param name="apiSessionId" assignTo="{!apiSessionId}" value="{!$Api.Session_ID}" />
+            <apex:param name="apiServerURL" assignTo="{!apiServerURL}" value="{!$Api.Partner_Server_URL_190}" />
+        </apex:actionFunction>
+
+        <apex:sectionHeader title="{!PageTitle}" help="{!HelpPageUrl}" />
+
+        <apex:pageBlock id="sheetList" title="{!$Label.link_heading}" mode="edit">
+            <apex:pageMessages />
+            
+            <apex:outputPanel rendered="{!NOT(isSheetListLoadComplete) && isLinkValid}">
+                <div id="smartsheetProgress">
+                    <img class="smartsheetProgressSpinner" src="{!$Resource.img_spinner32}" />
+                    <div>{!$Label.link_progress_loading}</div>
+                </div>
+            </apex:outputPanel>
+                
+            <apex:outputPanel rendered="{!NOT(isSheetListEmpty) && isLinkValid}">
+                <p>{!$Label.link_message_instructions}</p>
+                <p></p>
+          
+                <apex:pageBlockTable value="{!linkItems}" var="linkItem" styleClass="sheetList">
+                    <apex:column >
+                        <apex:facet name="header">{!$ObjectType.com_smartsheet__Smartsheet__c.fields.Name.label}</apex:facet>
+                        <apex:commandLink action="{!saveSheetLink}" value="{!linkItem.SheetName}">
+                            <apex:param name="smartsheetKey" assignTo="{!smartsheetKey}" value="{!linkItem.SheetKey}" />
+                            <apex:param name="smartsheetName" assignTo="{!name}" value="{!URLENCODE(linkItem.SheetName)}" />              
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column headerValue="Owner" value="{!linkItem.OwnerEmailAddress}" />
+                    <apex:column headerValue="Last Update Date" value="{!linkItem.LastModifiedDateForDisplay}" />
+                </apex:pageBlockTable>
+            </apex:outputPanel>
+    
+            <p></p>
+
+            <apex:pageBlockButtons location="both" rendered="{!isLinkValid}">
+                <apex:commandButton action="{!returnToCaller}" value="Cancel" />
+            </apex:pageBlockButtons>
+
+        </apex:pageBlock>
+    </apex:form>
+  
+    <apex:outputPanel rendered="{!isLinkValid}">
+	    <script language="JavaScript">
+	        var previousOnload = window.onload;
+	        window.onload = function() {
+	            if (previousOnload) {
+	                previousOnload();
+	            }
+	            loadSheetList();
+	        }
+	    </script>
+    </apex:outputPanel>	    
+</apex:page>

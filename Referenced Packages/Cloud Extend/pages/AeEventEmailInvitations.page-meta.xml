@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>27.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>This page creates an &lt;apex:iframe&gt; with the proper parameters to run the Email Invitations wizard. This page is used to support launching the Email Invitations wizard from a custom button.</description>
+    <label>Email Invitations</label>
+</ApexPage>

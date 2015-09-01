@@ -1,0 +1,10 @@
+<apex:page controller="ce4sf20_001.AeGuidesListingController" contentType="application/json; charset=utf-8" sidebar="false" showHeader="false" standardStylesheets="false" cache="false">
+{!$CurrentPage.parameters.callback}({
+  "getResponse" : {
+    "xmlns" : "http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd",
+    "Item" : [
+     {!guidesListing}
+    ]
+  }
+});
+</apex:page>

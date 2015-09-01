@@ -1,0 +1,16 @@
+<apex:page controller="ATTController" showHeader="false" cache="true" expires="{!cacheMaxAge}">
+       
+      <apex:composition template="{!$Site.Template}">
+        <apex:define name="contact">
+       <div class="rn_AnswerDetail" id="rn_PageTitle">
+        <h1 id="rn_Summary" style="display: block">Telephone Numbers for Customer Care</h1>
+        <div id="rn_AnswerInfo">Published 10/04/2010 04:13 PM &nbsp;|&nbsp;&nbsp; Updated 02/08/2011 04:07 PM</div>
+        <div id="rn_AnswerDescription"><p>What are the telephone numbers for Customer Care?</p></div>
+       <div id="rn_AnswerText">
+        <p>Support: 1-800-331-0500</p>      </div>
+       
+       </div>
+        </apex:define>
+    </apex:composition>
+     
+</apex:page>

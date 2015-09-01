@@ -1,0 +1,181 @@
+<apex:page standardStylesheets="false" sidebar="false" readOnly="true">
+  <link rel="stylesheet" href="{!URLFOR($Resource.DataTables,'datatable/demo_table_jui.css')}"/>
+ <link rel="stylesheet" href="{!URLFOR($Resource.DataTables,'datatable/jquery-ui-1.7.2.custom.css')}"/>
+   <script src="{!URLFOR($Resource.AssetSearch,'AssetSearch/jquery.js')}" type="text/javascript"></script>
+    <script src="{!URLFOR($Resource.DataTables,'datatable/jquery.dataTables.js')}" type="text/javascript"></script>
+    <script src="{!URLFOR($Resource.DataTables,'datatable/ColReorderWithResize.js')}" type="text/javascript"></script> 
+    <script src="{!URLFOR($Resource.DataTables,'datatable/FixedHeader.js')}" type="text/javascript"></script> 
+    <!-- <link rel="stylesheet" href="https://na6.salesforce.com/EXT/ext-3.2.2/resources/css/ext-all-notheme.css" />
+    <link rel="stylesheet" href="https://na6.salesforce.com/sCSS/25.0/sprites/1343243289000/Theme3/default/ExtCSS-SFDC.css" /> -->
+    <link rel="stylesheet" href="{!$Label.Organization_Instance}EXT/ext-3.2.2/resources/css/ext-all-notheme.css" />
+    <link rel="stylesheet" href="{!$Label.Organization_Instance}sCSS/25.0/sprites/1343243289000/Theme3/default/ExtCSS-SFDC.css" />
+
+  <style>
+        th {
+            cursor:pointer;
+        }
+        .oddRow td{
+            padding-bottom:5px;
+            vertical-align:top;
+            -moz-user-select: text !important;
+            font-family: 'Arial','Helvetica',sans-serif !important;
+            font-size: 100% !important;
+            line-height: normal !important;
+        }
+        .evenRow td{
+            padding-bottom:5px;
+            vertical-align:top;
+            -moz-user-select: text !important;
+            font-family: 'Arial','Helvetica',sans-serif !important;
+            font-size: 100% !important;
+            line-height: normal !important;
+        }
+        .dataTables_info { padding-top: 0; }
+        .dataTables_paginate { padding-top: 0; }
+        .css_right { float: right; }
+        #example_wrapper .fg-toolbar { font-size: 0.8em }
+        #theme_links span { float: left; padding: 2px 10px; }
+        #example_wrapper { -webkit-box-shadow: 2px 2px 6px #666; box-shadow: 2px 2px 6px #666; border-radius: 5px; }
+        #example tbody {
+            border-left: 1px solid #AAA;
+            border-right: 1px solid #AAA;
+        }
+        #example thead th:first-child { border-left: 1px solid #AAA; }
+        #example thead th:last-child { border-right: 1px solid #AAA; }
+        #example1 tbody {
+            border-left: 1px solid #AAA;
+            border-right: 1px solid #AAA;
+        }
+        #example1 thead th:first-child { border-left: 1px solid #AAA; }
+        #example1 thead th:last-child { border-right: 1px solid #AAA; }
+        #tabs_wrapper{width:100%}
+        .odd {
+            background-color:white !important;
+        }
+        .even{
+            background-color:white !important;
+        }
+        tr.odd:hover{
+            background:#E1F2F9 !important;
+        }
+        tr.even:hover{
+            background:#E1F2F9 !important;
+        }
+        tr.even td.sorting_1 {
+            background-color: #fff;
+        }
+        tr.odd td.sorting_1 {
+            background-color: #FFF;
+        }
+      </style>  
+
+
+
+
+
+
+
+
+
+
+
+
+<apex:variable var="count" value="{!0}" />
+<apex:variable var="hasMore" value="" />
+ <apex:variable var="hasMore1" value="false" />
+   <knowledge:articleList articleVar="article"  hasMoreVar="hasMore"
+                            pageSize="200" 
+                            categories="Brand:RC_US,RCProductVesion:RC2013" 
+                            keyword="{!$CurrentPage.parameters.globalquery}"
+                            pageNumber="{!$CurrentPage.parameters.pagenumber}"
+                            >
+                           <apex:variable var="hasMore1" value="{!IF(hasMore,'true','false')}" />
+                           
+                         <apex:outputText escape="false" rendered="{!count==0}" value='<table  cellspacing="0" cellpadding="2" border="0" id="example" width="100%" class="display"><thead><tr><th>Article Number</th><th>Title</th><th>URL</th></tr></thead><tbody>'/>  
+                         <apex:variable var="count" value="{!count+1}" />
+	                      <tr class="{!IF(MOD(count,2)==0,'evenRow','oddRow')} x-grid3-row">
+	                        <td>
+	                        <!--  <a href="{!URLFOR($Action.KnowledgeArticle.View, article.id)}&Title={!article.title}" style='text-decoration:underline;'>{!article.title}</a>
+	                        -->
+	                       {!article.ArticleNumber}
+	                         </td>
+	                       <td>{!article.title}</td>
+	                        <td> 
+	                         <div style="color: blue;font-size: 16px;">
+	                              <a  style="color: blue;font-size: 16px;" href='http://success.ringcentral.com/articles/RC_Knowledge_Article/{!article.UrlName}' target='_blank'>http://success.ringcentral.com/articles/RC_Knowledge_Article/{!article.UrlName}</a></div>
+	                       </td>
+	                      
+	                    
+	                     </tr>
+                </knowledge:articleList>
+                    <apex:outputtext rendered="{!count>0}" escape='false' value='</tbody></table>'/>  
+                    
+          <script>
+                                    $(document).ready(function() {
+                                        var oTable = $('#example').dataTable({
+                                            /*"sDom": 'R<"H"lfr>t<"F"ip>',*/
+                                            "bStateSave": false,
+                                            /*"sScrollY": "700px",*/
+                                            "bScrollCollapse": true,
+                                            "sPaginationType": "full_numbers",
+                                            "oLanguage": {
+                                            "sSearch": "Apply Search Result filter _INPUT_",
+                                            "sInfo": "Got a total of _TOTAL_ Article(s) to show (_START_ to _END_)",
+                                            "sInfoEmpty": "No Article to show",
+                                            "sLoadingRecords": "Please wait - loading...",
+                                            "sLengthMenu": 'Display <select>'+
+                                            '<option value="10">10</option>'+
+                                            '<option value="20">20</option>'+
+                                            '<option value="30">30</option>'+
+                                            '<option value="40">40</option>'+
+                                            '<option value="50">50</option>'+
+                                            '<option value="100">100</option>'+
+                                            '<option value="-1">All</option>'+
+                                            '</select> Article(s)'
+                                        },
+                                        iDisplayLength:30,
+                                        "bProcessing": true,
+                                        /*"bPaginate": false,*/
+                                        "bJQueryUI": true,
+                                        /* "aoColumnDefs": [{ "sWidth": "10%", "aTargets": [ -1 ] }]*/
+                                        });
+                                        /* new FixedHeader(oTable);*/
+                                        $("tr.odd").live("hover",function(){
+                                            $(this).find('.sorting_1').removeClass('sorting_1');
+                                        });        
+                                        $("tr.even").live("hover",function(){console.log('call'+$(this));
+                                            $(this).find('.sorting_1').removeClass('sorting_1');
+                                        });  
+                                    } );
+                                </script>            
+     <apex:outputtext rendered="{!($CurrentPage.parameters.pagenumber=='1' || $CurrentPage.parameters.pagenumber=='')}">
+       previous 200 Articles/
+     </apex:outputtext> 
+     <apex:outputtext rendered="{!($CurrentPage.parameters.pagenumber!='1' && $CurrentPage.parameters.pagenumber!='')}">
+      <a href="javascript:void(0)" onclick='previous();'>  previous 200 Articles/</a>
+     </apex:outputtext>  
+     <apex:outputtext rendered="{!hasMore1=='false'}">
+         Next 200 Articles
+     </apex:outputtext> 
+     <apex:outputtext rendered="{!hasMore1!='false'}">
+       <a href="javascript:void(0)" onclick='next();'>   Next 200 Articles</a>
+     </apex:outputtext>  
+     
+     <script>
+        function previous(){
+          var pageURL='{!$CurrentPage.URL}';
+			  var newPageNo = (isNaN('{!$CurrentPage.parameters.pagenumber}') ? 0 : parseInt('{!$CurrentPage.parameters.pagenumber}'))-1;
+             var newPageURL = pageURL.replace(/(pagenumber=).*?(&)/,'$1' + newPageNo + '$2');
+			  window.location=newPageURL;
+         }
+        
+         function next(){
+         var pageURL='{!$CurrentPage.URL}';
+          var newPageNo = (isNaN('{!$CurrentPage.parameters.pagenumber}') ? 0 : parseInt('{!$CurrentPage.parameters.pagenumber}'))+1;
+              var newPageURL = pageURL.replace(/(pagenumber=).*?(&)/,'$1' + newPageNo + '$2');
+			//alert(newPageURL+'==='+newPageNo);
+			  window.location=newPageURL;
+        }
+       </script>               
+                    
+</apex:page>

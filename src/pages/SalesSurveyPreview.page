@@ -1,0 +1,336 @@
+<apex:page controller="SalesSurveyController" cache="false" id="CSATSurvey" showHeader="false">
+	<apex:includeScript value="{!$Resource.jquery172}"/>
+	<HEAD>
+        <TITLE>Sales Survey</TITLE>
+        <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+        <META HTTP-EQUIV="Expires" CONTENT="-1"/>
+	</HEAD>
+	<style>
+   		p {color:#798496;font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:11px; font-style:normal; line-height:20px;}
+   		
+  		h1 {font-size: 11px;}
+    	
+    	.content{border: 1px solid gray; width: 750px; padding: 10px;margin:0px auto;border-radius: 15px 15px 15px 15px;}
+    	
+    	.content1{border: 1px solid #000; width: 750px; padding: 10px;margin:0px auto;border-radius: 15px 15px 15px 15px;
+    		background: lightgray;
+			font-size: 14px;
+			font-weight: bold;
+			margin-top: 10px;
+			text-align: center;
+    	}
+    	
+    	.btnClass {
+            color: #333;
+            margin: 1px;
+            padding: 2px 3px;
+            border: 1px solid #B5B5B5;
+            border-bottom-color: #7F7F7F;
+            background: #E8E8E9 url('/img/alohaSkin/btn_sprite.png') repeat-x right top;
+            font-weight: bold;
+            font-size: .9em;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            height: 24px;
+            width: auto;
+            min-width: 60px;
+            cursor:pointer;
+        }
+        .headingStyle{
+        	text-align: center;
+			color: #17365D;
+			font-weight: bold;
+			font-size: 20px;
+			text-decoration: underline;
+			text-underline-color: #17365D;
+        }
+        
+        #Radio1 label{
+		   	position: relative;
+			left: -17px;
+			top: -1px;
+			font-size: 10pt;
+			opacity: 2.5;
+		}
+		
+		.btnClass {
+            color: #333 !important;
+            margin: 1px !important;
+            padding: 2px 3px !important;
+            border: 1px solid #B5B5B5 !important;
+            border-bottom-color: #7F7F7F !important;
+            background: #E8E8E9 url('/img/alohaSkin/btn_sprite.png') repeat-x right top !important;
+            font-weight: bold !important;
+            font-size: .9em !important;
+            -moz-border-radius: 3px !important;
+            -webkit-border-radius: 3px !important;
+            border-radius: 3px !important;
+            height: 24px !important;
+            width: auto !important;
+            min-width: 60px !important;
+            cursor:pointer !important;
+        }
+        input {
+			border:none !important;
+		}
+		
+		#offer {
+		    position:fixed;
+		    top: 50%;
+		    left: 50%;
+		    width:30em;
+		    height:18em;
+		    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+		    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+		    border: 1px solid #ccc;
+		    background-color: #f3f3f3;
+		    border-radius: 30px;
+		    -moz-border-radius: 30px;
+		    display:none;
+		    -moz-box-shadow: 0 0 15px #999999 inset;
+		    box-shadow: 0 0 15px #999999 inset;
+		    background: none repeat scroll 0 0 #DEDEDE;
+		    border: 3px solid #DEDEDE;
+		    padding : 15px
+		}
+	
+		#span1,#atag {
+			border: 0 none;
+		    font: inherit;
+		    margin: 0;
+		    padding: 0;
+		    vertical-align: baseline;
+		    color: #E98514;
+		}
+		
+		h3 {
+			color: #7C7C7C;
+		    font-size: 15px;
+		    line-height: 21px;
+		    padding-bottom: 22px;
+		    padding-left: 21px;
+		    padding-right: 35px;
+		    width:300px;
+		} 
+		
+		#overlay {
+            background: no-repeat scroll top center gray;
+            border: 0px solid #000000;
+            bottom: 0;
+            left: 0;
+            opacity: 0.75;
+            position: absolute;
+            top: 0;
+            visibility: hidden;
+            width: 100%;
+            z-index: 1000;
+            height:500px;
+        } 
+	</style>
+	
+	<script type="text/javascript"> 
+        function showOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'visible';
+         }
+        
+        function hideOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'hidden';
+       	}
+    </script>
+
+	<apex:stylesheet value="{!URLFOR($Resource.Style_Resources, 'default2.style.css')}" />
+	<apex:OutputPanel id="mainpanel"> 
+		<div class="content">
+		<table width="100%">
+			<tr>
+				<td>
+					<apex:image url="{!URLFOR($Resource.SalesSurveyLogo)}" />
+					<br/><br/>
+					
+					
+					<div id="page" style="padding-left: 15px;">
+					<apex:form rendered="{!if((surveyObj.SurveyType__c == 'Sales'),true,false)}" id="form1"> 
+						<div id="overlay" style="text-align:center;padding-top:500px;">
+       						<apex:image value="{!$Resource.loading}" ></apex:image>
+      					</div> 
+  						<apex:outputtext style="font-size:12px" value="Hello {!surveyObj.Contact__r.Name}. Thank you for taking the time to fill 
+  									out our simple survey.  The questions below pertain to your recent sales experience and the  
+  									RingCentral Authorized Dealer that helped you with that process" escape="false">
+  						</apex:outputtext>
+  						<br/><br/>
+  							<apex:outputpanel id="panel1">
+		     				<table>
+	                                <tr>
+	                                     <td>
+	                                     	<b><!--<span style="color:Red;font-size: 12px;">*</span>
+                                    		--><apex:outputText style="font-size: 12px;" escape="false"  value="1. The Dealer was knowledgeable 
+                                    			concerning RingCentral products and services" id="qus"/><br/>
+	                                     	</b>
+	                                     </td>
+	                                </tr>
+	                                <tr style="font-size:12px">
+	                                    <td>
+	                                         <apex:selectRadio readonly="true" disabled="true" value="{!answer1}" layout="pagedirection"> 
+	                                         	<apex:selectOptions value="{!Values5}"></apex:selectOptions>
+                                  		   	</apex:selectRadio>
+	                                    </td>
+	                                </tr>
+	                                <tr><td><br></br></td></tr>
+	                            	<tr>
+	                                    <td>
+	                                     	<b><!--<span style="color:Red;font-size: 12px;">*</span>
+	                                     		--><apex:outputText style="font-size: 12px;" escape="false" value="2. The Dealer assisted me in 
+	                                     		selecting the right solution for my business needs."  id="qus1"/><br/>
+	                                     	</b>
+	                                    </td>
+	                                </tr>
+	                                <tr style="font-size:12px">
+	                                    <td>
+	                                         <apex:selectRadio readonly="true" disabled="true" value="{!answer2}" layout="pagedirection">
+                                    			<apex:selectOptions value="{!Values5}"></apex:selectOptions>
+                                 		   	</apex:selectRadio>
+	                                    </td>
+	                                </tr>
+	                                <tr><td><br></br></td></tr>
+	                                <tr>
+	                                    <td>
+	                                     	<b><!--<span style="color:Red;font-size: 12px;">*</span>
+	                                     		--><apex:outputText style="font-size: 12px;" escape="false" value="3. What is your satisfaction level 
+	                                     		with the overall sales process?" id="qus2"/><br/>
+	                                     	</b>
+	                                    </td>
+	                                </tr>
+	                                <tr style="font-size:12px">
+	                                    <td>
+	                                         <apex:selectRadio readonly="true" disabled="true" value="{!answer31}" layout="pagedirection">
+                                    			<apex:selectOptions value="{!Values4}"></apex:selectOptions>
+                                 		   	</apex:selectRadio>
+	                                    </td>
+	                                </tr>
+	                                <tr><td><br></br></td></tr>
+	                                <tr>
+	                                    <td>
+	                                     	<b><!--<span style="color:Red;font-size: 12px;">*</span>
+	                                     		--><apex:outputText style="font-size: 12px;" escape="false"  value=" 4. Did the Dealer implement 
+	                                     		and install your service?" id="qus4"/><br/>
+	                                     	</b>
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td style="font-size:12px">
+	                                         <apex:selectRadio readonly="true" disabled="true" value="{!answer32}" layout="pagedirection">
+                                    			<apex:selectOptions value="{!Values2}"></apex:selectOptions>
+                                    			<apex:actionSupport status="Ajaxstatus4" event="onclick" reRender="mainpanel,panel1,form1"  action="{!showdealerExpCall}"/>
+            			         		   	</apex:selectRadio>
+	                                    </td>
+	                                </tr>
+	                                   
+	                                <tr>
+	                                    <td style="padding-left: 12px;"><!--
+	                                    	{!toshowDealerExpQues}
+	                                    	--><apex:outputPanel rendered="{!toshowDealerExpQues}">
+	                                     	<b><!--<span style="color:Red;font-size: 12px;">*</span>
+	                                     		--><apex:outputText style="font-size: 12px;" escape="false"  value="  Overall how would you 
+	                                     		rate your experience with the RingCentral Dealer?" id="qus6"/><br/>
+	                                     	</b>
+	                                     	<apex:outputText style="font-style: italic;font-size: 12px;padding-left: 10px;" 
+	                                     	value="(Please use a 1-5 Scale where ‘1’ means ‘Very Dissatisfied’ and ‘5’ means ‘Very Satisfied')">
+	                                     	</apex:outputText>
+	                                     	 </apex:outputPanel>
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td style="font-size:12px;padding-left: 12px;">
+	                                    	 <apex:outputPanel rendered="{!toshowDealerExpQues}">
+		                                         <apex:selectRadio readonly="true" disabled="true" value="{!answer33}" layout="linedirection">
+	                                    			<apex:selectOptions value="{!Values1}"></apex:selectOptions>
+	                                  		   	</apex:selectRadio>
+                                  		   	 </apex:outputPanel>
+	                                    </td>
+	                                </tr> 
+	                           
+	                              
+	                                <tr><td><br></br></td></tr>
+	                                <tr>
+	                                     <td>
+	                                     	<b><!--<span style="color:Red;font-size: 12px;">*</span>
+	                                     		--><apex:outputText style="font-size: 12px;" escape="false"  value=" 5.	Based on your recent experience, 
+	                                     		how likely is it that you would recommend RingCentral to a friend or colleague?" 
+	                                     		id="qus5"/><br/>
+	                                     	</b>
+	                                     	<apex:outputText style="font-style: italic;font-size: 12px;padding-left: 10px;" 
+	                                     	value="(Please use a 0-10 Scale where 
+	                                     	'0' means 'Extremely Unlikely' and '10' means 'Extremely Likely')">
+	                                     	</apex:outputText>
+	                                     </td>
+	                                </tr>
+	                                <tr>
+	                                    <td style="font-size:12px">
+	                                         <apex:selectRadio readonly="true" disabled="true" value="{!answer5}" layout="linedirection">
+                                    			<apex:selectOptions value="{!Values3}"></apex:selectOptions>
+                                 		   	</apex:selectRadio>
+	                                    </td>
+	                                </tr>
+	                                <tr><td><br></br></td></tr>
+	                                <tr>
+	                                     <td>
+	                                     		<b><apex:outputText style="font-size: 12px;" escape="false"  
+	                                     		value="6. Comments/What could have the Dealer done to serve you better?" id="qus7"/><br/>
+	                                     		</b>
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td>
+	                                         <apex:inputTextarea readonly="true" onkeypress="return checkLength(this, 2000,event);" value="{!surveyObj.Comments__c}"
+	                                         style="width:90%;resize: none;font-size: 11px;" rows="4"></apex:inputTextarea>
+	                                    </td>
+	                                </tr>
+	                                <tr>
+                                        <td>
+                                            <div style="padding-left: 15px;padding-top: 15px;font-size: 12px;">
+                                                <apex:outputText style="font-size: 12px;" escape="false"  
+                                                value="Did you know you can create Support cases using the Web? Checkout "/>
+                                                    <a onclick="return false;" href ="http://success.ringcentral.com/RCContactSupp" target="_blank">success.ringcentral.com</a> today!! 
+                                            </div>
+                                        </td>
+                                    </tr>
+	                        </table>
+                          </apex:outputpanel>
+	                 	<br/>
+	          			<apex:CommandButton disabled="true" style="width: 50px;font-size: 11px;" onclick="return false;" styleClass="btnClass" action="{!save}" value="Submit"></apex:CommandButton>
+	          			<apex:actionStatus id="Ajaxstatus4" onStart="showOverlay();" onstop="hideOverlay();"/>
+	          		</apex:form> 
+          			</div>
+          			
+				</td>
+			</tr>
+		</table>
+		</div>
+		<div style="width:100%;height:70px;text-align:center;"> 
+     			<input type="submit" value="Close" class="btnClass" onclick = "Cancel1();return false;" /><br /> 
+		</div>
+	</apex:OutputPanel>
+	
+	<script type="text/javascript"> 
+	    function checkLength(control, maximum,e) {
+	        var keycode;
+	        if (window.event) keycode = window.event.keyCode;
+	        else if (e) keycode = e.which;
+	        if(keycode != 8) {
+	            var length = control.value.length;
+	            if (length >= maximum) {
+	                alert('Please limit your comments to '+ maximum +' characters. There are currently ' + length + '.');
+	                return false;
+	            }
+	            return true;
+	        }
+	    }
+	    
+     	function Cancel1() {
+			window.close();
+		}
+    </script> 
+</apex:page>

@@ -1,0 +1,91 @@
+<apex:page > <!--standardController="zqu__Quote__c" showHeader="false" sidebar="false" extensions="clsViewTaxDetailsExtn" action="{!validateZip}" -->
+  <!-- <script src="{!URLFOR($Resource.Jtreeview,'tree/jquery18.js')}" type="text/javascript"></script>  
+  <apex:form rendered="{!!errorOccured}">
+        <apex:pageMessages />
+        <apex:pageBlock >
+            <// Commented --<div style="overflow:auto; width:750px;height:250px">
+            <apex:pageBlockSection columns="1" title="Selected Products" rendered='{!QuoteCharge.size>0}'>
+                <apex:pageblocktable value="{!QuoteCharge}" var="a" id="pbTable">
+                    <apex:column value="{!a.name}"/>
+                    <apex:column value="{!a.zqu__Type__c}"/>
+                    <apex:column value="{!a.zqu__Model__c}"/>
+                    <apex:column HeaderValue="Effective Price">
+                        <apex:outputText value="{0, number, ###,###,###,###0.00}">  
+                            <apex:param value="{!a.zqu__EffectivePrice__c}"/>  
+                        </apex:outputText> 
+                    </apex:column>
+                    <apex:column value="{!a.zqu__Quantity__c}"/>
+                    <apex:column value="{!a.zqu__Period__c}"/>
+                    <apex:column value="{!a.zqu__IncludedUnits__c}"/>
+                    <apex:column value="{!a.zqu__Total__c }"/>
+                </apex:pageblocktable>    
+            </apex:pageBlockSection>
+            <apex:pageMessage escape="false" detail="System could not calculate taxes as Jurisdiction ID is blank." rendered="{!isEmptyTaxJurisdiction && isProductsFound}" severity="Warning" strength="3" />
+            <apex:pageMessage escape="false" detail="System could not find any tax listed under current Jurisdiction ID." rendered="{!(!isEmptyTaxJurisdiction) && totalTaxes == 0.0 && isProductsFound}" severity="Warning" strength="3" />    
+            <apex:pageMessage escape="false" detail="No product added to this Quote. Cannot calculate taxes." rendered="{!!isProductsFound}" severity="Warning" strength="3" /> 
+            
+            <apex:outputPanel rendered="{!!isEmptyTaxJurisdiction}">
+                <apex:actionRegion >
+                    <apex:repeat value="{!taxesMap}" var="objTaxKey">
+                        <apex:repeat var="fed" value="{!taxesMap[objTaxKey].mapDisplayData}">
+                            <apex:pageBlockSection columns="1" title="{!IF(fed=='Fed','FEDERAL TAXES','STATE AND LOCAL TAXES')}">
+                                <table border="0" bordercolor="" cellpadding="3" cellspacing="2" style="background-color:#FFFFCC" width="100%">
+                                    <apex:repeat var="fed1" value="{!taxesMap[objTaxKey].mapDisplayData[fed]}">
+                                        <tr>
+                                            <td width="200">{!fed1.taxName }</td>
+                                            <td>{!IF(ISNULL(fed1.total),0.0,ROUND(fed1.total,2))}</td>
+                                        </tr>
+                                    </apex:repeat>
+                                    <tr>
+                                        <td align="right"> <b>{!IF(fed=='Fed','Total Federal Taxes','Total State and Local Taxes')} </b></td>
+                                        <td align="right"><b>{!IF(ISNULL(IF(fed=='Fed',taxesMap[objTaxKey].fedTotal,taxesMap[objTaxKey].StateTotal)),0.0,ROUND((IF(fed=='Fed',taxesMap[objTaxKey].fedTotal,taxesMap[objTaxKey].StateTotal)),2))} </b></td>
+                                    </tr>
+                                </table>
+                            </apex:pageBlockSection>
+                        </apex:repeat>
+                    </apex:repeat>
+                    <apex:pageBlockSection columns="1" rendered="{!totalTaxes != 0.0}">  
+                        <table border="0" bordercolor="" cellpadding="3" cellspacing="2" style="background-color:#FFFFCC" width="100%">
+                            <tr>
+                            </tr>
+                            <tr align="right">
+                                <td align="right">
+                                    <b>Total Taxes</b>
+                                </td>
+                                <td>
+                                   {!IF(ISNULL(totalTaxes ),0.0,ROUND(totalTaxes,2))}
+                                </td>
+                            </tr>
+                        </table>       
+                    </apex:pageBlockSection>
+                </apex:actionRegion> 
+            </apex:outputPanel>   
+            <center>
+                <apex:commandButton onClick="showOverLay();javascript:CloseMe();"  value="Close"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <apex:commandButton value="Update and Close" oncomplete="javascript:CloseAndRefresh()" action="{!updateQuote}" onclick="showOverLay();" />
+            </center>
+        </apex:pageBlock>
+        <script language="JavaScript" type="text/javascript">
+            function CloseAndRefresh(){
+                window.opener.location.href="/{!$CurrentPage.parameters.id}";
+                window.top.close();
+            }
+            function CloseMe(){
+                window.close();
+            }
+        </script>
+<!--  Commented       <apex:actionFunction name="close" action="{!close}" /> >   
+ </apex:form>
+<c:OverLay description="Please wait.." />
+    <apex:form rendered="{!errorOccured}">
+        <apex:pageBlock >
+            <apex:outputPanel rendered="{!!zipMatch}">
+                    <apex:pageMessage escape="false" detail="Account Zip Has been Changed. Click on 'Skip' button to skip populating new Jurisdiction and hence calculating taxes else click 'Continue' to populate new Jurisdiction." rendered="{!AND(errorOccured,!zipMatch)}" severity="Warning" strength="3" />
+                    <center>
+                        <apex:commandButton action="{!continues}" value="Continue"  /> &nbsp; &nbsp;
+                        <apex:commandButton action="{!skip}" value="Skip" /> 
+                    </center>
+            </apex:outputPanel>
+        </apex:pageBlock>
+    </apex:form>-->
+</apex:page>

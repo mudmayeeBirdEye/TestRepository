@@ -1,0 +1,247 @@
+<apex:page standardController="Account" extensions="PartnerLeadSectionView" sidebar="false" readOnly="true" showHeader="false">
+   <apex:includeScript value="{!URLFOR($Resource.AssetSearch,'AssetSearch/jquery.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.AssetSearch,'AssetSearch/images/assetcss.css')}"/>
+    <link rel="stylesheet" href="{!URLFOR($Resource.DataTables,'datatable/demo_table_jui.css')}"/>
+    <link rel="stylesheet" href="{!URLFOR($Resource.DataTables,'datatable/jquery-ui-1.7.2.custom.css')}"/>
+    <script src="{!URLFOR($Resource.DataTables,'datatable/jquery.dataTables.js')}" type="text/javascript"></script>
+    <script src="{!URLFOR($Resource.DataTables,'datatable/ColReorderWithResize.js')}" type="text/javascript"></script> 
+    <script src="{!URLFOR($Resource.DataTables,'datatable/FixedHeader.js')}" type="text/javascript"></script> 
+    <!-- <link rel="stylesheet" href="https://na6.salesforce.com/EXT/ext-3.2.2/resources/css/ext-all-notheme.css" />
+    <link rel="stylesheet" href="https://na6.salesforce.com/sCSS/25.0/sprites/1343243289000/Theme3/default/ExtCSS-SFDC.css" /> -->
+    <link rel="stylesheet" href="{!$Label.Organization_Instance}EXT/ext-3.2.2/resources/css/ext-all-notheme.css" />
+    <link rel="stylesheet" href="{!$Label.Organization_Instance}sCSS/25.0/sprites/1343243289000/Theme3/default/ExtCSS-SFDC.css" />
+    <style>
+        .visible{
+            display:none;
+        }
+        th {
+            cursor:pointer;
+        }
+        .oddRow td{
+            padding-bottom:5px;
+            vertical-align:top;
+            -moz-user-select: text !important;
+            font-family: 'Arial','Helvetica',sans-serif !important;
+            font-size: 100% !important;
+            line-height: normal !important;
+        }
+        .evenRow td{
+            padding-bottom:5px;
+            vertical-align:top;
+            -moz-user-select: text !important;
+            font-family: 'Arial','Helvetica',sans-serif !important;
+            font-size: 100% !important;
+            line-height: normal !important;
+        }
+        .dataTables_info { padding-top: 0; }
+        .dataTables_paginate { padding-top: 0; }
+        .css_right { float: right; }
+        #example_wrapper .fg-toolbar { font-size: 0.8em }
+        #theme_links span { float: left; padding: 2px 10px; }
+        #example_wrapper { -webkit-box-shadow: 2px 2px 6px #666; box-shadow: 2px 2px 6px #666; border-radius: 5px; }
+        #example tbody {
+            border-left: 1px solid #AAA;
+            border-right: 1px solid #AAA;
+        }
+        #example thead th:first-child { border-left: 1px solid #AAA; }
+        #example thead th:last-child { border-right: 1px solid #AAA; }
+        #example1 tbody {
+            border-left: 1px solid #AAA;
+            border-right: 1px solid #AAA;
+        }
+        #example1 thead th:first-child { border-left: 1px solid #AAA; }
+        #example1 thead th:last-child { border-right: 1px solid #AAA; }
+        #tabs_wrapper{width:100%}
+        .odd {
+            background-color:white !important;
+        }
+        .even{
+            background-color:white !important;
+        }
+        tr.odd:hover{
+            background:#E1F2F9 !important;
+        }
+        tr.even:hover{
+            background:#E1F2F9 !important;
+        }
+        tr.even td.sorting_1 {
+            background-color: #fff;
+        }
+        tr.odd td.sorting_1 {
+            background-color: #FFF;
+        }
+    </style>
+    <style>
+    .menuButtonButton {
+        color: #333;
+        margin: 1px;
+        padding: 2px 3px;
+        border: 1px solid #b5b5b5;
+        border-bottom-color: #7f7f7f;
+        background: #e8e8e9 url('/img/alohaSkin/btn_sprite.png') repeat-x right top;
+        font-weight: bold;
+        font-size: .9em;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 3px;
+        padding-right: 3px;
+        margin-bottom: 8px;
+        margin-left: 50%;
+        text-decoration:none;
+        cursor: pointer;
+        }
+        body a:hover {
+            text-decoration: none !important;
+            color: #333 !important;
+        }
+        .dataTables_wrapper {
+            position: relative;
+            clear: both;
+            width: 99%;
+            margin-left: 3px;
+        }
+    </style>
+   <!--  <script>
+        function newwin(){
+            var a ='/apex/partnerLeadViewAll?Id='+"{!strId}";
+            var b ="{!strId}";
+            console.log(a);
+            window.open(a,'_top');
+        }
+    </script> -->
+    <div  rendered="{!!isViewAll}"> 
+        <apex:form id="buttonForm"  style="padding-top: 6px; height:25px" rendered="{!!isViewAll}">
+            <!-- <input type="submit" value="View All Leads" onclick="newwin()" class="menuButtonButton" /> -->
+            <a href='/apex/PartnerLeadSectionView?id={!strId}&viewAll=true' class='menuButtonButton' title='View All Leads' target='_blank'>View All Leads</a>
+        </apex:form>
+    </div>
+ <div id="tab2" class="tab_content" style="display:block;width: 100%;">
+        <apex:outputPanel id="result1">
+                <apex:variable value="{!-1}" var="count"/>
+                <apex:pageMessages ></apex:pageMessages>
+                <apex:outputpanel >
+                    <script>
+                        $(document).ready(function() {
+                            var oTable = $('#example1').dataTable({
+                                         /*"sDom": 'R<"H"lfr>t<"F"ip>',*/
+                                          "bStateSave": false,
+                                         /*"sScrollY": "700px",*/
+                                        "bScrollCollapse": true,
+                                        "sPaginationType": "full_numbers",
+                                        "oLanguage": {
+                                            "sSearch": "Apply Search Result filter _INPUT_",
+                                            "sInfo": "Got a total of _TOTAL_ Lead(s) to show (_START_ to _END_)",
+                                            "sInfoEmpty": "No Lead to show",
+                                            "sLoadingRecords": "Please wait - loading...",
+                                            "sLengthMenu": 'Display <select>'+
+                                                '<option value="10">10</option>'+
+                                                '<option value="20">20</option>'+
+                                                '<option value="30">30</option>'+
+                                                '<option value="40">40</option>'+
+                                                '<option value="50">50</option>'+
+                                                '<option value="100">100</option>'+
+                                                '<option value="-1">All</option>'+
+                                            '</select> Lead(s)'
+                                        },
+                                       
+                                       "bProcessing": true,
+                                        /*"bPaginate": false,*/
+                                        "bJQueryUI": true,
+                                        /* "aoColumnDefs": [{ "sWidth": "10%", "aTargets": [ -1 ] }]*/
+                                        "aoColumns": [
+                                            {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+                                            { "sType": "custom_euro_date" }
+                                        ]
+                                    });
+                                    /* new FixedHeader(oTable);*/
+                                    $("tr.odd").live("hover",function(){
+                                        $(this).find('.sorting_1').removeClass('sorting_1');
+                                   });        
+                                    $("tr.even").live("hover",function(){console.log('call'+$(this));
+                                        $(this).find('.sorting_1').removeClass('sorting_1');
+                                   });  
+                                   jQuery.fn.dataTableExt.oSort['custom_euro_date-asc'] = function(x, y) {
+                                         var xVal = getCustomEuroDateValue(x);
+                                         var yVal = getCustomEuroDateValue(y);
+                                         if (xVal < yVal) {
+                                            return -1;
+                                         } else if (xVal > yVal) {
+                                              return 1;
+                                         } else {
+                                                 return 0;
+                                         }
+                                    }
+                                    jQuery.fn.dataTableExt.oSort['custom_euro_date-desc'] = function(x, y) {
+                                        var xVal = getCustomEuroDateValue(x);
+                                        var yVal = getCustomEuroDateValue(y);
+                                        if (xVal < yVal) {
+                                            return 1;
+                                        } else if (xVal > yVal) {
+                                            return -1;
+                                        } else {
+                                            return 0;
+                                        }
+                                    }
+                                    function getCustomEuroDateValue(strDate) {
+                                        var frDatea = $.trim(strDate).split(' ');
+                                        var frTimea = frDatea[1].split(':');
+                                        var frDatea2 = frDatea[0].split('/');
+                                        var x = (frDatea2[2] + frDatea2[1] + frDatea2[0] + frTimea[0] + frTimea[1] + frTimea[2]);
+                                        x = x * 1;
+                                        return x;
+                                    }
+                        } );
+                    </script>
+                    <table cellspacing="0" cellpadding="2" border="0" id='example1' width='100%' class='display'>
+                        <thead>
+                            <tr>
+                                <th style='width:5%'>Lead Name</th>
+                                <th style='width:10%'>Company</th>
+                                <th style='width:10%'>Email</th>
+                                <th style='width:8%'>Phone</th>                            
+                                <th style='width:8%'>Created By</th>
+                                <th style='width:8%'>Status</th>
+                                <th style='width:8%'>Partner Id</th>
+                                <th style='width:12%'>Partner Account</th>
+                                <th style='width:10%'>Estimated Close Date</th>
+                                <th style='width:10%'>Created Date</th>
+                                <th style='width:10%'>Last Modified Date </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <apex:repeat value="{!listWrPartnerLeadInfo}" var="leadInfoObj" >
+                                <apex:variable value="{!count+1}" var="count"/>
+                                    <tr class="{!IF(MOD(count,2)==0,'evenRow','oddRow')} x-grid3-row">
+                                        <td>
+                                          <a href="/{!leadInfoObj.leadId}" target='_blank'>{!leadInfoObj.leadName}</a>
+                                        </td>
+                                        <td><apex:outputText value="{!leadInfoObj.CompanyName}"/> </td>
+                                        <td><apex:outputText value="{!leadInfoObj.email}"/> </td>
+                                        <td><apex:outputText value="{!leadInfoObj.phone}"/></td>
+                                        <td><apex:outputText value="{!leadInfoObj.createdBy}"/></td>
+                                        <td><apex:outputText value="{!leadInfoObj.Status}"/></td>
+                                        <td><apex:outputText value="{!leadInfoObj.partnerId}"/></td>
+                                        <td><apex:outputText value="{!leadInfoObj.accountName}"/></td>
+                                        <td><apex:outputText value="{0,date, MM/dd/yyyy hh:mm:ss a}"> 
+                                                <apex:param value="{!leadInfoObj.EstCloseDate}"/>
+                                            </apex:outputText>
+                                        </td>
+                                        <td><apex:outputText value="{0,date, MM/dd/yyyy hh:mm:ss a}"> 
+                                                <apex:param value="{!leadInfoObj.createdDate}"/>
+                                            </apex:outputText>
+                                        </td>
+                                        <td><apex:outputText value="{0,date, MM/dd/yyyy hh:mm:ss a}" >
+                                                <apex:param value="{!leadInfoObj.lastModifiedDate}"/>
+                                            </apex:outputText>
+                                        </td>
+                                    </tr>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                </apex:outputpanel>
+        </apex:outputPanel>
+ </div>
+</apex:page>

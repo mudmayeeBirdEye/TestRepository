@@ -1,0 +1,48 @@
+<apex:page standardController="com_smartsheet__Smartsheet__c" extensions="com_smartsheet.SmartsheetEditExtension"
+           sidebar="true" showHeader="true" title="{!$Label.view_title}: {!com_smartsheet__Smartsheet__c.Name}" tabStyle="com_smartsheet__Smartsheet__c">
+
+        <!--  Reference custom fields so they are returned by SOQL -->
+        <apex:outputText rendered="false" value="{!com_smartsheet__Smartsheet__c.Name}" />
+        <apex:outputText rendered="false" value="{!com_smartsheet__Smartsheet__c.com_smartsheet__SmartsheetKey__c}" />
+                
+        <apex:sectionHeader title="{!com_smartsheet__Smartsheet__c.Name}" help="{!HelpPageUrl}" />
+
+        <apex:form styleClass="smartsheetForm">
+            <apex:pageBlock title="Smartsheet Detail" mode="maindetail">
+                <apex:pageBlockSection columns="1">
+                	<br />
+                	
+					<apex:repeat value="{!referenceFieldList}" var="field">
+	                    <apex:pageBlockSectionItem rendered="{!NOT(ISBLANK(com_smartsheet__Smartsheet__c[field]))}">            
+	                        <apex:outputLabel value="{!$ObjectType.com_smartsheet__Smartsheet__c.fields[field].label}" />
+	                        <apex:outputField value="{!com_smartsheet__Smartsheet__c[field]}" />
+	                    </apex:pageBlockSectionItem>
+                	</apex:repeat>
+    
+                    <apex:pageBlockSectionItem >            
+                        <apex:outputLabel value="{!$ObjectType.com_smartsheet__Smartsheet__c.fields.Name.label}" for="sheetName" />
+                        <apex:outputField value="{!com_smartsheet__Smartsheet__c.Name}" />
+                    </apex:pageBlockSectionItem>
+                
+                    <apex:pageBlockSectionItem >            
+                        <apex:outputLabel value="{!$ObjectType.com_smartsheet__Smartsheet__c.fields.com_smartsheet__Description__c.label}" for="sheetDescription" />
+                        <apex:outputField value="{!com_smartsheet__Smartsheet__c.com_smartsheet__Description__c}" />
+                    </apex:pageBlockSectionItem>
+    
+                    <apex:pageBlockSectionItem >            
+                        <apex:outputLabel value="{!$Label.view_link_openSmartsheet}" />
+                        <apex:outputPanel >
+                            <a target="_blank" href="/apex/com_smartsheet__SmartsheetApp?ssKey={!com_smartsheet__Smartsheet__c.com_smartsheet__SmartsheetKey__c}">{!com_smartsheet__Smartsheet__c.Name}</a>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+    
+                <apex:pageBlockButtons location="top">
+                    <apex:commandLink action="{!edit}" value="{!$Label.button_edit}" styleClass="btn" style="text-decoration: none;" />
+                    <apex:commandLink action="{!delete}" value="{!$Label.button_delete_link}" styleClass="btn" style="text-decoration: none;" />
+                    <a target="_blank" href="/apex/com_smartsheet__SmartsheetApp?ssKey={!com_smartsheet__Smartsheet__c.com_smartsheet__SmartsheetKey__c}" class="btn" style="text-decoration:none;">{!$Label.view_button_openSmartsheet}</a>
+                </apex:pageBlockButtons>
+                
+            </apex:pageBlock>
+        </apex:form>
+</apex:page>

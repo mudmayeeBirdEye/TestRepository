@@ -1,0 +1,37 @@
+<apex:page >
+
+    <script>
+        var XHide=1;
+        function HiddenForm(a)
+        {
+            if(a==1)
+            {document.getElementById("HiddenForm").style.display="none";XHide=1;}
+            else
+            {document.getElementById("HiddenForm").style.display="block";XHide=0;}
+        }
+</script>
+
+
+<apex:pageBlock >
+
+    <button onclick="    
+    {
+    if(XHide==1)
+        HiddenForm(2);
+    else 
+        HiddenForm(1);
+    }    
+    ">Show/Hide Details</button>
+    
+    <BR/>
+
+    <table border="1" id="HiddenForm" style="display:none;">
+        <tr>
+        <td>Test</td>
+        <td>123</td>
+        </tr>
+    </table>
+        
+</apex:pageBlock>
+
+</apex:page>

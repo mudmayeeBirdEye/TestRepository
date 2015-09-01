@@ -1,0 +1,699 @@
+<apex:page standardController="Opportunity"  extensions="OpportunityDowngrade" >
+ <apex:stylesheet value="{!URLFOR($Resource.Upsell_Style)}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.RCBlockUI, 'blockUI/js/jquery.blockUI.js')}" />
+    <style>
+         .btnDiv {
+            /*width: 100%;*/
+            margin: auto;
+            padding-top:3px;
+            padding-bottom:3px;
+           /* border: 1px solid #A5A6A5;*/
+            margin-top: 5px;
+            margin-bottom: 5px;
+           /* background: #FFF !important;*/
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+           /* -webkit-box-shadow: 0px -71px 101px -19px #DEEBEF inset;*/ 
+            -moz-box-shadow: 0px -71px 101px -19px #DEEBEF inset;
+            text-align: center;
+            }
+            .btn {
+            color:#084B8A !important;
+            background-color:#E16222!important;
+            border: 1px solid #A5A6A5 !important;
+           
+            padding: 9px !important;
+            vertical-align: center;
+        }
+     .btnDivNew {
+        /*width: 95%;*/
+        margin: auto;
+        border: 1px solid skyblue;
+        /* min-height: 100px; */
+        margin-top: 5px;
+        //margin-bottom: 5px;
+        background: #FFF !important;
+        
+        /*-moz-border-radius: 11px;
+        -webkit-border-radius: 11px;
+        border-radius: 11px;*/
+        
+        /*behavior: url({!$Resource.BorderRadiusHTC});
+        box-shadow: 0px 0px 20px 0px skyblue inset;
+        -webkit-box-shadow: 0px 0px 20px 0px skyblue inset;
+        -moz-box-shadow: 0px 0px 20px 0px skyblue inset;*/
+        text-align: center;
+        /*padding:10px;*/
+        padding-top : 3px;
+        padding-bottom : 3px;
+        margin-left:9px;
+    }
+        .bPageBlock .pbTitle {
+            width: auto !important;
+        }
+    </style >
+    <script type="text/javascript"> 
+        function showOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'visible';
+         }
+        
+        function hideOverlay() {
+            var o = document.getElementById('overlay');
+            o.style.visibility = 'hidden';
+         }
+         $(function() {
+            $.blockUI({
+            message : '<div class="preloader"><img src="' + '{!URLFOR($Resource.loading)}' + '" /><div align="center" id="block-ui-msg"><span id="firstmsg">Please wait</span></div></div>',
+            css : {
+            padding : '0',
+            margin : '0',
+            width: '500px',
+            border: 'none',
+            height: '200px',
+            left: '32%',
+            top: '30%',
+            background: 'none'
+            }
+         });
+         $(window).load(function() { $.unblockUI(); });
+         });
+          
+         $('.reasonSelection input:radio').live('click',function() {
+         $('.reasonSelection input:radio').filter(':checked').not(this).removeAttr('checked');
+        });
+                
+        function test()
+             {
+                var theRadioButtonSet = document.getElementsByName('{!$component.theForm.theRadio}');
+                for (var x = 0; x < theRadioButtonSet.length; x++) 
+                {
+                    if (theRadioButtonSet[x].checked) {
+                        alert('You checked : ' + theRadioButtonSet[x].value);
+                    }
+                }
+             }
+     </script>     
+        
+   <apex:pageMessages escape="false" id="error" /> 
+   <apex:form id="formcancellation">
+      <div id="overlay" style="text-align:center;padding-top:190px;"> 
+       <apex:image value="{!$Resource.loading}" ></apex:image>
+     </div>
+       <apex:PageBlock id="pageBlock" rendered="{!toShowMainPanel}">
+       <div  class="btnDivNew" >
+                <apex:outputpanel id="btnsectiontop">    
+                       <apex:commandButton action="{!back}" value="Back" rerender="mainpanel,btnsectiontop,btnsection"
+                            status="Ajaxstatus5"  rendered="{!toShowCustomerSection}"/> 
+                            
+                       <apex:commandButton action="{!updateOpp}"  value="Save" rerender="btnsectiontop,btnsection,errorMsg1"
+                            status="Ajaxstatus5" rendered="{!if((isLostOpportunity && toShowCustomerSection) || !isLostOpportunity,true,false)}"   
+                            style="margin-left:5px;margin-right:5px" />
+                       
+                       <apex:commandButton action="{!next}" value="Next" rendered="{!if(isLostOpportunity && !toShowCustomerSection,true,false)}" 
+                            rerender="mainpanel,btnsectiontop,btnsection" status="Ajaxstatus5"/>
+                        
+                       <apex:commandButton action="{!cancel}" value="Cancel" id="btnCanceltop"/>
+                        
+                       <apex:actionStatus id="Ajaxstatus5" onStart="showOverlay();" onstop="hideOverlay();"/>
+                </apex:outputpanel>
+            </div>
+             <apex:PageBlockSection id="cancellationreason" columns="1">
+                      <apex:outputpanel id="mainpanel"><apex:outputPanel id="errorMsg1">
+                            <apex:dataTable value="{!tempList}" rendered="{!toshowerrorMsg}" var="a" id="theTable1" styleClass="centerAlign" style="width:100%;margin-bottom:5px;background-color: #FFFF99; font-family:TRebuchet MS;font-weight: bold;border:2.5px solid #32588E;-moz-border-radius:9px 9px 9px 9px;border-radius:9px 9px 9px 9px;vertical-align:middle;">
+                                   <apex:column id="thecolumn1" style="vertical-align:middle;width:15%;text-align:center;height:85px;">
+                                      <apex:image value="{!$Resource.WarningRed}"  width="48" height="40" style="padding:5px"  />  
+                                   </apex:column>
+                                   <apex:column id="thecolumn2" style="vertical-align:middle;padding-bottom: 5px;padding-top: 5px;">
+                                       <apex:repeat value="{!errorMsgList}" var="errorvalue">&bull;
+                                        <apex:outputText style="padding:5px;" escape="false" value="{!errorvalue}">
+                                        </apex:outputText><br/>
+                                       </apex:repeat>
+                                   </apex:column>
+                            </apex:dataTable>
+                        </apex:outputPanel>
+                        <apex:outputpanel rendered="{!!toShowCustomerSection}" id="tdw">
+                         <div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="pbTitle"><h2 class="mainTitle" style="font-size:20px;">Select Downgrade Reason</h2></td><td>&nbsp;</td></tr></tbody></table></div> 
+                         <table width="100%"  border="0"  style="border:1px solid #F98400;box-shadow: 0px 0px 20px 0px #F98400 inset;"  cellpadding="5px" cellspacing="5px;">
+                            <tr>
+                                <td rowspan="7" style="vertical-align: middle;">
+                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                        <tr><td>
+                                            <apex:OutputLabel style="font-weight:Bold;" value="Downgrade Details" for=""></apex:OutputLabel>&nbsp;
+                                        </td></tr>
+                                        <tr>
+                                        <td style="border:1px solid #F98400;background:white;">
+                                           <table>
+                                              <tr> 
+                                                <td>
+                                                   <apex:OutputLabel style="font-weight:Bold;text-decoration:underline;font-size:16px;" value="Issue With Opportunity" 
+                                                    for=""></apex:OutputLabel>&nbsp;
+                                                 </td>
+                                                </tr> 
+                                              <tr>  
+                                                <td>  
+                                                     <apex:actionRegion >  
+                                                       <apex:selectRadio value="{!selectedDowngradeReasons}" layout="pageDirection" 
+                                                        styleClass="reasonSelection" > 
+                                                        <apex:actionSupport event="onclick" 
+                                                        reRender="mainpanel,subReasonPanel,RCpanel,subDowngradeOther,subDwnReason,btnsection,
+                                                            btnsectiontop" action="{!onChangeReason}" status="Ajaxstatus4"/>
+                                                        <apex:selectOptions value="{!downgradeReasonOptionLead}"/>
+                                                      </apex:selectRadio>
+                                                    </apex:actionRegion>   
+                                                 </td>
+                                              </tr>
+                                           </table>
+                                               
+                                          <table>
+                                          <tr>
+                                            <td>
+                                              <apex:OutputLabel style="font-weight:Bold;text-decoration:underline;font-size:16px;" 
+                                                value="Lost Opportunity - Who did we lose to?" for="Lost Opportunity">
+                                              </apex:OutputLabel>
+                                              &nbsp;
+                                            </td>
+                                          </tr>
+                                          <!-- <tr>
+                                            <td style="padding-left: 37px;font-size: 13px;">
+                                              <apex:OutputLabel value="Who did we lose to?" for="who_did_we_lose_to">
+                                              </apex:OutputLabel>
+                                              &nbsp;
+                                            </td>
+                                          </tr> -->
+                                          <tr>
+                                            <td>
+                                              <apex:actionRegion >
+                                                <apex:selectRadio value="{!selectedDowngradeReasons}" layout="pageDirection" styleClass="cxSelection">
+                                                  <apex:selectOptions value="{!WhichCXDetailOption}"/>
+                                                  <apex:actionSupport event="onclick" reRender="mainpanel,subReasonPanel,RCpanel,
+                                                    subDowngradeOther,subDwnReason,
+                                                    btnsection,btnsectiontop" action="{!onChangeReason}" status="Ajaxstatus4"/>
+                                                </apex:selectRadio>
+                                                <apex:outputpanel id="RCpanel">
+                                                  <apex:outputpanel rendered="{!showOtherReason}">
+                                                    <span style="Color:Red;margin-left:20px;">
+                                                      *
+                                                    </span>
+                                                  </apex:outputpanel>
+                                                  <apex:inputText value="{!opportunityObj.Specify_other__c}" 
+                                                  rendered="{!showOtherReason}" title="Provide detailed reason"/>
+                                                </apex:outputpanel>
+                                              </apex:actionRegion>
+                                            </td>
+                                          </tr>
+                                        </table>
+                                               
+                                          <!-- <table>
+                                            <tr> 
+                                              <td>
+                                                 <apex:OutputLabel style="font-weight:Bold;text-decoration:underline;font-size:16px;" value="Issue With RingCentral" for=""></apex:OutputLabel>&nbsp;
+                                               </td>
+                                              </tr> 
+                                            <tr>  
+                                              <td> 
+                                                  <apex:actionRegion >
+                                                     <apex:selectRadio value="{!selectedDowngradeReasons}" layout="pageDirection" styleClass="reasonSelection" > 
+                                                      <apex:actionSupport event="onclick" reRender="mainpanel,subReasonPanel,RCpanel,subDowngradeOther,subDwnReason,btnsection,btnsectiontop" action="{!onChangeReason}" status="Ajaxstatus4"/>
+                                                      <apex:selectOptions value="{!downgradeReasonOptionRingCentral}"/>
+                                                     </apex:selectRadio>
+                                                 </apex:actionRegion>   
+                                                 <apex:outputpanel id="RCpanel"> 
+                                                      <apex:outputpanel rendered="{!showOtherReason}"><span style="Color:Red;margin-left:20px;">*</span> </apex:outputpanel> <apex:inputText value="{!opportunityObj.Downgrade_Reason_Other__c}" title="Provide detailed reason" rendered="{!showOtherReason}"/>
+                                                 </apex:outputpanel>
+                                               </td>
+                                            </tr>
+                                         </table> -->
+                                            
+                                             <table>
+                                              <tr>
+                                                <td>
+                                                  <apex:OutputLabel style="font-weight:Bold;text-decoration:underline;font-size:16px;" value="Delayed Opportunity - Future Potential" 
+                                                    for="Delayed Opportunity - Future Potential">
+                                                  </apex:OutputLabel>
+                                                  &nbsp;
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td>
+                                                  <apex:actionRegion >
+                                                    <apex:selectRadio value="{!selectedDowngradeReasons}" layout="pageDirection" styleClass="cxSelection">
+                                                      <apex:selectOptions value="{!DelayedReasonOption}"/>
+                                                      <apex:actionSupport event="onclick" reRender="mainpanel,subReasonPanel,RCpanel,subDowngradeOther,
+                                                        subDwnReason,btnsection,btnsectiontop" action="{!onChangeReason}" status="Ajaxstatus4"/>
+                                                    </apex:selectRadio>
+                                                  </apex:actionRegion>
+                                                </td>
+                                              </tr>
+                                            </table>
+                                           <apex:outputpanel rendered="{!NOT(RecordTypeName == 'VAR Opportunity')}"> 
+                                            <table>
+                                               <tr> 
+                                                 <td>
+                                                    <apex:OutputLabel style="font-weight:Bold;text-decoration:underline;font-size:16px;" value="Retention Downgrade" for=""></apex:OutputLabel>&nbsp;
+                                                  </td>
+                                                 </tr> 
+                                               <tr>  
+                                                 <td>
+                                                     <apex:actionRegion >   
+                                                        <apex:selectRadio value="{!selectedDowngradeReasons}" layout="pageDirection" styleClass="reasonSelection"> 
+                                                         <apex:actionSupport event="onclick" reRender="mainpanel,subReasonPanel,RCpanel,subDowngradeOther,subDwnReason,btnsection,btnsectiontop" action="{!onChangeReason}" status="Ajaxstatus4"/>
+                                                         <apex:selectOptions value="{!downgradeReasonOptionRetention}"/>
+                                                       </apex:selectRadio>
+                                                     </apex:actionRegion>  
+                                                  </td>
+                                               </tr>
+                                            </table>
+                                             
+                                             <table>
+                                                <tr> 
+                                                  <td>
+                                                     <apex:OutputLabel style="font-weight:Bold;text-decoration:underline;font-size:16px;" value="AT&T" for=""></apex:OutputLabel>&nbsp;
+                                                   </td>
+                                                  </tr> 
+                                                <tr>  
+                                                  <td>   
+                                                     <apex:selectRadio value="{!selectedDowngradeReasons}" layout="pageDirection" styleClass="reasonSelection"> 
+                                                      <apex:actionSupport event="onclick" reRender="mainpanel,subReasonPanel,RCpanel,subDowngradeOther,subDwnReason,btnsection,btnsectiontop" action="{!onChangeReason}" status="Ajaxstatus4"/>
+                                                      <apex:selectOptions value="{!downgradeReasonOptionRingATNT}"/>
+                                                    </apex:selectRadio>
+                                                   </td>
+                                                </tr>
+                                             </table>
+                                             </apex:outputpanel> 
+                                            </td>
+                                            
+                                            <!-- Sub downGrade -->
+                                            
+                                            <td style="border:1px solid #F98400;background:white;display: {!IF(selectedDowngradeReasons!=null && atntSection==false,'block','none')};">
+                                             <apex:outputPanel id="subDwnReason" rendered="{!!(atntSection)}">
+                                               <table>
+                                                  <tr><td></td></tr> 
+                                                  <tr>  
+                                                    <td>
+                                                        <apex:outputPanel id="subReasonPanel">
+                                                         <apex:OutputLabel style="font-weight:Bold;text-decoration:underline;font-size:16px;" 
+                                                                value="{!strSubDowngradeRsnLabel}" for="" >
+                                                          </apex:OutputLabel>&nbsp;
+                                                            <apex:outputPanel rendered="{!showSubDowngradeReasonNotBANT}">   
+                                                                <apex:selectRadio value="{!sectedSubDowngradeReason}" layout="pageDirection" > 
+                                                                <apex:actionSupport event="onclick" action="{!onChangeSubReason}" reRender="subDowngradeOther,subDwnReason" status="Ajaxstatus4"/>
+                                                                <apex:selectOptions value="{!SubDowngradeReasonNotBANT}"/>
+                                                                </apex:selectRadio>
+                                                            </apex:outputPanel>
+                                                            
+                                                            <apex:outputPanel rendered="{!showSubDowngradeReasonUnableContact}">   
+                                                                <apex:selectRadio value="{!sectedSubDowngradeReason}" layout="pageDirection" >
+                                                                <apex:actionSupport event="onclick" action="{!onChangeSubReason}" reRender="subDowngradeOther" status="Ajaxstatus4"/>
+                                                                <apex:selectOptions value="{!SubDowngradeReasonUnableContact}"/>
+                                                                </apex:selectRadio>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!showSubDowngradeReasonNotNew}">   
+                                                                <apex:selectRadio value="{!sectedSubDowngradeReason}" layout="pageDirection" >
+                                                                <apex:actionSupport event="onclick" action="{!onChangeSubReason}" reRender="subDowngradeOther" status="Ajaxstatus4"/>
+                                                                <apex:selectOptions value="{!SubDowngradeReasonNotNew}"/>
+                                                                </apex:selectRadio>
+                                                            </apex:outputPanel>
+                                                            <!-- <apex:outputPanel rendered="{!showSubDowngradeReasonBandwidth}">   
+                                                                <apex:selectRadio value="{!sectedSubDowngradeReason}" layout="pageDirection" >
+                                                                <apex:actionSupport event="onclick" action="{!onChangeSubReason}" reRender="subDowngradeOther" status="Ajaxstatus4"/>
+                                                                <apex:selectOptions value="{!SubDowngradeReasonBandwidth}"/>
+                                                                </apex:selectRadio>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!showSubDowngradeReasonConcernsAbout}">   
+                                                                <apex:selectRadio value="{!sectedSubDowngradeReason}" layout="pageDirection" >
+                                                                <apex:actionSupport event="onclick" action="{!onChangeSubReason}" reRender="subDowngradeOther" status="Ajaxstatus4"/>
+                                                                <apex:selectOptions value="{!SubDowngradeReasonConcernsAbout}"/>
+                                                                </apex:selectRadio>
+                                                            </apex:outputPanel> -->
+                                                            <apex:outputPanel rendered="{!toshowHostedPBX}">
+                                                                <apex:selectRadio value="{!sectedSubDowngradeReason}" layout="pageDirection" >
+                                                                  <apex:selectOptions value="{!HostedPBXOption}"/>
+                                                                  <apex:actionSupport event="onclick" reRender="subDowngradeOther" action="{!onChangeSubReason}" 
+                                                                    status="Ajaxstatus4"/>
+                                                                </apex:selectRadio>
+                                                              </apex:outputPanel>
+                                                             <apex:outputPanel rendered="{!toshowOnPremisePBX}">
+                                                                    <apex:selectRadio value="{!sectedSubDowngradeReason}" layout="pageDirection" >
+                                                                  <apex:selectOptions value="{!OnPremisePBXOption}"/>
+                                                                  <apex:actionSupport event="onclick" reRender="subDowngradeOther" action="{!onChangeSubReason}" 
+                                                                  status="Ajaxstatus4"/>
+                                                                </apex:selectRadio>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!showSubDowngradeReasonMissingCriti}">   
+                                                                <apex:selectRadio value="{!sectedSubDowngradeReason}" layout="pageDirection" >
+                                                                <apex:actionSupport event="onclick" action="{!onChangeSubReason}" reRender="subDowngradeOther,subDwnReason" status="Ajaxstatus4"/>
+                                                                <apex:selectOptions value="{!SubDowngradeReasonMissingCriti}"/>
+                                                                </apex:selectRadio>
+                                                            </apex:outputPanel>
+                                                            
+                                                            <!-- <apex:outputPanel rendered="{!showSubDowngradeReasonPrice}">   
+                                                                <apex:selectRadio value="{!sectedSubDowngradeReason}" layout="pageDirection" >
+                                                                <apex:actionSupport event="onclick" action="{!onChangeSubReason}" reRender="subDowngradeOther" status="Ajaxstatus4"/>
+                                                                <apex:selectOptions value="{!SubDowngradeReasonPrice}"/>
+                                                                </apex:selectRadio>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!showSubDowngradeReasonReviews}">   
+                                                                <apex:selectRadio value="{!sectedSubDowngradeReason}" layout="pageDirection" >
+                                                                <apex:actionSupport event="onclick" action="{!onChangeSubReason}" reRender="subDowngradeOther" status="Ajaxstatus4"/> 
+                                                                <apex:selectOptions value="{!SubDowngradeReasonReviews}"/>
+                                                                </apex:selectRadio>
+                                                            </apex:outputPanel> -->&nbsp;
+                                                       
+                                                       <apex:outputpanel id="subDowngradeOther">
+                                                            <apex:outputpanel rendered="{!showSubOtherReason}">
+                                                                <span style="Color:Red;margin-left:20px;">*</span> 
+                                                            </apex:outputpanel>
+                                                            <apex:inputField value="{!opportunityObj.Sub_Downgrade_Reason_Other__c}" 
+                                                                label="Provide detailed reason" rendered="{!showSubOtherReason}"/>
+                                                            <apex:outPutPanel rendered="{!toShowOtherSubCompetitorBox}">
+                                                               <span style="Color:Red;margin-left:20px;">*</span> 
+                                                               <apex:Inputtext style="width:60%;margin-left:27px;" value="{!otherSubCompetitors}">
+                                                               </apex:Inputtext><br/>&nbsp;
+                                                            </apex:outPutPanel>
+                                                        </apex:outputpanel>
+                                                         </apex:outputPanel>
+                                                     </td>
+                                                     <td>
+                                                        <apex:outputPanel rendered="{!(showMissingCriticalOther || showTimeframeOther)}" id="others">
+                                                        <apex:OutputLabel style="font-weight:Bold;" value="Detailed Reason {!IF(showMissingCriticalOther,'(optional)','')}" for=""></apex:OutputLabel>&nbsp;
+                                                        <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                            <tr>
+                                                                <td> 
+                                                                   <table>
+                                                                      <tr>  
+                                                                        <td>
+                                                                           <apex:outputpanel id="timeframeOther"> 
+                                                                            <apex:outputpanel rendered="{!showTimeframeOther}"><span style="Color:Red;margin-left:20px;">*</span> 
+                                                                            </apex:outputpanel><apex:inputField value="{!opportunityObj.Timeframe_greater_than_X_months__c}" 
+                                                                            rendered="{!showTimeframeOther}"/>
+                                                                           </apex:outputpanel>
+                                                                           <apex:outputpanel id="missingCriticalOther"> 
+                                                                            <apex:inputField value="{!opportunityObj.Sub_Downgrade_Reason_Other__c}" 
+                                                                            label="Provide detailed reason" rendered="{!showMissingCriticalOther}"/>
+                                                                           </apex:outputpanel>
+                                                                         </td>
+                                                                      </tr>
+                                                                   </table>
+                                                                </td>
+                                                             </tr>
+                                                        </table>
+                                                       </apex:outputPanel>  
+                                                    </td>
+                                                  </tr>
+                                               </table>
+                                           </apex:outputPanel>
+                                            </td>
+                                         </tr>
+                                    </table> 
+                                </td>
+                           </tr>
+                            <tr>
+                                
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel rendered="{!toshowCouldnotworkingdetail}">
+                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                        <tr>
+                                            <td style="border:1px solid #F98400;background:white;">
+                                               <table>
+                                               <tr><th><u>Couldn't get it working</u></th></tr>
+                                               
+                                                  <tr>  
+                                                    <td>
+                                                       <apex:selectCheckboxes value="{!lstselectedCouldnotworkingdetail}" layout="pageDirection" > 
+                                                            <apex:selectOptions value="{!CouldnotworkingdetailOption}"/>
+                                                       </apex:selectCheckboxes>
+                                                     </td>
+                                                  </tr>
+                                               </table>
+                                            </td>
+                                         </tr>
+                                    </table>
+                                   </apex:outputPanel>  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel rendered="{!toshowmissingfeature}">   
+                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                        <tr>
+                                            <td style="border:1px solid #F98400;background:white;">
+                                               <table>
+                                               <tr><th><u>Missing critical feature</u></th></tr>
+                                                  <tr>  
+                                                    <td>
+                                                        <apex:selectCheckboxes value="{!lstsectedmissingfeature}" layout="pageDirection" > 
+                                                            <apex:selectOptions value="{!missingfeaturedetailOption}"/>
+                                                             <apex:actionSupport event="onclick" reRender="mainpanel" action="{!showdetailCall}" status="Ajaxstatus4"/>
+                                                        </apex:selectCheckboxes>
+                                                     </td>
+                                                  </tr>
+                                                  <tr>   <!-- specifyValue------------->
+                                                    <td>
+                                                         <apex:outPutPanel rendered="{!toshowSpecifyValue}">
+                                                                   <b><span style="Color:Red;">*</span> Please Specify: </b><apex:InputText style="width:55%;margin-left:0px;" value="{!opportunityObj.Specify_value__c}">
+                                                                    </apex:InputText><br/>&nbsp;
+                                                          </apex:outPutPanel>                          
+                                                    </td>
+                                                  </tr>
+                                               </table> 
+                                            </td>
+                                         </tr>
+                                    </table>
+                                   </apex:outputPanel> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <apex:outputPanel rendered="{!toshowOutage}">
+                                    <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                        <tr>
+                                            <td style="border:1px solid #F98400;background:white;">
+                                               <table>
+                                                 <tr><th><u> Outage </u></th></tr>
+                                                  <tr>
+                                                    <td style="vertical-align: middle;">
+                                                      Enter the date of the outage: 
+                                                    </td>  
+                                                    <td>
+                                                      <apex:inputField value="{!opportunityObj.Outage_Date__c}"></apex:inputField> 
+                                                    </td>
+                                                  </tr>
+                                               </table>
+                                            </td>
+                                         </tr>
+                                    </table>
+                                   </apex:outputPanel>  
+                                </td>
+                            </tr>
+                            <tr>
+                                 <td>
+                                     <apex:outputPanel rendered="{!toshowQOsdetail}">     
+                                          <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                <tr>
+                                                    <td style="border:1px solid #F98400;background:white;">
+                                                       <table>
+                                                              <tr><th><u> QoS Voice </u></th></tr>
+                                                              <tr>  
+                                                                  <td>
+                                                                        <apex:selectCheckboxes value="{!lstsectedQOsdetail}" layout="pageDirection" > 
+                                                                            <apex:selectOptions value="{!QOsdetailOption}"/>
+                                                                        </apex:selectCheckboxes>
+                                                                 </td>
+                                                            </tr>
+                                                        </table> 
+                                                    </td>
+                                                 </tr>
+                                           </table>
+                                        </apex:outputPanel> 
+                                 </td>
+                             </tr>
+                             <tr>
+                                <td>
+                                    <apex:outputPanel rendered="{!toshowFax}">     
+                                        <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                            <tr>
+                                                <td style="border:1px solid #F98400;background:white;">
+                                                   <table>
+                                                      <tr><th><u> QoS Fax </u></th></tr>
+                                                      <tr>  
+                                                            <td>
+                                                                  <apex:selectCheckboxes value="{!lstsectedFax}" layout="pageDirection" > 
+                                                                    <apex:selectOptions value="{!FaxOption}"/>
+                                                                  </apex:selectCheckboxes>
+                                                           </td>
+                                                      </tr>
+                                                   </table> 
+                                                </td>
+                                             </tr>
+                                        </table>
+                                    </apex:outputPanel> 
+                                </td>
+                            </tr>
+                        </table>
+                        </apex:outputpanel>
+                        
+                         <apex:outputPanel rendered="{!toShowCustomerSection}">
+                             <div><table border="0" cellpadding="0" cellspacing="0"><tbody>
+                            <tr><td class="pbTitle"><h2 class="mainTitle" style="font-size:20px;">Downgrade Loss</h2></td><td>&nbsp;</td></tr></tbody></table></div> 
+                             <table width="100%"  border="0"  style="border:1px solid #F98400;box-shadow: 0px 0px 20px 0px #F98400 inset;"  cellpadding="5px" cellspacing="5px;">
+                                <tr>
+                                   <td rowspan="5"  style="vertical-align: middle;">
+                                      <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                            <tr>
+                                                <td style="vertical-align: top;">
+                                                    <table width="100%" cellpadding="5px" cellspacing="5px;" 
+                                                        style="border:1px solid #F98400;background:white;"  >
+                                                        <tr>
+                                                            <td>
+                                                               <apex:OutputLabel style="font-weight:Bold;text-decoration:underline;font-size:16px;" value="Why did we lose?" for=""></apex:OutputLabel>&nbsp;
+                                                            </td>
+                                                        </tr> 
+                                                        <tr>  
+                                                            <td>
+                                                                <apex:OutputLabel style="font-weight:Bold;padding-left:20px;font-size: 16px;" value="Issue With RingCentral" 
+                                                                    for=""></apex:OutputLabel>&nbsp; 
+                                                                <apex:actionRegion >
+                                                                   <apex:selectRadio value="{!strSelectedIssueWithRC}" layout="pageDirection" 
+                                                                    styleClass="reasonSelection" > 
+                                                                    <apex:actionSupport event="onclick" reRender="SubIssueWithRCPnl,RCpanel1" 
+                                                                                action="{!onChangeIssueWithRC}" status="Ajaxstatus4"/>
+                                                                    <apex:selectOptions value="{!downgradeReasonOptionRingCentral}"/>
+                                                                   </apex:selectRadio>
+                                                               </apex:actionRegion>   
+                                                               <apex:outputpanel id="RCpanel1"> 
+                                                                    <apex:outputpanel rendered="{!toShowIssueWithRCOther}">
+                                                                        <span style="Color:Red;margin-left:20px;">*</span> </apex:outputpanel> 
+                                                                        <apex:inputText value="{!opportunityObj.Downgrade_Reason_Other__c}" title="Provide detailed reason" 
+                                                                            rendered="{!toShowIssueWithRCOther}"/>
+                                                               </apex:outputpanel>
+                                                            </td>
+                                                        </tr>
+                                                    </table>  
+                                                </td>
+                                           
+                                                <td> 
+                                                   <apex:outputPanel id="SubIssueWithRCPnl">
+                                                   <apex:outputpanel rendered="{!IF(strSelectedIssueWithRC != null && strSelectedIssueWithRC != 
+                                                                                    'Other',true,false)}">                                         
+                                                   <table width="100%" cellpadding="5px" cellspacing="5px" style="border: 1px solid #F98400;">
+                                                       <tr>
+                                                         <td>
+                                                            <apex:OutputLabel style="font-weight:Bold;text-decoration:underline;font-size:16px;" 
+                                                                value="{!strSubIssueWithRCLbl}" for="" >
+                                                            </apex:OutputLabel>&nbsp;
+                                                            <apex:outputPanel rendered="{!showSubDowngradeReasonBandwidth}">   
+                                                                    <apex:selectRadio value="{!strSelectedSubIssueWithRC}" layout="pageDirection" >
+                                                                    <apex:actionSupport event="onclick" action="{!onChangeSubIssueWithRC}" 
+                                                                        reRender="SubRCIssue,subDowngradeOther1" status="Ajaxstatus4"/>
+                                                                    <apex:selectOptions value="{!SubDowngradeReasonBandwidth}"/>
+                                                                    </apex:selectRadio>
+                                                             </apex:outputPanel> 
+                                                             <apex:outputPanel rendered="{!showSubDowngradeReasonConcernsAbout}">   
+                                                                 <apex:selectRadio value="{!strSelectedSubIssueWithRC}" layout="pageDirection" >
+                                                                 <apex:actionSupport event="onclick" action="{!onChangeSubIssueWithRC}" 
+                                                                    reRender="SubRCIssue,subDowngradeOther1" status="Ajaxstatus4"/>
+                                                                 <apex:selectOptions value="{!SubDowngradeReasonConcernsAbout}"/>
+                                                                 </apex:selectRadio>
+                                                             </apex:outputPanel>
+                                                             <apex:outputPanel rendered="{!showSubDowngradeReasonMissingCriti}">   
+                                                                 <apex:selectRadio value="{!strSelectedSubIssueWithRC}" layout="pageDirection" >
+                                                                 <apex:actionSupport event="onclick" action="{!onChangeSubIssueWithRC}" 
+                                                                    reRender="SubRCIssue,subDowngradeOther1" status="Ajaxstatus4"/>
+                                                                 <apex:selectOptions value="{!SubDowngradeReasonMissingCriti}"/>
+                                                                 </apex:selectRadio>
+                                                             </apex:outputPanel>
+                                                             
+                                                             <apex:outputPanel rendered="{!showSubDowngradeReasonPrice}">   
+                                                                 <apex:selectRadio value="{!strSelectedSubIssueWithRC}" layout="pageDirection" >
+                                                                 <apex:actionSupport event="onclick" action="{!onChangeSubIssueWithRC}" 
+                                                                    reRender="SubRCIssue,subDowngradeOther1" status="Ajaxstatus4"/>
+                                                                 <apex:selectOptions value="{!SubDowngradeReasonPrice}"/>
+                                                                 </apex:selectRadio>
+                                                             </apex:outputPanel>
+                                                             <apex:outputPanel rendered="{!showSubDowngradeReasonReviews}">   
+                                                                 <apex:selectRadio value="{!strSelectedSubIssueWithRC}" layout="pageDirection" >
+                                                                 <apex:actionSupport event="onclick" action="{!onChangeSubIssueWithRC}" 
+                                                                    reRender="SubRCIssue,subDowngradeOther1" status="Ajaxstatus4"/> 
+                                                                 <apex:selectOptions value="{!SubDowngradeReasonReviews}"/>
+                                                                 </apex:selectRadio>
+                                                             </apex:outputPanel>&nbsp;
+                                                             <apex:outputpanel id="subDowngradeOther1"> 
+                                                               <apex:outputpanel rendered="{!toShowSubIssueWithRCOther}">
+                                                                <span style="Color:Red;margin-left:20px;">*</span> 
+                                                                <apex:inputField value="{!opportunityObj.Sub_Downgrade_Reason_Other__c}" 
+                                                                label="Provide detailed reason" rendered="{!toShowSubIssueWithRCOther}"/>
+                                                               </apex:outputpanel>
+                                                           </apex:outputpanel>
+                                                        </td>
+                                                        <td>
+                                                            <apex:outputpanel id="SubRCIssue">
+                                                            <apex:outputPanel rendered="{!showMissingCriticalOther}" >
+                                                             <apex:OutputLabel style="font-weight:Bold;" 
+                                                                value="Detailed Reason {!IF(showMissingCriticalOther,'(optional)','')}" for="">
+                                                             </apex:OutputLabel>&nbsp;
+                                                             <table width="100%" cellpadding="5px" cellspacing="5px;">
+                                                                 <tr>
+                                                                     <td> 
+                                                                        <table>
+                                                                           <tr>  
+                                                                             <td>
+                                                                                <apex:outputpanel id="missingCriticalOther1"> 
+                                                                                 <apex:inputField value="{!opportunityObj.Sub_Downgrade_Reason_Other__c}" 
+                                                                                    label="Provide detailed reason" 
+                                                                                    rendered="{!showMissingCriticalOther}"/>
+                                                                                </apex:outputpanel>
+                                                                             </td>
+                                                                           </tr>
+                                                                        </table>
+                                                                     </td>
+                                                                  </tr>
+                                                             </table>
+                                                            </apex:outputPanel>
+                                                            </apex:outputpanel>  
+                                                        </td>
+                                                    </tr> 
+                                                 </table>
+                                                 </apex:outputpanel>
+                                                 </apex:outputPanel>    
+                                                </td>
+                                           </tr>
+                                       </table>  
+                                     </td>
+                                  </tr>
+                              </table>
+               </apex:outputPanel>  
+               
+             </apex:outputpanel>
+            </apex:PageBlockSection>
+            
+              
+            <div  class="btnDivNew">
+                <apex:outputpanel id="btnsection">    
+                       <apex:commandButton action="{!back}" value="Back" rerender="mainpanel,btnsectiontop,btnsection"
+                            id="btnCrtOpp3" status="Ajaxstatus4"  rendered="{!toShowCustomerSection}"/> 
+                            
+                       <apex:commandButton action="{!updateOpp}"  value="Save" rerender="btnsectiontop,btnsection,errorMsg1"
+                            id="btnCrtOpp" status="Ajaxstatus4" 
+                            rendered="{!if((isLostOpportunity && toShowCustomerSection) || !isLostOpportunity,true,false)}"
+                            style="margin-left:5px;margin-right:5px" />
+                       
+                       <apex:commandButton action="{!next}" value="Next" rerender="mainpanel,btnsectiontop,btnsection"
+                            id="btnCrtOpp1" status="Ajaxstatus4"  rendered="{!if(isLostOpportunity && !toShowCustomerSection,true,false)}"/>
+                       
+                        <apex:commandButton action="{!cancel}" value="Cancel" id="btnCancel"/>
+                        
+                        <apex:actionStatus id="Ajaxstatus4" onStart="showOverlay();" onstop="hideOverlay();"/>
+                </apex:outputpanel>
+           </div>
+        </apex:PageBlock>
+        <apex:outputField value="{!opportunityObj.Downgrade_Reason_Other__c}" rendered="false" />
+        <apex:outputField value="{!opportunityObj.Timeframe_greater_than_X_months__c}" rendered="false" />
+        <apex:outputField value="{!opportunityObj.Brand_Name__c}" rendered="false" />
+        <apex:outputField value="{!opportunityObj.What_will_cx_use_for_their_phone_system__c}" rendered="false" />
+    </apex:form>
+ </apex:page>

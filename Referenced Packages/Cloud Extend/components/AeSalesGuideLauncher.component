@@ -1,0 +1,52 @@
+<apex:component controller="ce4sf20_001.AeSecurityTokenCE" access="global">
+  <apex:attribute name="objectType" access="global" required="true" type="String" description="The type of record the sales guides will be used with for example Account when used with accounts." />
+  <apex:attribute name="objectId"   access="global" required="true" type="String" description="The id of the object to be used as the context of the guides.  For example Account.Id for use accounts."/>
+  <apex:attribute name="guideName"  access="global" required="true" type="String" description="If a specific Sales Guide is to be displayed, its name goes here."/>
+  <apex:attribute name="buttonName" access="global" required="true" type="String" description="The label of the button."/>
+  <apex:attribute name="extraInfo"  access="global" required="false" type="String" description="For reporting purposes extra info to be displayed in cloud extend reports go here."/>
+  <apex:attribute name="width"      access="global" required="false" default="1024" type="String" description="Width of popup window."/>
+  <apex:attribute name="height"     access="global" required="false" default="400" type="String" description="Height of popup window."/>  
+
+    <script type="text/javascript">
+        // create launcher script 'activevos_ce4sf_guideLauncher' if not already defined.
+      if (!window.activevos_ce4sf_guideLauncher) {
+          window.activevos_ce4sf_guideLauncher = function(aGuideName, aObjType, aObjId, aWidth, aHeight) {
+          
+               // get extraInfo from component args
+               var extraInfo = "{!extraInfo}";
+               // if extra info is not supplied, then use object's name as extra info.
+               if(extraInfo === "") {
+                  // use objectName if objectType is given and it is not '_any'. In the latter case use 'Home Sales Guides' (for AeHomePageGuides).
+                  extraInfo = ("{!objectType}" !== "" && "{!objectType}" !== "_any") ?  "{!JSENCODE(objectName)}" : "Home Sales Guides";
+               }
+          
+               var theUrl = '{!guideNavigatorUrl}'
+                        + '?aepToken={!securityToken}'
+                        + '&host-ObjectType=' + aObjType
+                        + '&host-ObjectId=' + aObjId
+                        + '&host-OrganizationId={!$Organization.Id}'
+                        + '&host-SessionId={!$Api.Session_ID}'
+                        + '&host-SessionURL={!$Api.Enterprise_Server_URL_270}'
+                        + '&host-UserId={!userId}'
+                        + '&host-ExtraInfo=' + encodeURIComponent(extraInfo)
+                        + '&guideName=' + encodeURIComponent(aGuideName)
+                        + '&nwl=false';
+                         
+               // add user locale, timezone and currency info query string.
+               theUrl += '&lang_sfdc={!language}';
+               theUrl += '&lang={!locale}';
+               theUrl += '&host-UserLocale={!locale}';
+               theUrl += '&__currencySymbol='  + encodeURIComponent('{!JSENCODE(currencySymbol)}');
+               theUrl += '&__timeZoneOffset='  + encodeURIComponent('{!JSENCODE(timeZoneOffset)}');
+               theUrl += '&host-UserTimeZone=' + encodeURIComponent('{!JSENCODE(timeZoneName)}');
+                                                  
+               var win = window.open(theUrl, '_blank', 'status=0,toolbar=0,menubar=0,location=0,width=' + aWidth + ',height=' + aHeight);
+               win.focus();
+          };
+      }
+    </script>
+    <apex:form >
+    <apex:commandButton onclick="javascript:activevos_ce4sf_guideLauncher('{!guideName}', '{!objectType}', '{!objectId}','{!width}', '{!height}');" 
+         value="{!buttonName}"/>
+    </apex:form>    
+</apex:component>

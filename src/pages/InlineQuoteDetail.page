@@ -1,0 +1,239 @@
+<!---------------------------------------------------------------------------------------------------------------
+* Project Name..........: Quoting Tool 3.0                                                                      *
+* File..................: InlineQuoteDetail.Page                                                                *
+* Version...............: 1.0                                                                                   *
+* Created by............: Simplion Technologies                                                                 *
+* Created Date..........: 3/7/2014                                                                              *
+* Last Modified by......: Simplion Technologies                                                                 *
+* Last Modified Date....: 3/7/2014                                                                              *
+* Description...........: Its been used for showing inline details of products/cart/quote under Opportunity -   *
+*                         detail page.                                                                          *
+---------------------------------------------------------------------------------------------------------------->
+<apex:page extensions="InlineQuoteDetailCls" standardController="opportunity" showHeader="false" sidebar="false">
+    <style>
+        .btnDiv {
+            /*width: 95%;*/
+            margin: auto;
+            border: 1px solid #A5A6A5;
+            /* min-height: 100px; */
+            margin-top: 5px;
+            //margin-bottom: 5px;
+            background: #FFF;
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+            /*behavior: url({!$Resource.BorderRadiusHTC});*/
+            box-shadow: 0px -48px 54px -20px #236FBD inset;
+            -webkit-box-shadow: 0px -48px 54px -20px #236FBD inset;
+            -moz-box-shadow: 0px -48px 54px -20px #236FBD inset;   
+            /*text-align: center;*/
+            padding:10px;
+        }
+        .btn {
+            color: #084B8A !important;
+            border: 1px solid #A5A6A5 !important;
+            padding: 8px !important;
+        }
+        tr.headerRow th {
+            background: white !important;
+            box-shadow: 0px -48px 54px -20px #1797C0 inset;
+            height: 20px !important;
+            color: white !important;
+            font-weight: bolder !important;
+            font-size: 13px !important;
+        }
+        a:link {text-decoration:none;}    /* unvisited link */
+        a:visited {text-decoration:none;} /* visited link */
+        a:hover {text-decoration:underline;}   /* mouse over link */
+        a:active {text-decoration:underline;}
+        .dataCell {
+            background: white !important;
+        }
+    </style>
+    <apex:form >
+    
+        <div class="btnDiv">
+            <table style="width:100%">
+                <tr>
+                    <td>                        
+                        <font style="padding-left:20px;color: white !important;font-weight: bolder;font-size: 14px;">{!sectionHeader}</font>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="btnDiv" style="box-shadow:none;background:#F7F7F5;">
+            <div>
+                <div>
+                    <table style="text-align: center;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="33%">
+                                <div style="width: 100px;box-shadow: 0px -48px 54px -20px orange inset;height: 24px;border-radius: 10px 10px 0px 0px;font-size: 14px;font-weight: bolder;padding-top: 10px;">
+                                    <a id="productLink" href="{!hrefText}productquoteWizard?oppId={!oppObj.Id}&response=product&quoteid={!primaryQuoteObj.id}" target="_parent">Product</a>
+                                </div>
+                            </td>
+                            <td width="33%">
+                                <div style="width: 100px;box-shadow: 0px -48px 54px -20px orange inset;height: 24px;border-radius: 10px 10px 0px 0px;font-size: 14px;font-weight: bolder;padding-top: 10px;">
+                                    <a id="productLink" href="{!hrefText}productquoteWizard?oppId={!oppObj.Id}&response=product&quoteid={!primaryQuoteObj.id}" target="_parent">Cart - ({!IF(lineItemList == null, '0', lineItemList.size)})</a>
+                                </div>
+                            </td>
+                            <td width="33%">
+                                <div style="width: 100px;box-shadow: 0px -48px 54px -20px #236FBD inset;height: 24px;border-radius: 10px 10px 0px 0px;font-size: 14px;font-weight: bolder;padding-top: 10px;">
+                                    <a id="productLink" href="{!hrefText}productquoteWizard?oppId={!oppObj.Id}&response=quote&quoteid={!primaryQuoteObj.id}" target="_parent">
+                                        {!IF(primaryQuoteObj.Quote_Type__c=='Agreement','Agreement','Quote')}
+                                    </a>
+                                </div>
+                            </td>   
+                        </tr>
+                    </table>
+                    <table width="100%">                
+                        <tr>
+                            <td style="width:10%">
+                                <b>Name:</b>
+                            </td>
+                            <td style="width:28%">
+                                 <apex:outputField value="{!primaryQuoteObj.name}"/>
+                            </td>
+                            <td style="width:10%">
+                                <b>Initial Term:</b>
+                            </td>
+                            <td style="width:25%">
+                            		<!-- --------------------------------------------------------As/Simplion/8/19/2014------------------------------------------ -->
+                                  <apex:outputField value="{!primaryQuoteObj.Initial_Term__c}"/><apex:outputpanel rendered="{!!isBlank(primaryQuoteObj.Initial_Term__c)}">&nbsp;Months</apex:outputpanel>
+                            </td>
+                            <td style="width:12%">
+                                <b>Initial Total Amount:</b>
+                            </td>
+                            <td style="width:25%">                                
+                                <apex:outputField value="{!primaryQuoteObj.Total_Initial_Amount__c}"/>
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <td style="width:10%">
+                                <b>Valid Until Date:</b>
+                            </td>
+                            <td style="width:25%">
+                                 <!-- <apex:outputField value="{!primaryQuoteObj.Valid_Until_Date__c}"/> -->
+                                 <apex:outputText value="{!primaryQuoteValidDate}"/>
+                            </td>
+                            <td style="width:10%">
+                                <b>Renewal Term:</b>
+                            </td>
+                            <td style="width:25%">
+                            	<!-- --------------------------------------------------------As/Simplion/8/19/2014------------------------------------------ -->
+                                 <apex:outputField value="{!primaryQuoteObj.Renewal_Term__c}"/><apex:outputpanel rendered="{!!isBlank(primaryQuoteObj.Renewal_Term__c)}">&nbsp;Months</apex:outputpanel>
+                            </td>
+                            <td style="width:10%">
+                                <b>First Year Cost of Service:</b>
+                            </td>
+                            <td style="width:25%">
+                                <apex:outputField value="{!primaryQuoteObj.Total_12M_Amount__c}"/>
+                            </td>
+                        </tr>
+                        <tr style="{!IF(isRCPartnerUser,'display:none;','display:')}">
+                            <td style="width:10%">
+                                <b>Approved Status:</b>
+                            </td>
+                            <td style="width:25%">
+                                <apex:outputField value="{!primaryQuoteObj.Approved_Status__c}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div><br/>
+            
+            <table width="100%" class="list">
+                <thead>
+                    <tr class="headerRow">
+                        <th>Product Name</th>
+                        <th>Quantity</th>    
+                        <th style="{!IF(isRCPartnerUser,'display:none;','display:')}">List Price</th>
+                        <th>Your Price</th>
+                        <th style="{!IF(isRCPartnerUser,'display:none;','display:')}">Effective Discount</th>
+                        <th style="{!IF(isRCPartnerUser,'display:none;','display:')}">Discount Amount</th>
+                        <th style="{!IF(isRCPartnerUser,'display:none;','display:')}">Discount Type</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:repeat value="{!lineItemList}" var="item">
+                        <tr class="dataRow">
+                            <td class="dataCell">{!item.RC_Product_Line_Item__r.Product_Name__c}</td>
+                            <td class="dataCell">{!item.Quantity__c}</td>
+                            <!-- --------------------------------------------------------As/Simplion/8/19/2014 start------------------------------------------ -->
+                            <td class="dataCell" style="{!IF(isRCPartnerUser,'display:none;','display:')}"><apex:outputText value="{0, number,###,###,###,###,##0.00}"><apex:param value="{!item.List_Price__c}"/></apex:outputText></td>
+                            <td class="dataCell"><apex:outputText value="{0, number,###,###,###,###,##0.00}"><apex:param value="{!item.Effective_Price__c}"/></apex:outputText></td>
+                            <td class="dataCell" style="{!IF(isRCPartnerUser,'display:none;','display:')}"><apex:outputText value="{0, number,###,###,###,###,##0.00}"><apex:param value="{!item.Effective_Discount__c}"/></apex:outputText></td>
+                            <td class="dataCell" style="{!IF(isRCPartnerUser,'display:none;','display:')}"><apex:outputText value="{0, number,###,###,###,###,##0.00}"><apex:param value="{!item.Discount__c}"/></apex:outputText></td>
+                            <td class="dataCell" style="{!IF(isRCPartnerUser,'display:none;','display:')}">{!item.Discount_Type__c}</td>
+                            <td class="dataCell"><apex:outputText value="{0, number,###,###,###,###,##0.00}"><apex:param value="{!item.Total_Price__c}"/></apex:outputText></td>
+                        	<!-- --------------------------------------------------------As/Simplion/8/19/2014 ends------------------------------------------ -->
+                        </tr>
+                    </apex:repeat>
+                    <apex:outputPanel rendered="{!IF(lineItemList.size=0,true,false)}">
+                        <tr>
+                            <td colspan="7">
+                                <font style="padding-left:10px;font-weight: bolder;font-size: 14px;">No record to display....</font>
+                            </td>
+                        </tr>
+                    </apex:outputPanel>
+                </tbody>
+            </table>            
+        </div>  
+        <!-- <apex:outputpanel rendered="{!IF(quoteList != null && quoteList.size != 0, 'true', 'false')}"> -->
+            <div class="btnDiv">
+                <table style="width:100%">
+                    <tr>
+                        <td>                        
+                            <font style="padding-left:20px;color: white !important;font-weight: bolder;font-size: 14px;">Other Quotes</font>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding-top:5px;">
+                <table width="100%" class="list" >
+                    <thead>
+                        <tr class="headerRow">
+                            <th>Quotes</th>
+                            <th>Valid Until</th>
+                            <th>Initial Term</th>
+                            <th>Renewal Term</th>
+                            <th>Initial Total Amount</th>
+                            <th>First Year Cost of Service</th>
+                            <th style="{!IF(isRCPartnerUser,'display:none;','display:')}">Approved Status</th>
+                            <th>Is Primary</th>
+                            <th>Created Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!wrapperList}" var="qObj">
+                            <tr class="dataRow">
+                                <td class="dataCell">
+                                    <a href="{!hrefText}productquoteWizard?oppId={!oppObj.Id}&response=quote&quoteId={!qObj.quoteId}" target="_parent" style="padding-left:20px;">{!qObj.quoteName}</a>
+                                </td>
+                                <!-- --------------------------------------------------------As/Simplion/8/19/2014------------------------------------------ -->
+                                <td class="dataCell">{!qObj.validUntilDate} </td>
+                                <td class="dataCell">{!qObj.initialTerm}  <apex:outputpanel rendered="{!!isBlank(qObj.initialTerm)}">&nbsp;Months</apex:outputpanel></td>
+                                <td class="dataCell">{!qObj.renewalTerm}  <apex:outputpanel rendered="{!!isBlank(qObj.renewalTerm)}">&nbsp;Months</apex:outputpanel></td>
+                                <td class="dataCell"><apex:outputText value="{0, number,###,###,###,###,##0.00}"><apex:param value="{!qObj.initialAmount}"/></apex:outputText></td>
+                                <td class="dataCell"><apex:outputText value="{0, number,###,###,###,###,##0.00}"><apex:param value="{!qObj.M12Amount}"/></apex:outputText></td>
+                                <td class="dataCell" style="{!IF(isRCPartnerUser,'display:none;','display:')}">{!qObj.approvedStatus}</td>
+                                <td class="dataCell">{!qObj.IsPrimary}</td>
+                                <td class="dataCell">{!qObj.createdDate}</td>
+                                <!-- --------------------------------------------------------As/Simplion/8/19/2014------------------------------------------ -->
+                            </tr>
+                        </apex:repeat>
+                        <apex:outputPanel rendered="{!IF(quoteList.size=0,true,false)}">
+                            <tr>
+                                <td colspan="9">
+                                    <font style="padding-left:10px;font-weight: bolder;font-size: 14px;">No records available.</font>
+                                </td>
+                            </tr>
+                        </apex:outputPanel>
+                    </tbody>
+                </table>
+            </div>
+        <!-- </apex:outputpanel> -->
+    </apex:form>
+</apex:page>

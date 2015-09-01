@@ -1,0 +1,5 @@
+<apex:page showHeader="false" sidebar="false"  StandardController="System_Status__c" >
+    
+   <apex:outputText value="{!System_Status__c.Public_Description__c}" escape="false"></apex:outputText>
+    
+</apex:page>

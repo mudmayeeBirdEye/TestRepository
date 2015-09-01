@@ -1,0 +1,38 @@
+<apex:page controller="ce4sf20_001.AeSecurityTokenCE" contentType="application/json; charset=utf-8" sidebar="false" showHeader="false" standardStylesheets="false" 
+     cache="true">{
+  "host" : {
+      "objectType" : "{!$CurrentPage.parameters.objectType}",
+      "objectId" : "{!$CurrentPage.parameters.objectId}" ,
+      "OrganizationId" : "{!$Organization.Id}",
+      "SessionId" : "{!$Api.Session_ID}",
+      "SessionURL" : "{!$Api.Enterprise_Server_URL_270}",
+      "UserId" : "{!userId}"
+  },
+  "ce4sf" : {
+     "navigatorUrl" : "{!guideNavigatorUrl}",
+     "designerUrl" : "{!guideDesignerUrl}",
+     "hostUrl": "{!hostUrl}",
+     "version": {
+         "major" : 3,
+         "minor" : 4,
+         "iteration" : 0
+     }
+  },
+  "user" : {
+    "id" : "{!$User.Id}",
+    "username" : "{!$User.Username}",
+    "first" : "{!$User.FirstName}",
+    "last" : "{!$User.LastName}",
+    "alias" : "{!$User.Alias}",
+    "email" : "{!$User.Email}",
+    "lang_sfdc" : "{!language}",
+    "lang" : "{!locale}",
+    "locale" : "{!locale}",
+    "multicurrency" : {!multiCurrency},
+    "currency" : "{!currency}",
+    "currencySymbol" : "{!currencySymbol}",
+    "timezoneName" : "{!timeZoneName}",
+    "timezoneId" : "{!timeZoneId}",
+    "timezoneOffsetMs" : {!timeZoneOffsetMs}
+  }  
+}</apex:page>

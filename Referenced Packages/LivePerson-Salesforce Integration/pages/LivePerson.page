@@ -1,0 +1,1568 @@
+<apex:page cache="true" controller="LP.LivePerson" action="{!init}" showheader="false" id="page" >
+            
+          <head> 
+           
+            <style>
+            .myLookup 
+            {
+            background : url("/img/alohaSkin/lookup_bg.png") repeat-x scroll 0 0 #FFFFFF;
+            height:50px;
+            width:100%;
+            }
+           .pageTitleIcon {
+                  background-image:url("/img/sprites/master.png");
+                  background-position:0 -1202px;
+                  height:32px;
+                  width:32px;
+                  }
+                  .bDescr
+                  {
+                  font-size:0.9em;
+                  margin:0;
+                  padding-left:43px;
+                  }
+                  .content { 
+                        float:left;
+                        padding-left:5px;
+                        vertical-align:middle;
+                        width:200%;
+                        
+                        } 
+                  .bPageTitle {
+                  background-color:transparent;
+                  color:#000000;
+                  padding:0;
+                  }    
+                  
+                   .bPageTitleptBody {
+                  background-color:transparent;
+                  color:#000000;
+                  padding:0;
+                  }
+
+            .en
+            {
+                filter:alpha(opacity=20);
+                -moz-opacity:.20;
+                opacity:.20;
+            }
+                   
+                  /* Z-index of #mask must lower than #boxes .window */  
+                  #maskMP {  
+                    position:absolute;  
+                    z-index:9000;  
+                    background-color:#000;  
+                    display:none;  
+                  }  
+                      
+                  #boxesMP .myWindowMP {  
+                    position:absolute;  
+                    max-width:400px;   
+                    height:auto;  
+                    display:none;  
+                    z-index:9999;  
+                    /*padding:20px;*/
+                    background-color: #FFFFFF;  
+                  }  
+                    
+                    
+                  /* Customize your modal window here, you can add background image too */  
+                  #boxesMP #dialogMP {
+                        height:auto;   
+                        background-color:white;        
+                        max-width:350px;   
+                    /*max-height:300px;
+                    overflow-y:scroll;*/ 
+                  }  
+                                    
+                  .bPageBlock .pbTitle {
+                        width:100%;
+                  }
+                  
+                  
+                  
+                  .lookupIcon, .genericPageBlockTable .lookupIconOn {
+                        padding-bottom:1px;
+                        vertical-align:middle;
+                        display: none;
+                        }
+                        
+                  .width {
+                      width:65%;
+                      min-width:146px;
+                      max-width:400px;
+                      background: white;
+                  }
+                  
+                  p {
+                  padding: 0 0 1em;
+                  }
+                  .msg_list {
+                  margin: 0px;
+                  padding: 0px;
+ 
+                  }
+            
+                  .msg_body {
+
+                  }
+                  
+                  .waitingGif{
+
+                        padding-bottom: 20px;
+                        padding-top: 20px;
+                        width: 35px;
+                        height: 35px;
+                        
+                  }
+    			#createBlock{
+
+    			}
+    			
+    			input,select{
+    				font-size: 11px;
+    			}
+    			.padTB
+    			{
+    				padding: 5px 0;
+    			}
+    			
+    			#campaignSearch{
+    				min-height: 364px;
+    			}
+    			#searchResTable{
+    				min-height: 255px;
+    			}
+    			.myLookupW
+    			{
+    				width: 400px;
+    			}
+				body{
+					cursor:default;
+				}
+				.lookupIcon {				
+					height:16px;
+					width:19px;
+				}
+				.lookupIconOn {				
+					height:18px;
+					width:19px;
+				}
+				
+                  </style>  
+             
+              </head>
+              
+            <apex:form id="myform">
+            
+            <a href="#campaignSearch" name="modal"  id = "Modal_href"></a>
+          
+            <apex:outputPanel id="CampaignFieldPanel"  style="z-index:10000; display:none;">                                                                                                
+                        <table cellpadding="0" cellspacing="0">
+                              <tr class="dataRow last" >
+                                    <td style="vertical-align: top"><apex:inputText id="searchCampaignInputText" disabled="true"/></td>
+                                    <td style="vertical-align: top">                                                                
+                                          <img title="Campaign Name Lookup (New Window)" onclick= "setObjectToSearch('Campaign');" onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onblur="this.className = 'lookupIcon';" class="lookupIcon" src='/s.gif' alt="Campaign Name Lookup (New Window)" style="display : block !important;"/>
+                                    </td>
+                                    <td style="vertical-align: middle"><a href="javascript:void(0);" onclick= "selectRefFromModal('Campaign','','');">Clear</a></td>
+                              </tr>                  
+                        </table>
+                  </apex:outputPanel>
+                  <apex:outputPanel id="ContactFieldPanel"  style="z-index:10000; display:none;">                                                                                             
+                        <table cellpadding="0" cellspacing="0">
+                              <tr class="dataRow last" >
+                                    <td style="vertical-align: top"><apex:inputText id="searchContactInputText" disabled="true"/></td>
+                                    <td style="vertical-align: top">                      
+                                          <img title="Contact Name Lookup (New Window)" onclick= "setObjectToSearch('Contact');" onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onblur="this.className = 'lookupIcon';" class="lookupIcon" src='/s.gif' alt="Contact Name Lookup (New Window)" style="display : block !important;"/>
+                                    </td>
+                                    <td style="vertical-align: middle"><a href="javascript:void(0);" onclick= "selectRefFromModal('Contact','','');">Clear</a></td>
+                              </tr>                   
+                        </table>
+                  </apex:outputPanel>
+                  <apex:outputPanel id="AccountFieldPanel"  style="z-index:10000; display:none;">                                                                                             
+                        <table cellpadding="0" cellspacing="0">
+                              <tr class="dataRow last" >
+                                    <td style="vertical-align: top"><apex:inputText id="searchAccountInputText" disabled="true"/></td>
+                                    <td style="vertical-align: top">                      
+                                          <img title="Account Name Lookup (New Window)" onclick= "setObjectToSearch('Account');" onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onblur="this.className = 'lookupIcon';" class="lookupIcon" src='/s.gif' alt="Account Name Lookup (New Window)" style="display : block !important;"/>
+                                    </td>
+                                    <td style="vertical-align: middle"><a href="javascript:void(0);" onclick= "selectRefFromModal('Account','','');">Clear</a></td>
+                              </tr>                   
+                        </table>
+                  </apex:outputPanel>     
+
+                                                           
+           <apex:commandButton id="refreshObjectLookUpResult" action="{!searchForReferenceList}" oncomplete="displayResultDiv();" rerender="LookUpRefList" style="display:none;" />           
+           <apex:commandButton id="refreshSelectedObjectFields"  action="{!changeDisplayOfCreateNewRecordFields}"  oncomplete="initializeObjectFieldList();HideWaitingPopup();" rerender="objectFieldList,helpField" style="display:none;"  />      
+           
+           <apex:inputHidden value="{!referenceObjectNameToSearch}" id="referenceObjectNameToSearchID"/>
+           <apex:inputHidden value="{!searchtext}" id="searchtextID"/> 
+
+           <apex:inputHidden value="{!CampaignIDselected}" id="theHiddenCampaignID"/>
+           <apex:inputHidden value="{!AccountIDselected}" id="theHiddenAccountID"/>
+           <apex:inputHidden value="{!ContactIDselected}" id="theHiddenContactID"/>
+           
+           
+            <c:WaitPopup id="myPopup" />
+                
+            
+            <apex:includeScript value="{!$Resource.LP__LivePerson_Script}"/>
+            <script type='text/javascript' src='/js/prototype-1.6.0.2.js'></script>
+                  
+            <apex:inputHidden value="{!queryString}" id="lpParams"/>
+            <apex:inputHidden value="{!selectedTableFilter}" id="selectedTableFilter"/>
+            <apex:inputHidden value="{!isMoreFilters}" id="isMoreFilters"/>
+            <apex:outputText value="{!isSuccessLogCreated}" id="isSuccessLogCreated"  style="display:none"/>
+            <apex:outputText value="{!isSuccessRecordCreated}" id="isSuccessRecordCreated"  style="display:none"/>
+            <apex:inputText value="{!isAdvancedModeSelected}" id="isAdvancedModeSelected"  style="display:none"/>
+            <apex:inputHidden value="{!OriginalQueryString}" id="OriginalQueryString"/>
+            <apex:commandButton id="loadNewSearch" style="display:none" action="{!LoadNewSearch}" />
+            
+            <table style="width:100%;padding-right:10px">
+            <tr>
+            <td width="100%"><img src="{!$Resource.SF_logo}"/></td> 
+            <td style="padding-right:10px;white-space:nowrap;"><a target="_blank" href="/apex/LivePerson_Help">Help for this Page <img src="/s.gif" alt="Help"  class="helpIcon" title="Help"/></a></td>
+            </tr>
+            </table>
+            
+            <!--  modal pop up>
+            <apex:outputPanel id="myCreatePopupBlock1" layout="none"> -->
+            
+                  <div id="boxesMP">  
+                              
+                     <apex:outputPanel id="LookUpRefList" layout="none">      
+                      <!-- #customize your modal window here -->  
+                        
+                        <div id="campaignSearch" class="myWindowMP" >
+                              <apex:inputText value="{!OrderBY}" style="display:none" id="orderBy"/>
+                              <apex:inputText value="{!isSearch}" style="display:none" id="isSearch"/>
+                              <apex:inputText value="{!isSorting}" style="display:none" id="isSorting"/>
+                              
+                              <div class="myLookup myLookupW" id="myLookup"> 
+                                    <div class="bPageTitle">
+                                          <div class="bPageTitleptBody">                        
+                                                <div class="content">
+                                                      <img title="" class="pageTitleIcon" alt="" src="/s.gif"/>
+                                                      <div style="padding-top:10px"><h1>Lookup</h1></div>       
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>  
+                              <div class="lookup">
+                        
+                                    <div style="padding-left:10px">
+                                          <label for="lksrch">Search</label>
+                                          &nbsp;&nbsp;
+                                          <apex:inputText id="lksrch" maxlength="80" size="20" value="{!searchtext}" />
+                                          <apex:commandButton value=" Go! " rerender="lookUpResultPageBlock" title="Go!" action="{!search}" id="search" onclick="refTable()" oncomplete="document.body.style.cursor = 'default';" style="font-size:10px; padding:1px 2px;"/>
+                                          <div class="bDescr">You can use "*" as a wildcard next to other characters to improve your search results.</div>
+                                    </div>
+                              </div>
+                              
+                              <br/>
+                             
+                              <div id="searchResTable">
+
+                             <apex:pageBlock id="lookUpResultPageBlock" tabstyle="task">
+                                 <apex:outputPanel rendered="{!(1 >ssc.ResultSize)}" >       
+                                       No records were found based on your criteria
+                                 </apex:outputPanel>
+                                 
+                       		     <apex:actionStatus id="lookup_searching_sts" stopText="">
+                                               <apex:facet name="start">
+                                               <div style="text-align: center;">Searching...</div> 
+                                               </apex:facet>
+                                   </apex:actionStatus>
+                                    
+                                 <apex:outputPanel rendered="{!ssc.ResultSize >= 1}" >    
+                                       <apex:outputPanel rendered="{!ssc.ResultSize > ssc.PageSize}" >
+                                       <div class="relatedListsearchHeader"><div class="pSearchShowMore">
+                                            
+                                              <apex:image styleClass="prevArrow" value="/img/search_prevarrow.gif" width="5" height="8" rendered="{!ssc.HasPrevious}"/>
+                                              <apex:commandLink styleClass="pShowMore" value="Previous Page" action="{!ssc.previous}" rendered="{!ssc.HasPrevious}" rerender="lookUpResultPageBlock" status="1lookup_searchingFirstLoad" onClick="disableSearchBtn();" oncomplete="enableSearchBtn();"/> 
+                                                <apex:image styleClass="prevArrow" value="/img/search_prevarrow_disabled.gif" width="5" height="8" rendered="{!!ssc.HasPrevious}"/>
+                                              <apex:outputText styleClass="pShowLess noLink" value="Previous Page" rendered="{!!ssc.HasPrevious}"/> 
+                                              <apex:outputPanel rendered="{!referenceObjectNameToSearch == 'Campaign'}">
+                                                <span class="itemsRange">({!ssc.PageSize*ssc.PageNumber-ssc.PageSize+1}-{!ssc.PageSize*ssc.PageNumber-ssc.PageSize+campaignsLookUpList.size})</span>
+                                              </apex:outputPanel>
+                                              <apex:outputPanel rendered="{!referenceObjectNameToSearch == 'Contact'}">
+                                                <span class="itemsRange">({!ssc.PageSize*ssc.PageNumber-ssc.PageSize+1}-{!ssc.PageSize*ssc.PageNumber-ssc.PageSize+contactsLookUpList.size})</span>
+                                              </apex:outputPanel>
+                                              <apex:outputPanel rendered="{!referenceObjectNameToSearch == 'Account'}">
+                                                <span class="itemsRange">({!ssc.PageSize*ssc.PageNumber-ssc.PageSize+1}-{!ssc.PageSize*ssc.PageNumber-ssc.PageSize+accountsLookUpList.size})</span>
+                                              </apex:outputPanel>
+                                              <apex:commandLink styleClass="pShowMore" value="Next Page" action="{!ssc.next}" rendered="{!ssc.HasNext}" rerender="lookUpResultPageBlock"  status="1lookup_searchingFirstLoad" onClick="disableSearchBtn()" oncomplete="enableSearchBtn();"/> 
+                                              <apex:image styleClass="nextArrow" value="/img/search_nextarrow.gif" width="5" height="8" rendered="{!ssc.HasNext}"/>
+                                              <apex:outputText styleClass="pShowLess noLink" value="Next Page" rendered="{!!ssc.HasNext}"/> 
+                                              <apex:image styleClass="nextArrow" value="/img/search_nextarrow_disabled.gif" width="5" height="8" rendered="{!!ssc.HasNext}"/>
+                                             
+                                       </div></div>
+                                          </apex:outputPanel>
+                                          
+                                     <apex:pageBlockTable value="{!campaignsLookUpList}" var="camp" rendered="{!referenceObjectNameToSearch == 'Campaign'}">
+                                         <apex:column >
+                                               <apex:facet name="header"><span onclick="orderby('Name')"><u>Name</u></span></apex:facet>
+                                             <a href="javascript:void(0);" onclick= "selectRefFromModal('Campaign','{!camp.Name}','{!camp.Id}');" class="close">{!camp.Name}</a>
+                                         </apex:column>
+                                       </apex:pageBlockTable>
+                                       <apex:pageBlockTable value="{!contactsLookUpList}" var="con" rendered="{!referenceObjectNameToSearch == 'Contact'}">
+                                         <apex:column >
+                                               <apex:facet name="header"><span onclick="orderby('Name')"><u>Name</u></span></apex:facet>
+                                             <a href="javascript:void(0);" onclick= "selectRefFromModal('Contact','{!con.Name}','{!con.Id}');" class="close">{!con.Name}</a>
+                                         </apex:column>
+                                       </apex:pageBlockTable>
+                                       <apex:pageBlockTable value="{!accountsLookUpList}" var="acc" rendered="{!referenceObjectNameToSearch == 'Account'}">
+                                         <apex:column >
+                                               <apex:facet name="header"><span onclick="orderby('Name')"><u>Name</u></span></apex:facet>
+                                             <a href="javascript:void(0);" onclick= "selectRefFromModal('Account','{!acc.Name}','{!acc.Id}');" class="close">{!acc.Name}</a>
+                                         </apex:column>
+                                       </apex:pageBlockTable>
+                                   </apex:outputPanel>
+                              	 <script type="text/javascript">
+									document.getElementById('{!$Component.myform.search}').disabled = false;
+								
+								 </script>
+                           </apex:pageBlock>
+                           </div>
+                            <div style="text-align: center; padding-bottom:5px;">  
+                                    <input type="button" value="Close" class="close btn"  onclick="document.getElementById('closeModal').click();" id = "closeModal" style = "margin-top: -10px; font-size:10px; padding:1px 2px;"/>
+                              </div>
+                        </div>
+                        </apex:outputPanel>
+                      <!-- Do not remove div#mask, because you'll need it to fill the whole screen -->    
+                      <div id="maskMP"></div>  
+                  </div> 
+                  
+            
+         <!--  END modal pop up>-->
+            
+            
+            
+        
+            
+            
+            <apex:tabPanel switchType="client" selectedTab="searchTab" id="theTabPanel"  style="display:none;">
+
+                <apex:tab label="Search" name="searchTab" id="searchTabId" >
+                <div id="msgSearchTable" style="display:none">
+                     <apex:pagemessages id="msgSearch"/>
+                </div>
+                
+                 
+            
+            <div id="searchArea" style="background-color:#D9D9D9;border:solid 1px #999999;padding-bottom:5px;padding-top:7px;padding-left:10px">
+            <span style="text-align:left;font-weight:bold">Search In</span>&nbsp;&nbsp;
+                   <select style="font-size:8pt;align:right" onchange="selectValidList(this.options[this.selectedIndex].value,true);" id="listObj" >
+                    <option value="All" selected="true" >All</option>
+                    <option value="Lead">Lead</option>
+                    <option value="Contact">Contact</option>
+                    <option value="Account">Account</option>
+                    <option value="Opportunity">Opportunity</option>
+                    <option value="Case">Case</option>
+                   </select>
+                   
+            <div  style="padding-left:10px;padding-top:10px;padding-bottom:4px;" id="divSearchByKeyWord">
+                  <span style="font-weight:bold;padding-left:0px">By Keywords</span>&nbsp; 
+                  
+               
+                  <div onmouseover="myaddMouseOver(this);" onfocus="myaddMouseOver(this);" onMouseOut="myaddMouseOut(this);"  style="display:inline;" >
+                              <img title="Use operators such as AND, OR, and AND NOT to refine your search. Put quotation marks around multiple keywords to perform an exact phrase match, for example: call John Smith. Add an asterisk to the end of your keyword to search for items that start with the word, for example, acme*." class="infoIcon" alt="" src="/s.gif" />                
+                  </div> 
+                 
+                 
+                  
+                 <br/>
+                        
+                          <apex:inputText value="{!SearchKeyWord}" style="width:400px;font-size:11px"/>
+                           &nbsp;
+                          <div style="display:inline;" >
+                             &nbsp;<apex:commandButton value="Search" onclick="showWaitingPopup();" action="{!refresh}" />
+                             <a href="javascript:void(0)" title="To reset the Keywords search to the above values click" onclick="setOriginalQueryString();">reset</a>
+                             </div>
+                        <div style="padding-top:8px;padding-left:0px;" id="advancedOption"><a href="javascript:void(0)" onclick="showAdvanced(this);" >Advanced Search...</a></div>
+                  
+            </div>
+            
+            <div style="padding-left:10px;">
+            <table border="0" style="display:none" cellpading="0" cellspacing="0" width="auto"  id="tableFilterId">
+                 
+                 <tr>
+                        <td width="100px">
+                              <span style="text-align:left;padding-left:0px; padding-right:0;font-size:11px;font-weight:normal">Field</span>
+                        </td>
+                       
+                        <td width="180px">
+                              <span style="text-align:left;padding-right:0;font-size:11px;font-weight:normal;padding-left:0px">Operator</span>
+                        </td>
+                        
+                        <td width="80px">
+                              <span style="text-align:left;padding-right:0;font-size:11px;font-weight:normal;padding-left:0px">Value</span>
+                        </td>
+                       
+                         <td width="100px">
+                            &nbsp;
+                        </td>
+                   </tr>
+                   
+                          <apex:repeat value="{!MYLIST}" var="mList">
+                                   
+                                        <div id="{!mList.objName}FieldsType" style="display:none">
+                                             <apex:selectList size="1">
+                                                 <apex:selectOptions value="{!mList.fieldsType}"></apex:selectOptions>
+                                             </apex:selectList>
+                                        </div>
+                                  
+                                    <apex:repeat value="{!mList.filterRow}" var="filterRowI" >
+                                          
+                                          <tr id="TR1" class="TR-Repeat-{!mList.objName}" > 
+                                              <td valign="top" width="100px" style="text-align:left">
+                                                  <div style="font-size:8pt;">  
+                                                        <apex:selectList value="{!filterRowI.searchField}" size="1" onchange="updateOperator(this);" style="font-size:8pt;">
+                                                           <apex:selectOptions value="{!mList.fields}"></apex:selectOptions> 
+                                                        </apex:selectList>
+                                                      
+                                                        <apex:inputHidden value="{!filterRowI.searchFieldType}" />
+                                                  </div>
+                                              </td> 
+                                              
+                                              <td valign="top" width="180px" style="text-align:left">
+                                                   <div style="font-size:8pt;"> 
+                                                      <apex:selectList id="o331" value="{!filterRowI.operator}" size="1" style="font-size:8pt;width:180px">
+                                                          <apex:selectOption ItemLabel="--None--" Itemvalue=""></apex:selectOption>     
+                                                          <apex:selectOption ItemLabel="equals" Itemvalue="e"></apex:selectOption>
+                                                          <apex:selectOption ItemLabel="not equal to" Itemvalue="n"></apex:selectOption>
+                                                          <apex:selectOption ItemLabel="starts with" Itemvalue="s"></apex:selectOption>
+                                                          <apex:selectOption ItemLabel="contains" Itemvalue="c"></apex:selectOption>
+                                                          <apex:selectOption ItemLabel="does not contain" Itemvalue="k"></apex:selectOption>
+                                                          <apex:selectOption ItemLabel="less than" Itemvalue="l"></apex:selectOption>
+                                                          <apex:selectOption ItemLabel="greater than" Itemvalue="g"></apex:selectOption>
+                                                          <apex:selectOption ItemLabel="less or equal" Itemvalue="m"></apex:selectOption>
+                                                          <apex:selectOption ItemLabel="greater or equal" Itemvalue="h"></apex:selectOption>
+                                                          <apex:selectOption ItemLabel="includes" Itemvalue="u"></apex:selectOption>
+                                                          <apex:selectOption ItemLabel="excludes" Itemvalue="x"></apex:selectOption>
+                                                      </apex:selectList>
+                                                 </div>
+                                              </td>
+                                              <td width="80px" id="tdtxt" style="text-align:left">
+                                                 <div style="font-size:8pt;">
+                                                     <apex:inputText id="displayid" value="{!filterRowI.display}" style="display:none"></apex:inputText>
+                                                     <apex:inputText id="o341" value="{!filterRowI.searchValue}" style="font-size:8pt"></apex:inputText>  
+                                                 </div>
+                                                
+                                              </td>
+                                              
+                                              <td style="font-size:12px;font-family:Arial;vertical-align:middle;text-align:left;font-size:8pt;white-space: nowrap;" >
+                                                       <apex:outputPanel rendered="{!filterRowI.RowIndex != ListSize}" >
+                                                                                    AND
+                                                       </apex:outputPanel>
+                                                       
+                 
+                                              </td>
+                                        </tr>
+                                        
+                                    </apex:repeat>
+                            </apex:repeat>
+                      
+                        </table>
+                        </div>  
+                         <div class="searchFilterButtons productButtons" style="padding-left:10px;padding-top:8px;display:none" id="actionSearch">
+                            <apex:commandButton value="Search" onclick="showWaitingPopup();" action="{!manualSearch}" />
+                                &nbsp;
+                            <a href="javascript:void(0);" id="clearFilter"  onclick="if(!this.disabled)clearFilters();">
+                            Clear Filters</a>
+                            <span style="display:none">Clear Filters</span>                                                                           
+                        </div>
+    </div>      
+    
+    
+    
+
+             
+              
+              <apex:commandButton id="idGoToManualCreation" action="{!goToManualCreation}" value="ManualCreation" style="display:none"/>
+              
+              <apex:inputCheckbox value="{!needToSuggestManualCreation}" id="needToSuggest" style="display:none"/>
+             
+             
+    
+            <br/> 
+ 
+            <apex:actionStatus onstart="startLogChat();" onstop="stopLogChat();" id="logChatActionStatus"/>
+           
+          
+            <!-------------- LEAD ----------->
+  <apex:pageBlock title="Leads" tabstyle="Lead" rendered="{!showLeads && IsLeadAccessible}" id="p1">
+                <apex:pageBlockTable value="{!leads}" var="aLead">
+                    <apex:column headerValue="Action" headerTitle="Action" rendered="{!displayLogAChat && IsLeadUpdateable}">
+                        
+                         <a href="javascript:void(0)" onclick="simulateClick(this);">Log a Chat</a>
+                         <apex:commandLink status="logChatActionStatus"  action="{!createActivity}" style="display :none" value="Log a Chat"  rerender="go,msgSearch,msgCreate,isSuccessLogCreated"> <!--  -->
+                            <apex:param name="selectedWhatId" value="Lead"/>
+                            <apex:param name="selectedWhoId" value="{!aLead.id}" />
+                        </apex:commandLink>
+                        
+                    </apex:column>
+                    <apex:column headerValue="Name">
+                        <apex:outputlink value="/{!aLead.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!aLead.name}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Lead.Fields.title.Label}">
+                        <apex:outputField value="{!aLead.Title}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Lead.Fields.Phone.Label}">
+                        <apex:outputField value="{!aLead.Phone}"  />
+                    </apex:column>                      
+                   
+                    <apex:column headerValue="{!$ObjectType.Lead.Fields.company.Label}">
+                            <apex:outputField value="{!aLead.company}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Lead.Fields.email.Label}">
+                            <apex:outputField value="{!aLead.email}" />                    
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Lead.Fields.Status.Label}">
+                            <apex:outputField value="{!aLead.Status}" />                    
+                    </apex:column>
+                    
+                    <apex:column headerValue="Owner">
+                        <apex:outputlink value="/{!aLead.owner.id}" target="{!target}">
+                                  {!aLead.Owner.Alias}
+                        </apex:outputlink>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+         
+            <!-------------- Contact ----------->
+            <apex:pageBlock title="Contacts" tabstyle="Contact" rendered="{!showContacts && IsContactAccessible}" id="p2">
+                <apex:pageBlockTable value="{!contacts}" var="aContact">
+                    <apex:column headerValue="Action" headerTitle="Action" rendered="{!displayLogAChat && IsContactUpdateable}">
+                         <a href="javascript:void(0)" onclick="simulateClick(this);">Log a Chat</a>
+                         <apex:commandLink style="display:none" status="logChatActionStatus" rerender="go,msgSearch,msgCreate,isSuccessLogCreated" action="{!createActivity}"  value="Log a Chat" >
+                            <apex:param name="selectedWhatId" value="Contact"/>
+                            <apex:param name="selectedWhoId" value="{!aContact.id}" />
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column headerValue="Name" headerTitle="Name">
+                        <apex:outputlink value="/{!aContact.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!aContact.name}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.Account.fields.name.label}">
+                            
+                        <apex:outputlink value="/{!aContact.AccountId}{!fullscreen}" target="{!target}">
+                           <apex:outputField value="{!aContact.AccountId}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Account.Fields.Site.Label}" >
+                          <apex:outputField value="{!aContact.Account.Site}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Contact.Fields.Phone.Label}">
+                               <apex:outputField value="{!aContact.phone}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Contact.Fields.email.Label}">
+                          <apex:outputField value="{!aContact.email}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="Contact Owner Alias" headerTitle="Contact Owner Alias">
+                        <apex:outputlink value="/{!aContact.owner.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!aContact.Owner.Alias}" />
+                        </apex:outputlink>
+                    </apex:column>
+               
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            
+             <!-------------- Account ----------->
+            <apex:pageBlock title="Accounts" tabstyle="Account" rendered="{!showAccounts && IsAccountAccessible}" id="p3">
+                <apex:pageBlockTable value="{!accounts}" var="aAccount">
+                    <apex:column headerValue="Action" headerTitle="Action" rendered="{!displayLogAChat && IsAccountUpdateable}">
+                         <a href="javascript:void(0)" onclick="simulateClick(this);">Log a Chat</a>
+                         <apex:commandLink style="display:none" status="logChatActionStatus" rerender="go,mylog,msgSearch,msgCreate,isSuccessLogCreated" action="{!createActivity}"  value="Log a Chat" >
+                            <apex:param name="selectedWhatId" value="Account" />
+                            <apex:param name="selectedWhoId" value="{!aAccount.id}" />
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column headerValue="Account Name" headerTitle="Account Name">
+                        <apex:outputlink value="/{!aAccount.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!aAccount.name}" />
+                        </apex:outputlink>
+                    </apex:column>
+                   
+                    <apex:column headerValue="{!$ObjectType.Account.Fields.site.Label}">
+                              <apex:outputField value="{!aAccount.site}" />
+                    </apex:column>
+                  
+                    <apex:column headerValue="{!$ObjectType.Account.Fields.phone.Label}">
+                              <apex:outputField value="{!aAccount.phone}" />                    
+                    </apex:column>
+                    
+                    
+                    <apex:column headerValue="Account Owner Alias" headerTitle="Account Owner Alias">
+                        <apex:outputlink value="/{!aAccount.owner.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!aAccount.Owner.Alias}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            <!-------------- Opportunity ----------->
+            <apex:pageBlock title="Opportunities" tabstyle="Opportunity" rendered="{!showOpportunities && IsOpportunityAccessible}" id="p4">
+                <apex:pageBlockTable value="{!opportunities}" var="aOpportunity">
+                    <apex:column headerValue="Action" headerTitle="Action" rendered="{!displayLogAChat && IsOpportunityUpdateable}">
+                         <a href="javascript:void(0)" onclick="simulateClick(this);">Log a Chat</a>
+                         <apex:commandLink style="display:none" status="logChatActionStatus" rerender="go,msgSearch,msgCreate,isSuccessLogCreated" action="{!createActivity}"  value="Log a Chat" >
+                            <apex:param name="selectedWhatId" value="Opportunity"/>
+                            <apex:param name="selectedWhoId" value="{!aOpportunity.id}" />
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column headerValue="Opportunity Name" headerTitle="Opportunity Name">
+                        <apex:outputlink value="/{!aOpportunity.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!aOpportunity.name}" />
+                        </apex:outputlink>
+                    </apex:column>
+                   
+                    <apex:column headerValue="Account Name" headerTitle="Account Name">
+                            <apex:outputlink value="/{!aOpportunity.AccountId}{!fullscreen}" target="{!target}">
+                                <apex:outputField value="{!aOpportunity.AccountId}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Account.Fields.site.Label}">
+                                <apex:outputField value="{!aOpportunity.Account.Site}" />                    
+                    </apex:column>
+                   
+                    
+                    <apex:column headerValue="{!$ObjectType.Opportunity.Fields.StageName.Label}">
+                                <apex:outputField value="{!aOpportunity.StageName}" />                                        
+                    </apex:column>
+                   
+                    <apex:column headerValue="{!$ObjectType.Opportunity.Fields.closeDate.Label}">
+                                <apex:outputField value="{!aOpportunity.closeDate}" />                                                            
+                    </apex:column>
+                    
+                    
+                    <apex:column headerValue="Opportunity Owner Alias" headerTitle="Opportunity Owner Alias">
+                        <apex:outputlink value="/{!aOpportunity.owner.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!aOpportunity.Owner.Alias}" />
+                        </apex:outputlink>
+                    </apex:column>
+          
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            
+             <!-------------- Case ----------->
+            <apex:pageBlock title="Cases" tabstyle="Case" rendered="{!showCases && IsCaseAccessible}" id="p5">
+                <apex:pageBlockTable value="{!cases}" var="aCase">
+                    <apex:column headerValue="Action" headerTitle="Action" rendered="{!displayLogAChat && IsCaseUpdateable}">
+                         <a href="javascript:void(0)" onclick="simulateClick(this);">Log a Chat</a>
+                         <apex:commandLink style="display:none" status="logChatActionStatus" rerender="go,msgSearch,msgCreate,isSuccessLogCreated" action="{!createActivity}"  value="Log a Chat" >
+                            <apex:param name="selectedWhatId" value="Case"/>
+                            <apex:param name="selectedWhoId" value="{!aCase.id}" />
+                        </apex:commandLink>
+                    </apex:column>
+                   
+                    <apex:column headerValue="{!$ObjectType.Case.Fields.caseNumber.Label}" >
+                        <apex:outputlink value="/{!aCase.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!aCase.caseNumber}" />
+                        </apex:outputlink>
+                    </apex:column>
+                   
+                    <apex:column headerValue="{!$ObjectType.Case.Fields.subject.Label}">
+                        <apex:outputlink value="/{!aCase.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!aCase.subject}" />
+                        </apex:outputlink>
+                    </apex:column>
+                   
+                    <apex:column headerValue="{!$ObjectType.Case.Fields.Status.Label}">
+                                    <apex:outputField value="{!aCase.Status}" />
+                    </apex:column>
+                   
+                    <apex:column headerValue="{!$ObjectType.Case.Fields.CreatedDate.Label}">
+                              <apex:outputField value="{!aCase.CreatedDate}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="Case Owner Alias" headerTitle="Case Owner Alias">
+                        <apex:outputlink value="/{!aCase.owner.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!aCase.Owner.Alias}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            
+            <apex:outputLabel rendered="{!HasResult == false}" value="No records were found based on your criteria."></apex:outputLabel>
+            
+            </apex:tab>
+
+                
+                
+                <!------------------------------TAB CREATE-------------------------->
+                
+                
+        <apex:tab label="Create" name="createTab" id="createTabId" >                  
+         
+        	<div id="msgCreateTab" style="display:none"> <apex:pagemessages id="msgCreate" escape="false"/> </div>
+                  
+			<div id="createBlock">
+
+				<div class="msg_list">
+				  <a href="#dialogMP" name="modal" id="modalID" style="display: none;"></a>
+		  		  <table cellspacing="0" width="100%" class="padTB">
+			  		  <tr>
+			  		  	<td style="width: 50px;">Create In</td>
+			  		  	<td >
+				  		  	<apex:selectList id="selectObjectComboBox" value="{!selectedObjToCreate}" size="1" onchange="showWaitingPopup();getNewObjectFields(this.value);">
+							  <apex:selectOptions value="{!objToCreate}"></apex:selectOptions>
+							</apex:selectList> 
+			  		  	</td>
+			  		  	<td > <apex:commandButton value="Create&Log Chat" styleClass="btn2" onclick="putInOriginalInputText(); showWaitingPopup();" action="{!createNewRecord}"/></td>
+			  		  	<td style="width: 13px;"><img title="The record will be created based on the SalesForce - LivePerson Mapping definitions and the values sent by LiverPerson Alert." class="helpIcon" alt="Help" src="/s.gif"/></td>	  		  	
+			  		  </tr>
+		  		  </table>
+
+
+				       
+				  <div>
+		
+					<apex:pageBlock id="objectFieldList" tabStyle="LivePerson_Settings__tab">
+					  
+					  <apex:facet name="header">   
+					  	<div class="pbHeader">
+						  <table cellspacing="0" cellpadding="0" border="0">
+						    <tbody>
+						      <tr>
+						        <td class="pbTitle"> 
+						        	<table cellpadding="0" cellspacing="0">
+						        		<tr>
+							        		<td width="20px"> <span id="plusMinus" class="minus_head" style="width: 15px; height:15px;" onClick="togglePanel(this)"></span></td>
+							        		<td><h3 style="display: inline;"> Record details </h3></td>
+						        		</tr>
+						        	</table>					          
+						        </td>
+						        <td>
+						        	<!-- <input type="button" value="Create and &amp Log a Chat" onclick=""/> -->
+						        </td>
+						      </tr>
+						    </tbody>   
+						  </table>
+						</div>  
+					  </apex:facet>
+
+	   	
+					<div class="msg_body" id="msgBox">   
+					  <a href="#" id="hrefID" class="close"></a>
+					  <apex:actionFunction name="createNewRecord" action="{!createNewRecord}" />
+	  
+					  <apex:outputPanel rendered="{!chatIdExist}" id="pan">
+						<div style="color: red;">
+						Chat Id {!chatId} already exists!
+						</div>
+						You can create a record but it will not be attached to a
+						chat transcript and an Activity will not be created
+					  </apex:outputPanel>
+					  
+					  <apex:pageBlockTable id="fTable"  value="{!objectFieldAndValueList}" var="field" title="fill {!selectedObjToCreate} fields" columns="4">
+						<apex:column headerValue="Name" headerTitle="Name">
+						  <apex:outputText value="{!field.FieldName}" />
+						</apex:column>
+						<apex:column headerValue="Value">
+						  <apex:inputText value="{!field.FieldValue}" />
+						</apex:column>
+					  </apex:pageBlockTable>
+					  <apex:outputPanel id="searchResultPanel" layout="block"
+					  style="position:absolute; margin-top:-1px;">
+						<div id="searchResultDiv" class="width" style="display:none;">
+						  <apex:selectList id="sl" multiselect="false"  onclick="putSelectionIntoField(this);" size="4" styleclass="width">
+							<apex:selectOptions value="{!returnedObjectReferenceList}" />
+						  </apex:selectList>
+						</div>
+					  </apex:outputPanel>
+					  
+					  </div>
+					</apex:pageBlock>
+				  </div>
+				</div>
+			</div>
+               
+       
+            
+            <apex:pageBlock title="Leads" tabstyle="Lead" rendered="{!showCreatedLeads}">   
+                <apex:pageBlockTable value="{!leadCreateResults}" var="createdLead" title="Leads"> <!-- rendered="{!showCreatedLeads}"> --> 
+                    <apex:column headerValue="Name" headerTitle="Name">
+                       
+                        <apex:outputlink value="/{!createdLead.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!createdLead.name}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    
+                   <apex:column headerValue="{!$ObjectType.Lead.Fields.title.Label}">
+                        <apex:outputField value="{!createdLead.Title}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Lead.Fields.Phone.Label}">
+                        <apex:outputField value="{!createdLead.Phone}"  />
+                    </apex:column>     
+                    
+                    <apex:column headerValue="{!$ObjectType.Lead.Fields.company.Label}">
+                        <apex:outputlink value="/{!createdLead.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!createdLead.company}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    
+                              <apex:column headerValue="{!$ObjectType.Lead.Fields.email.Label}">
+                            <apex:outputField value="{!createdLead.email}" />                    
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Lead.Fields.Status.Label}">
+                            <apex:outputField value="{!createdLead.Status}" />                    
+                    </apex:column>
+                    
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            <apex:pageBlock title="Contacts" tabstyle="Contact" rendered="{!showCreatedContacts}">  
+                <apex:pageBlockTable value="{!contactCreateResults}" var="createdContact"> <!--  rendered="{!showCreatedContacts}">-->
+                             <apex:column headerValue="Name" headerTitle="Name">
+                        <apex:outputlink value="/{!createdContact.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!createdContact.name}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    
+                              <apex:column headerValue="Account Name" headerTitle="Account Name">
+                            <apex:outputField value="{!createdContact.AccountId}" />
+                    </apex:column>
+                    
+                               <apex:column headerValue="{!$ObjectType.Account.Fields.Site.Label}" >
+                          <apex:outputField value="{!createdContact.Account.Site}" />
+                    </apex:column>
+                    
+                              <apex:column headerValue="{!$ObjectType.Contact.Fields.Phone.Label}">
+                               <apex:outputField value="{!createdContact.phone}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Contact.Fields.email.Label}">
+                          <apex:outputField value="{!createdContact.email}" />
+                    </apex:column>
+                    
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            <apex:pageBlock title="Accounts" tabstyle="Account" rendered="{!showCreatedAccounts}">
+                
+                <apex:pageBlockTable value="{!accountCreateResults}" var="createdAccount" title="Accounts"> <!-- rendered="{!showCreatedAccounts}"> --> 
+                    <apex:column headerValue="Account Name" headerTitle="Account Name">
+                        <apex:outputlink value="/{!createdAccount.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!createdAccount.name}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Account.Fields.Site.Label}">
+                               <apex:outputField value="{!createdAccount.site}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Account.Fields.Phone.Label}">
+                          <apex:outputField value="{!createdAccount.phone}" />
+                    </apex:column>
+                    
+                </apex:pageBlockTable>
+                
+                </apex:pageBlock>
+            
+            <apex:pageBlock title="Opportunities" tabstyle="Opportunity" rendered="{!showCreatedOpportunities}">    
+                <apex:pageBlockTable title="Opportunities" value="{!opportunityCreateResults}" var="createdOpportunity"> <!-- rendered="{!showCreatedOpportunities}"> -->
+                    <apex:column headerValue="Opportunity Name" headerTitle="Opportunity Name">
+                        <apex:outputlink value="/{!createdOpportunity.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!createdOpportunity.name}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    <apex:column headerValue="Account Name" headerTitle="Account Name">
+                            <apex:outputField value="{!createdOpportunity.AccountId}" />
+                    </apex:column>
+
+                     <apex:column headerValue="{!$ObjectType.Account.Fields.Site.Label}">
+                               <apex:outputField value="{!createdOpportunity.Account.Site}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Opportunity.Fields.StageName.Label}">
+                               <apex:outputField value="{!createdOpportunity.StageName}" />
+                    </apex:column>
+                    
+                   <apex:column headerValue="{!$ObjectType.Opportunity.Fields.closeDate.Label}">
+                               <apex:outputField value="{!createdOpportunity.closeDate}" />
+                    </apex:column>
+                    
+    
+                </apex:pageBlockTable>
+        </apex:pageBlock>
+            
+            <apex:pageBlock title="Cases" tabstyle="Case" rendered="{!showCreatedCases}">
+                
+                <apex:pageBlockTable value="{!caseCreateResults}" var="createdCase"title="Cases"> <!--  rendered="{!showCreatedCases}"> -->
+                    <apex:column headerValue="Case Number" headerTitle="Case Number">
+                            <apex:outputlink value="/{!createdCase.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!createdCase.caseNumber}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Case.Fields.Subject.Label}">
+                        <apex:outputlink value="/{!createdCase.id}{!fullscreen}" target="{!target}">
+                            <apex:outputField value="{!createdCase.subject}" />
+                        </apex:outputlink>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Case.Fields.Status.Label}">
+                              <apex:outputField value="{!createdCase.Status}" />
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Case.Fields.CreatedDate.Label}"> 
+                    
+                                <apex:outputField value="{!createdCase.CreatedDate}" /> 
+                    </apex:column>
+                
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+                 
+                </apex:tab>
+
+            </apex:tabPanel>
+            
+            
+            
+            
+
+  </apex:form>        
+  <script>  
+
+
+
+/**** Modal Pop-Up      *****/  
+$j(document).ready(function() {    
+  
+    //select all the a tag with name equal to modal  
+    $j('a[name=modal]').click(function(e) {  
+        //Cancel the link behavior  
+        e.preventDefault();  
+        //Get the A tag  
+        var id = $j(this).attr('href');  
+            
+        //Get the screen height and width  
+        var maskHeight = $j(document).height();  
+        var maskWidth = $j(window).width();  
+   
+        //Set height and width to mask to fill up the whole screen  
+        $j('#maskMP').css({'width':maskWidth,'height':maskHeight});  
+          
+        //transition effect       
+        $j('#maskMP').fadeIn(300);      
+        $j('#maskMP').fadeTo("fast",0.6);    
+      
+        //Get the window height and width  
+        var winH = $j(window).height();  
+        var winW = $j(window).width();  
+        
+        /*        
+        //Set the popup window to center  
+        $j(id).css('top',  winH/2-$j(id).height()/2);  
+        $j(id).css('left', winW/2-$j(id).width()/2);  
+      */
+      
+        $j(id).css('top',75);  
+        $j(id).css('left',30);
+      
+        //transition effect  
+        $j(id).fadeIn(300);   
+      
+            //Get the screen height and width  
+        maskHeight = $j(document).height();  
+        maskWidth = $j(window).width();  
+            //Set height and width to mask to fill up the whole screen  
+        $j('#maskMP').css({'width':maskWidth,'height':maskHeight});  
+        
+        /**********     IE v.4 fixinig         *******/
+        var ModalSize = document.getElementById('campaignSearch').offsetWidth;
+            var lookUpHeder = document.getElementById('myLookup');
+            var w = "width:" + ModalSize + "px;";
+            lookUpHeder.style.cssText =  w ;
+    }); 
+      
+    //if close button is clicked  
+    $j('.myWindowMP .close').click(function (e) {  
+        //Cancel the link behavior  
+        
+        e.preventDefault();  
+        $j('#maskMP, .myWindowMP').hide();  
+    });       
+      
+    //if mask is clicked  
+    $j('#maskMP').click(function () {
+     //  $j(this).hide();  
+     //   $j('.myWindowMP').hide();  
+    });           
+      
+});  
+
+/**** collapse toggle panel (div) using jquery   *****/
+var count;
+
+function togglePanel(btn){
+	var btnState = btn.className;
+	if(btnState=='plus_head'){
+		btn.className ="minus_head";
+		document.getElementById('msgBox').style.display='table';
+		}
+	else{
+		btn.className ="plus_head";
+		document.getElementById('msgBox').style.display='none';
+		}
+		
+
+}
+
+function changeChatId(id, action) {
+       if (action=="hide") {
+            document.getElementById(id).style.display = "none";
+       } else {
+            document.getElementById(id).style.display = "block";
+       }
+}
+  
+</script>            
+       
+<script language="javascript">
+var ua = navigator.userAgent.toLowerCase();
+if ( ua.indexOf("firefox") != -1 )
+{
+     HTMLElement.prototype.click = function()
+     {
+     var evt = this.ownerDocument.createEvent('MouseEvents');
+     evt.initMouseEvent('click', true, true, this.ownerDocument.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+     this.dispatchEvent(evt);
+     }
+}
+//ChangeOptDisabled();
+var mtype2ops = new Array();
+mtype2ops['AUTONUMBER'] = ['e','n','c','k','s'];
+mtype2ops['PERCENT'] = ['e','n','l','g','m','h'];
+mtype2ops['BLOB'] = null;
+mtype2ops['FAX'] = ['e','n','c','k','s'];
+mtype2ops['DOUBLE'] = ['e','n','l','g','m','h'];
+mtype2ops['EMAIL'] = ['e','n','c','k','s'];
+mtype2ops['PHONE'] = ['e','n','c','k','s'];
+mtype2ops['MULTILINETEXT'] = ['e','n','c','k','s'];
+mtype2ops['INTEGER'] = ['e','n','l','g','m','h'];
+mtype2ops['CURRENCY'] = ['e','n','l','g','m','h'];
+mtype2ops['TEXT'] = ['e','n','c','k','s'];
+mtype2ops['BOOLEAN'] = ['e','n'];
+mtype2ops['DATETIME'] = ['e','n','l','g','m','h'];
+mtype2ops['DATE'] = ['e','n','l','g','m','h'];
+mtype2ops['ID'] = ['e','n'];
+mtype2ops['PICKLIST'] = ['e','n','l','g','m','h','c','k','s'];
+mtype2ops['MULTIPICKLIST'] = ['e','n','u','x'];
+mtype2ops['REFERENCE'] = ['e','n','l','g','m','h','c','k','s'];
+mtype2ops['STRING'] = ['e','n','l','g','m','h','c','k','s'];
+mtype2ops['TEXTAREA'] = ['e','n','l','g','m','h','c','k','s'];
+var oppLabels = new Array();
+oppLabels['e'] = 'equals';oppLabels['n'] = 'not equal to';oppLabels['s'] = 'starts with';
+oppLabels['c'] = 'contains';oppLabels['k'] = 'does not contain';oppLabels['l'] = 'less than';
+oppLabels['g'] = 'greater than';oppLabels['m'] = 'less or equal';
+oppLabels['h'] = 'greater or equal';oppLabels['u'] = 'includes';oppLabels['x'] = 'excludes';
+
+/*var fieldRows=document.getElementById("tableFilterId");
+if(fieldRows!=null && fieldRows.rows.length > 1)
+{
+fieldRows.rows[1].style.display='';
+document.getElementById("tableFilterId").rows[3].getElementsByTagName('a')[0].innerHTML = "More Filters &gt;&gt;";
+}*/
+
+
+
+window.onload = function init()
+{
+  //InitializeComp(document.getElementById("{!$Component.myform.isAutoSearch}").value,document.getElementById("{!$Component.myform.isManualSearch}").value); 
+  doOnLoad({!isSuccessLogCreated},document.getElementById('{!$Component.myform.selectedTableFilter}').value);
+  initializeObjectFieldList();
+  
+  var a = $('{!$Component.myform.searchTabId}');
+  var b = $('{!$Component.myform.createTabId}');
+  if(a.style.display == '')
+    $('msgSearchTable').style.display = "block";
+  else
+    $('msgCreateTab').style.display = "block";
+    
+  $('{!$Component.myform.theTabPanel}').style.display = 'table';
+  
+  if({!isAdvancedModeSelected})
+  {
+      $("tableFilterId").style.display = 'block';
+      $("advancedOption").getElementsByTagName("a")[0].innerHTML = "Close Advanced Search";
+      $("actionSearch").style.display = "block";
+  }
+  else
+  {
+    $("advancedOption").getElementsByTagName("a")[0].innerHTML = "Advanced Search...";
+
+  }
+    
+      // If no created Object exist (first creation) - open collapse toggle create Object fields panel 
+     // if (!{!showCreatedCases}&&!{!ShowCreatedLeads}&&!{!ShowCreatedContacts}&&!{!ShowCreatedOpportunities}&&!{!ShowCreatedAccounts})
+        //    alert("$('plusMinus').click();");  
+  	 if({!showCreatedCases} || {!ShowCreatedLeads} || {!ShowCreatedContacts} || {!ShowCreatedOpportunities} || {!ShowCreatedAccounts})
+           $('plusMinus').click(); 
+}
+
+function setOriginalQueryString()
+{
+    $("divSearchByKeyWord").getElementsByTagName("input")[0].value = $('{!$Component.myform.OriginalQueryString}').value;  
+}
+
+function SetAdvancedModeSelected()
+{
+  if($("tableFilterId").style.display == 'block')
+  {
+      $('{!$Component.myform.isAdvancedModeSelected}').value = true;
+  }
+  else
+  {
+     $('{!$Component.myform.isAdvancedModeSelected}').value = false; 
+  }
+}
+function suggestManualCreationA()
+{
+document.getElementById('{!$Component.myform.idGoToManualCreation}').click();
+}
+function suggestManualCreation()
+{
+    /*var need = document.getElementById('{!$Component.myform.needToSuggest}').checked;
+    
+    if(true==need)
+    {
+        var quest = "Your automatic creation failed since mandatory fields are missing, or fields are not correct.\nDo you want to create the object manually?";
+        quest += "\nIf yes, please remember to log a chat.";
+        var answer = confirm(quest);
+        if (answer)
+            document.getElementById('{!$Component.myform.idGoToManualCreation}').click();
+    }
+    document.getElementById('{!$Component.myform.needToSuggest}').checked = false;*/
+}
+
+
+function updateOperator(obj)
+{
+    
+    var theSel = $(obj.parentNode.parentNode).nextSiblings()[0].getElementsByTagName('select')[0];
+    var selected;
+  
+    if($('{!$Component.myform.selectedTableFilter}').value == 'Contact')
+        selected = $('ContactFieldsType').getElementsByTagName("select")[0];
+    
+    if($('{!$Component.myform.selectedTableFilter}').value == 'Account')
+        selected = $('AccountFieldsType').getElementsByTagName("select")[0];
+
+    if($('{!$Component.myform.selectedTableFilter}').value == 'Lead')
+        selected = $('LeadFieldsType').getElementsByTagName("select")[0];
+
+    if($('{!$Component.myform.selectedTableFilter}').value == 'Opportunity')
+        selected = $('OpportunityFieldsType').getElementsByTagName("select")[0];
+
+    if($('{!$Component.myform.selectedTableFilter}').value == 'Case')
+        selected = $('CaseFieldsType').getElementsByTagName("select")[0];
+
+    
+    selected.value = selected.options[obj.selectedIndex].value;
+    obj.parentNode.getElementsByTagName('input')[0].value = selected.value;
+    
+  
+    var i;
+    for(i=theSel.options.length-1;i>=0;i--)
+        theSel.remove(i);
+    theSel.options[theSel.length]=new Option('--None-','');
+    if(selected.value != '')
+    {
+        for(i=0 ; i<=(mtype2ops[selected.value].length-1) ; i++)
+            theSel.options[theSel.length] = new Option(oppLabels[mtype2ops[selected.value][i]],mtype2ops[selected.value][i]);
+    }
+
+}
+
+function disableLogChatCheckBox(){
+    document.getElementById('{!$Component.myform.pgBlock.theLogChatCheckbox}').disabled = true;
+    document.getElementById('{!$Component.myform.pgBlock.theLogChatCheckbox}').checked = false;
+}
+
+var currentObject;
+var currentRecord;
+var isAvailable = true;
+function startLogChat()
+{
+     
+     if(currentRecord != null)
+     {
+         isAvailable = false;
+         document.body.cursor = "wait";
+         window.parent.document.body.cursor = "wait";
+         currentRecord.removeAttribute('href');
+         currentRecord.style.textDecoration="none";
+         currentRecord.innerHTML = 'Logging the Chat...';
+         currentRecord.disabled = true;
+    }
+
+}
+function stopLogChat()
+{
+if(currentRecord != null)
+{
+    if($('{!$Component.myform.isSuccessLogCreated}').innerHTML == "true")
+        currentRecord.innerHTML = 'Chat logged';
+    else
+        currentRecord.innerHTML = 'Error Log Chat';
+    
+    currentRecord.style.fontStyle = "Italic";
+    currentRecord.style.textDecoration="none";
+    currentRecord.removeAttribute('onclick');
+    currentRecord.removeAttribute('href');
+    isAvailable = true;
+  }
+}
+
+function HideWaitingPopup()
+{
+      $j.modal.close();
+}
+
+function showWaitingPopup()
+{
+      $j.modal(document.getElementById('myPopup'));
+}
+function simulateClick(obj)
+{
+
+  if(isAvailable && obj.innerHTML !='Chat logged')
+  {
+    currentRecord = obj;
+    obj.parentNode.getElementsByTagName('a')[1].click();
+    //debugger;
+    //obj.parentNode.getElementsByTagName('input')[0].click();
+  }
+}
+function selectValidList(obj,mustReload) 
+{
+   
+    document.getElementById('{!$Component.myform.selectedTableFilter}').value = obj;
+    if(mustReload)
+      {
+          showWaitingPopup();
+          $('{!$Component.myform.loadNewSearch}').click();
+          return true;
+      }
+    //HideTR('TR-Repeat-Lead');
+    var items;
+    
+    $('listObj').value = obj;
+    if(currentObject != null && currentObject!='All')
+    {
+     var n1 = 'TR-Repeat-' +currentObject;
+     var a = getElementsByClassName(n1)[0].getElementsByTagName("a")[0];
+     a.innerHTML = "&lt;&lt; Fewer Filters";
+     //showMoreFilters(a,n1);
+     //HideTR(n1);
+     //clearFilters();
+    }
+    
+    if($('{!$Component.myform.isMoreFilters}').value == "true")
+    {
+      //var n1 = 'TR-Repeat-' +obj;
+      //var a = getElementsByClassName(n1)[0].getElementsByTagName("a")[0];
+      //$('{!$Component.myform.isMoreFilters}').value = "false";
+      //showMoreFilters(a,n1);
+    }
+    
+    if(obj !="All")
+    {
+      //showTR("TR-Repeat-" + obj);
+      $("advancedOption").style.display = "block";
+    }
+    else
+    {
+     $("tableFilterId").style.display = "none";
+     $("actionSearch").style.display = "none";
+     $("advancedOption").style.display = "none";
+    }
+    currentObject = obj;
+    
+    
+    
+}
+
+
+
+function titi(obj)
+{
+obj.style.display = "none";
+}
+/*function HideTR(name)
+{
+    var items = getElementsByClassName(name);
+    for(var i=0 ; i < items.length ; i++)
+       $(items[i]).style.display = 'none';  
+}
+function showTR(name)
+{
+    var items = getElementsByClassName(name);
+    $(items[0]).style.display = '';  
+}*/
+
+var lookUpIconDisableFlag;
+function initializeObjectFieldList()
+{
+      var temp = document.getElementById('{!$Component.myform.selectObjectComboBox}').value;
+      displayObjectFieldsPageBlock();
+      document.getElementById('{!$Component.myform.searchCampaignInputText}').value  = '';
+      document.getElementById('{!$Component.myform.theHiddenCampaignID}').value = '';
+      document.getElementById('{!$Component.myform.theHiddenAccountID}').value = '';
+      document.getElementById('{!$Component.myform.theHiddenContactID}').value = '';
+      replaceReferenceRowTD();
+      lookUpIconDisableFlag = false;
+	  	
+}
+
+function getNewObjectFields(selectedObj)
+{
+      putBackInputTextElementOutOfTable();
+      $('{!$Component.myform.refreshSelectedObjectFields}').click();
+      hideObjectFieldsPageBlock();  
+}
+
+function putSelectionIntoField(obj)
+{     
+      document.getElementById('{!$Component.myform.searchCampaignInputText}').value  =obj.options[obj.selectedIndex].text; 
+
+      document.getElementById('{!$Component.myform.theHiddenCampaignID}').value = obj.value;
+            
+      obj.style.display = "none";
+}
+
+function replaceReferenceRowTD()
+{
+      var fieldsTable = document.getElementById('{!$Component.myform.objectFieldList.fTable}');
+      var tbody = fieldsTable.getElementsByTagName("tbody")[0];
+      var numOfRows = tbody.rows.length;
+      
+      var i = 0;
+      for (i = 0;i < numOfRows;i++)
+      {
+            var row = tbody.rows[i];
+            
+            var fieldName = row.getElementsByTagName("td")[0].innerHTML;
+            if (fieldName == 'Campaign' || fieldName == 'Contact ID' || fieldName == 'Account ID')
+            {
+                  var fieldReferenceToReplace = row.getElementsByTagName("td")[1];
+                  fieldReferenceToReplace.style.cssText="padding-left:0px;";
+                  var input = fieldReferenceToReplace.getElementsByTagName("input")[0];
+//                fieldReferenceToReplace.removeChild(input);
+                  input.style.cssText = "display:none; ";
+                                    
+                  if (fieldName == 'Campaign')
+                  {
+                        var CampaignFieldPanel = document.getElementById('page:myform:CampaignFieldPanel');
+                        replaceInputWithRelevantRef(fieldReferenceToReplace , CampaignFieldPanel);
+                  }
+                  if (fieldName == 'Contact ID')
+                  {
+                        var ContactFieldPanel = document.getElementById('page:myform:ContactFieldPanel');
+                        replaceInputWithRelevantRef(fieldReferenceToReplace , ContactFieldPanel);
+                  }
+                  if (fieldName == 'Account ID')
+                  {
+                        var AccountFieldPanel = document.getElementById('page:myform:AccountFieldPanel');
+                        replaceInputWithRelevantRef(fieldReferenceToReplace , AccountFieldPanel);
+                  }
+            }           
+      }           
+}
+
+function replaceInputWithRelevantRef(fieldReferenceToInsertReplacement , replace)
+{     
+      replace.style.cssText = "display: ";
+      
+      fieldReferenceToInsertReplacement.appendChild(replace);
+}
+
+function putInOriginalInputText()
+{
+      var fieldsTable = document.getElementById('{!$Component.myform.objectFieldList.fTable}');
+      var tbody = fieldsTable.getElementsByTagName("tbody")[0];
+      var numOfRows = tbody.rows.length;  
+      var i = 0;
+      for (i = 0;i < numOfRows;i++)
+      {
+            var row = tbody.rows[i];
+            var fieldName = row.getElementsByTagName("td")[0].innerHTML;
+            if (fieldName == 'Campaign' || fieldName == 'Contact ID' || fieldName == 'Account ID')
+            {
+
+                  var fieldReferenceToReplace = row.getElementsByTagName("td")[1];
+                  var input = fieldReferenceToReplace.getElementsByTagName("input")[0];
+                  
+
+                  if (fieldName == 'Campaign')
+                  {
+                        var val = document.getElementById('{!$Component.myform.theHiddenCampaignID}').value;
+                        input.value = val;
+                        
+                  }
+                  if (fieldName == 'Contact ID')
+                  {
+                        var val = document.getElementById('{!$Component.myform.theHiddenContactID}').value;
+                        input.value = val;
+                        
+                  }
+                  if (fieldName == 'Account ID')
+                  {
+                        input.value = document.getElementById('{!$Component.myform.theHiddenAccountID}').value;
+                  }
+            }
+      }
+}
+
+
+
+function putBackInputTextElementOutOfTable()
+{
+      var CampaignFieldPanel = document.getElementById('page:myform:CampaignFieldPanel');
+      var ContactFieldPanel = document.getElementById('page:myform:ContactFieldPanel');
+      var AccountFieldPanel = document.getElementById('page:myform:AccountFieldPanel');
+      
+      CampaignFieldPanel.style.cssText = "display:none; "; 
+      ContactFieldPanel.style.cssText = "display:none; "; 
+      AccountFieldPanel.style.cssText = "display:none; "; 
+      
+      document.getElementById('page:myform').appendChild(CampaignFieldPanel);
+      document.getElementById('page:myform').appendChild(ContactFieldPanel);
+      document.getElementById('page:myform').appendChild(AccountFieldPanel);  
+}
+
+function displayResultDiv()
+{     
+	  lookUpIconDisableFlag = false;
+      clickOnButton(document.getElementById('Modal_href'));
+      document.body.style.cursor = 'default';
+}
+
+//Click Link
+function clickOnButton(obj)
+{     
+      var target=obj;
+      if(document.dispatchEvent) { // W3C
+          var oEvent = document.createEvent( "MouseEvents" );
+          oEvent.initMouseEvent("click", true, true,window, 1, 1, 1, 1, 1, false, false, false, false, 0, target);
+          target.dispatchEvent( oEvent );
+          }
+      else if(document.fireEvent) { // IE
+            var newEvt = document.createEventObject();      
+          target.fireEvent("onclick",newEvt);
+      }
+      
+}
+
+
+
+function hideResultDiv()
+{
+      document.getElementById('searchResultDiv').style.cssText = "display:none;";   
+}
+
+function hideObjectFieldsPageBlock()
+{
+      document.getElementById('page:myform:objectFieldList').style.cssText = "display:none;";       
+}
+
+function displayObjectFieldsPageBlock()
+{
+      document.getElementById('page:myform:objectFieldList').style.cssText = "display:'' ;";             
+}
+
+function selectRefFromModal(objType, objName, objId )
+{
+      if (objType=='Campaign')
+      {
+            document.getElementById('{!$Component.myform.searchCampaignInputText}').value  = objName; 
+            document.getElementById('{!$Component.myform.theHiddenCampaignID}').value = objId;
+ //           document.getElementById('{!$Component.myform.theHiddenCampaignID}').style.cssText = "width:-moz-fit-content; "; 
+      }
+      if (objType=='Account')
+      {
+            document.getElementById('{!$Component.myform.searchAccountInputText}').value  = objName; 
+            document.getElementById('{!$Component.myform.theHiddenAccountID}').value = objId;
+      }
+      if (objType=='Contact')
+      {
+            document.getElementById('{!$Component.myform.searchContactInputText}').value  = objName; 
+            document.getElementById('{!$Component.myform.theHiddenContactID}').value = objId;
+      }
+
+      document.getElementById('closeModal').click();  
+      
+}
+
+function setObjectToSearch(selectedObj)
+{
+	  if (lookUpIconDisableFlag)
+	  	return;
+	  lookUpIconDisableFlag = true;
+	  
+      document.getElementById('{!$Component.myform.referenceObjectNameToSearchID}').value = selectedObj;
+      document.body.style.cursor = 'wait';
+      $('{!$Component.myform.lookUpResultPageBlock}').style.display = "none";
+ 
+      //displayResultDiv();
+      $('{!$Component.myform.refreshObjectLookUpResult}').click(); 
+}
+
+function refTable()
+{
+	 document.body.style.cursor = 'wait';
+	 document.getElementById('{!$Component.myform.isSearch}').value=true;
+	 $('{!$Component.myform.lookUpResultPageBlock}').style.display = "none";
+
+}
+function disableSearchBtn(){
+	document.body.style.cursor = 'wait';
+	document.getElementById('{!$Component.myform.search}').disabled=true;	
+}
+function enableSearchBtn(){
+	document.body.style.cursor = 'default';
+	document.getElementById('{!$Component.myform.search}').disabled = false;	
+}
+
+function kH(e) {
+var pK = e ? e.which : window.event.keyCode;
+return pK != 13;
+}
+document.onkeypress = kH;
+if (document.layers) document.captureEvents(Event.KEYPRESS);
+</script>
+             
+            
+            
+
+
+
+
+            
+            
+           
+
+            
+</apex:page>

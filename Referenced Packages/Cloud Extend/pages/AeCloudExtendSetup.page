@@ -1,0 +1,38 @@
+<apex:page controller="ce4sf20_001.AeSetupController" tabStyle="AeCloudExtendSetup__tab" sidebar="false" title="Cloud Extend Setup">
+    <apex:form >
+        <div style="float:right;"><p><a href="AeCloudExtendAdvancedOptions">Advanced Settings</a></p></div>
+        <apex:pageBlock title="Cloud Extend for Salesforce Registration Verification" 
+                        rendered="{!displayRegistration}">
+            <apex:pageBlockButtons >
+              <apex:commandButton action="{!submitRegistration}" value="Verify"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection >
+                <apex:outputLabel ><div style="width:100%; text-align:center;"><b>Please enter the Cloud Extend Host information supplied by Informatica</b></div></apex:outputLabel>
+                <br/>
+                <apex:inputField style="width: 30em;" id="aehosturl" value="{!CloudExtendSettings.ce4sf20_001__HostUrl__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageMessages />
+        </apex:pageBlock>
+    </apex:form>
+    <apex:pageBlock rendered="{!displayProvisioning}">
+        <c:AeProvisioning objectType="Organization"
+                          objectId="{!$Organization.Id}"
+                          organizationType="{!organizationType}"/>   
+    </apex:pageBlock>
+    <apex:pageBlock title="Synchronize Cloud Extend with Your System"
+                                    rendered="{!manageObjectConfigFormUrl != ''}">
+      <apex:pageBlock rendered="{!useConnectedApp}">
+        <apex:canvasApp developerName="CloudExtendConnApp" namespacePrefix="ce4sf20_001"
+             id="ae_pb_objectconfigframe"
+             scrolling="yes"
+             width="100%" height="800px"  
+             parameters="{url:'{!manageObjectConfigFormUrl}',
+             'aepToken' : '{!securityToken}',
+             'aever' : '{!versionNumber}',
+             'packageVersion':'{!versionNumber}' }" />      
+      </apex:pageBlock>
+      <apex:pageBlock rendered="{!NOT(useConnectedApp)}">         
+         <apex:iframe id="ae_pb_objectconfigframe" frameborder="false" scrolling="true" width="100%" height="800px" src="{!manageObjectConfigFormUrl}?aepToken={!securityToken}&host-OrganizationId={!$Organization.Id}&host-SessionId={!$Api.Session_ID}&host-SessionURL={!$Api.Enterprise_Server_URL_270}&packageVersion={!versionNumber}&aever={!versionNumber}"/>
+      </apex:pageBlock>
+    </apex:pageBlock>
+</apex:page>

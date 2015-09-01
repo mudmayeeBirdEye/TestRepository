@@ -1,0 +1,104 @@
+<apex:page id="pageId"  setup="true" action="{!onLoad}" controller="GETSAT_TOPIC.SetupController">
+<script>
+function check()
+  {
+  var chck = document.getElementById('{!$Component.pageId.form.pgblck.pgbk.conChck}');
+  // alert('hiiii g---'+chck.value);
+  var unchck = document.getElementById('{!$Component.pageId.form.pgblck.pgbk.accChck}');
+  //alert('hiiii'+unchck );
+  
+  //alert('hiiii g---'+chck.checked);
+  
+      //var chck = document.getElementById(con);
+      //var unchck = document.getElementById(acc);
+      if(chck.checked==true){
+          document.getElementById('{!$Component.pageId.form.pgblck.pgbk.accChck}').checked=true; 
+      }else if(chck.checked==false || chck.value == 'Undefined'){
+          //alert('hiiii In else--------------'+chck);
+          document.getElementById('{!$Component.pageId.form.pgblck.pgbk.accChck}').checked=false;
+          //document.getElementById(acc).checked=false; 
+          document.getElementById('{!$Component.pageId.form.pgblck.pgbk.accChck}').disabled=true;     
+
+      }
+      
+  }
+  window.onload=check();
+
+  
+</script>
+
+    <apex:sectionHeader title="Get Satisfaction" />
+    <apex:form id="form">
+        <apex:pageBlock title="Get Satisfaction for Salesforce Configuration" mode="edit" id="pgblck">  
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Save"  action="{!onSave}"/>
+                <apex:commandButton value="Cancel" action="{!onCancel}" immediate="true"/>
+            </apex:pageBlockButtons>                      
+            <apex:pageMessage severity="INFO" strength="3"><font size="4"><b>
+                <apex:outputText >Please contact </apex:outputText>&nbsp;<apex:outputLink style="color:#015BA7;" title="" value="mailto://sfdc@getsatisfaction.com">sfdc@getsatisfaction.com</apex:outputLink>&nbsp;<apex:outputText >to enable Get Satisfaction for Salesforce.<br/>Please include your contact email, phone and company name - current Get Satisfaction customers should include their community name. </apex:outputText>  
+            </b></font></apex:pageMessage>
+             <apex:pageMessage summary="{!sucInfo}" severity="Confirm" strength="3" rendered="{!sucmsgFlag}" />              
+            <apex:pageMessage severity="error" strength="3" rendered="{!msgFlag}" escape="false" summary="{!msgInfo}"/>
+            <apex:pageMessages id="msgs"></apex:pageMessages>
+               <apex:pageBlockSection title="Business Rules for Contact Creation" columns="1" id="pgbk"> 
+                
+                <apex:inputField value="{!getSatisfactionConfig.GETSAT_TOPIC__Auto_Create_Contact__c}"  id="conChck" onchange="javascript:check(); return false;"/>
+                <!--<apex:inputField value="{!getSatisfactionConfig.Create_Person_Account__c}" id="accChck"/>-->
+            </apex:pageBlockSection>       
+              
+            <apex:pageBlockSection title="Get Satisfaction FastPass Credentials">
+                
+                <apex:pageBlockTable title="Get Satisfaction FastPass Credentials" value="{!conditions}" var="row" id="conditions">
+                     
+                    <apex:column headerValue="Company Id">
+                        <apex:inputField value="{!row.condition.GETSAT_TOPIC__Company_Id__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Consumer Key">
+                        <apex:inputField value="{!row.condition.GETSAT_TOPIC__Consumer_Key__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Consumer Secret">
+                       
+                       <apex:inputField value="{!row.condition.GETSAT_TOPIC__Consumer_Secret__c}" style="width:300px" />
+                    </apex:column>
+                    <apex:column headerValue="Company Name">
+                        <apex:inputField value="{!row.condition.GETSAT_TOPIC__Company_Name__c}" required="true" style="width:250px" />
+                    </apex:column>
+                    <apex:column headerValue="Domain Name">
+                        <apex:outputField value="{!row.condition.GETSAT_TOPIC__Domain_Name__c}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:commandButton action="{!onAddCondition}" immediate="false" reRender="conditions, msgs" value="+">
+                            <apex:param name="selectedId" value="{!row.id}"/>
+                        </apex:commandButton>
+                    </apex:column>
+                    <apex:column >
+                        <apex:commandButton action="{!onRemoveCondition}" immediate="true" reRender="conditions, msgs" value="-">
+                            <apex:param name="selectedId" value="{!row.id}"/>
+                        </apex:commandButton>   
+                    </apex:column> 
+                </apex:pageBlockTable> 
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Business Rules for Case Creation" columns="1"> 
+                <apex:inputField value="{!getSatisfactionConfig.GETSAT_TOPIC__Idea__c}" />
+                <apex:inputField value="{!getSatisfactionConfig.GETSAT_TOPIC__Praise__c}" />
+                <apex:inputField value="{!getSatisfactionConfig.GETSAT_TOPIC__Problem__c}" />
+                <apex:inputField value="{!getSatisfactionConfig.GETSAT_TOPIC__Question__c}" />
+                <apex:inputField value="{!getSatisfactionConfig.GETSAT_TOPIC__Update__c}" />      
+            </apex:pageBlockSection>       
+            
+            <apex:pageBlockSection title="OAuth Configuration" columns="1"> 
+                <apex:inputField value="{!getSatisfactionConfig.GETSAT_TOPIC__Access_Token_URL__c}" required="true" style="width:300px" />
+                <apex:inputField value="{!getSatisfactionConfig.GETSAT_TOPIC__Authorization_URL__c}" required="true" style="width:300px" />
+                <apex:inputField value="{!getSatisfactionConfig.GETSAT_TOPIC__Request_Token_URL__c}" required="true" style="width:300px" />
+                <!--apex:inputHidden value="{!getSatisfactionConfig.GETSAT_TOPIC__Access_Token_URL__c}" />
+                <apex:inputHidden value="{!getSatisfactionConfig.GETSAT_TOPIC__Authorization_URL__c}" />
+                <apex:inputHidden value="{!getSatisfactionConfig.GETSAT_TOPIC__Request_Token_URL__c}" /-->
+            </apex:pageBlockSection>       
+            <apex:pageBlockSection title="Get Satisfaction Configuration" columns="1">
+                <apex:inputField value="{!getSatisfactionConfig.GETSAT_TOPIC__URL__c}" required="true" style="width:300px"/>
+            </apex:pageBlockSection>  
+       </apex:pageBlock>
+    </apex:form>
+
+</apex:page>

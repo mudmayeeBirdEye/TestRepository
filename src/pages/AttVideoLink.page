@@ -1,0 +1,103 @@
+<apex:page controller="ATTController" showHeader="false" title="Public Knowledge Base" cache="true" expires="{!cacheMaxAge}" >
+   <style type="text/css">
+    ul li, ol li {
+    margin-left: 0px;
+    padding-left: 0;
+    padding-bottom:10px;
+     }
+    .videoText{
+      border-bottom: 1px solid rgb(204, 204, 204); 
+      padding-bottom: 8px;
+      margin-bottom:8px;
+     }
+    .rn_ProductCategoryList .rn_HierList{
+       width:95% !important;
+     }
+     </style>
+    <apex:composition template="{!$Site.Template}">
+    <apex:define name="content">
+    
+     <div style='margin-bottom:15px;margin-top:10px;' >
+            <a href="{!$Site.CurrentSiteUrl}" class="rn_Selected rn_FilterItem" style='text-decoration:underline'>Support Home</a>->Videos
+      </div>
+         <table border="0" width="100%" cellspacing="0">
+              <tr>
+              <td valign="top">
+                    <div id="Div2" class="rn_ProductCategoryList" style="width: 100%;">
+                        <div style="width:49%;float:left">
+                               <div class="rn_HierList rn_HierList_1068 rn_FloatLeft">
+                                    <div class="rn_HierList rn_HierList_1068 rn_FloatLeft">
+                                          <h3>Account Management</h3>
+                                          <div class="videoText"> </div>
+                                          <ul>
+                                                <li><a href="http://youtu.be/sYOWdGuPIus" target="_blank">
+                                                        <apex:outputText value="Add a Department for Office@Hand: AT&T How to Video Series"></apex:outputText>
+                                                   </a></li>
+                                                <li><a href="http://www.youtube.com/watch?v=FtKAehHH3Mw&feature=uploademail" target="_blank">
+                                                      <apex:outputText value="Add a New User for Office@Hand with Office@Hand Web Online Interface: AT&T How to Series"></apex:outputText>
+                                                </a></li>
+                                                <li><a href="http://www.youtube.com/watch?v=QxwtjRckaWA&feature=uploademail" target="_blank">
+                                                <apex:outputText value="Add More Users to Office@Hand: AT&T How to Video Series"></apex:outputText>
+                                                </a></li>
+                                                <li><a href="http://www.youtube.com/watch?v=yTBlz9ZbvY0&feature=uploademail" target="_blank">
+                                                     <apex:outputText value="Instantly Add a Direct Extension Number for Office@Hand: AT&T How to Video Series"></apex:outputText>
+                                                </a></li>
+                                        </ul>
+                                    </div>
+                               </div>
+                                 <div class="rn_HierList rn_HierList_1080 rn_FloatLeft ">               
+                                        <div class="rn_HierList rn_HierList_1080 rn_FloatLeft">
+                                           <h3>FAX</h3>
+                                           <div class="videoText"> </div>
+                                            <ul>
+                                            <li><a href="http://www.youtube.com/watch?v=zxKr0pQ-fOc&feature=uploademail" target="_blank">
+                                                   <apex:outputText value="Send a Fax via Email from Office@Hand: AT&T How to Video Series"></apex:outputText>
+                                            </a></li>
+                                            </ul>
+                                             
+                                         </div>
+                                            
+                                  </div>
+                              
+                              </div>  
+                             <div style="width:49%;margin-left:5px;float:left">
+                                       <div class="rn_HierList rn_HierList_35 rn_FloatRight">
+                                        <h3>Call Screening/Handling</h3>
+                                              <div class="videoText"> </div>
+                                                <ul>
+                                                    <li><a href="http://youtu.be/VOAiIEzaPXY" target="_blank">
+                                                          <apex:outputText value="Call Forwarding with Office@Hand: AT&T How to Video Series"></apex:outputText>
+                                                    </a></li>
+                                                    <li><a href="http://www.youtube.com/watch?v=oIUIRG2Q7iA&feature=uploademail" target="_blank">
+                                                         <apex:outputText value="Change the Hold Music for Office@Hand: AT&T How to Video Series"></apex:outputText>
+                                                    </a></li>
+                                                     <li><a href="http://www.youtube.com/watch?v=tlB0sqMGUU4&feature=uploademail" target="_blank">
+                                                            <apex:outputText value="Custom Department Greeting for Office@Hand: AT&T How to Video Series"></apex:outputText>
+                                                     </a></li>
+                                                      <li><a href="http://www.youtube.com/watch?v=ZLZdk_uzY8c&feature=uploademail" target="_blank">
+                                                               <apex:outputtext value="Enable Call Screening for Office@Hand: AT&T How to Video Series" />
+                                                          </a></li>
+                                                      <li><a href="http://www.youtube.com/watch?v=ZsmeSO5NYgU&feature=uploademail" target="_blank">
+                                                             <apex:outputText value="Enable or Disable Do Not Disturb DND Feature for Office@Hand: AT&T How to Video Series"></apex:outputText>
+                                                           </a></li>
+                                                      <li><a href="http://www.youtube.com/watch?v=Lao_Pm3PhYo&feature=uploademail" target="_blank">
+                                                            <apex:outputText value="Set Up After Hours Calls for a Department Using Office@Hand: AT&T How to Video Series"></apex:outputText>
+                                                         </a></li>
+                                                      <li><a href="http://www.youtube.com/watch?v=wfjfsM1b5U4&feature=uploademail" target="_blank">
+                                                             <apex:outputText value="Set Up Caller ID, Business Phone Identity for Office@Hand for Android(tm): AT&T How to Video Series"></apex:outputText>
+                                                         </a></li>
+                                                </ul>
+                                </div>
+                           </div>          
+                                   
+                    </div>
+                   
+                </td>  
+                <td width="5%">
+                &nbsp;
+                </td>
+                </tr>
+          </table>
+        </apex:define>
+    </apex:composition>
+</apex:page>

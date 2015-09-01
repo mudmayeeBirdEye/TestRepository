@@ -1,0 +1,73 @@
+<apex:page standardcontroller="RC_Quote_Template__c" extensions="GenerateQuoteTemplateCTRL2" renderAS="PDF" showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" >
+    <head>
+        <style type="text/css" media="print">
+        @page {
+            @top-center {
+                content: element(header);
+            }
+            @bottom-left {
+                content: element(footer);
+            }
+        }
+        @page{
+            size: 8.5in 11in;
+            margin: 5%;
+        }
+        div.header {
+            padding: 10px;
+            position: running(header);
+        }
+        div.footer {
+            display: block;
+            padding: 5px;
+            position: running(footer);
+        }
+        .pagenumber:before {
+            content: counter(page);
+        }
+        .pagecount:before {
+            content: counter(pages);
+        }
+        p {
+            word-wrap: break-word !important;
+            width: 90% !important;
+            margin: 10px !important;
+        }
+        </style>
+    </head>
+    <div class="header">
+        <!--<div>RingCentral Office {!IF(oppObj.Brand_Name__c != null && CONTAINS(oppObj.Brand_Name__c, 'US'), 'US', '')}{!IF(oppObj.Brand_Name__c != null && CONTAINS(oppObj.Brand_Name__c, 'Canada'), 'Canada', '')}{!IF(oppObj.Brand_Name__c != null && CONTAINS(oppObj.Brand_Name__c, 'UK'), 'UK', '')} Proposal</div>-->
+    </div>
+    <div class="footer">
+        <div>Page <span class="pagenumber"/> of <span class="pagecount"/></div>
+    </div>
+    <apex:form >
+                <apex:outputPanel id="msgPanel">
+                    <apex:pageMessages ></apex:pageMessages>  
+                </apex:outputPanel>
+        <div class="content">  
+           <!--  <apex:outputpanel rendered="{!IF(sections.size != 0, true, false)}">
+                <apex:repeat var="section" value="{!sections}" >
+                    <div style="width:100%;overflow:auto;border:1px solid lightgray; border-radius:5px; padding:10px; margin-bottom:10px;">
+                        <apex:outputtext escape="false" value="{!section.Content_1__c}{!section.Content_2__c}{!section.Content_3__c}{!section.Content_4__c}{!section.Content_5__c}"/>
+                    </div>
+                </apex:repeat>
+            </apex:outputpanel> -->
+            <apex:outputpanel id="sectionPanel" rendered="{!IF(previewWrapperList != null && previewWrapperList.size != 0, 'true', 'false')}">
+                <div>
+                    <apex:repeat var="section" value="{!previewWrapperList}" >
+                            <table style="width:100%;overflow:auto;">
+                        <!-- <div style="width:98%;overflow:auto;border:1px solid lightgray; border-radius:5px; padding:10px; margin-bottom:10px;"> -->
+                                <tr>
+                                    <td>
+                                        <apex:outputtext escape="false" value="{!section.content}"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        <!-- </div> -->
+                    </apex:repeat>
+                </div>
+            </apex:outputpanel>
+        </div>
+    </apex:form>
+</apex:page>

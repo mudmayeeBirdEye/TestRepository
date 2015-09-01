@@ -1,0 +1,275 @@
+<!-----------------------------------------------------------------------------
+* Project Name..........: Account Metrics Reporting                           *
+* File..................: AHMTool.Page                                        *
+* Version...............: 1.0                                                 *
+* Created by............: Simplion Technologies                               *
+* Created Date..........: 11-09-2013                                          *
+* Last Modified by......: Simplion Technologies                               *
+* Last Modified Date....: 11-09-2013                                          *
+* Description...........: This page is used for account metrics reporting     *
+------------------------------------------------------------------------------>
+
+<apex:page controller="AccountMetricsReportingController" showHeader="true" standardStylesheets="true" docType="html-5.0" cache="false" readOnly="true" id="pid">
+<head>
+    <style type="text/css">
+        input:focus, select:focus, textarea:focus {
+            outline-size: none;
+            outline-style: none;
+            outline-color: none;
+            border-radius: 10px;
+            border: 1px solid gray;
+        }
+        div.Header{
+            font-family:Arial;
+            font-size:15px;
+            font-weight:bold;
+            color:#000;
+        }
+        .pbSubheader h3 {
+            color: white;
+        }
+        select {
+            box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           /*width: 268px !important;*/
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+        }
+        .lookupInput input {
+            box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           /*width: 268px !important;*/
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+        }
+        .styled-select{
+           box-shadow: 0px 0px 7px 0px lightblue inset;
+           -webkit-box-shadow: 0px 0px 7px 0px lightblue inset;
+           -moz-box-shadow: 0px 0px 7px 0px lightblue inset;
+           width: 268px !important;
+           padding: 5px !important;
+           font-size: 12px !important;
+           line-height: 1 !important;
+           border: 1px solid lightgray !important;
+           border-radius: 10px !important;
+           -webkit-border-radius: 10px !important;
+           -moz-border-radius: 10px !important;
+           /*height: 34px !important;*/
+           /*-webkit-appearance: none !important;*/
+        }
+        .pbHeader {
+            /*background:#1797C0 !important;*/
+        }
+        .pbBottomButtons {
+            /*background:#1797C0 !important;*/
+        }
+        .bPageBlock.pbBody {
+            background-color: #F3F3EC !important;
+        }
+        .listwidth {
+            /*width:380px !important;*/
+            width:260px !important;
+        }
+        body .bPageBlock, body .bPageBlock .pbBody, body .bPageBlock .pbBottomButtons {
+            background:#F3F3EC !important;
+        }
+        .btn {
+            color: #084B8A !important;
+            border: 1px solid #A5A6A5 !important;
+            padding: 5px !important;
+        }
+        .homeTab .tertiaryPalette, .individualPalette .homeBlock .tertiaryPalette, .layoutEdit .individualPalette .homeBlock .tertiaryPalette {
+            background:#1797C0 !important;
+            /*box-shadow: 0px 18px 13px 5px #1797C0 inset !important;*/
+            height: 20px;
+        }
+        .errorpanel {   
+            background: #F3F3EC;
+            border-top: 3px solid #1797C0;
+            border-radius: 4px 4px 0px 0px;
+        }
+        .messageCell h4 {
+            display:none !important;
+        }
+        .picklist {
+            width:280px !important;
+        }
+    </style>
+</head>
+<body>
+    <apex:sectionHeader title="Account Metrics" subtitle="AHM Tool" id="mainSection"/>
+    <!-- <apex:pageMessages rendered="{!Not(OR(fieldsError,filterError))}" /> -->
+    <apex:outputpanel rendered="{!fieldsError}" id="errorMessagePanel">
+        <div class="errorpanel">
+            <apex:pageMessages />
+        </div>
+    </apex:outputpanel>
+    <apex:form id="fid">
+        <apex:pageBlock id="pbid">
+            <apex:pageblockbuttons >
+                <apex:commandbutton value="Generate Report" action="{!fetchRecords}" status="status" rerender="" />
+                <!-- <apex:commandbutton value="Custom Report" action="{!customViewReport}" status="status" rerender="" /> -->
+                <apex:commandbutton value="Reset" action="{!resetFilter}" status="status"/>
+            </apex:pageblockbuttons>
+            <apex:pageBlockSection title="Report Type" showheader="true" columns="2" collapsible="false" id="reportTypeBlock">
+                <apex:pageblocksectionItem >
+                    <apex:selectRadio value="{!reportType}" >
+                        <apex:actionSupport event="onchange" action="{!reportTypeView}" rerender="pbid" status="status" />
+                        <apex:selectOptions value="{!reportTypes}"/>
+                    </apex:selectRadio>
+                </apex:pageblocksectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Filter by owner" showheader="true" columns="2" collapsible="false" id="ownerBlock">
+                <apex:pageblocksectionItem >
+                    <apex:selectRadio value="{!filterValue}" layout="pageDirection" >
+                        <apex:actionSupport event="onchange" action="{!generateOwnerOption}" rerender="ownerBlock" status="status" />
+                        <apex:selectOptions value="{!filterItems}"/>
+                    </apex:selectRadio>
+                </apex:pageblocksectionItem>
+                <apex:pageblocksectionItem id="ownerDropDown1" >
+                    <apex:selectList styleClass="styled-select" value="{!filterOwner}" multiselect="false" size="1" 
+                                     style="width:150px; height: 30px;margin-top: 50px;margin-left: -350px;" 
+                                     rendered="{!IF(teamFlag && teamSelectOption.size !=0, true, false)}" id="selectValue1">
+                        <apex:selectOptions value="{!teamSelectOption}" /> 
+                    </apex:selectList>
+                    <apex:selectList styleClass="styled-select" value="{!filterOwner}" multiselect="false" size="1" 
+                                     style="width:150px; height: 30px;margin-top: 70px;margin-left: -290px;position:relative;" 
+                                     rendered="{!IF(repFlag && repUserSelectOption.size !=0, true, false)}" id="selectValue2">
+                        <apex:selectOptions value="{!repUserSelectOption}" /> 
+                    </apex:selectList>
+                </apex:pageblocksectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Filter By Additional Fields (Optional)" showheader="true" columns="5" collapsible="false" id="pbs2">
+                <apex:outputPanel id="objFieldList">
+                <apex:pageMessages rendered="{!filterError}" />    
+                    <apex:panelGrid columns="4" cellspacing="7" >
+                        <apex:dataTable cellPadding="5" value="{!filters}" var="filter" id="theList" >
+                            <apex:column >
+                                <apex:facet name="header">Field</apex:facet>
+                                <apex:selectList styleClass="styled-select" value="{!filter.filterName}" multiselect="false" size="1" style="width:150px">
+                                    <apex:actionSupport event="onchange" action="{!changeDisplayList}" rerender="objFieldList" status="status">
+                                        <apex:param name="currentField" value="{!filter.index}" assignTo="{!currentField}"/>
+                                    </apex:actionSupport>
+                                    <apex:selectOptions value="{!fieldItems}" />
+                                </apex:selectList>
+                            </apex:column>
+                            <!-- <apex:column >
+                                <apex:facet name="header">Field Type</apex:facet>
+                                <apex:inputText styleclass="styled-select" Value="{!filter.fieldType}" disabled="true" style="width: 65px !important;font-weight: bold;text-align: center;"/>
+                            </apex:column> -->
+                            <apex:column >
+                                <apex:facet name="header">Operator</apex:facet>
+                                    <apex:selectList styleClass="styled-select" value="{!filter.operator}" multiselect="false" size="1" style="width:150px" id="operatorId">
+                                        <apex:selectOptions value="{!filter.operatorList}" />
+                                    </apex:selectList>
+                            </apex:column>
+                            <apex:column id="values">
+                                <apex:facet name="header">Value</apex:facet>
+                                <apex:inputText styleclass="styled-select" value="{!filter.value}" rendered="{!IF(filter.fieldType == NULL , true, false)}"  id="valueNullField1"  />
+                                <apex:inputField styleclass="styled-select" value="{!filter.ownerAccount.Approval_Date__c}" rendered="{!IF((filter.fieldType =='Date/Time' || filter.fieldType =='date/time' || filter.fieldType =='date/Time' || filter.fieldType =='Date/time'), true, false)}"  id="valueTextField2" />
+                                <apex:inputField style="width: 325px !important;" value="{!filter.ownerAccount.Current_Owner__c}" rendered="{!IF((filter.fieldType=='Lookup' || filter.fieldType=='lookup'), true, false)}" id="valueTextField3" />
+                                <apex:inputText styleclass="styled-select" value="{!filter.value}" rendered="{!IF(((filter.fieldType=='Text')&& filter.filterName != 'ACCOUNT-Brand' && filter.filterName != 'ACCOUNT-Service' && filter.filterName != 'ACCOUNT-Status'), true, false)}" id="valueTextField4" />
+                                <apex:inputText styleclass="styled-select" value="{!filter.value}" rendered="{!IF(((filter.fieldType=='Number' || filter.fieldType=='Currency' || filter.fieldType=='Percent')), true, false)}" id="valueTextField5" />
+                                <apex:selectList styleClass="styled-select picklist" size="1" value="{!filter.value}" rendered="{!IF((filter.fieldType=='Picklist' || filter.fieldType=='picklist') , true, false)}" style="width:150px" id="valueTextField6">
+                                    <apex:selectOptions value="{!filter.valueList}" /> 
+                                </apex:selectList>
+                                <apex:selectList styleClass="styled-select picklist" size="1" value="{!filter.value}" rendered="{!IF((filter.fieldType=='Boolean' || filter.fieldType=='Checkbox') , true, false)}" style="width:150px" id="valueTextField7">
+                                    <apex:selectOptions value="{!filter.valueList}" /> 
+                                </apex:selectList>
+                                <apex:selectList styleClass="styled-select picklist" multiselect="true" value="{!listBrandSelected}" rendered="{!IF((filter.filterName == 'ACCOUNT-Brand') , true, false)}" style="width:150px" id="valueBrands">
+                                    <apex:selectOptions value="{!listBrands}" /> 
+                                </apex:selectList>
+                                <apex:selectList styleClass="styled-select picklist" multiselect="true" value="{!listServiceSelected}" rendered="{!IF((filter.filterName == 'ACCOUNT-Service') , true, false)}" style="width:150px" id="valueService">
+                                    <apex:selectOptions value="{!listService}" /> 
+                                </apex:selectList>
+                                <apex:selectList styleClass="styled-select picklist" multiselect="true" value="{!listStatusSelected}" rendered="{!IF((filter.filterName == 'ACCOUNT-Status') , true, false)}" style="width:150px" id="valueStatus">
+                                    <apex:selectOptions value="{!listStatus}" /> 
+                                </apex:selectList>
+                                <apex:inputhidden value="{!filter.fieldType}" id="fieldtypehidden"/>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header"></apex:facet>
+                                <div style="width:155px;">
+                                    <!-- <apex:outputLabel style="padding: 5px;font:italic 12px Arial; color: #084B8A;" Value=" MM/DD/YYYY" rendered="{!IF(filter.fieldType =='Date/Time',true,false)}"/> -->
+                                    <!-- <apex:outputText style="padding: 5px;font:italic 12px Arial; color: red;" Value=" Percent : 0~100%" rendered="{!IF(filter.fieldType =='Percent',true,false)}"/> -->
+                                    <apex:commandButton value="Add Filter" action="{!addFilter}" rendered="{!IF(filterPos == filter.index, true, false)}" rerender="objFieldList" status="status"/>
+                                </div>
+                            </apex:column>
+                        </apex:dataTable>
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Fields for Report" showheader="true" columns="4" collapsible="false">
+                <apex:outputPanel id="selectFields">
+                <apex:pageMessages rendered="{!reportError}" /> 
+                    <apex:panelGrid columns="7" cellspacing="10" >
+                        <apex:outputPanel >
+                            <apex:outputLabel value="Available Fields" style="font:Bold 1.1em Arial;"/>
+                            <apex:selectList styleClass="styled-select listwidth" value="{!addFieldsList}" multiselect="true" style="width:300px" size="10">
+                                <apex:selectOptions value="{!availableSelectOption}" />
+                            </apex:selectList>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <div style="margin: 15px 0px 0 0px; padding: 70px 0px 70px 0px;">
+                                <apex:commandButton value=">>" action="{!addFields}" rerender="selectFields" status="status"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <div style="margin: 15px 0px 0 0px; padding: 70px 0px 70px 0px;">
+                                <apex:commandButton value="<<" action="{!removeFields}" rerender="selectFields" status="status"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <apex:outputLabel value="Selected Fields" style="font:Bold 1.1em Arial;"/>
+                            <apex:selectList styleClass="styled-select listwidth" value="{!removeFieldsList}" multiselect="true" style="width:300px" size="10">
+                                <apex:selectOptions value="{!selectedSelectOption}" />
+                            </apex:selectList>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <div style="margin: 15px 0px 0 0px; padding: 70px 0px 70px 0px;">
+                                <apex:commandButton value=">>" action="{!selectSortFields}" rerender="selectFields" status="status"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <div style="margin: 15px 0px 0 0px; padding: 70px 0px 70px 0px;">
+                                <apex:commandButton value="<<" action="{!deselectSortFields}" rerender="selectFields" status="status"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <apex:outputLabel value="Sort By" style="font:Bold 1.1em Arial;"/> 
+                            <apex:selectList styleClass="styled-select listwidth" value="{!sortByList}" multiselect="true" style="width:300px" size="10">
+                                <apex:selectOptions value="{!sortByOption}" />
+                            </apex:selectList>
+                        </apex:outputPanel>
+                    </apex:panelGrid>
+                </apex:outputPanel>
+                <apex:outputpanel >
+                     <apex:actionstatus id="status">
+                          <apex:facet name="start">
+                              <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb; height: 100%;opacity:0.65;width:100%;"> 
+                                <div class="waitingHolder" style="margin-top:-250px;">
+                                    <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                                    <span class="waitingDescription">Loading...</span>
+                                </div>
+                            </div>
+                        </apex:facet>
+                    </apex:actionstatus>
+                </apex:outputpanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</body>  
+</apex:page>

@@ -1,0 +1,227 @@
+<apex:page showHeader="false" sidebar="false"
+    standardController="Employee__c" extensions="employeesearchdrill" >
+
+    <!-- 
+<apex:page showHeader="false" sidebar="false"  standardController="Employee__c" extensions="employeesearch">
+saved from url=(0022)http://internet.e-mail --
+    <html>
+    <style type="text/css">
+.font_color {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+.font_header {
+    color: white;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 12px;
+}
+
+.font_headerTop {
+    color: white;
+    font-weight: bold;
+    background-color: #4F98BF;
+    font-size: 16px;
+}
+</style>
+    <head>
+    <style type="text/css">
+#div1 {
+    DISPLAY: none;
+}
+</style>
+    <script type="text/javascript">
+
+    function ShowTable(id) {
+        var e = document.getElementById(id);
+        if (e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+    }
+    
+    
+    function doSearchonChk(btnId)
+    {
+        var getFrmBtn = document.getElementById(btnId);
+        getFrmBtn .click();
+        //alert(getFrmBtn );
+    
+    }
+    
+    function toogleFilter(getId,getImgId)
+    {   
+        var getFilterDiv = document.getElementById(getId);
+        var getFilterImg = document.getElementById(getImgId);       
+        if(getFilterDiv.style.display == "")
+        {
+            getFilterDiv.style.display = "none";
+            getFilterImg.src="/servlet/servlet.FileDownload?file=01580000000pUWV";
+        }else{
+            getFilterDiv.style.display = "";
+            getFilterImg.src="/servlet/servlet.FileDownload?file=01580000000pUWf";
+        }
+    }
+</script>
+
+
+    <title>Employee Directory</title>
+
+    </head>
+
+    <body>
+    <!-- this is true ip: {!trueIP}, auth error: {!AuthorizationError}, showdirectory: {!ShowDirectory} --
+     <apex:form rendered="{!AuthorizationError}">
+        <apex:pageBlock >     
+        <apex:pagemessage severity="error" strength="3" summary="RingCentral employee directory is for internal use only."/>
+        </apex:pageBlock>
+    </apex:form> 
+ 
+    <apex:form rendered="{!showdirectory}">
+         <table width="100%" style="border-collapse: collapse;"
+            cellpadding="10" border="1">
+            <tr>
+             <td align="left"><!-- <apex:image url="/servlet/servlet.FileDownload?file=015Q000000090GF" /> --</td>
+             <!--  <td align="left"><apex:image url="/servlet/servlet.FileDownload?file=015Q000000090GA" /></td> --
+            </tr>
+        </table>
+        <table width="100%" style="border-collapse: collapse;"
+            cellpadding="10" border="1" bgcolor="#4F98BF">
+            <tr>
+                <td class="font_headerTop">Employee Directory</td>
+            </tr>
+        </table>
+
+        <table width="98%" style="border-collapse: collapse;" cellpadding="10"
+            align="center" border="0">
+            <tr>
+                <td width="15%" valign="top">                 
+                 <div style="height:35px;"></div>
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td valign="top"><b><a href="#" onclick="javascript:toogleFilter('divDep','{!$Component.imgDep}');">                       
+                        <apex:image id="imgDep" url="/servlet/servlet.FileDownload?file=01580000000pUWf" />&nbsp;Department</a></b>
+                        <div id="divDep">
+                        <apex:selectCheckboxes value="{!countries}"
+                            onclick="doSearchonChk('{!$Component.btnSearch}')"
+                            layout="pageDirection" title="Choose one or more Departments" style="font-size:10px;padding:0px 0px 0px 0px;">
+                            <apex:selectOptions value="{!items}"/>
+                        </apex:selectCheckboxes>
+                        </div>
+                        </td>
+                    </tr>  
+                    <!-- <tr>
+                        <td><b><a href="#" onclick="javascript:toogleFilter('divDivison','{!$Component.imgDivision}');">
+                        <apex:image id="imgDivision" url="/servlet/servlet.FileDownload?file=01580000000pUWf" />&nbsp;Division</a></b>
+                        <div id="divDivison">
+                        <apex:selectCheckboxes value="{!division}"
+                            onclick="doSearchonChk('{!$Component.btnSearch}')"
+                            layout="pageDirection" title="Choose one or more Divisons">
+                            <apex:selectOptions value="{!divisionItems}" />
+                        </apex:selectCheckboxes>
+                        </div>
+                        </td>
+                    </tr>   --                             
+                    <tr>
+                        <td><b><a href="#" onclick="javascript:toogleFilter('divTeam','{!$Component.imgTeam}');">
+                        <apex:image id="imgTeam" url="/servlet/servlet.FileDownload?file=01580000000pUWf" />&nbsp;Team</a></b>
+                        <div id="divTeam">
+                        <apex:selectCheckboxes value="{!team}"
+                            onclick="doSearchonChk('{!$Component.btnSearch}')"
+                            layout="pageDirection" title="Choose one or more Team"  style="font-size:10px;padding:0px 0px 0px 0px;">
+                            <apex:selectOptions value="{!teamItems}" />
+                        </apex:selectCheckboxes>
+                        </div>
+                        </td>
+                    </tr> 
+                                    
+                    <tr>
+                        <td><b><a href="#" onclick="javascript:toogleFilter('divMng','{!$Component.imgMng}');">
+                        <apex:image id="imgMng" url="/servlet/servlet.FileDownload?file=01580000000pUWf" />&nbsp;Manager</a></b>
+                        <div id="divMng">
+                        <apex:selectCheckboxes value="{!manager}"
+                            onclick="doSearchonChk('{!$Component.btnSearch}')"
+                            layout="pageDirection" title="Choose one or more Divisons"  style="font-size:10px;padding:0px 0px 0px 0px;">
+                            <apex:selectOptions value="{!managerItems}" />
+                        </apex:selectCheckboxes>
+                        </div>
+                        </td>
+                    </tr>  
+                    <!--                
+                    <tr>
+                        <td><apex:outputPanel >
+                            <p>You have selected:</p>
+                            <apex:dataList value="{!countries}" var="dept">{!dept}</apex:dataList>
+                            <apex:dataList value="{!division}" var="c">{!c}</apex:dataList>
+                            <apex:dataList value="{!team}" var="c">{!c}</apex:dataList>
+                            <apex:dataList value="{!manager}" var="c">{!c}</apex:dataList>
+                        </apex:outputPanel></td>
+                    </tr>
+                     --
+                </table>
+                </td>
+                <td valign="top">
+                <table border="0" width="100%" id="table1" class="font_color">
+                    <tr>
+                        <td align="left"><font face="Arial">Search Employee&nbsp;&nbsp;<font
+                            face="Arial" size="3"> <apex:inputText id="txtEmpNo"
+                            value="{!strEmpNo}" size="75" /></font></font>&nbsp;&nbsp; <apex:commandButton id="btnSearch" value="Search" action="{!doSearch}"
+                            style="font-weight:bold;" /></td>
+                    </tr>
+                </table>
+                <div style="height:10px;"></div>
+                <table border="1" width="100%" id="table2"  bordercolorlight="#7F7F7F" style="border-collapse: collapse">
+                    <tr class="font_header">
+                        <td align="center">
+                        <b><font face="Arial">Employee No.</font></b></td>
+                        <td align="center"><b><font face="Arial">Name</font></b></td>
+                        <!--<td align="center"><b><font face="Arial">Nick Name</font></b></td>--
+                        <td align="center"><b><font face="Arial">Phone Work</font></b></td>
+                        <td align="center"><b><font face="Arial">Extension</font></b></td>
+                        <td align="center"><b><font face="Arial">Email</font></b></td>
+                        <!--<td align="center"><b><font face="Arial">Division</font></b></td>--
+                        <td align="center"><b><font face="Arial">Department</font></b></td>                       
+                        <td align="center"><b><font face="Arial">Team</font></b></td>
+                        <td align="center"><b><font face="Arial">Manager</font></b></td>
+                    </tr>
+                    <apex:repeat value="{!employees}" var="employee" >                    
+                        <tr id="{!employee.id}">
+                            <td align="center"><a
+                                href="employeedetails?empId={!employee.EmpID__c}">{!employee.EmpID__c}</a>
+                            </td>
+                            <td align="left"><a
+                                href="employeedetails?empId={!employee.EmpID__c}">{!employee.First_Name__c}&nbsp;
+                            {!employee.Last_Name__c}&nbsp;({!employee.Employee_Nick_Name__c})</a></td>
+                            <!--<td align="left">{!employee.Employee_Nick_Name__c}</td>--
+                            <td align="left">{!employee.Phone_Work__c}</td>
+                            <td align="left">{!employee.Extension__c}</td>
+                            <td align="left"><a href="mailto:{!employee.Email__c}">{!employee.Email__c}</a></td>
+                            <!--<td align="left">{!employee.Division__c}</td>--                            
+                            <td align="left">{!employee.Department__c}</td>                            
+                            <td align="left">{!employee.Team__c}</td>
+                            <td align="left">
+                            <a  href="employeedetails?empId={!employee.Manager_Employee_Number__r.EmpID__c}">{!employee.Manager_Employee_Number__r.First_Name__c}&nbsp;&nbsp;{!employee.Manager_Employee_Number__r.Last_Name__c}</a>
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                   </table>
+                </td>
+            </tr>
+        </table>
+    </apex:form>
+    </body>
+<script type="text/javascript">
+    var getRowCounter=0
+     <apex:repeat value="{!employees}" var="employee">
+     var getRowPrint = document.getElementById("{!employee.id}");
+     if(getRowCounter%2 == 1){
+         getRowPrint.style.backgroundColor="#ffffff";
+     }else{
+         getRowPrint.style.backgroundColor="#efefef";
+     }     
+     getRowCounter++;   
+     </apex:repeat>   
+</script>
+    </html> -->
+</apex:page>

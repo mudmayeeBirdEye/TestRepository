@@ -1,0 +1,23 @@
+<apex:page standardController="Lead" extensions="updateleadAtbc">
+<apex:form >
+  <apex:pageBlock title="Lead">
+ {!leadcount}
+   <apex:pageBlockTable value="{!leadList }" var="r" id="refundTable">
+           
+           <apex:column >
+                <apex:facet name="header">LeadId</apex:facet>
+                <apex:outputText value="{!r.Id}" />
+            </apex:column>
+         <apex:column >
+                <apex:facet name="header">Name</apex:facet>
+                <apex:outputText value="{!r.Name}" />
+            </apex:column>
+             
+           <apex:column >
+                <apex:facet name="header">LeadSource</apex:facet>
+                <apex:outputText value="{!r.LeadSource}" />
+            </apex:column>
+             </apex:pageBlockTable>
+             </apex:pageBlock>
+       </apex:form>
+</apex:page>

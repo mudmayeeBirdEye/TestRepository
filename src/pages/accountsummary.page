@@ -1,0 +1,236 @@
+<apex:page controller="accountsummary" showHeader="false" sidebar="false">
+
+<style type="text/css">
+input.btn[name="del"] {
+    display: none;
+}
+//ashish garg
+input.btn[name="edit"] {
+    display: none;
+}
+input.btn[name="clone"] {
+    display: none;
+}
+</style>
+<apex:form >
+<Table border="3" height="100%" width="100%">
+<tr>
+<td width="50%" valign="top">
+ 
+    <apex:pageBlock rendered="{!AccountNotFound}">
+        <apex:pageMessage summary="User Id not found." severity="error" strength="1"  />
+    </apex:pageBlock>
+
+    <apex:pageBlock title="{!accountName} account details" rendered="{!AccountFound}">
+        <apex:panelGrid columns="2" id="theGrid" rules="rows" width="100%">
+            <apex:outputText value="Account Name: {!acct.name}"/>
+            <apex:outputText value="Current Owner: {!acct.Current_Owner_Name__c}"/>
+            <apex:outputText value="RC Account Number: {!acct.RC_Account_Number__c}"/>
+            <apex:outputText value="RC Signup Date: {!acct.RC_Signup_Date__c}"/>
+            <apex:outputText value="RC User ID: {!acct.RC_User_ID__c}"/>
+            <apex:outputText value="RC Activation Date: {!acct.RC_Activation_Date__c}"/>
+            <apex:outputText value="RC Account Status: {!acct.RC_Account_Status__c}"/>
+            <apex:outputText value="RC Upgrade Date: {!acct.RC_Upgrade_Date__c}"/>
+            <apex:outputText value="RC Service name: {!acct.RC_Service_name__c}"/>
+            <apex:outputText value="RC Cancel Date: {!acct.RC_Cancel_Date__c}"/>
+            <apex:outputText value="RC Brand: {!acct.RC_Brand__c}"/>
+            <apex:outputText value="RC Churn Date: {!acct.RC_Churn_Date__c}"/>
+            <apex:outputText value="RC Tier: {!acct.RC_Tier__c}"/>
+            <apex:outputText value="RC Attribution - Channel: {!acct.RC_Attribution_Channel__c}"/>
+            <apex:outputText value=" "></apex:outputText>
+            <apex:outputText value="RC Attribution - L2: {!acct.RC_Attribution_L2__c}"/>
+            <apex:outputText value=" "></apex:outputText>
+            <apex:outputText value="RC Attribution - L3: {!acct.RC_Attribution_L3__c}"/>
+            <apex:outputText value=" "></apex:outputText>
+            <apex:outputText value="RC Attribution - Campaign: {!acct.RC_Attribution_Campaign__c}"/>
+            <apex:outputText value=" "></apex:outputText>
+        </apex:panelGrid>
+    </apex:pageBlock>
+
+    <apex:pageBlock rendered="{!AccountFound}">
+    
+    
+    
+        <apex:pageBlockTable title="title" value="{!notelist}" var="n" id="notesTable">
+            <apex:column title="Note">
+                <apex:facet name="header">Note</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!n.title}">
+                    <apex:param name="noteId" value="{!n.note.id}"/>
+                </apex:commandLink>
+            </apex:column>
+            <apex:column title="Last Modified">
+                <apex:facet name="header">Last Modified</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!n.modifiedDate}">
+                    <apex:param name="noteId" value="{!n.note.id}"/>
+                </apex:commandLink>
+            </apex:column> 
+            <apex:column title="CreatedBy">
+                <apex:facet name="header">Created By</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!n.createdBy}">
+                    <apex:param name="noteId" value="{!n.note.id}"/>
+                </apex:commandLink>
+            </apex:column>                                 
+        </apex:pageBlockTable>
+        <BR/>          
+        <apex:pageBlockTable title="events" value="{!eventlist}" var="e" id="eventsTable">
+            <apex:column title="Events">
+                <apex:facet name="header">Event</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!e.subject}">
+                    <apex:param name="eventId" value="{!e.event.id}"/>
+                </apex:commandLink>
+            </apex:column>
+            <apex:column title="Activity Date">
+                <apex:facet name="header">Activity Date</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!e.activityDate}">
+                    <apex:param name="eventId" value="{!e.event.id}"/>
+                </apex:commandLink>
+            </apex:column> 
+            <apex:column title="CreatedBy">
+                <apex:facet name="header">Created By</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!e.createdBy}">
+                    <apex:param name="eventId" value="{!e.event.id}"/>
+                </apex:commandLink>
+            </apex:column>                                 
+        </apex:pageBlockTable>
+        <BR/>
+        <apex:pageBlockTable title="tasks" value="{!tasklist}" var="t" id="tasksTable">
+            <apex:column title="Tasks">
+                <apex:facet name="header">Task</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!t.subject}">
+                    <apex:param name="taskId" value="{!t.task.id}"/>
+                </apex:commandLink>
+            </apex:column>
+            <apex:column title="Status">
+                <apex:facet name="header">Status</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!t.status}">
+                    <apex:param name="taskId" value="{!t.task.id}"/>
+                </apex:commandLink>
+            </apex:column>            
+            <apex:column title="Activity Date">
+                <apex:facet name="header">Activity Date</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!t.activityDate}">
+                    <apex:param name="taskId" value="{!t.task.id}"/>
+                </apex:commandLink>
+            </apex:column> 
+            <apex:column title="CreatedBy">
+                <apex:facet name="header">Created By</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!t.createdBy}">
+                    <apex:param name="taskId" value="{!t.task.id}"/>
+                </apex:commandLink>
+            </apex:column>                                 
+        </apex:pageBlockTable>
+        <BR/>
+        <apex:pageBlockTable title="Contracts" value="{!contractlist}" var="contract" id="contractsTable">
+            <apex:column title="Contracts">
+                <apex:facet name="header">Contract Status</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!contract.status}">
+                    <apex:param name="contractId" value="{!contract.contract.id}"/>
+                </apex:commandLink>
+            </apex:column>
+            <apex:column title="Number of Lines">
+                <apex:facet name="header">Number of Lines</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!contract.nOfLines}">
+                    <apex:param name="contractId" value="{!contract.contract.id}"/>
+                </apex:commandLink>
+            </apex:column>             
+            <apex:column title="Status">
+                <apex:facet name="header">Term</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!contract.term}">
+                    <apex:param name="contractId" value="{!contract.contract.id}"/>
+                </apex:commandLink>
+            </apex:column>            
+            <apex:column title="Start Date">
+                <apex:facet name="header">Start Date</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!contract.startDate}">
+                    <apex:param name="contractId" value="{!contract.contract.id}"/>
+                </apex:commandLink>
+            </apex:column> 
+            <apex:column title="End Date">
+                <apex:facet name="header">End Date</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!contract.endDate}">
+                    <apex:param name="contractId" value="{!contract.contract.id}"/>
+                </apex:commandLink>
+            </apex:column> 
+            <apex:column title="CreatedBy">
+                <apex:facet name="header">Created By</apex:facet>
+                <apex:commandLink reRender="detailBlock" value="{!contract.createdBy}">
+                    <apex:param name="contractId" value="{!contract.contract.id}"/>
+                </apex:commandLink>
+            </apex:column>                                 
+        </apex:pageBlockTable>
+        
+        
+       <!-- Code by India Team on 07/30/2010 starts here -->
+       <BR/>
+       <apex:pageBlockTable title="Cases" value="{!caseList1}" var="case11" id="casesTable">
+         <apex:column title="Case">
+                <apex:facet name="header">Case Number</apex:facet>                
+                <apex:commandLink reRender="detailBlock" value="{!case11.CaseNumber}">
+                     <apex:param name="caseId" value="{!case11.casedata.id}"/>
+                </apex:commandLink>                                                             
+        </apex:column>        
+        <apex:column title="Case">
+                <apex:facet name="header"> contactName </apex:facet>
+                <apex:outputText value="{!case11.contactName }">
+               </apex:outputText>
+        </apex:column>
+        <apex:column title="Case">
+                <apex:facet name="header"> Subject</apex:facet>
+                <apex:outputText value="{!case11.Subject}">
+               </apex:outputText>                                                            
+        </apex:column>
+         
+         
+         <apex:column title="Case">
+                <apex:facet name="header"> Priority</apex:facet>
+                <apex:outputText value="{!case11.Priority}">
+               </apex:outputText>                                                            
+        </apex:column>
+         
+         <apex:column title="Case">
+                <apex:facet name="header"> CreateDated</apex:facet>
+                <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                <apex:param value="{!case11.dtCreateDate}"/>
+               </apex:outputText>                                                            
+        </apex:column>        
+        <apex:column title="Case">
+                <apex:facet name="header"> Status</apex:facet>
+                <apex:outputText value="{!case11.Status }">
+               </apex:outputText>                                                            
+        </apex:column>  
+     </apex:pageBlockTable>  
+     <!-- Code by India Team on 07/30/2010 ends here-->                              
+    </apex:pageBlock>   
+<!-- </div> -->    
+</td>
+<td valign="top" width="50%">
+    <apex:pageBlock rendered="{!AccountFound}">
+        <!-- <H3> Detail for {!selectedTitle} </H3>
+        <apex:panelGrid columns="2" id="detailGrid" rules="rows" width="100%">
+            <apex:outputText value="Account Name: {!acct.name}" id="theFirst"/>
+        </apex:panelGrid>
+        -->
+        <apex:outputPanel id="detailBlock" >
+            <apex:detail subject="{!selectednote}"/>
+            <apex:detail subject="{!selectedevent}"/>
+            <apex:detail subject="{!selectedtask}"/>
+            <apex:detail subject="{!selectedcontract}"/>
+            <apex:detail subject="{!selectedcase}"/>
+        </apex:outputPanel>
+         <apex:outputPanel title="Case" >
+         </apex:outputPanel>
+
+           
+
+    </apex:pageBlock>
+
+    <!--<apex:pageBlock id="detailBlock">
+    </apex:pageBlock>->
+     <!-- <apex:relatedList subject="{!accountID}" list="NotesAndAttachments" title="Notes" pageSize="20" />
+     <apex:relatedList subject="{!acct}" list="ActivityHistories"/>
+     <apex:relatedList subject="{!acct}" list="ActivityHistories" title="Notes" pageSize="20" /> -->
+</td>
+</tr>
+</Table>
+</apex:form>  
+</apex:page>

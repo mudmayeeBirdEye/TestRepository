@@ -1,0 +1,21 @@
+<apex:page showHeader="false" title="{!$Label.site.authorization_required}" id="ATTUnauthorized" controller="RCSupportPortalHelperUK" action="{!IF((CONTAINS($CurrentPage.parameters.startURL,'articles/RC_Knowledge_Article') || CONTAINS($CurrentPage.parameters.startURL,'RCSupportArtList2013') || CONTAINS($CurrentPage.parameters.startURL,'RCSupportArtListNew') || CONTAINS($CurrentPage.parameters.startURL,'RCSupportSearch2013')),''+$Site.CurrentSiteUrl+'RCSupportPortalLearningCenter',PageAuthorization)}">
+ <apex:composition template="RCSupportPortalHomeTemplate">
+  <apex:define name="content"> 
+  <table cellspacing="10">
+      <tbody>
+           <tr> 
+             <td> 
+                 <span style="font-weight: bold; font-size: 12pt;">Insufficient Privileges</span>
+            </td>
+           </tr>
+            <tr>
+             <td>
+                 You do not have the level of access necessary to perform the operation you requested. Please contact the owner of the record or your administrator if access is necessary.Click <a href='javascript:history.back();' style='color: #015BA7;'>here</a> to go back to previous page
+             <br/><br/>
+            </td>
+             </tr>
+          </tbody>
+    </table>
+  </apex:define>
+   </apex:composition>
+</apex:page>

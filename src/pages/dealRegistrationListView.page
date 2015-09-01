@@ -1,0 +1,61 @@
+<apex:page title="DealRegistration" label="DealRegistration" tabStyle="VAR_Deal_Registration__c" Controller="ApprovalDealRequestDetails">
+ 
+ <apex:includeScript value="{!URLFOR($Resource.jquery, 'js/jquery-1.4.2.min.js')}" />
+   <style>
+       .x-grid3-hd.x-grid3-cell.x-grid3-td-ACTION_COLUMN{
+         display: none;
+       }
+       .x-grid3-col.x-grid3-cell.x-grid3-td-ACTION_COLUMN{
+         display: none;
+        }
+        .listHeader .btn {
+           font-size: 100%;
+           background:orange;
+           border-radius:6px;
+        }
+   </style> 
+   
+   <div class="bPageTitle">
+         <div class="ptBody secondaryPalette">
+               <div class="content">
+                   <img title="Deal Registration" class="pageTitleIcon" alt="Deal Registration" src="/s.gif" />
+                   <h1 class="pageType">
+                        Deal Registrations<span class="titleSeparatingColon">:</span>
+                    </h1>
+                    <h2 class="pageDescription"> Home</h2>
+                   <div class="blank">&nbsp;</div>
+                 </div>
+                  <div class="links"></div>
+            </div>
+            <div class="ptBreadcrumb"></div>
+       </div>
+  
+     <apex:pageblock rendered="{!isSuccess}" >
+           <apex:pageBlockTable value="{!liApprovaldetails}" var="objApprovaldetails">
+               <apex:column headerValue="Total Deal Request" value="{!objApprovaldetails.iTotalRequest}"/>
+                <apex:column headerValue="Approved" value="{!objApprovaldetails.iTotalApprovedRequest}" />
+                <apex:column headerValue="Pending" value="{!objApprovaldetails.iTotalPendingRequest}"/>
+                <apex:column headerValue="Rejected" value="{!objApprovaldetails.iTotalRejectedRequest}"/>
+                <apex:column headerValue="Expired" value="{!objApprovaldetails.iTotalExpiredRequest}"/>
+                <apex:column headerValue="Active" value="{!objApprovaldetails.iTotalActiveRequest}"/>
+                <apex:column headerValue="Maximum" value="{!objApprovaldetails.iMaxmimumLimit}"/>
+                <apex:column headerValue="Remaining" value="{!objApprovaldetails.iRemainingLimit}"/>
+           
+         </apex:pageBlockTable>
+     </apex:pageblock>
+     <apex:listViews type="VAR_Deal_Registration__c" /> 
+    <!-- <apex:outputPanel layout="block">
+        <apex:enhancedList type="VAR_Deal_Registration__c" height="300" rowsPerPage="25"  customizable="true" />
+    </apex:outputPanel> -->
+    
+    <script type="text/javascript">
+      $(".actionColumn").empty().html("");
+      $(".actionColumn").remove();
+      
+      $('.btn').each(function(index) {
+         if($(this).attr('value')=='New Deal Registration'){
+           $(this).attr('value',"Create New Deal Registration");
+         }
+      });
+    </script>
+</apex:page>

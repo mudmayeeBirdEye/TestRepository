@@ -1,0 +1,50 @@
+<apex:page standardController="zqu__Quote__c" title="Change Invoice Owner"
+  extensions="zqu.InvoiceOwnerIncludeController" sidebar="true"
+  showHeader="true">
+  <apex:form >
+    <apex:sectionHeader title="Change Invoice Owner"
+      subtitle="{!zqu__Quote__c.Name}" />
+    <apex:outputPanel id="errorPanel">
+      <apex:messages />
+    </apex:outputPanel>
+    <apex:pageBlock rendered="{!invoiceOwner.isInvoiceOwnerEnabled}">
+      <apex:pageBlockSection >
+        <apex:pageBlockSectionItem >
+          <apex:outputPanel >
+            <apex:outputLabel value="Invoice Owner" />
+          </apex:outputPanel>
+
+          <apex:outputPanel id="invoiceOwnerIdField">
+            <apex:actionRegion >
+              <c:LookupBrowse fieldId="InvoiceOwner"
+                targetId="{!invoiceOwner.invoiceOwner}"
+                targetName="{!invoiceOwner.invoiceOwnerName}"
+                objectId="{!$CurrentPage.parameters.eid}"
+                lookupType="CustomerAccount" editMode="true" />
+              <apex:actionFunction name="clearInvoiceOwner"
+                action="{!clearInvoiceOwner}"
+                rerender="invoiceOwnerMessage,changelogs" oncomplete="" />
+              <script>
+                InvoiceOwner.addContextParameter( 'Currency', '{!JSENCODE(quote.zqu__Currency__c)}' );
+                InvoiceOwner.addContextParameter( 'Status', 'Active' );
+              </script>
+            </apex:actionRegion>
+            <div>
+              <apex:outputPanel id="invoiceOwnerMessage">
+                <apex:outputLabel rendered="{!invoiceOwner.hasError || invoiceOwner.hasWarning}"
+                  escape="false" value="{!invoiceOwner.warningMessage}"
+                  style="{!IF(invoiceOwner.hasError, 'color:#D74C3B', IF(invoiceOwner.hasWarning, 'color:#C85408', 'color:#000'))}">
+                </apex:outputLabel>
+              </apex:outputPanel>
+            </div>
+            <div>
+              <apex:commandButton value="Save" action="{!save}" />
+              <apex:commandButton value="Cancel" action="{!cancel}" />
+            </div>
+          </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>
+    </apex:pageBlock>
+
+  </apex:form>
+</apex:page>

@@ -1,0 +1,131 @@
+<apex:page controller="ATTControllerNew">
+  <br/> <br/> 
+ <!-- For IVR Outages -- Warning Message
+  <table cellpadding="100px"><tr><td align="left">
+  <h3 style="font-family:arial;color:red;">&nbsp;&nbsp;We are currently experiencing technical issues with our regular toll-free support number.</h3><p></p>
+  <h3 style="font-family:arial;color:red;">&nbsp;&nbsp;Please call 605-553-9159 for your support needs.</h3>
+  </td></tr>
+  </table>
+  -->
+  <style>
+    .bodyClass{
+    height: 60px;
+    margin-left: 44px;
+    padding-top: 23px;
+    width: 60px;
+    
+    }
+    .divClass{
+        text-shadow: 0 0 1px #ECECEC;
+        text-align: center;
+        font-size: 12px;
+        font-family: Arial;
+        text-shadow: 0 0 1px #DFE6EC;
+        padding-top: 0;
+        width: 120px;
+        display: block;
+        margin: -5px auto 0;
+    }
+    
+   .main_center .blocks .block a:hover{color:#FFF;}
+     
+      #gettingStarted .bodyClass{
+       background:URL({!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTSupportTopNav/images/icons.png')}) -14px -2px no-repeat;
+     }
+     .block:hover #gettingStarted .bodyClass{
+       background:URL({!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTSupportTopNav/images/icons_hover.png')}) -14px -2px no-repeat;
+      }
+    
+     #CallingFeatures .bodyClass{
+       background:URL({!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTSupportTopNav/images/icons.png')}) -135px -2px no-repeat;
+     }
+   .block:hover #CallingFeatures .bodyClass{
+       background:URL({!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTSupportTopNav/images/icons_hover.png')}) -123px -6px no-repeat;
+    }
+    
+    #Faxing .bodyClass{
+      background:URL({!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTSupportTopNav/images/icons.png')}) -254px -2px no-repeat;
+     }
+    .block:hover #Faxing .bodyClass{
+        background:URL({!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTSupportTopNav/images/icons_hover.png')}) -231px -10px no-repeat;
+    }
+    
+    #Billing .bodyClass{
+      background:URL({!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTSupportTopNav/images/icons.png')}) -14px -85px no-repeat;
+     }
+    .block:hover #Billing .bodyClass{
+        background:URL({!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTSupportTopNav/images/icons_hover.png')}) -14px -80px no-repeat;
+    }
+    
+     #ManagingYourAccount .bodyClass{
+     background:URL({!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTSupportTopNav/images/icons.png')}) -135px -85px no-repeat;
+     }
+    .block:hover #ManagingYourAccount .bodyClass{
+        background:URL({!URLFOR($Resource.ATTSupport, 'ATTSupport/ATTSupportTopNav/images/icons_hover.png')}) -127px -83px no-repeat;
+    }
+    
+    #SoftwareAppsDownloads .bodyClass{
+     background:URL({!URLFOR($Resource.ATTSupport,'ATTSupport/ATTSupportTopNav/images/icons.png')}) -259px -80px no-repeat;
+    }
+    .block:hover #SoftwareAppsDownloads .bodyClass{
+        background:URL({!URLFOR($Resource.ATTSupport,'ATTSupport/ATTSupportTopNav/images/icons_hover.png')}) -236px -77px  no-repeat;
+    } 
+  
+    .block{
+      margin: 0 22px 20px 0 !important;
+    }
+  
+    
+  </style>
+  <h2>Get Support For:</h2>
+                             <div class="blocks">
+                                <div class="block blk1">
+                                    <a id="gettingStarted" href="{!$Site.CurrentSiteUrl}ATTSupportArtListNew?c=Getting_Started&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}">
+                                        <div class='bodyClass'> </div>
+                                        <div class='divClass'>Getting Started</div>
+                                       
+                                    </a>
+                                </div>
+                                <div class="block blk2">
+                                    <a id="CallingFeatures" href="{!$Site.CurrentSiteUrl}ATTSupportArtListNew?c=Calling_Features&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}" >
+                                         <div class='bodyClass'></div>
+                                          <div class='divClass'>Calling Features</div>
+                                          
+                                    </a>
+                                </div>
+                                <div class="block blk3">
+                                    <a id='Faxing' href="{!$Site.CurrentSiteUrl}ATTSupportArtListNew?c=Faxing&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}">
+                                          <div class='bodyClass' ></div>
+                                          <div class='divClass'>Faxing</div>
+                                          
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cb mb10">
+                            </div>
+                            <div class="blocks">
+                                <div  class="block blk1">
+                                    <a id='Billing' href="{!$Site.CurrentSiteUrl}ATTSupportArtListNew?c=Billing&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}">
+                                          <div class='bodyClass' ></div>
+                                           <div class='divClass'>Billing</div>
+                                           
+                                    </a>
+                                </div>
+                                <div class="block blk2">
+                                    <a id='ManagingYourAccount' href="{!$Site.CurrentSiteUrl}ATTSupportArtListNew?c=Account_Administration&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}">
+                                         <div class='bodyClass' ></div>
+                                          <div class='divClass'>Managing Your Account</div>
+                                       
+                                    </a>
+                                </div>
+                                <div class="block blk3">
+                                    <a id='SoftwareAppsDownloads' href="{!$Site.CurrentSiteUrl}ATTSupportArtListNew?c=Software_Downloads&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}">
+                                         <div class='bodyClass' ></div>
+                                          <div class='divClass'>Software + Apps Downloads</div>
+                                         
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cb">
+                            </div>
+                 </apex:page>

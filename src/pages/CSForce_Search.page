@@ -1,0 +1,125 @@
+<apex:page controller="CSForce_SearchController" sidebar="false" >
+  <!-------------------------new stuff --------------------------------->
+  <!-- Combo-handled YUI CSS files: --> 
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/datatable/assets/skins/sam/datatable.css"></link>
+<!-- Combo-handled YUI JS files: --> 
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/datatable/datatable-min.js"></script>
+  
+  <script>
+  YAHOO.util.Event.addListener(window, "load", function() {
+    
+    var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("resultsTable"));
+    myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+    
+    myDataSource.responseSchema = {
+    fields: [
+        { key: "Title", parser:"string" },
+        { key: "Product(s)", parser:"string" },
+        { key: "Win Against", parser:"string" },
+        { key: "Story Type", parser:"string"},
+        { key: "Synopsis", parser:"string" },
+        { key: "Sales Reference", parser:"string" },
+        { key: "Able to Mention Customer Name?", parser:"string" }
+      ]
+    };
+ 
+    var myColumnDefs = [
+        { key: "Title",sortable:true },
+        { key: "Product(s)",sortable:true },
+        { key: "Win Against",sortable:true },
+        { key: "Story Type",sortable:true },
+        { key: "Synopsis",sortable:true },
+        { key: "Sales Reference",sortable:true },
+        { key: "Able to Mention Customer Name?",sortable:true }
+    ];
+    
+    var myDataTableDeferred = new YAHOO.widget.DataTable("tableContainer", myColumnDefs, myDataSource);
+  
+  });
+  </script>
+  <!-------------------------end new stuff --------------------------------->
+  
+  <style>
+  div[id*="topPB"] h2.mainTitle{
+    font-size: 20px !important;
+  }
+  
+  </style>
+  <apex:pageBlock title="Customer Stories" mode="edit" id="topPB">
+    <apex:outputLink value="{!listLink}" id="theLink">Click here to add customer story or go to list view.</apex:outputLink>
+  </apex:pageBlock>
+  <apex:form >
+    <apex:pageBlock title="Search" mode="edit">
+      <apex:pageBlockButtons >
+        <apex:commandButton action="{!doSearch}" value="Search"/>
+      </apex:pageBlockButtons>
+      <table>
+        <tr>
+          <td><apex:outputText value="Search Phrase"/></td>
+          <td><apex:inputText value="{!tSearch}" id="theTextInput"/></td>
+        </tr>
+        <tr>
+         <td><apex:outputText value="Product(s)"/></td>
+         <td>
+           <apex:selectList value="{!productSelected}" multiselect="false" size="1">
+             <apex:selectOptions value="{!productsSelect}"/>
+           </apex:selectList>
+          </td>
+         </tr>
+        <tr>
+         <td><apex:outputText value="Win Against"/></td>
+         <td>
+          <apex:selectList value="{!competitorSelected}" multiselect="false" size="1">
+           <apex:selectOptions value="{!competitorsSelect}"/>
+          </apex:selectList>
+          </td>
+         </tr>
+         <tr>
+           <td><apex:outputText value="Story Type"/></td>
+           <td><apex:inputField value="{!csSearch.Story_Type__c}"/></td>
+         </tr>
+         <tr>
+           <td><apex:outputText value="Sales Reference?"/></td>
+           <td><apex:inputField value="{!csSearch.Sales_Reference__c}"/></td>
+         </tr>
+         <tr>
+           <td><apex:outputText value="Sharing Restriction"/></td>
+           <td><apex:inputField value="{!csSearch.Sharing_Restriction__c}"/></td>
+         </tr>
+          <!-- <apex:inputField value="{!csSearch.Status__c}"/>  -->
+      </table>
+      </apex:pageBlock>
+     </apex:form>
+
+  <apex:pageBlock title="Results" mode="edit">
+   <div class="yui-skin-sam" id="tableContainer">
+    <table class="display" id="resultsTable">
+     <thead>
+       <tr>
+         <th>Title</th>
+         <th>Product(s)</th>
+         <th>Win Against</th>
+         <th>Story Type</th>
+         <th>Synopsis</th>
+         <th>Sales Reference</th>
+         <th>Able to Mention Customer Name?</th>
+       </tr>
+     </thead>
+     <tbody>
+      <apex:repeat value="{!csHelperList}" var="csh" id="theRepeat">
+        <tr>
+          <td><div id="{!csh.title}"></div><apex:outputLink value="{!csh.link}" id="theLink">{!csh.title}</apex:outputLink></td>  
+          <!-- <td>{!csh.link}{!csh.title}</td>-->
+          <td>{!csh.products}</td>
+          <td>{!csh.winAgainst}</td>
+          <td>{!csh.storyType}</td>
+          <td>{!csh.synopsis}</td>
+          <td><div id="{!csh.salesRef}"></div><apex:image id="salesRef" value="{!csh.salesRef}"/></td>
+          <td><div id="{!csh.sharingRes}"></div><apex:image id="sharingRes" value="{!csh.sharingRes}"/></td>
+        </tr>
+      </apex:repeat>
+     </tbody> 
+    </table>
+   </div>
+  </apex:pageBlock>
+</apex:page>

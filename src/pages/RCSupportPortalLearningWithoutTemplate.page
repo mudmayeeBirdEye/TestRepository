@@ -1,0 +1,128 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" docType="html-5.0" controller="RCSupportControllerHandler" >
+<style>
+    .video-section a {
+        height: 164px;
+    }
+    .video-section img {
+        height: 161px;
+        width:212px;
+        box-shadow:1px 1px 10px 0px lightgray;
+        border-radius: 10px;
+    }
+    .video-section li {
+        /*padding-left:80px !important;*/
+        padding-top:5px !important;
+    }
+    .video-section span {
+        text-align:center;
+    }
+    .article-video img {
+        width: 280px;
+        height: 212px;
+        border-radius: 10px;
+    }
+    .video-panel .share-video {
+        height: 242px;
+    }
+    #at_pspromo {
+        /*display:none !important;*/
+    }
+    .share a{
+        color: #f8981d;
+        font-weight: 700;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+    .share {
+        display: block;
+        background-color: #ececec;
+        height: 30px;
+        text-align: right;
+        border-radius: 10px 10px 0 0;
+        -webkit-border-radius: 10px 10px 0 0;
+        -moz-border-radius: 10px 10px 0 0;
+        behavior: url("{!URLFOR($Resource.RCSupportPortal, 'supportPortal/PIE.htc')}");
+        line-height: 30px;
+        color: #f8981d;
+        font-weight: 700;
+        font-size: 12px;
+        padding-right: 15px;
+        text-transform: uppercase;
+    }
+    .lc-page .left-container article .video-desc ul li {
+        list-style-position: outside !important;
+        color: #333333 !important;
+    }
+    .breadcrumblink {
+        color: #666666;
+        font-weight: 300;
+        font-family: 'Lato', Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        line-height: normal;
+    }
+    .left-container h3 {
+        margin-bottom: 10px;
+    }
+    
+</style>
+  
+
+   <script>
+       $(document).ready(function () {
+          var selectedTab='';
+           $('.lc-nav li.parent').hover(function() {
+               selectedTab=$(".lc-nav li a.selectedMenu");
+               selectedTab.removeClass('selectedMenu');  
+               $(this).children("a:first").addClass('hover');
+               //alert(1);
+             },function(){
+                  $(this).children("a:first").removeClass('hover');
+                  $(selectedTab).addClass('selectedMenu');
+             });
+        });
+    </script>
+   
+     <c:RCSystemStatus Text="Learning Center"/>
+     
+       <section class="learning-center">
+        <apex:form >
+        <apex:inputHidden value="{!strLCClassName}" id="selectedTabName"/>
+ 
+   
+      <c:RCSupportPortalLCNav tabName="{!strLCClassName}" />
+                
+    <apex:actionFunction name="showTabsDetail" action="{!showTabsDetail}"  > 
+       <!--  <apex:param name="strLCClassName" value="" assignTo="{!strLCClassName}" />-->
+    </apex:actionFunction>   
+    <script>
+      $(".lc-nav li a").live("click", function(){//alert($("[id$=selectedTabName]").val());
+        //showTabsDetail($(this).attr("id"));
+       $("[id$=selectedTabName]").val($(this).attr("id"));
+       showTabsDetail();
+     }); 
+   </script>
+   </apex:form>   
+      
+       <div style='margin-top:10px;' class='submit-case'>
+  <knowledge:articleRendererToolbar canvote="false"   rendered="{!isGuestUser}" articleId="{!$CurrentPage.parameters.id}"></knowledge:articleRendererToolbar>
+   <apex:insert name="header" />
+   <apex:insert name="body" />
+   <apex:include pageName="RCSupportRatingNew" /> 
+   </div>
+   <script>
+      var getRatingDiv = document.getElementById("j_id0:LC_Form:j_id55:j_id56:toolbar");
+       if(getRatingDiv!=null && getRatingDiv !=''){
+           getRatingDiv.style.display = "block";
+        }
+   </script>
+   
+   <style>
+    .x-toolbar-left-row{display:none;}
+    .hover{position:relative;}
+   </style>  
+         
+         
+    
+ </section>
+  
+</apex:page>

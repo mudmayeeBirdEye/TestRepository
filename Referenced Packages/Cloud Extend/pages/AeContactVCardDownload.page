@@ -1,0 +1,15 @@
+<!--  Generates the vCard content for a contact  -->
+<apex:page title="AeContactVCard.vcf" cache="True" contentType="text/x-vcard#{!Contact.id}.vcf" standardcontroller="Contact">BEGIN:VCARD
+VERSION:3.0
+N;CHARSET=utf-8:<c:AeEscapeVCardString vcString="{!Contact.LastName}"/>;<c:AeEscapeVCardString vcString="{!Contact.FirstName}"/>
+FN;CHARSET=utf-8:<c:AeEscapeVCardString vcString="{!Contact.Name}"/>
+ORG;CHARSET=utf-8:<c:AeEscapeVCardString vcString="{!Contact.Account.Name}"/>
+TITLE;CHARSET=utf-8:<c:AeEscapeVCardString vcString="{!Contact.Title}"/>
+EMAIL;type=INTERNET;type=pref:<c:AeEscapeVCardString vcString="{!Contact.Email}"/>
+TEL;type=WORK;type=VOICE;type=pref:<c:AeEscapeVCardString vcString="{!Contact.Phone}"/>
+TEL;type=WORK;type=CELL;type=pref:<c:AeEscapeVCardString vcString="{!Contact.MobilePhone}"/>
+TEL;type=WORK;type=FAX;type=pref:<c:AeEscapeVCardString vcString="{!Contact.Fax}"/>
+URL;type=WORK:{!URLFOR($Page.AeGuideList)}?objectId={!Contact.id}&amp;objectType=Contact
+ADR;type=WORK:;;<c:AeEscapeVCardString vcString="{!Contact.MailingStreet}"/>;<c:AeEscapeVCardString vcString="{!Contact.MailingCity}"/>;<c:AeEscapeVCardString vcString="{!Contact.MailingState}"/>;<c:AeEscapeVCardString vcString="{!Contact.MailingPostalCode}"/>;<c:AeEscapeVCardString vcString="{!Contact.MailingCountry}"/>
+END:VCARD
+</apex:page>

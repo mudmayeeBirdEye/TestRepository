@@ -1,0 +1,215 @@
+<apex:page controller="ITCSATSurveyController" cache="false" id="ITCSATSurvey" showHeader="false">
+    <HEAD>
+        <TITLE>IT CSAT Survey</TITLE>
+        <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+        <META HTTP-EQUIV="Expires" CONTENT="-1"/>
+    </HEAD>
+    <style>
+        p {color:#798496;font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; font-size:11px; font-style:normal; line-height:20px;}
+        
+        h1 {font-size: 11px;}
+        
+        .content{border: 1px solid lightgray; width: 750px; padding: 10px;margin:0px auto;border-radius: 15px 15px 15px 15px;}
+        
+        .content1{border: 1px solid #000; width: 750px; padding: 10px;margin:0px auto;border-radius: 15px 15px 15px 15px;
+            background: lightgray;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .btnClass {
+            color: #333 !important;
+            margin: 1px !important;
+            padding: 2px 3px !important;
+            border: 1px solid #B5B5B5 !important;
+            border-bottom-color: #7F7F7F !important;
+            background: #E8E8E9 url('/img/alohaSkin/btn_sprite.png') repeat-x right top !important;
+            font-weight: bold !important;
+            font-size: .9em !important;
+            -moz-border-radius: 3px !important;
+            -webkit-border-radius: 3px !important;
+            border-radius: 3px !important;
+            height: 24px !important;
+            width: auto !important;
+            min-width: 60px !important;
+            cursor:pointer !important;
+        }
+        .headingStyle{
+            text-align: center;
+            color: #17365D;
+            font-weight: bold;
+            font-size: 20px;
+            text-decoration: underline;
+            text-underline-color: #17365D;
+        }
+        
+        input[type="radio"] {
+            border:none !important;
+            background-color: transparent !important;  
+        }
+    
+    </style>
+
+    <apex:stylesheet value="{!URLFOR($Resource.Style_Resources, 'default2.style.css')}" />
+    
+    <apex:OutputPanel > 
+        <div class="content">
+        <table width="100%">
+            <tr>
+                <td class="headingStyle">
+                    <apex:OutputText styleclass="headingStyle">{!surveyObj.Name}</apex:OutputText>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <apex:image style="width:350px;height:70px" url="{!URLFOR($Resource.ITSurveyImages, '/ITSurveyImages/ITSurveyLogo.jpg')}" /> 
+                    <br/><br/>
+                    
+                    <div id="page">
+                    <apex:form id="form1">
+                        <apex:outputtext style="font-size:12px;padding-left: 5px;" value="Thank you for using the RingCentral IT Helpdesk!" escape="false">
+                        </apex:outputtext>
+                        <br/><br/>
+                        <apex:outputtext style="font-size:12px;padding-left: 5px;" value="Please rate your experience with your 
+                                                    IT representative regarding your most recent request in the following categories:" escape="false">
+                        </apex:outputtext>
+                            <br/><br/>
+                            <table width="100%" border="0">
+                                <tr>
+                                  <td style="width:40%;font-size: 12px;color: darkBlue;font-weight: bold;padding-left: 5px;">
+                                    Please rate your satisfaction level on the following:
+                                  </td>
+                                  <td style="width:12%;color: darkBlue;font-size: 12px;text-align:center">Very Dissatisfied</td>
+                                  <td style="width:12%;color: darkBlue;font-size: 12px;text-align:center">Somewhat Dissatisfied</td>
+                                  <td style="width:12%;color: darkBlue;font-size: 12px;text-align:center">Neutral</td>
+                                  <td style="width:12%;color: darkBlue;font-size: 12px;text-align:center">Somewhat Satisfied</td>
+                                  <td style="width:12%;color: darkBlue;font-size: 12px;text-align:center">Very Satisfied</td>  
+                                </tr>
+                                <tr><td colspan="6"><div style="border-bottom:1px solid #1E7EBA"></div></td></tr>
+                                <tr style="background:#C6E3F5;height: 60px">
+                                  <td style="width:40%;font-size: 12px;padding-left: 5px;">
+                                    <span style="color:red">* </span>Knowledge and Technical Ability
+                                  </td>
+                                  <td style="width:12%;text-align:center;" colspan="5">
+                                    <apex:selectRadio style="width:100%" readonly="true" disabled="true" value="{!answer1}" layout="linedirection"> 
+                                         <apex:selectOptions value="{!Values1}"></apex:selectOptions>
+                                    </apex:selectRadio>
+                                  </td>
+                                </tr>
+                                
+                                <tr style="height: 60px">
+                                  <td style="width:40%;font-size: 12px;padding-left: 5px;">
+                                    <span style="color:red">* </span>Professionalism, Attitude, and Customer Service
+                                  </td>
+                                  <td style="width:12%;text-align:center;" colspan="5">
+                                    <apex:selectRadio style="width:100%" readonly="true" disabled="true" value="{!answer2}" layout="linedirection"> 
+                                         <apex:selectOptions value="{!Values1}"></apex:selectOptions>
+                                    </apex:selectRadio>
+                                  </td> 
+                                </tr>
+                                
+                                <tr style="background: #C6E3F5;height: 60px">
+                                   <td style="width:40%;font-size: 12px;padding-left: 5px;">
+                                    <span style="color:red">* </span>Kept you informed of the progress
+                                  </td>
+                                  <td style="width:12%;text-align:center;" colspan="5">
+                                    <apex:selectRadio style="width:100%" readonly="true" disabled="true" value="{!answer3}" layout="linedirection"> 
+                                         <apex:selectOptions value="{!Values1}"></apex:selectOptions>
+                                    </apex:selectRadio>
+                                  </td>
+                                </tr>
+                             
+                                <tr style="height: 60px">
+                                   <td style="width:40%;font-size: 12px;padding-left: 5px;">
+                                    <span style="color:red">* </span>Resolution Provided
+                                  </td>
+                                  <td style="width:12%;text-align:center;" colspan="5">
+                                    <apex:selectRadio style="width:100%" readonly="true" disabled="true" value="{!answer4}" layout="linedirection"> 
+                                         <apex:selectOptions value="{!Values1}"></apex:selectOptions>
+                                    </apex:selectRadio>
+                                  </td> 
+                                </tr>
+                               
+                                <tr style="background: #C6E3F5;height: 60px">
+                                 <td style="width:40%;font-size: 12px;padding-left: 5px;">
+                                    <span style="color:red">* </span>Time to Resolve
+                                  </td>
+                                  <td style="width:12%;text-align:center;" colspan="5">
+                                    <apex:selectRadio style="width:100%" readonly="true" disabled="true" value="{!answer5}" layout="linedirection"> 
+                                         <apex:selectOptions value="{!Values1}"></apex:selectOptions>
+                                    </apex:selectRadio>
+                                  </td>
+                                </tr>
+                             
+                                <tr style="height: 60px">
+                                  <td style="width:40%;font-size: 12px;padding-left: 5px;">
+                                    <span style="color:red">* </span>Overall Quality of Service
+                                  </td>
+                                  <td style="width:12%;text-align:center;" colspan="5">
+                                    <apex:selectRadio style="width:100%" readonly="true" disabled="true" value="{!answer6}" layout="linedirection"> 
+                                         <apex:selectOptions value="{!Values1}"></apex:selectOptions>
+                                    </apex:selectRadio>
+                                  </td>   
+                                </tr>
+                                <tr><td colspan="6"><div style="border-bottom:1px solid #1E7EBA"></div></td></tr>
+                                <tr><td><br></br></td></tr>
+                                <tr>
+                                     <td colspan="6">
+                                        <apex:outputText style="font-size: 12px;padding-left: 5px;" escape="false"  
+                                        value="Are there any additional comments that you have about your experience?" id="qus7"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="padding-left: 5px;">
+                                         <apex:inputTextarea onkeypress="return checkLength(this, 2000,event);" disabled="true" value="{!answer7}"
+                                         style="width:100%;resize: none;font-size: 11px;border:1px solid #1E7EBA" rows="6"></apex:inputTextarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+                                        <div style="padding-top: 15px;">
+                                            <apex:outputText style="font-size: 12px;padding-left: 5px;" escape="false"  
+                                            value="Thank you for your feedback."/>
+                                        </div>
+                                    </td>
+                                </tr>
+                        </table>
+                        <div style="padding-top: 15px;font-size: 12px;padding-left:10px">
+                            <apex:outputText style="font-size: 12px;" escape="false"  
+                                value="Did you know you can create Support cases using the Web? Checkout "/>
+                            <a  href ="http://success.ringcentral.com/RCContactSupp" target="_blank">success.ringcentral.com</a> today!! 
+                        </div><br/>
+                        <apex:CommandButton disabled="true" style="width: 50px;font-size: 11px;padding-left: 5px;" styleClass="btnClass" action="{!save}" 
+                        value="Submit"></apex:CommandButton> 
+                    </apex:form> 
+                    </div>
+                </td>
+            </tr>
+        </table>
+        </div>
+        <div style="width:100%;height:70px;text-align:center;"> 
+                <input type="submit" value="Close" class="btnClass" onclick = "Cancel1();return false;" /><br /> 
+        </div>
+    </apex:OutputPanel>
+    <script type="text/javascript"> 
+        function checkLength(control, maximum,e) {
+            var keycode;
+            if (window.event) keycode = window.event.keyCode;
+            else if (e) keycode = e.which;
+            if(keycode != 8) {
+                var length = control.value.length;
+                if (length >= maximum) {
+                    alert('Please limit your comments to '+ maximum +' characters. There are currently ' + length + '.');
+                    return false;
+                }
+                return true;
+            }
+        }
+        
+        function Cancel1() {
+            window.close();
+        }
+    </script> 
+</apex:page>

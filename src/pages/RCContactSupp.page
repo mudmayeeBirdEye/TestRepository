@@ -1,0 +1,11 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" docType="html-5.0" controller="RCSupportControllerHandler" >
+  <apex:composition template="RCSupportPortalHomeTemplate">
+  
+   <apex:define name="content">
+   
+    <c:RCContactSuppUS rendered="{!!UKPortal}"/>
+    <c:RCContactSuppUK rendered="{!UKPortal}"/>
+   
+    </apex:define>
+  </apex:composition>
+</apex:page>

@@ -1,0 +1,82 @@
+<!-- vim: set filetype=html : -->
+<apex:page controller="primest.countdownController" showHeader="false" standardStylesheets="false" sidebar="true">
+  <apex:includeScript value="{!URLFOR($Resource.primest__Countdown, '/js/jquery.js')}"/>
+  <script type="text/javascript">
+    var currentTime = new Date();
+    var endTime = new Date();
+    endTime.setHours(23);
+    endTime.setMinutes(59);
+    endTime.setSeconds(59);
+    endTime.setMilliseconds(999);
+    var endOfDay = endTime - currentTime + 1;
+    var tID = setTimeout('refreshTime()', endOfDay);
+
+    waiting = false;
+
+    function refreshTime() {
+      window.location.reload(false);
+    }
+
+    $(document).ready(function() {
+      $days = $('.content span:first');
+      $select = $("form select:first").hide();
+      $clicktochange = $("#changer .message");
+
+      $('#content').bind('click', function() {
+        $next = $select.find('option:selected').next();
+
+        $next = ($next.length == 0) ? $select.find('option:first') : $next;
+
+        $select.val($next.val());
+        $select[0].onchange();
+        hooplaTracker.trackEvent(['click', 'changePeriod', $next.val()]);
+      }).hover(function () {
+        $clicktochange.show();
+      }, function () {
+        $clicktochange.hide();
+      });
+
+      if ($(".time-period-selector option").length < 2) {
+        $("#changer").hide();
+        $("#content").css("cursor", "auto");
+      }
+    });
+  </script>
+
+  <apex:stylesheet value="{!URLFOR($Resource.primest__Countdown, '/css/countdown.css')}" />
+
+  <div id="content">
+
+    <div class="display">
+      <div class="value">
+        <span class="strikethrough"></span>
+        <apex:outputPanel id="msg" styleClass="msg">{!msg}</apex:outputPanel>
+      </div>
+      <img src="{!URLFOR($Resource.Countdown, '/img/daysuntil.png')}" alt="days until" />
+    </div>
+
+    <div class="form">
+      <apex:form >
+        <p id="event-name">
+          <apex:outputPanel id="timePeriod" styleClass="time-period">{!eventName}</apex:outputPanel>
+        </p>
+
+        <a id="changer">
+          <img class="message" src="{!URLFOR($Resource.Countdown, '/img/clicktochange.png')}" alt="Click to Change" />
+          <img class="arrow"   src="{!URLFOR($Resource.Countdown, '/img/arrow.png')}"         alt="" />
+        </a>
+
+        <apex:selectList value="{!timePeriod}" size="1" id="timePeriods" styleClass="time-period-selector">
+          <apex:actionSupport event="onchange" rerender="msg,timePeriod" action="{!updateUser}"/>
+          <apex:selectOptions value="{!timePeriods}"/>
+        </apex:selectList>
+      </apex:form>
+    </div>
+  </div>
+  <apex:includeScript value="{!URLFOR($Resource.primest__Countdown, '/js/tracking.js')}"/>
+  <script type="text/javascript">
+    var hooplaTracker = new Hoopla.Tracker();
+    hooplaTracker.setCustomVar([1, 'period', '{!JSENCODE(timePeriod)}']);
+    hooplaTracker.track();
+  </script>
+</apex:page>

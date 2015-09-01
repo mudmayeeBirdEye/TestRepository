@@ -1,0 +1,152 @@
+<apex:page controller="LiquidPlanner.LiquidPlannerCredentialController" sidebar="false" action="{!getCustomFields}">
+   <style type="text/css">
+    .button{
+      background: none !important;
+      background-color:#1d7fdc !important;
+      background-image:url({!URLFOR($Resource.LiquidPlanner__Images, 'ButtonBackground.png')}) !important;
+      color:white !important;
+      border-width:0px !important;
+      background-repeat:no-repeat !important;
+      height:30px;
+      width:120px;
+    }
+  </style>
+  <apex:pageBlock >
+    <apex:outputPanel rendered="{! IF (checkCurrentUserIsSystemAdmin, true, false)}">
+      <table style="width:100%;padding-bottom:15px;" align="left" cellspacing="0">
+        <tr style="height:34px; background:#505759">
+          <td style="Width:300px">
+            <h1 align="left" style="color:White;margin-left:10px;Padding:0px">LiquidPlanner Configuration</h1>
+          </td>
+          <td colspan = "3">
+            <img align="right" style="margin-right:10px;Padding:0px" src="{!URLFOR($Resource.Images, 'LiquidLogo.png')}"/>
+          </td>
+        </tr>
+      </table>
+      
+      <apex:pagemessages />
+      <apex:form >
+        <div class="centered">
+         <apex:actionStatus id="SaveStatus" Style="align:center">
+            <apex:facet name="start">
+                <img align="center" src="{!URLFOR($Resource.LiquidPlanner__Images, 'loading.gif')}"/>
+            </apex:facet>
+            <apex:facet name="stop"></apex:facet>
+         </apex:actionStatus>
+        </div>
+
+        <table style="width:100%" align="left" cellspacing="10">
+          <tr style="height:34px">
+            <td style="width:10%">
+              Email
+            </td>
+            <td>
+              <apex:inputField value="{!CurrentCredential.Name}" required="true" style="width:200px;height:27px;"/>
+            </td>
+          </tr>
+          <tr style="height:34px">
+              <td style="width:10%">
+                  Password
+              </td>
+              <td>
+                 <apex:outputPanel styleClass="requiredInput" layout="block" id="pwPanel" >
+                    <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+                    <apex:inputSecret value="{!CurrentCredential.LiquidPlanner__Password__c}" id="passwordField" style="width:200px;height:27px;"/>
+                    <apex:outputText value="{!CurrentCredential.LiquidPlanner__Password__c}" id="passwordHiddenField" style="visibility:hidden"/>
+                    <script>
+                    var idHidden = '{!$Component.passwordHiddenField}';
+                    var valueHidden = document.getElementById(idHidden).innerHTML;
+
+                    // alert('Value hidden is: ' + valueHidden);
+                    var idPassword = '{!$Component.passwordField}';
+                    var currentPasswordValue = document.getElementById(idPassword).innerHTML;
+
+                    if (currentPasswordValue != valueHidden)
+                    {
+                        document.getElementById(idPassword).value = valueHidden;
+                    }
+                    </script>
+                 </apex:outputPanel>
+              </td>
+          </tr>
+          <tr style="height:34px">
+            <td>Default Workspace</td>
+            <td>
+              <apex:selectList value="{!selectedWorkspaceId}" multiselect="false" size="1" style="vertical-align:middle">
+                <apex:selectOptions value="{!WorkspaceOptions}"/>
+              </apex:selectList>
+              <apex:commandLink action="{!getWorkspacesSelectDefault}" type="image/png" title="Get workspaces">
+                <apex:image value="{!URLFOR($Resource.LiquidPlanner__Images,'sync.jpg')}" width="20px" height="20px" style="vertical-align:middle"/>
+              </apex:commandlink>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <div style="width:50%">
+              <apex:pageBlock title="Fixed Fields">
+                <table>
+                    <tr>
+                      <td><apex:outputText value="Project"/><br/></td>
+                      <td style="padding-left:60px"><apex:outputText value="Project Owner"/><br/></td>
+                    </tr>
+                    <tr>
+                      <td><apex:outputText value="Account (Client)"/><br/></td>
+                      <td style="padding-left:60px"><apex:outputText value="Expected Finish"/><br/></td>
+                    </tr>
+                    <tr>
+                      <td><apex:outputText value="% Complete"/><br/></td>
+                      <td style="padding-left:60px"><apex:outputText value="Max Effort"/><br/></td>
+                    </tr>
+                    <tr>
+                      <td><apex:outputText value="Total Expected Hours"/><br/></td>
+                      <td style="padding-left:60px"><apex:outputText value="Total Logged"/></td>
+                    </tr>
+                    <tr>
+                      <td><apex:outputText value="Deadline"/><br/></td>
+                      <td style="padding-left:60px"><apex:outputText value="Done"/></td>
+                    </tr>
+                </table>
+              </apex:pageBlock>
+              <br/>
+              <apex:pageBlock title="Optional Fields">
+                <apex:dataTable value="{!collectionOfCustomFields}" var="cf" cellpadding="5" style="vertical-align:middle">
+                    <apex:column >
+                      <apex:inputCheckbox value="{!cf.LiquidPlanner__Is_Displayed__c}"/>
+                    </apex:column>
+                    <apex:column headervalue="" value="{!cf.Name}" />
+                </apex:dataTable>
+             </apex:pageBlock>
+             </div>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <apex:commandButton value="Save" action="{!save}" styleClass="button" status="SaveStatus"/>
+            </td>
+          </tr>
+        </table>
+      </apex:form>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{! IF (checkCurrentUserIsSystemAdmin, false, true)}">
+      <table width="100%" class="inner_table" align="left" cellspacing="0">
+        <tr style="height:34px; background:#00ADD9">
+          <td style="Width:200px">
+              <h1 align="left" style="Padding:15px">LiquidPlanner Configuration</h1>
+          </td>
+          <td>
+             <img align="right" style="Padding:0px" src="{!URLFOR($Resource.Images, 'LiquidLogo.png')}"/>
+          </td>
+        </tr>
+      </table>
+      <table style="width:100%;" align="left" cellspacing="0">
+        <tr>
+          <td colspan="2">
+            <br/>
+            You do not have sufficient permissions to access this page. Please contact your System Administrators.
+          </td>
+        </tr>
+      </table>
+    </apex:outputPanel>
+  </apex:pageBlock>
+</apex:page>

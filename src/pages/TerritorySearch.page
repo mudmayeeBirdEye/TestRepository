@@ -1,0 +1,306 @@
+<apex:page controller="TerritorySearchController" sidebar="false">
+	<style>
+.headerTable td {
+	width: 160px;
+}
+
+#overlay {
+        border: 0px solid #000000;
+        bottom: 0;
+        left: 0;
+        opacity: 0.6;
+        filter: alpha(opacity=60);
+        
+        position: absolute;
+        top: 0;
+        display: none;
+        width: 100%;
+        z-index: 1000;
+        zIndex:1000;
+        background:black;
+      }
+</style>
+	<script>
+		function showOverlay() {
+			var o = document.getElementById('overlay');
+			o.style.display = 'block';
+		}
+		
+		function hideOverlay() {
+        	var o = document.getElementById('overlay');
+        	o.style.display = 'none';
+     	}
+	</script>
+	<script>
+		var newWin = null;
+		var strID = [];
+		var strchkbox = [];
+		function selectAllCheckboxes(cb, cbid) {
+			var inputElem = document.getElementsByTagName("input");
+			for ( var i = 0; i < inputElem.length; i++) {
+				if (inputElem[i].id.indexOf(cbid) != -1) {
+					inputElem[i].checked = cb.checked;
+					updateIDs(inputElem[i], inputElem[i].value);
+				}
+
+			}
+		}
+
+		function updateIDs(input, textid) {
+			if (input.checked) {
+				strID.push(textid);
+			} else {
+				var found = strID.indexOf(textid);
+				while (found !== -1) {
+					strID.splice(found, 1);
+					found = strID.indexOf(textid);
+				}
+			}
+
+		}
+
+		function updatecheckbox(input, textid) {
+			if (input.checked) {
+				strchkbox.push(textid);
+			} else {
+				var found = strchkbox.indexOf(textid);
+				while (found !== -1) {
+					strchkbox.splice(found, 1);
+					found = strID.indexOf(textid);
+				}
+			}
+
+		}
+
+		function openLookupPopup(id, oid, ch) {
+			if (strID.toString() == '') {
+				alert('Please select atleast one record.');
+			} else {
+				if (strID != '') {
+					id = strID.toString();
+				}
+				if (strchkbox != '') {
+					oid = strchkbox.toString();
+				}
+
+				var url = '/apex/Territory_User_Lookup_Popup?tid=' + id
+						+ '&oid=' + oid + '&ch=' + ch;
+				newWin = window
+						.open(
+								url,
+								'Popup',
+								'height=500,width=600,left=100,top=100,resizable=no,scrollbars=yes,toolbar=no,status=no');
+				if (window.focus) {
+					newWin.focus();
+				}
+			}
+			return false;
+		}
+
+		function closeLookupPopup() {
+			if (null != newWin) {
+				newWin.close();
+			}
+			doLoad();
+		}
+
+		function doLoad() {
+			var t;
+			t = setTimeout("window.location.reload()", 1000);
+		}
+	</script>
+	<apex:form id="form">
+		<apex:pageMessages id="errors" />
+		<div id="overlay">Searching.....</div>
+		<apex:pageBlock title="Territory Management Tool" mode="edit">
+			<table width="100%" border="0">
+				<tr>
+					<td width="200" valign="top"><apex:pageBlock title="Search"
+							mode="edit" id="criteria">
+
+							<script type="text/javascript">
+								function doSearch() {
+									showOverlay();
+									searchServer(
+											document
+													.getElementById("territoryname").value,
+											document.getElementById("state").value,
+											document
+													.getElementById("ownername").value,
+											document
+													.getElementById("alternateownername").value,
+											document.getElementById("country").value,
+											document.getElementById("industry").value,
+											document
+													.getElementById("postalbegin").value);
+								}
+							</script>
+
+							<apex:actionFunction name="searchServer" action="{!runSearch}"
+								rerender="results,debug,errors" onComplete="hideOverlay();">
+								<apex:param name="territoryname" value="" />
+								<apex:param name="state" value="" />
+								<apex:param name="ownername" value="" />
+								<apex:param name="alternateownername" value="" />
+								<apex:param name="country" value="" />
+								<apex:param name="industry" value="" />
+								<apex:param name="postalbegin" value="" />
+							</apex:actionFunction>
+
+							<table cellpadding="2" cellspacing="2">
+								<tr>
+									<td style="font-weight: bold;">Territory Name<br /> <input
+										type="text" id="territoryname" /></td>
+								</tr>
+								<tr>
+									<td style="font-weight: bold;">State<br /> <input
+										type="text" id="state" /></td>
+								</tr>
+								<tr>
+									<td style="font-weight: bold;">Territory Owner<br /> <input
+										type="text" id="ownername" /></td>
+								</tr>
+								<tr>
+									<td style="font-weight: bold;">Alternate Owner<br /> <input
+										type="text" id="alternateownername" /></td>
+								</tr>
+								<tr>
+									<td style="font-weight: bold;">Country<br /> <input
+										type="text" id="country" /></td>
+								</tr>
+								<tr>
+									<td style="font-weight: bold;">Industry<br /> <input
+										type="text" id="industry" /></td>
+								</tr>
+								<tr>
+									<td style="font-weight: bold;">Postal Code<br /> <input
+										type="text" id="postalbegin" /></td>
+								</tr>
+								<tr>
+									<td style="text-align: center;"><input type="button"
+										onclick="doSearch();" value="Search" /></td>
+								</tr>
+							</table>
+
+						</apex:pageBlock></td>
+					<td valign="top"><apex:pageBlock >
+							<apex:facet name="header">
+        &nbsp;&nbsp;&nbsp;
+        <table border="0" class="headerTable">
+									<tr>
+										<td><input type="button"
+											onclick="openLookupPopup('','','to'); return false"
+											value="Change Territory Owner" /></td>
+										<td><input type="button"
+											onclick="openLookupPopup('','','ao'); return false"
+											value="Change Alternate Owner" /></td>
+										<td><input type="checkbox" id='transferaccounts'
+											onclick="updatecheckbox(this,'transferaccounts');">Transfer
+											Accounts</input></td>
+										<td><input type="checkbox" id='transferleads'
+											onclick="updatecheckbox(this,'transferleads');">Transfer
+											Leads</input></td>
+										<td><input type="checkbox" id='transferopps'
+											onclick="updatecheckbox(this,'transferopps');">Transfer
+											Opportunities</input></td>
+										<td></td>
+									</tr>
+								</table>
+							</apex:facet>
+
+							<apex:pageBlock mode="edit" id="results">
+
+								<apex:pageBlockTable value="{!contacts}" var="contact">
+
+									<apex:column >
+										<apex:facet name="header">
+											<input id="checkbox" type="checkbox"
+												onclick="selectAllCheckboxes(this,'checkbox');"
+												value='{!contact.id}' />
+										</apex:facet>
+										<input id="checkbox" type="checkbox"
+											onclick="updateIDs(this,'{!contact.id}');"
+											value='{!contact.id}' />
+									</apex:column>
+
+
+									<apex:column >
+										<apex:facet name="header">
+											<apex:outputLabel value="Territory Name" />
+										</apex:facet>
+										<apex:outputField value="{!contact.name}" />
+									</apex:column>
+
+									<apex:column >
+										<apex:facet name="header">
+											<apex:outputLabel value="Segment" />
+										</apex:facet>
+										<apex:outputField value="{!contact.Segment__c}" />
+									</apex:column>
+
+									<apex:column >
+										<apex:facet name="header">
+											<apex:outputLabel value="Territory Owner" />
+										</apex:facet>
+										<apex:outputField value="{!contact.Territory_Owner__r.Name}" />
+									</apex:column>
+
+									<apex:column >
+										<apex:facet name="header">
+											<apex:outputLabel value="Alternate Owner" />
+										</apex:facet>
+										<apex:outputField value="{!contact.Alternate_Owner__r.Name}" />
+									</apex:column>
+
+									<apex:column >
+										<apex:facet name="header">
+											<apex:outputLabel value="Industry" />
+										</apex:facet>
+										<apex:outputField value="{!contact.Industry__c}" />
+									</apex:column>
+
+									<apex:column >
+										<apex:facet name="header">
+											<apex:outputLabel value="Country" />
+										</apex:facet>
+										<apex:outputField value="{!contact.Country__c}" />
+									</apex:column>
+
+									<apex:column >
+										<apex:facet name="header">
+											<apex:outputLabel value="State" />
+										</apex:facet>
+										<apex:outputField value="{!contact.State_Province__c}" />
+									</apex:column>
+
+									<apex:column >
+										<apex:facet name="header">
+											<apex:outputLabel value="Postal Begin" />
+										</apex:facet>
+										<apex:outputField value="{!contact.Postal_Begin__c}" />
+									</apex:column>
+
+									<apex:column >
+										<apex:facet name="header">
+											<apex:outputLabel value="Postal End" />
+										</apex:facet>
+										<apex:outputField value="{!contact.Postal_End__c}" />
+									</apex:column>
+
+
+
+								</apex:pageBlockTable>
+
+							</apex:pageBlock>
+						</apex:pageBlock></td>
+				</tr>
+
+			</table>
+
+
+
+		</apex:pageBlock>
+
+	</apex:form>
+
+</apex:page>

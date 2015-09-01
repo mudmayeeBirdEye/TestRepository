@@ -1,0 +1,72 @@
+<apex:page standardController="EmployeeAssetJunction__c" extensions="AddEditEmployeeAssetCtrl" id="Page" tabstyle="EmployeeAssetJunction__c"  >
+  <script src="{!URLFOR($Resource.RCSupportPortal, 'supportPortal/js/libs/jquery-1.8.2.js')}"></script> 
+  <script type="text/javascript"> 
+  function openLookup(baseURL, width, modified, searchParam){
+    var originalbaseURL = baseURL;
+    var originalwidth = width;
+    var originalmodified = modified;
+    var originalsearchParam = searchParam;
+    var lookupType = baseURL.substr(baseURL.length-3, 3);
+    if (modified == '1') baseURL = baseURL + searchParam;
+    var isCustomLookup = false;
+     // Following "aoH" is the lookup type for Employee object so change this as per your standard or custom object
+    if(lookupType == "a0H"){
+      var urlArr = baseURL.split("&");
+      var txtId = '';
+      if(urlArr.length > 2) {
+        urlArr = urlArr[1].split('=');
+        txtId = urlArr[1];
+      }
+       // Following is the url of Custom Lookup page. You need to change that accordingly
+      baseURL = "/apex/CustomEmployeeLookup?txt=" + txtId;
+       // Following is the id of apex:form control "myForm". You need to change that accordingly
+      baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.myForm}");
+      if (modified == '1') {
+        baseURL = baseURL + "&lksearch=" + searchParam;
+      }
+       // Following is the ID of inputField that is the lookup to be customized as custom lookup
+      if(txtId.indexOf('empAsset') > -1 ){
+        isCustomLookup = true;
+      }
+    }
+    if(isCustomLookup == true){
+      openPopup(baseURL, "lookup", 350, 480, "width=900,height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+    } else {
+      if (modified == '1') originalbaseURL = originalbaseURL + originalsearchParam;
+      openPopup(originalbaseURL, "lookup", 350, 480, "width="+originalwidth+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+    } 
+  }
+</script>
+<script>
+	     $(document).ready(function() {
+	     	$("[id$='itmember_mlktp']").hide();
+         });
+	
+</script>
+ <apex:pageMessages id="msg" escape="false"/>
+<apex:sectionHeader title="EmployeesAssets Edit"  subtitle="New EmployeesAssets" rendered="{!IF(EmployeeAssetJunction__c.id != NULL , false, true)}"/>
+<apex:sectionHeader title="EmployeesAssets Edit"  subtitle="{!EmployeeAssetJunction__c.Name}" rendered="{!IF(EmployeeAssetJunction__c.id != NULL , true, false)}"/>
+   <apex:form id="myForm" >  
+    <apex:PageBlock id="PageBlock">    
+      <apex:pageBlockSection columns="2" title="IT Team Member"> 
+         <!-- <apex:inputField id="itmember" value="{!EmployeeAssetJunction__c.IT_Team_Member__c}" required="true"/> -->
+          <apex:inputField id="itmember" value="{!EmployeeAssetJunction__c.OwnerId}" />
+         <!-- <apex:outPutText id="itmember" value="{!strName}"><img src="/s.gif" alt="" class="chatter-avatarStyle" title=""/><a href="#" onclick="openLookup('{!sUrlRewrite}',10,1,'{!strName}')">[Change]</a></apex:outPutText> -->
+         <apex:inputField id="status" value="{!EmployeeAssetJunction__c.Assignment_Status__c}"/>
+      </apex:pageBlockSection>
+      <apex:pageBlockSection columns="2" title="EmployeesAssets">
+        <apex:inputField id="empAsset" value="{!EmployeeAssetJunction__c.Employee_Number__c}"/>
+        <apex:inputField id="rctag" value="{!EmployeeAssetJunction__c.RC_Tag__c}" rendered="{!IF(EmployeeAssetJunction__c.id != NULL , true, false)}"/>
+        <apex:inputField id="assetdate" value="{!EmployeeAssetJunction__c.Asset_Assigned_Date__c}" />
+        <apex:inputField id="assetjira" value="{!EmployeeAssetJunction__c.Jira__c}" />
+        <apex:inputField id="assetcurrentOwner" value="{!EmployeeAssetJunction__c.Current_Active_Owner__c}" />
+        <apex:inputField id="asset" value="{!EmployeeAssetJunction__c.Asset__c}" />
+      </apex:pageBlockSection>
+       <apex:pageBlockButtons location="bottom">
+          <apex:commandButton action="{!onSave}" value="Save"/>
+          <apex:commandButton value="Cancel" action="{!onCancel}" immediate="true"/>
+      </apex:pageBlockButtons>
+    </apex:PageBlock>
+</apex:form>
+ 
+</apex:page>

@@ -1,0 +1,173 @@
+<apex:page cache="true" standardController="LP__Chat_transcript__c" extensions="LP.ChatTranscript" tabstyle="LP__Chat_transcript__c" action="{!init}" >
+    
+    <apex:includeScript value="{!URLFOR($Resource.LP__Popup,'js/jquery.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.LP__Popup,'js/jquery.simplemodal.js')}" />  
+    <apex:stylesheet value="{!URLFOR($Resource.LP__Popup,'css/basic.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.LP__Popup,'css/demo.css')}" />
+    
+    <apex:form id="myform">
+    
+    <apex:inputCheckBox id="ch_HasSaveAsDoc" value="{!HasSaveAsDoc}" style="display:none"/>
+    <apex:inputCheckBox id="ch_attachFile" value="{!attachFile}" style="display:none"/>
+    <apex:inputHidden value="{!selectedFolder}" id="hi_selectedFolder"/>
+    <apex:inputHidden value="{!Doc.Name}"  id="hi_docName"/>
+    <apex:inputHidden value="{!Doc.description}" id="hi_description"/>
+    <apex:commandButton value="Save Document" action="{!SaveDoc}" id="btnSave" style="display:none"/>
+    
+    <apex:outputText id="mylog" value="{!log}" />
+    <apex:sectionHeader title="Chat Transcript" help="/apex/chattranscript_help"/>
+
+    <apex:pageMessages escape="false" />
+    
+    <apex:outputPanel rendered="{!hasError == false}">
+    <div  style="padding-left:5px">
+        <apex:outputpanel rendered="{!chatTranscriptObj.LP__isStored__c == false}">The chat transcript has been retrieved from LivePerson system.To store it in SalesForce click the "Store" button  below <br/></apex:outputpanel>
+        You can save the Chat Transcript in a PDF file&nbsp;
+    </div>
+    <br/>
+    </apex:outputPanel>
+    <apex:pageBlock rendered="{!hasError == false}">
+    
+    <apex:PageBlockButtons >
+        <apex:CommandButton value="Store" action="{!save}" rendered="{!chatTranscriptObj.LP__isStored__c == false}"/>
+        <apex:outputPanel rendered="{!isDocumentUpdateable}"> <input type="button" value="Save as PDF" class="btn" onclick="$.modal(document.getElementById('basicModalContent'))" /></apex:outputPanel>
+                           
+    </apex:PageBlockButtons>
+    
+    <apex:PageBlockSection TITLE="Chat Information" columns="2">
+        <apex:outputField value="{!chatTranscriptObj.LP__Start_Time__c}"/>
+        <apex:outputField value="{!chatTranscriptObj.LP__End_Time__c}"/>
+        <apex:outputField value="{!chatTranscriptObj.LP__Duration__c}"/>
+        <apex:outputField value="{!chatTranscriptObj.LP__Operator__c}"/>
+        <apex:outputField value="{!chatTranscriptObj.LP__Lead__c}" rendered="{!chatTranscriptObj.LP__Lead__c != null}"/>
+        <apex:outputField value="{!chatTranscriptObj.LP__Case__c}"  rendered="{!chatTranscriptObj.LP__Case__c!=null}"/>
+        <apex:outputField value="{!chatTranscriptObj.LP__Opportunity__c}" rendered="{!chatTranscriptObj.LP__Opportunity__c !=null}"/>
+        <apex:outputField value="{!chatTranscriptObj.LP__Contact__c}" rendered="{!chatTranscriptObj.LP__Contact__c !=null}"/>
+        <apex:outputField value="{!chatTranscriptObj.LP__Account__c}" rendered="{!chatTranscriptObj.LP__Account__c !=null}"/>
+    </apex:PageBlockSection>
+    
+    <apex:PageBlockSection TITLE="Chat Transcript" columns="1">
+    	<apex:PageBlockSectionItem >
+    		<apex:outputField value="{!chatTranscriptObj.LP__Transcript2__c}" style="width:100%"/>
+    	</apex:PageBlockSectionItem>
+        <!-- <apex:outputText value="{!chatTranscriptObj.Transcript__c}"  />  -->
+        <!-- 
+        <apex:outputText value="{!SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(JSEncode(chatTranscriptObj.Transcript__c), '\\u003C','<'), '\\u003E','>'), '\\/','/'), '\\\"','')} "  />
+        {!SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(JSEncode(chatTranscriptObj.Transcript__c), '\\u003C','<'), '\\u003E','>'), '\\/','/'), '\\\"','')}
+		{!chatTranscriptObj.Transcript__c}
+		{!JSEncode(chatTranscriptObj.Transcript__c)}
+		<script type="text/javascript">
+			var TranscriptText ="{!JSEncode(chatTranscriptObj.Transcript__c)}";
+			document.write(TranscriptText);
+		</script>
+          -->
+    </apex:PageBlockSection>
+
+    </apex:pageBlock>
+    
+
+
+
+<!-- ---------------------------------SAVE DOCUMENT------------------------------------- -->
+   <div id="basicModalContent" style='display: none; width: 600px;'>
+
+
+    <apex:pageBlock mode="Edit" title="Save Chat Transcript" rendered="{!isDocumentUpdateable}">
+                         <apex:pageBlockButtons location="bottom" id="pbButton">
+                             <input type="button" value="Save" class="btn" onclick="saveDoc();"/>
+                             <input type="button" value="Cancel" class="btn" onclick="$.modal.close(document.getElementById('basicModalContent'));"/>
+                         </apex:pageBlockButtons>
+                         
+                         <apex:pageBlockSection columns="1" title="File Information" >
+                              <apex:pageBlockSectionItem >
+                                  <apex:outputLabel value="File Name" />
+                                  <!--  <apex:inputText required="true" style="width:300px"/>-->
+                                  <apex:inputField value="{!doc1.name}" style="width:300px" id="t1"/>
+                              </apex:pageBlockSectionItem>
+                              
+                              
+                                <!--  <apex:inputText required="true" style="width:300px"/>-->
+                              <apex:inputField value="{!doc1.description}" style="width:300px" id="t2"/>
+                         </apex:pageBlockSection>
+                         
+                         <apex:pageBlockSection columns="1" title="File Location" />
+                         
+                         
+                         <table border="0" id="tt">
+                         <tr>
+                             <td>
+                                <input type="CheckBox" id="chdocument" checked="true" onclick="document.getElementById('fDocList').disabled = !this.checked;documentClicked();"/><apex:outputLabel style="font-weight:bold;font-size:11px" value="Document"/>
+                             </td>
+                             <td>
+                                 <apex:outputLabel value="Select Folder" ></apex:outputLabel>
+                             </td>
+                             <td>
+                                 <span id="fDocList">
+                                 <apex:selectList size="1" >
+                                    <apex:selectOptions value="{!Folders}"></apex:selectOptions>
+                                 </apex:selectList> 
+                                 </span>
+                             </td>
+                         </tr>
+                         
+                         <tr>
+                             <td>
+                                <apex:outputPanel rendered="{!IsRelated}">
+                                <input type="CheckBox" id="chAttachFile" checked="true" onclick="document.getElementById('fDocList').disabled = !this.checked;attachFileClicked();"/><apex:outputLabel value="Attach To {!objectName}" style="font-weight:bold;font-size:11px"/>
+                                </apex:outputPanel>
+                             </td>
+                             <td>
+                                 
+                                
+                             </td>
+                             <td>
+                                 
+                             </td>
+                         </tr>
+                         
+                         </table>
+                    </apex:pageBlock>
+    </div>
+    
+    
+    
+    
+    
+        <div id="wait" class="pop">
+        
+        </div>
+        <div class="pop1" id="wait1">
+        
+        </div>
+
+
+    </apex:form>
+    
+    <script language="javascript">
+     
+     function saveDoc()
+     {
+        if(!document.getElementById("chdocument").checked && !document.getElementById("chAttachFile").checked)
+        {
+          alert('Please select the location you would like to save the file!');
+          return false;
+        }
+        
+        document.getElementById("{!$Component.myform.ch_HasSaveAsDoc}").checked = document.getElementById("chdocument").checked;
+        document.getElementById("{!$Component.myform.ch_attachFile}").checked = document.getElementById("chAttachFile").checked;
+        document.getElementById("{!$Component.myform.hi_selectedFolder}").value = document.getElementById("fDocList").getElementsByTagName("select")[0].value;
+        document.getElementById("{!$Component.myform.hi_docName}").value = document.getElementById("basicModalContent").getElementsByTagName("input")[0].value;
+        document.getElementById("{!$Component.myform.hi_description}").value = document.getElementById("basicModalContent").getElementsByTagName("textarea")[0].value;
+        document.getElementById("{!$Component.myform.btnSave}").click(); 
+       
+     }
+     function attachFileClicked(obj)
+     {
+     
+     }
+     function documentClicked(obj)
+     {
+     
+     }
+    </script>
+ </apex:page>

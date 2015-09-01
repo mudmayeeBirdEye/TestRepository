@@ -1,0 +1,21 @@
+<apex:page standardController="GETSAT_TOPIC__Topic__c" extensions="GETSAT_TOPIC.TopicStatusController">
+<apex:form > 
+   <apex:commandButton id="id2" style="visibility:hidden;" action="{!completeAuthorization}"/>
+
+   <script type="text/JavaScript" language="Javascript">
+        window.onload = function() { setFocus();}
+        function setFocus(){
+            document.getElementById('j_id0:j_id1:id2').focus();
+            document.getElementById('j_id0:j_id1:id2').click();
+        }
+  </script>
+    <apex:outputText rendered="{!authSuccess}" value="Authorization successful OAuth Token: {0} OAuth Verifier: {1}">
+        <apex:param name="token" value="{!token}"/>
+        <apex:param name="verifier" value="{!verifier}"/>
+    </apex:outputText>
+    <apex:outputText rendered="{!(!authSuccess)}" value="Not Authorized: {!message} OAuth Token: {0} OAuth Verifier: {1}">
+        <apex:param name="token" value="{!token}"/>
+        <apex:param name="verifier" value="{!verifier}"/>
+    </apex:outputText>
+    </apex:form>    
+</apex:page>

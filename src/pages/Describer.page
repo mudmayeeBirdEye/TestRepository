@@ -1,0 +1,43 @@
+<apex:page Controller="Describer">
+    <apex:form id="Describe">
+        <apex:pageBlock id="block2" >
+            <apex:pageblockbuttons location="top" >
+                <apex:commandButton value="Get Describe Object Fields" action="{!showFields}"/>
+            </apex:pageblockbuttons>
+            
+            <apex:pageblocksection >
+                <apex:selectList value="{!selectedObject}" size="1">
+                    Object Name: 
+                    <apex:selectOptions value="{!objectNames}"/>
+                </apex:selectList>
+            </apex:pageblocksection>
+            
+            <apex:pageblocksection id="fieldList" rendered="{!not(isnull(selectedObject))}">
+                <!-- <apex:panelBar items="{!fields}" var="fls">
+                    <apex:panelBarItem label="{!fls.key}">{!fls.val}</apex:panelBarItem>
+                </apex:panelBar> -->
+
+
+                <apex:dataTable value="{!fields}" var="fls" id="theTable">
+
+                    <apex:column >
+                        <apex:facet name="header">ID</apex:facet>
+                        <apex:outputText value="{!fls.key}"/>
+                    </apex:column>
+
+                    <apex:column >
+                        <apex:facet name="header">TYPE</apex:facet>
+                        <apex:outputText value="{!fls.typ}"/>
+                    </apex:column>
+
+                    <apex:column >
+                        <apex:facet name="header">LABEL</apex:facet>
+                        <apex:outputText value="{!fls.lbl}"/>
+                    </apex:column>
+
+                </apex:dataTable>
+
+            </apex:pageblocksection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

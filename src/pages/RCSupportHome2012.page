@@ -1,0 +1,6 @@
+<apex:page controller="RCSupportController2012" showHeader="false" title="RC Support2012" cache="true" expires="{!cacheMaxAge}" >
+<apex:composition template="{!$Site.Template}">
+
+
+</apex:composition>
+</apex:page>

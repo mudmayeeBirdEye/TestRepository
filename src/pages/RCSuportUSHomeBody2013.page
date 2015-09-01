@@ -1,0 +1,101 @@
+<apex:page controller="RCSupportController2013">
+  <br/> <br/> 
+ <!-- For IVR Outages -- Warning Message
+  <table cellpadding="100px"><tr><td align="left">
+  <h3 style="font-family:arial;color:red;">&nbsp;&nbsp;We are currently experiencing technical issues with our regular toll-free support number.</h3><p></p>
+  <h3 style="font-family:arial;color:red;">&nbsp;&nbsp;Please call 605-553-9159 for your support needs.</h3>
+  </td></tr>
+  </table>
+  -->
+  <h2>Get Help for RingCentral:</h2>
+                             <div class="blocks">
+                                <div class="block blk1">
+                                    <a href="{!$Site.CurrentSiteUrl}RCSupportArtListNew?c=Getting_Started&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}">
+                                        <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bt_img1.png')}" width="88" height="77" alt="" title="" /><p>
+                                            Getting Started</p>
+                                    </a>
+                                </div>
+                                <div class="block blk2">
+                                    <a href="{!$Site.CurrentSiteUrl}RCSupportArtListNew?c=Calling_Features&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}" >
+                                        <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bt_img2.png')}" width="88" height="77" alt="" title="" /><p>
+                                            Calling Features</p>
+                                    </a>
+                                </div>
+                                <div class="block blk3">
+                                    <a href="{!$Site.CurrentSiteUrl}RCSupportArtListNew?c=Faxing&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}">
+                                        <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bt_img3.png')}" width="88" height="77" alt="" title="" /><p>
+                                            Faxing</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cb mb10">
+                            </div>
+                            <div class="blocks">
+                                <div class="block blk1">
+                                    <a href="{!$Site.CurrentSiteUrl}RCSupportArtListNew?c=Billing&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}">
+                                        <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bt_img4.png')}" width="88" height="77" alt="" title="" /><p>
+                                            Billing</p>
+                                    </a>
+                                </div>
+                                <div class="block blk2">
+                                    <a href="{!$Site.CurrentSiteUrl}RCSupportArtListNew?c=Account_Administration&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}">
+                                        <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bt_img5.png')}" width="88" height="77" alt="" title="" /><p>
+                                            Managing Your Account</p>
+                                    </a>
+                                </div>
+                                <div class="block blk3">
+                                    <a href="{!$Site.CurrentSiteUrl}RCSupportArtListNew?c=Software_Downloads&k=&action=SearchAnswer&sortBy=Title&{!AuthToken}">
+                                        <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bt_img6.png')}" width="88" height="77" alt="" title="" /><p>
+                                            Apps and Downloads</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cb">
+                            </div>
+                            <div class="bottom_menu hovered-0">
+                                <apex:outputPanel rendered="{!CaseURL != 'false'}">
+                                    <div class="bblock bblock1" id="divofCase" onclick="openCasefromMenu('showDivCase')">
+                                        <a href="javascript:void(0);" id="linktoCase" onclick="openCasefromMenu('showDivCase')" ><img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bm_img1.png')}" width="85" height="51" alt="" title="" /><p>
+                                            My Stuff</p></a>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!CaseURL == 'false'}">
+                                    <div class="bblock bblock1" id="divofCase" onclick="loadCaseBool();">
+                                        <a href="javascript:void(0);" id="linktoCase" onclick="loadCaseBool();" ><img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bm_img1.png')}" width="85" height="51" alt="" title="" /><p>
+                                            My Stuff</p></a>
+                                    </div>
+                                </apex:outputPanel>
+                                <div class="bblock bblock2">
+                                   <!-- <a href="http://forum.ringcentral.com" target="_blank">
+                                        <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bm_img2.png')}" width="85" height="51" alt="" title="" /><p>
+                                            Ask the Community</p>
+                                    </a> -->
+                                    
+                                     <apex:outputPanel rendered="{!IdeaURL=='false'}" >
+                                         <a href="http://service.ringcentral.com/login.asp?p_next_page=IDEAANDANSWER" target="_self">
+                                            <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bm_img2.png')}" width="85" height="51" alt="" title="" /><p>
+                                            Ask the Community</p>
+                                         </a>
+                                      </apex:outputPanel>
+                                       <apex:outputPanel rendered="{!IdeaURL !='false'}" >
+                                           <a href="{!IdeaURL}" target="_blank">
+                                             <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bm_img2.png')}" width="85" height="51" alt="" title="" /><p>
+                                                Ask the Community</p>
+                                           </a>
+                                       </apex:outputPanel>
+                                        
+                                </div>
+                                <div class="bblock bblock3">
+                                    <a href="{!$Site.CurrentSiteUrl}RCSupportTrainingManuals2013?k=&action=SearchAnswer&{!AuthToken}">
+                                        <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bm_img3.png')}" width="85" height="51" alt="" title="" /><p>
+                                            Training</p>
+                                    </a>    
+                                </div>
+                                <div class="bblock bblock4">
+                                    <a href="{!$Site.CurrentSiteUrl}RCSupportContactSupport2013?k=&action=SearchAnswer&pageid=contact-support&{!AuthToken}">
+                                        <img src="{!URLFOR($Resource.SupportInclude, 'SupportInclude/images/support/inc_images/bm_img4.png')}" width="85" height="51" alt="" title="" /><p>
+                                            Contact Support</p>
+                                    </a>    
+                                </div>
+                            </div>
+</apex:page>

@@ -1,0 +1,329 @@
+<apex:page standardController="Account_Metric__c" extensions="AccountMetricExtension" cache="false" >
+
+	<script type="text/javascript"> 
+	    function showOverlay() {
+	        var o = document.getElementById('overlay');
+	        o.style.visibility = 'visible';
+	    }
+	    function hideOverlay() {
+	        var o = document.getElementById('overlay');
+	        o.style.visibility = 'hidden';
+	    }
+	</script> 
+
+	<style type="text/css">
+
+		body .x-btn-pressed, body .x-btn-click, body .x-btn-menu-active, body button:active, body .btn:active, body .btnPressed, body .btnCancel:active, body .menuButton .menuButtonButton:active {
+		    background-position: left bottom;
+		    border-color: #585858 #585858 #939393;
+		}
+		body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+		
+		background: none;
+		
+		}
+		/*.btn commandButtonStyle:active{
+		   background-position: left bottom;
+		    border-color: #585858 #585858 #939393;
+		}
+		.btn commandButtonStyle:hover{
+		   background-position: left bottom;
+		    
+		}
+		.btn commandButtonStyle:click{
+		   background-position: left bottom;
+		    
+		}*/
+		
+		body button:hover, body .btn:hover, body .btnCancel:hover, body .menuButton .menuButtonButton:hover{
+		  background-position: left bottom;
+		}
+		/*
+		body button:hover, body .btn:hover, body .btnCancel:hover, body button:click{
+		  background-position: left bottom;
+		}
+		*/
+		.b1 {color:Red;}
+		
+		.centerAlign TD {
+		   vertical-align:middle;
+		   height:100%;
+		}
+		
+		#overlay
+		{
+		    background: url("{!URLFOR($Resource.EmailValidation,'loading.gif')}") no-repeat scroll center center gray;
+		    border: 0px solid #000000;
+		    bottom: 0;
+		    left: 0;
+		    opacity: 0.75;
+		    position: absolute;
+		    top: 0;
+		    visibility: hidden;
+		    width: 100%;
+		    z-index: 1000;
+		    }
+		.columnAlign{
+		    width:255px;
+		    float:right;
+		}
+		.selectListWidth{
+		    width:250px
+		}
+		.headerClassDiv {
+		    background: url('/img/alohaSkin/grid_headerbg.gif') repeat-x scroll 0 bottom #FFFFFF;
+		    border-width: 0 0 1px 1px;
+		    color: #000000;
+		    font-size: 0.9em;
+		    font-weight: bold;
+		    padding: 5px 2px 4px 5px;
+		    width:294px;
+		    float:left;
+		    text-align:center;
+		}
+		.bPageBlock .detailList .dataCol {
+		    width: auto;
+		}
+		.bPageBlock .detailList th, .bPageBlock .detailList .centerAlign TD {
+		    vertical-align: middle;
+  		}
+  		
+  		.btnDiv {
+            /*width: 100%;*/
+            margin: auto;
+            padding-top:3px;
+            padding-bottom:3px;
+           /* border: 1px solid #A5A6A5;*/
+            margin-top: 5px; 
+            margin-bottom: 5px;
+           /* background: #FFF !important;*/
+            -moz-border-radius: 11px;
+            -webkit-border-radius: 11px;
+            border-radius: 11px;
+           /* -webkit-box-shadow: 0px -71px 101px -19px #DEEBEF inset;*/ 
+            -moz-box-shadow: 0px -71px 101px -19px #DEEBEF inset;
+            text-align: center;
+            }
+            .btn {
+            color:#084B8A !important;
+            background-color:#E16222!important;
+            border: 1px solid #A5A6A5 !important;
+           
+            padding: 9px !important;
+            vertical-align: center;
+        }
+	     .btnDivNew {
+	        /*width: 95%;*/
+	        margin: auto;
+	        border: 1px solid skyblue;
+	        /* min-height: 100px; */
+	        margin-top: 5px;
+	        //margin-bottom: 5px;
+	        background: #FFF !important;
+	        
+	        /*-moz-border-radius: 11px;
+	        -webkit-border-radius: 11px;
+	        border-radius: 11px;*/
+	        
+	        /*behavior: url({!$Resource.BorderRadiusHTC});
+	        box-shadow: 0px 0px 20px 0px skyblue inset;
+	        -webkit-box-shadow: 0px 0px 20px 0px skyblue inset;
+	        -moz-box-shadow: 0px 0px 20px 0px skyblue inset;*/
+	        text-align: center;
+	        /*padding:10px;*/
+	        padding-top : 3px;
+	        padding-bottom : 3px;
+	        margin-left:9px;
+	    }
+	    .btn {
+	    	background-color:transparent !important;
+	    }
+  		
+  </style>
+  
+  <apex:form id="theform" title="Email Address">
+    <apex:pageMessages /> 
+   <!--Display Overlay-->
+   <div id="overlay"></div>   
+    <apex:pageBlock id="MainBlock">
+        <apex:pageBlockSection >
+           <apex:pageBlockSectionItem >
+        <apex:panelGrid columns="5" >
+            <apex:dataTable id="table"  value="{!1}" var="a" width="100%" align="center" > 
+                <!--Contact Window-->   
+                <apex:column colspan="3" id="c1"> 
+                    <apex:panelGrid columns="1" >
+                   <!-- Account Section Starts -->
+                       <apex:panelGroup style="font-size: 15px;">
+                           <apex:outputLabel >Account:</apex:outputLabel> 
+                           <apex:outputField value="{!rcInteralAccount.Name}" id="accountid" >
+                          </apex:outputField>   
+                      </apex:panelGroup>
+                      <apex:panelGroup style="font-size: 15px;">
+                      	<apex:Outputlabel value="Search Email:"></apex:Outputlabel>  
+                      </apex:panelGroup>
+                      <apex:panelGroup >
+                           <apex:InputText value="{!inputtxtsearch}" id="inputtxtsearch" style="width:232px;" />&nbsp;
+                           <apex:Outputlabel value="Go!" styleClass="btn">
+                           		<apex:actionSupport event="onclick" reRender="MainBlock"  action="{!getemailonSearch}" status="ajaxStatus1"   />
+                           </apex:Outputlabel>
+                      </apex:panelGroup>
+                      <apex:selectList id="allSearchedContacts" value="{!selectedContacts}" multiselect="true"  size="5" style="height: 388px;width: 278px;margin-top:10px;" >
+                                <apex:selectOptions value="{!ContactOptions}" />
+                      </apex:selectList>
+                    </apex:panelGrid>
+               </apex:column> 
+                <!-- as a blank column--> 
+                <apex:column > 
+                <!-- To Field Must be on Value at a time--> 
+                	<apex:panelGrid columns="1"  id="PnlGridNew" >
+	                   	 <apex:panelGroup style="font-size: 15px;">
+	                   	 	<br/>
+	                      </apex:panelGroup>
+	                      <apex:panelGroup style="font-size: 15px;">
+	                   	 	<br/>
+	                      </apex:panelGroup>
+	                      <apex:panelGroup style="font-size: 15px;">
+	                       <br/>
+	                      </apex:panelGroup>
+                    </apex:panelGrid>
+                    <apex:panelGrid columns="4"  id="PnlGrid1">
+                        <apex:panelGroup >                    
+                            <apex:image value="/s.gif" title="Add" alt="Add"  styleClass="rightArrowIcon" style="margin-top: 20px;"   >   
+                                <apex:actionSupport event="onclick" action="{!setToAddress}" reRender="MainBlock,PnlGrid1" status="ajaxStatus1"/>
+                                <apex:actionStatus id="ajaxStatus1" onStart="showOverlay();" onstop="hideOverlay();"/>
+                            </apex:image>
+                            <br/>
+                         
+                            <apex:image value="/s.gif" title="Remove" alt="Add"  styleClass="leftArrowIcon" > 
+                                <apex:actionSupport event="onclick" action="{!removeToAddress}" status="ajaxStatus1" reRender="MainBlock" />
+                            </apex:image>
+                        </apex:panelGroup>
+                        <apex:panelGroup > 
+                            <apex:outputLabel style="text-align:center;" styleClass="headerClassDiv" value="To" /><BR/> 
+                            <apex:inputTextarea id="toAdd"  style="width:296px" cols="1"  value="{!toAddress}"  readonly="true"/>
+                        </apex:panelGroup>
+                    </apex:panelGrid>
+                    <apex:panelGrid columns="4" id="abcd"  >
+                        <apex:panelGroup >                    
+                             <apex:image value="/s.gif" title="Add" alt="Add"  styleClass="rightArrowIcon" style="margin-top: 25px;">   
+                                <apex:actionSupport event="onclick" action="{!setAdditionalTo}" reRender="MainBlock" status="ajaxStatus2"/>
+                                <apex:actionStatus id="ajaxStatus2" onStart="showOverlay();" onstop="hideOverlay();"/>
+                            </apex:image>
+                            <br/>
+                         
+                            <apex:image value="/s.gif" title="Remove" alt="Remove"  styleClass="leftArrowIcon" >  
+                                <apex:actionSupport event="onclick" action="{!removeAdditionalTo}" status="ajaxStatus2" reRender="MainBlock" />
+                            </apex:image>
+                       </apex:panelGroup>
+                       <apex:panelGroup >
+                           <apex:outputLabel styleClass="headerClassDiv" value="Additional To"/><BR/> 
+                            <apex:selectList id="additionalToDiv" value="{!selectedAdditionalToList}" multiselect="true"  size="5" style="width:300px"  >
+                                <apex:selectOptions value="{!AllAdditionalTo}" />
+                            </apex:selectList>
+                        </apex:panelGroup>  
+                    </apex:panelGrid>
+                    <apex:panelGrid columns="4" id="abcd1" >
+                        <apex:panelGroup >
+                            <br/>
+                            <apex:image value="/s.gif" title="Add" alt="Add"  styleClass="rightArrowIcon" style="margin-top: 25px;">  
+                                <apex:actionSupport event="onclick" action="{!setCCList}" reRender="MainBlock" status="ajaxStatus3"/>
+                                <apex:actionStatus id="ajaxStatus3" onStart="showOverlay();" onstop="hideOverlay();"/>
+                            </apex:image>
+                            <br/>
+                           <apex:image value="/s.gif" title="Remove" alt="Add"  styleClass="leftArrowIcon"> 
+                                <apex:actionSupport event="onclick" action="{!removeCCList}" reRender="MainBlock" status="ajaxStatus3"/>
+                           </apex:image>
+                        </apex:panelGroup> 
+                        <apex:panelGroup >
+                            <apex:outputLabel style="text-align:center;" styleClass="headerClassDiv" value="CC"/><BR/>
+                            <apex:selectList id="ccPanl" value="{!selectedCCList}" multiselect="true"  size="5" style="width:300px">
+                                <apex:selectOptions value="{!AllCCOptions}" /> 
+                            </apex:selectList>
+                        </apex:panelGroup>
+                    </apex:panelGrid>
+                    <apex:panelGrid columns="4" id="abcd2" >
+                        <apex:panelGroup >
+                         <br/>
+                        <apex:image value="/s.gif" title="Add" alt="Add"  styleClass="rightArrowIcon" style="margin-top: 25px;">  
+                            <apex:actionSupport event="onclick" action="{!setBccList}" reRender="MainBlock" status="ajaxStatus4"/>
+                            <apex:actionStatus id="ajaxStatus4" onStart="showOverlay();" onstop="hideOverlay();"/>
+                        </apex:image>
+                        <br/>
+                        <apex:image value="/s.gif" title="Remove" alt="Remove"  styleClass="leftArrowIcon"> 
+                            <apex:actionSupport event="onclick" action="{!removeBccList}" reRender="MainBlock" status="ajaxStatus4"/>
+                        </apex:image>
+                    </apex:panelGroup>
+                    <apex:panelGroup >
+                        <apex:outputLabel value="BCC" styleClass="headerClassDiv" /><BR/>                       
+                        <apex:selectList id="bccPanel" value="{!selectedBccList}" multiselect="true"  size="5" style="width:300px">
+                            <apex:selectOptions value="{!AllBccOptions}" />
+                        </apex:selectList>
+                    </apex:panelGroup>
+                </apex:panelGrid>
+           </apex:column>  
+        </apex:dataTable>    
+           </apex:panelGrid> 
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem > 
+                <apex:panelGroup id="validationCol">
+                    <apex:panelGrid styleClass="centerAlign" rendered="{!if(isrecipientnotselected == true,true,false)}"  style="background: url({!URLFOR($Resource.EmailValidation,'WarningSignBackGround.png')})no-repeat;height: 420px;width: 400px;vertical-align:middle;" >
+                        <apex:dataTable value="{!1}" var="a" id="theTable" styleClass="centerAlign" style="width:100%;background-color: #FFFF99; font-family:TRebuchet MS;font-weight: bold;border:2.5px solid #32588E;-moz-border-radius:9px 9px 9px 9px;border-radius:9px 9px 9px 9px;vertical-align:middle;"  >
+                              <apex:column id="thecolumn1" style="vertical-align:middle;width:15%;text-align:center;">
+                                 <apex:image value="{!URLFOR($Resource.EmailValidation,'warningSign.png')}"  width="48" height="40"  />  
+                              </apex:column>
+                              <apex:column id="thecolumn2" style="vertical-align:middle;padding-top:5px;padding-bottom:5px;">
+                                  <apex:outputText escape="false"  >
+                                   WARNING: Please select the recipient/recipients. 
+                              </apex:outputText>
+                              </apex:column>
+                        </apex:dataTable>
+                    </apex:panelGrid>
+                </apex:panelGroup>                
+            </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+             <apex:pageBlockButtons location="both"  id="commandButtonSec" >
+                   <apex:commandButton id="validemailid" value="Send Mail" styleClass="btn" onclick="sendMail(); return false;">
+                   </apex:commandButton>
+                   <apex:actionStatus id="Status" onStart="showOverlay();" onstop="hideOverlay();"/>
+                   <apex:ActionFunction action="{!sendMailToCustomerCall}" name="sendMailToCustomer" reRender="MainBlock,validationCol" status="Status"   
+                   				onComplete="mailsent(); return false;">
+                   </apex:ActionFunction>
+                    <apex:commandButton action="{!cancel}" value="Cancel"  styleClass="btn"/>
+             </apex:pageBlockButtons> 
+             <script>
+		    	function sendMail() {
+    	    		var confirmChk = confirm('Are you sure you want to send mail?');
+            		if(confirmChk) {
+	                	sendMailToCustomer();
+		            }
+		        }
+		        
+		        function mailsent() {
+		            if('{!isMailSent}' == 'true') {
+		                alert('Mail sent to selected recipients.');
+		            } else if('{!isMailSent}' == 'false') {
+		            	
+		            } else {
+		                alert('Error Occured.');
+		            }
+		        }
+    		</script>
+        </apex:pageBlock> 
+        <apex:PageBlock title="Attachment">
+       		<div id="attachment">
+            	<apex:PageBlockTable value="{!1}" id="pagebltbl1" var="varattachment">
+                	<apex:column style="width:30%">
+	                     <apex:facet name="header">
+                     		<font style="font-size: 12px">File</font>
+	                     </apex:facet>
+	                     <apex:outputLink value="/apex/AccountHealthSummaryPDF?accid={!accObj.id}" target="_blank">Account Health Scorecard: {!accObj.Name}</apex:outputLink>
+                     </apex:column>
+                </apex:PageBlockTable>
+            </div> 	
+        </apex:PageBlock> 
+    </apex:form>
+    </apex:page>
+    
+    <!--<input type="button" class="btn" value="Preview Attachment" onClick="window.open('/apex/AccountHealthSummaryPDF?accid={!accObj.id}');" />
+                	-->

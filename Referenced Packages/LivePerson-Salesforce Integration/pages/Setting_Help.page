@@ -1,0 +1,53 @@
+<apex:page showheader="false" renderas="PDF">
+
+<apex:stylesheet value="{!$Resource.LP__LivePerson_CSS}" /> 
+
+<div class="header">
+    <img src="{!$Resource.LivePerson_Logo}"/>
+ <br/><br/>
+</div>
+
+<div class="text">
+<h2 class="exchangeTitle">Help - Settings</h2>
+<div class="innerTxt">
+
+ This page allows the setup of basic settings that will define the way the 
+ Salesforce-Liveperson integration will operate.
+ <br/><br/>
+<div class="warning">
+<img src="{!$Resource.Warning}"/> &nbsp;<b>Permissions:</b> This page is normally reserved for Salesforce users with 
+administrative privileges.
+</div>
+ <br/>
+<h3>Authentication Settings</h3>
+Configure the way in which an authentication of a Salesforce user into Liveperson
+ system will be handled:
+ <ul>
+<li><b>Manual:</b> all users working out of this Salesforce Org will be prompted to supply
+ their Liveperson login details before attempting to view chat transcripts or any 
+ other screen in Liveperson system </li>
+<li><b>Automatic:</b> provide a unique login information to the entire Salesforce Org, so 
+that each time  users attempt to access the Liveperson system from this Salesforce Org,
+ they will be automatically authenticated as in a Single Sign On mode</li>
+ </ul>
+ 
+<h3>Creation Settings</h3>
+You can use this option to define whether you wish chats transferred into Salesforce 
+from Liveperson to be created in the Activity History (default) or in the Open Activities
+ related list of the relevant object (Lead, Account, Contact, Opportunity, Case)
+  <br/><br/>
+<h3>User Interface</h3>
+<ul>
+<li><b>Open links in a new window:</b> check this radio button to allow opening integration 
+links (such as Log a Chat) in a separate pop up window. Useful if you wish the users 
+to be able to return to the previous screen in Salesforce and not to lose it.</li>
+<li><b>Open links without Header and Sidebar:</b> check this radio button if you wish the 
+Salesforce Integration window in the Liveperson’s Agent’s screen to be free of the 
+regular Salesforce Header and sidebar areas in order to better manage the Agent’s screen
+ space</li>
+ </ul>
+<b>Remark:</b> the two User Interface options are independent from one another.   
+
+</div>
+</div>
+</apex:page>

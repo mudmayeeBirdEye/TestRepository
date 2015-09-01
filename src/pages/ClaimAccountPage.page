@@ -1,0 +1,2 @@
+<apex:page standardController="Agent_Credit__c" extensions="claimAccountctrl" action="{!actCreateLeadFromContact}" >  
+</apex:page>

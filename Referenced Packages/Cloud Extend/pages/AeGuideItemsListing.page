@@ -1,0 +1,3 @@
+<apex:page controller="ce4sf20_001.AeGuidesListingController" contentType="application/json; charset=utf-8" sidebar="false" showHeader="false" standardStylesheets="false" cache="false">
+   <apex:dynamicComponent componentValue="{!dynamicGuidesListingComponent}"/>
+</apex:page>

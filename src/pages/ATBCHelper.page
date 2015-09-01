@@ -1,0 +1,28 @@
+<apex:page Controller="ATBCBatch">
+  <apex:pageMessages ></apex:pageMessages>
+  
+ <apex:form >
+  <apex:pageBlock >
+             <apex:pageBlockSection title="ATBC" id="ATBC" columns="5" >
+                <apex:outputPanel >
+                  <table border='0'>
+                        <TR>
+                           
+                         <td>                          
+                             <apex:commandButton action="{!runBatchProcessManually}" value="Run"   />
+                                   
+                           </td>
+                         </tr>
+                       </table> 
+                   </apex:outputPanel>                 
+           </apex:pageBlockSection>
+    
+   
+</apex:pageBlock> 
+ 
+  
+ </apex:form>
+ 
+ 
+ 
+</apex:page>

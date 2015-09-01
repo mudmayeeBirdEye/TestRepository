@@ -1,0 +1,38 @@
+<apex:page showHeader="false" contentType="text/xml" cache="false" controller="SupportPortalSitemapController">
+<!--
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">  
+<knowledge:articleList articleVar="article"  hasMoreVar="hasMore"     pageSize="200"  sortBy="lastUpdated"  categories="Brand:RC_US,RCProductVesion:RC2013" >
+    <url>
+        <loc>
+         {!$Site.CurrentSiteUrl}articles/RC_Knowledge_Article/{!article.UrlName}
+   
+         </loc>
+         <lastmod>{!(TEXT(YEAR((article.LastPublishedDate))) & "-" & IF(LEN(TEXT(MONTH((article.LastPublishedDate))))==2,TEXT(MONTH((article.LastPublishedDate))),"0" & TEXT(MONTH((article.LastPublishedDate)))) & "-" & IF(LEN(TEXT(DAY((article.LastPublishedDate))))==2,TEXT(DAY((article.LastPublishedDate))),"0" & TEXT(DAY((article.LastPublishedDate)))))}</lastmod>
+     <priority>0.5</priority>
+    </url>
+
+
+ </knowledge:articleList> 
+</urlset>-->
+
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+<apex:repeat id="faqrepeat" var="d" value="{!FaqList}">
+   <apex:variable var="prioparam" value="priority="/>
+   <apex:variable var="prio" value="{!IF(d.Ranking__c=='','10',d.Ranking__c)}"/>
+   <apex:variable var="prioparamafter" value="&amp;"/>
+    <url>
+        <!-- <loc>{!siteurl}articles/RC_Knowledge_Article/{!d.UrlName}?type=FAQ</loc> -->
+        <!--  {!siteurl}articles/RC_Knowledge_Article/{!d.UrlName}?{!URLENCODE("priority=")}{!prio}{!URLENCODE("&retURL=")}{!URLENCODE("/apex/RCSupportPortalSearchNew&type=FAQ&id=")}{!d.knowledgearticleid}{!URLENCODE("&Title=")}{!URLENCODE(d.Title)}-->
+        <loc>
+            {!siteurl}articles/RC_Knowledge_Article/{!d.UrlName}?{!prioparam}{!prio}{!prioparamafter}retURL=/apex/RCSupportPortalSearchNew{!prioparamafter}type=FAQ{!prioparamafter}id={!d.knowledgearticleid}{!prioparamafter}Title={!URLENCODE(d.Title)}
+         </loc>
+        
+        <lastmod>{!(TEXT(YEAR(DATEVALUE(d.LastPublishedDate))) & "-" & IF(LEN(TEXT(MONTH(DATEVALUE(d.LastPublishedDate))))==2,TEXT(MONTH(DATEVALUE(d.LastPublishedDate))),"0" & TEXT(MONTH(DATEVALUE(d.LastPublishedDate)))) & "-" & IF(LEN(TEXT(DAY(DATEVALUE(d.LastPublishedDate))))==2,TEXT(DAY(DATEVALUE(d.LastPublishedDate))),"0" & TEXT(DAY(DATEVALUE(d.LastPublishedDate)))))}</lastmod>
+        <priority>0.50</priority>
+       
+    </url></apex:repeat>
+</urlset>
+
+
+
+</apex:page>

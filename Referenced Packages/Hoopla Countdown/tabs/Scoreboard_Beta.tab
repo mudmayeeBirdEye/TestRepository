@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <frameHeight>900</frameHeight>
+    <hasSidebar>false</hasSidebar>
+    <label>Countdown - Old Tab (Do not use)</label>
+    <mobileReady>false</mobileReady>
+    <motif>Custom67: Gears</motif>
+    <url>http://hoopla.net</url>
+    <urlEncodingKey>UTF-8</urlEncodingKey>
+</CustomTab>

@@ -1,0 +1,217 @@
+<apex:page standardController="SurveyUserJunction__c" extensions="SurveyResponseController" id="page1" showheader="false" sidebar="false">
+	 <style>
+        .headerClassDiv {
+            background: url('/img/alohaSkin/grid_headerbg.gif') repeat-x scroll 0 bottom #FFFFFF !important;
+            border-bottom:1px solid #D4DADC;
+            border-width: 1px 1px 1px 1px !important;
+            color: #000000 !important;
+            font-size: 0.9em !important;
+            font-weight: bold !important;
+            padding: 5px 2px 4px 5px !important;
+            width:150px !important;
+            text-align:center !important;
+        }
+        .LeftAlignClass {
+        	text-align:left;
+        }
+        
+        .RightAlignClass {
+         	text-align:right; 
+        }
+        
+        #overlay {
+            background: no-repeat scroll top center gray;
+            border: 0px solid #000000;
+            bottom: 0;
+            left: 0;
+            opacity: 0.75;
+            position: absolute;
+            top: 0;
+            visibility: hidden;
+            width: 100%;
+            z-index: 1000;
+        }
+    </style>
+    <style>
+		/*body {
+		    font-family: Arial, Helvetica, sans-serif;
+		    font-size: 16px;
+		    margin-top: 10px;
+		}*/
+		
+		ul {
+		    margin: 0;
+		}
+		
+		#contentWrap {
+		    width: 700px;
+		    margin: 0 auto;
+		    height: auto;
+		    overflow: hidden;
+		}
+		
+		#contentTop {
+		    width: 600px;
+		    padding: 10px;
+		    margin-left: 30px;
+		}
+		
+		#contentLeft {
+		    /*float: left;
+		    width: 400px;
+		    */
+		    padding:10px;
+		    //border: 2px dashed #CCC;
+		}
+		
+		#contentLeft li {
+		    list-style: none;
+		    margin: 0 0 4px 0;
+		    padding: 10px;
+		    /*background-color:lightgray;*/
+		    border-radius: 5px 5px 5px 5px;
+		    //border: 1px solid darkgray;
+		    color:#fff;
+		    //cursor:move;
+		}
+		#contentRight {
+		    float: right;
+		    width: 260px;
+		    padding:10px;
+		    background-color:#336600;
+		    color:#FFFFFF;
+		}
+		#page {
+		    background: none !important;
+		    box-shadow: 0 0 92px 5px #DADADA inset;
+		    -moz-box-shadow: 0 0 92px 5px #dadada inset;
+		    -webkit-box-shadow: 0 0 92px 5px #DADADA inset;
+		    min-width: 1004px;
+		    //border-left: 1px solid lightgray;
+		    //border-right: 1px solid lightgray;
+		    width: 90%;
+		    overflow: hidden;
+		    margin: 0 auto;
+		    padding: 0 9px 30px;
+		    position: relative;
+	    }
+	    
+	    #UlLogo li {
+  				display: block;
+                float: left;
+                width : 30%;
+                //border: 2px dashed #CCC;
+                height:100px;
+                text-align:center;
+                vertical-Align:middle;
+       }
+       #UlLogobtn li {
+  				display: block;
+                float: left;
+                width : 30%;
+                //border: 2px dashed #CCC;
+                height:100px;
+                text-align:center;
+                vertical-Align:middle;
+       }
+       
+       .btnClass {
+            color: #333;
+            margin: 1px;
+            padding: 2px 3px;
+            border: 1px solid #B5B5B5;
+            border-bottom-color: #7F7F7F;
+            background: #E8E8E9 url('/img/alohaSkin/btn_sprite.png') repeat-x right top;
+            font-weight: bold;
+            font-size: .9em;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            height: 24px;
+            width: auto;
+            min-width: 60px;
+            cursor:pointer;
+        }
+       
+	</style>
+	 <apex:form id="theForm">
+	 	<div id="page">
+	        <div style="width:100%;height:100px;">
+	            <table style="width:100%;height:100px; lightgray;">
+	                <tr>
+	                    <td style="width:30%;text-align:left;">
+	                    <apex:image url="{!$Resource.RcLogo}" />
+	                    </td>
+	                    
+	                </tr>
+	            </table>
+	        </div>
+	        <div id="contentLeft">
+		     	<ul id="UlQuesTion">
+		     		<apex:variable value="{!1}" var="rowNum"/>
+	                <apex:repeat value="{!wQesList}" var="varDraft" >
+	                    <li id="{!varDraft.questionsObj.Id}" value="{!varDraft.questionsObj.Id}"> 
+	                        <table>
+	                            <thead>
+	                                <tr>
+	                                     <td><b>Q<apex:outputText value="{!FLOOR(rowNum)}" id="qus"/><apex:outputPanel rendered="{!varDraft.IsMandatory }"><font color="red">*</font> </apex:outputPanel> : {!varDraft.questionsObj.Subject__c}</b></td>
+	                                </tr>
+	                            </thead>
+	                            <tbody>
+	                                <tr>
+	                                    <td>
+	                                    <apex:outputPanel rendered="{!IF(varDraft.questionsObj.Option_Type__c == 'Text', 'true', 'false')}">
+	                                        <apex:inputText style="width:500px" disabled="true" value="{!varDraft.questionAnswer}"/>
+	                                    </apex:outputPanel>
+	                                    <apex:outputPanel rendered="{!IF(varDraft.questionsObj.Option_Type__c == 'Textarea', 'true', 'false')}">
+	                                        <apex:inputTextArea disabled="true" style="height:50px;width:190px" value="{!varDraft.questionAnswer}" />
+	                                    </apex:outputPanel>
+	                                    <apex:outputPanel rendered="{!IF(varDraft.questionsObj.Option_Type__c == 'Radio', 'true', 'false')}">
+	                                        <table>
+	                                         <apex:selectRadio value="{!varDraft.questionAnswer}" layout="pagedirection" readonly="true" disabled="true">
+                                    			<apex:selectOptions value="{!varDraft.values}" />
+                                 		   	</apex:selectRadio>
+	                                         <!--<apex:repeat value="{!varDraft.answers}" var="ans" >
+	                                         	<tr>
+		                                         	<td>
+		                                         		<input disabled="disabled" checked="{!varDraft.questionAnswer}" name="ans" type="radio"/>
+		                                         	</td>
+		                                         	<td>
+		                                         		{!ans}
+		                                         	</td>
+	                                         	</tr>
+	                                         </apex:repeat>-->
+	                                         </table>
+	                                    </apex:outputPanel>
+	                                    <apex:outputPanel rendered="{!IF(varDraft.questionsObj.Option_Type__c == 'Checkbox', 'true', 'false')}">
+	                                         <table>
+	                                         <!--<apex:repeat value="{!varDraft.answers}" var="ans" >
+	                                         <tr><td><input disabled="disabled" type="checkbox"/></td><td>{!ans}</td></tr>
+	                                         </apex:repeat>-->
+	                                         <apex:selectCheckboxes layout="pageDirection" value="{!varDraft.theCheckBoxValue}" readonly="true" disabled="true">
+            									<apex:selectOptions value="{!varDraft.values}"/>
+        									 </apex:selectCheckboxes>
+	                                         </table>
+	                                    </apex:outputPanel>
+	                                    </td>
+	                                </tr>
+	                            </tbody>
+	                        </table>
+	                    </li> 
+	                    <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+	                </apex:repeat>
+	             </ul>
+	        </div>
+        </div>
+        
+        <div style="width:100%;height:70px;text-align:center;"> 
+      		<input type="submit" value="Close" class="btnClass" onclick = "Cancel1();return false;" /><br /> 
+    	</div>
+	 
+	 </apex:form>
+	 <script>
+	 	function Cancel1() {
+			window.close();
+		}
+	 </script>
+</apex:page>
